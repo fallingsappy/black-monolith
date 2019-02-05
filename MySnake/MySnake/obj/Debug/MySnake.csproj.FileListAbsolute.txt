@@ -1,0 +1,7 @@
+C:\Fallingsappy\Data\Programming\snake\MySnake\MySnake\MySnake\bin\Debug\MySnake.exe.config
+C:\Fallingsappy\Data\Programming\snake\MySnake\MySnake\MySnake\bin\Debug\MySnake.exe
+C:\Fallingsappy\Data\Programming\snake\MySnake\MySnake\MySnake\bin\Debug\MySnake.pdb
+C:\Fallingsappy\Data\Programming\snake\MySnake\MySnake\MySnake\obj\Debug\MySnake.csprojAssemblyReference.cache
+C:\Fallingsappy\Data\Programming\snake\MySnake\MySnake\MySnake\obj\Debug\MySnake.csproj.CoreCompileInputs.cache
+C:\Fallingsappy\Data\Programming\snake\MySnake\MySnake\MySnake\obj\Debug\MySnake.exe
+C:\Fallingsappy\Data\Programming\snake\MySnake\MySnake\MySnake\obj\Debug\MySnake.pdb

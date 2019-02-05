@@ -1,0 +1,7 @@
+C:\Fallingsappy\Data\Programming\Algorithms\Homework\Homework7\Homework7\Homework7_4\obj\Debug\Homework7_4.csprojAssemblyReference.cache
+C:\Fallingsappy\Data\Programming\Algorithms\Homework\Homework7\Homework7\Homework7_4\obj\Debug\Homework7_4.csproj.CoreCompileInputs.cache
+C:\Fallingsappy\Data\Programming\Algorithms\Homework\Homework7\Homework7\Homework7_4\bin\Debug\Homework7_4.exe.config
+C:\Fallingsappy\Data\Programming\Algorithms\Homework\Homework7\Homework7\Homework7_4\bin\Debug\Homework7_4.exe
+C:\Fallingsappy\Data\Programming\Algorithms\Homework\Homework7\Homework7\Homework7_4\bin\Debug\Homework7_4.pdb
+C:\Fallingsappy\Data\Programming\Algorithms\Homework\Homework7\Homework7\Homework7_4\obj\Debug\Homework7_4.exe
+C:\Fallingsappy\Data\Programming\Algorithms\Homework\Homework7\Homework7\Homework7_4\obj\Debug\Homework7_4.pdb

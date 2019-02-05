@@ -1,0 +1,14 @@
+C:\Fallingsappy\Data\Programming\Csharp2\Homework4\Homework2\Homework1\bin\Debug\Homework1.exe.config
+C:\Fallingsappy\Data\Programming\Csharp2\Homework4\Homework2\Homework1\bin\Debug\Homework1.exe
+C:\Fallingsappy\Data\Programming\Csharp2\Homework4\Homework2\Homework1\bin\Debug\Homework1.pdb
+C:\Fallingsappy\Data\Programming\Csharp2\Homework4\Homework2\Homework1\obj\Debug\Homework4.csprojAssemblyReference.cache
+C:\Fallingsappy\Data\Programming\Csharp2\Homework4\Homework2\Homework1\obj\Debug\Homework4.csproj.CoreCompileInputs.cache
+C:\Fallingsappy\Data\Programming\Csharp2\Homework4\Homework2\Homework1\obj\Debug\Homework1.exe
+C:\Fallingsappy\Data\Programming\Csharp2\Homework4\Homework2\Homework1\obj\Debug\Homework1.pdb
+C:\Fallingsappy\Data\Programming\Csharp2\Homework4\Homework4\Homework1\bin\Debug\Homework1.exe.config
+C:\Fallingsappy\Data\Programming\Csharp2\Homework4\Homework4\Homework1\bin\Debug\Homework1.exe
+C:\Fallingsappy\Data\Programming\Csharp2\Homework4\Homework4\Homework1\bin\Debug\Homework1.pdb
+C:\Fallingsappy\Data\Programming\Csharp2\Homework4\Homework4\Homework1\obj\Debug\Homework4.csprojAssemblyReference.cache
+C:\Fallingsappy\Data\Programming\Csharp2\Homework4\Homework4\Homework1\obj\Debug\Homework4.csproj.CoreCompileInputs.cache
+C:\Fallingsappy\Data\Programming\Csharp2\Homework4\Homework4\Homework1\obj\Debug\Homework1.exe
+C:\Fallingsappy\Data\Programming\Csharp2\Homework4\Homework4\Homework1\obj\Debug\Homework1.pdb
