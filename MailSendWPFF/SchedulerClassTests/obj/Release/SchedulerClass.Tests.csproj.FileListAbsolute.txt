@@ -1,0 +1,17 @@
+C:\Fallingsappy\Data\Programming\CSharp3\Homework\Homework4\MailSendWPFF\SchedulerClassTests\bin\Release\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll
+C:\Fallingsappy\Data\Programming\CSharp3\Homework\Homework4\MailSendWPFF\SchedulerClassTests\bin\Release\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll
+C:\Fallingsappy\Data\Programming\CSharp3\Homework\Homework4\MailSendWPFF\SchedulerClassTests\bin\Release\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll
+C:\Fallingsappy\Data\Programming\CSharp3\Homework\Homework4\MailSendWPFF\SchedulerClassTests\bin\Release\ru\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.resources.dll
+C:\Fallingsappy\Data\Programming\CSharp3\Homework\Homework4\MailSendWPFF\SchedulerClassTests\bin\Release\ru\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.resources.dll
+C:\Fallingsappy\Data\Programming\CSharp3\Homework\Homework4\MailSendWPFF\SchedulerClassTests\bin\Release\ru\Microsoft.VisualStudio.TestPlatform.TestFramework.resources.dll
+C:\Fallingsappy\Data\Programming\CSharp3\Homework\Homework4\MailSendWPFF\SchedulerClassTests\bin\Release\SchedulerClassTests.dll
+C:\Fallingsappy\Data\Programming\CSharp3\Homework\Homework4\MailSendWPFF\SchedulerClassTests\bin\Release\SchedulerClassTests.pdb
+C:\Fallingsappy\Data\Programming\CSharp3\Homework\Homework4\MailSendWPFF\SchedulerClassTests\bin\Release\Microsoft.VisualStudio.TestPlatform.TestFramework.dll
+C:\Fallingsappy\Data\Programming\CSharp3\Homework\Homework4\MailSendWPFF\SchedulerClassTests\bin\Release\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll
+C:\Fallingsappy\Data\Programming\CSharp3\Homework\Homework4\MailSendWPFF\SchedulerClassTests\bin\Release\Microsoft.VisualStudio.TestPlatform.TestFramework.xml
+C:\Fallingsappy\Data\Programming\CSharp3\Homework\Homework4\MailSendWPFF\SchedulerClassTests\bin\Release\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.xml
+C:\Fallingsappy\Data\Programming\CSharp3\Homework\Homework4\MailSendWPFF\SchedulerClassTests\obj\Release\SchedulerClass.Tests.csprojAssemblyReference.cache
+C:\Fallingsappy\Data\Programming\CSharp3\Homework\Homework4\MailSendWPFF\SchedulerClassTests\obj\Release\SchedulerClass.Tests.csproj.CoreCompileInputs.cache
+C:\Fallingsappy\Data\Programming\CSharp3\Homework\Homework4\MailSendWPFF\SchedulerClassTests\obj\Release\SchedulerClass.Tests.csproj.CopyComplete
+C:\Fallingsappy\Data\Programming\CSharp3\Homework\Homework4\MailSendWPFF\SchedulerClassTests\obj\Release\SchedulerClassTests.dll
+C:\Fallingsappy\Data\Programming\CSharp3\Homework\Homework4\MailSendWPFF\SchedulerClassTests\obj\Release\SchedulerClassTests.pdb

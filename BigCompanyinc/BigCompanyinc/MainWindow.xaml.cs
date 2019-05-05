@@ -27,8 +27,7 @@ namespace BigCompanyinc
         DepartmentMethods DpMethods = new DepartmentMethods();
         EmployeeMethods EpMethods = new EmployeeMethods();
 
-        //необходимо скопировать файл Hospital.mdf по указанному ниже путю из папки debug
-        string connectionString = @"Data Source=(localdb)\MSSQLLocalDB;AttachDbFilename=C:\Direct2\Hospital.mdf;Integrated Security=True";
+        string connectionString = @"Data Source=(localdb)\MSSQLLocalDB;AttachDbFilename='|DataDirectory|Hospital.mdf';Integrated Security=True";
         SqlCommand cmd;
         SqlDataAdapter adapter = new SqlDataAdapter();
 
