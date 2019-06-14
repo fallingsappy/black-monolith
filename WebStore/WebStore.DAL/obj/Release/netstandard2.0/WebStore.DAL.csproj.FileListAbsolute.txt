@@ -1,0 +1,12 @@
+E:\fallingsappy\Data\Programming\CSharpASP.NET_MVC_6.Level_1\Homework\Homework8\WebStore_Stable\WebStore.DAL\bin\Release\netstandard2.0\WebStore.DAL.deps.json
+E:\fallingsappy\Data\Programming\CSharpASP.NET_MVC_6.Level_1\Homework\Homework8\WebStore_Stable\WebStore.DAL\bin\Release\netstandard2.0\WebStore.DAL.dll
+E:\fallingsappy\Data\Programming\CSharpASP.NET_MVC_6.Level_1\Homework\Homework8\WebStore_Stable\WebStore.DAL\bin\Release\netstandard2.0\WebStore.DAL.pdb
+E:\fallingsappy\Data\Programming\CSharpASP.NET_MVC_6.Level_1\Homework\Homework8\WebStore_Stable\WebStore.DAL\bin\Release\netstandard2.0\WebStore.DomainNew.dll
+E:\fallingsappy\Data\Programming\CSharpASP.NET_MVC_6.Level_1\Homework\Homework8\WebStore_Stable\WebStore.DAL\bin\Release\netstandard2.0\WebStore.DomainNew.pdb
+E:\fallingsappy\Data\Programming\CSharpASP.NET_MVC_6.Level_1\Homework\Homework8\WebStore_Stable\WebStore.DAL\obj\Release\netstandard2.0\WebStore.DAL.csprojAssemblyReference.cache
+E:\fallingsappy\Data\Programming\CSharpASP.NET_MVC_6.Level_1\Homework\Homework8\WebStore_Stable\WebStore.DAL\obj\Release\netstandard2.0\WebStore.DAL.csproj.CoreCompileInputs.cache
+E:\fallingsappy\Data\Programming\CSharpASP.NET_MVC_6.Level_1\Homework\Homework8\WebStore_Stable\WebStore.DAL\obj\Release\netstandard2.0\WebStore.DAL.AssemblyInfoInputs.cache
+E:\fallingsappy\Data\Programming\CSharpASP.NET_MVC_6.Level_1\Homework\Homework8\WebStore_Stable\WebStore.DAL\obj\Release\netstandard2.0\WebStore.DAL.AssemblyInfo.cs
+E:\fallingsappy\Data\Programming\CSharpASP.NET_MVC_6.Level_1\Homework\Homework8\WebStore_Stable\WebStore.DAL\obj\Release\netstandard2.0\WebStore.DAL.csproj.CopyComplete
+E:\fallingsappy\Data\Programming\CSharpASP.NET_MVC_6.Level_1\Homework\Homework8\WebStore_Stable\WebStore.DAL\obj\Release\netstandard2.0\WebStore.DAL.dll
+E:\fallingsappy\Data\Programming\CSharpASP.NET_MVC_6.Level_1\Homework\Homework8\WebStore_Stable\WebStore.DAL\obj\Release\netstandard2.0\WebStore.DAL.pdb

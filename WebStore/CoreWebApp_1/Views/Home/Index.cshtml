@@ -1,0 +1,26 @@
+﻿@model WebStore.Models.Product.CatalogViewModel
+
+@{
+    ViewData["Title"] = "Home | E-Shopper";
+}
+
+@await Html.PartialAsync("Partial/Index/_Slider");
+
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3">
+                @await Html.PartialAsync("Partial/_LeftSideBar")
+            </div>
+
+            <div class="col-sm-9 padding-right">
+                @await Html.PartialAsync("Partial/Index/_FeaturedItems")
+
+                @await Html.PartialAsync("Partial/Index/_CategoryTabIndex")
+
+                @await Html.PartialAsync("Partial/_RecommendedItems")
+
+            </div>
+        </div>
+    </div>
+</section>

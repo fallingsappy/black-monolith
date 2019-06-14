@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>@ViewData["Title"]</title>
+
+    <environment include="Development">
+        <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="~/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+        <link href="~/Eshopper/css/prettyPhoto.css" rel="stylesheet"/>
+        <link href="~/Eshopper/css/price-range.css" rel="stylesheet"/>
+        <link href="~/Eshopper/css/animate.css" rel="stylesheet"/>
+        <link href="~/Eshopper/css/responsive.css" rel="stylesheet"/>     
+        <link href="~/Eshopper/css/main.css" rel="stylesheet"/>
+    </environment>
+    <environment exclude="Development">
+        <link href="~/Eshopper/css/main.css" rel="stylesheet"/>
+        <link href="~/css/site.min.css" rel="stylesheet"/>
+    </environment>
+
+    @RenderSection("styles", false)
+    <!--[if lt IE 9]>
+        <script src="~/Eshopper/js/html5shiv.js"></script>
+    <![endif]-->
+</head><!--/head-->
+<body>
+
+    @await Html.PartialAsync("_Header")
+
+    @RenderBody()
+
+    @await Html.PartialAsync("_Footer")
+
+    <environment include="Development">
+        <script src="~/Eshopper/js/price-range.js"></script>
+        <script src="~/Eshopper/js/jquery.prettyPhoto.js"></script>
+        <script src="~/Eshopper/js/main.js"></script>
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/Eshopper/js/jquery.scrollUp.min.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/js/site.min.js"></script>
+    </environment>
+    <!--Секция для отображения кастомных скриптов, если понадобятся-->
+    @RenderSection("scripts", false)
+</body>
+</html>
