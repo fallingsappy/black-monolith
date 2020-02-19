@@ -1,0 +1,56 @@
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop.BE\bin\Debug\DDrop.BE.dll
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop.BE\bin\Debug\DDrop.BE.pdb
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop.BE\obj\Debug\DDrop.BE.csproj.CoreCompileInputs.cache
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop.BE\obj\Debug\DDrop.BE.dll
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop.BE\obj\Debug\DDrop.BE.pdb
+G:\DDrop\DDrop.BE\bin\Debug\DDrop.BE.dll
+G:\DDrop\DDrop.BE\bin\Debug\DDrop.BE.pdb
+G:\DDrop\DDrop.BE\obj\Debug\DDrop.BE.csproj.CoreCompileInputs.cache
+G:\DDrop\DDrop.BE\obj\Debug\DDrop.BE.dll
+G:\DDrop\DDrop.BE\obj\Debug\DDrop.BE.pdb
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.BE\bin\Debug\DDrop.BE.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.BE\bin\Debug\DDrop.BE.pdb
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.BE\obj\Debug\DDrop.BE.csproj.CoreCompileInputs.cache
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.BE\obj\Debug\DDrop.BE.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.BE\obj\Debug\DDrop.BE.pdb
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.BE\bin\Debug\DDrop.BE.dll.config
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.BE\bin\Debug\EntityFramework.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.BE\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.BE\bin\Debug\EntityFramework.xml
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.BE\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.BE\obj\Debug\DDrop.BE.csproj.CopyComplete
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.BE\obj\Debug\DDrop.BE.csprojAssemblyReference.cache
+G:\Новая папка (2)\DDrop\DDrop.BE\bin\Debug\DDrop.BE.dll.config
+G:\Новая папка (2)\DDrop\DDrop.BE\bin\Debug\DDrop.BE.dll
+G:\Новая папка (2)\DDrop\DDrop.BE\bin\Debug\DDrop.BE.pdb
+G:\Новая папка (2)\DDrop\DDrop.BE\bin\Debug\EntityFramework.dll
+G:\Новая папка (2)\DDrop\DDrop.BE\bin\Debug\EntityFramework.SqlServer.dll
+G:\Новая папка (2)\DDrop\DDrop.BE\bin\Debug\EntityFramework.xml
+G:\Новая папка (2)\DDrop\DDrop.BE\bin\Debug\EntityFramework.SqlServer.xml
+G:\Новая папка (2)\DDrop\DDrop.BE\obj\Debug\DDrop.BE.csproj.CoreCompileInputs.cache
+G:\Новая папка (2)\DDrop\DDrop.BE\obj\Debug\DDrop.BE.csproj.CopyComplete
+G:\Новая папка (2)\DDrop\DDrop.BE\obj\Debug\DDrop.BE.dll
+G:\Новая папка (2)\DDrop\DDrop.BE\obj\Debug\DDrop.BE.pdb
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.BE\bin\Debug\DDrop.BE.dll.config
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.BE\bin\Debug\DDrop.BE.dll
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.BE\bin\Debug\DDrop.BE.pdb
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.BE\bin\Debug\EntityFramework.dll
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.BE\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.BE\bin\Debug\EntityFramework.xml
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.BE\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.BE\obj\Debug\DDrop.BE.csproj.CoreCompileInputs.cache
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.BE\obj\Debug\DDrop.BE.csproj.CopyComplete
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.BE\obj\Debug\DDrop.BE.dll
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.BE\obj\Debug\DDrop.BE.pdb
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.BE\bin\Debug\DDrop.BE.dll.config
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.BE\bin\Debug\DDrop.BE.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.BE\bin\Debug\DDrop.BE.pdb
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.BE\bin\Debug\EntityFramework.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.BE\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.BE\bin\Debug\EntityFramework.xml
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.BE\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.BE\obj\Debug\DDrop.BE.csproj.CoreCompileInputs.cache
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.BE\obj\Debug\DDrop.BE.csproj.CopyComplete
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.BE\obj\Debug\DDrop.BE.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.BE\obj\Debug\DDrop.BE.pdb
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.BE\obj\Debug\DDrop.BE.csprojAssemblyReference.cache

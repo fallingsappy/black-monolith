@@ -1,0 +1,72 @@
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop.BL\bin\Debug\DDrop.BL.dll
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop.BL\bin\Debug\DDrop.BL.pdb
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop.BL\bin\Debug\DDrop.BE.dll
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop.BL\bin\Debug\Emgu.CV.World.NetStandard.dll
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop.BL\bin\Debug\DDrop.BE.pdb
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop.BL\bin\Debug\Emgu.CV.World.NetStandard.xml
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop.BL\obj\Debug\DDrop.BL.csprojAssemblyReference.cache
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop.BL\obj\Debug\DDrop.BL.csproj.CoreCompileInputs.cache
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop.BL\obj\Debug\DDrop.BL.csproj.CopyComplete
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop.BL\obj\Debug\DDrop.BL.dll
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop.BL\obj\Debug\DDrop.BL.pdb
+G:\DDrop\DDrop.BL\bin\Debug\DDrop.BL.dll
+G:\DDrop\DDrop.BL\bin\Debug\DDrop.BL.pdb
+G:\DDrop\DDrop.BL\bin\Debug\DDrop.BE.dll
+G:\DDrop\DDrop.BL\bin\Debug\Emgu.CV.World.NetStandard.dll
+G:\DDrop\DDrop.BL\bin\Debug\DDrop.BE.pdb
+G:\DDrop\DDrop.BL\bin\Debug\Emgu.CV.World.NetStandard.xml
+G:\DDrop\DDrop.BL\obj\Debug\DDrop.BL.csprojAssemblyReference.cache
+G:\DDrop\DDrop.BL\obj\Debug\DDrop.BL.csproj.CoreCompileInputs.cache
+G:\DDrop\DDrop.BL\obj\Debug\DDrop.BL.csproj.CopyComplete
+G:\DDrop\DDrop.BL\obj\Debug\DDrop.BL.dll
+G:\DDrop\DDrop.BL\obj\Debug\DDrop.BL.pdb
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.BL\bin\Debug\DDrop.BL.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.BL\bin\Debug\DDrop.BL.pdb
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.BL\bin\Debug\DDrop.BE.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.BL\bin\Debug\Emgu.CV.World.NetStandard.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.BL\bin\Debug\DDrop.BE.pdb
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.BL\bin\Debug\Emgu.CV.World.NetStandard.xml
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.BL\obj\Debug\DDrop.BL.csprojAssemblyReference.cache
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.BL\obj\Debug\DDrop.BL.csproj.CoreCompileInputs.cache
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.BL\obj\Debug\DDrop.BL.csproj.CopyComplete
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.BL\obj\Debug\DDrop.BL.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.BL\obj\Debug\DDrop.BL.pdb
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.BL\bin\Debug\EntityFramework.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.BL\bin\Debug\DDrop.BE.dll.config
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.BL\bin\Debug\EntityFramework.xml
+G:\Новая папка (2)\DDrop\DDrop.BL\obj\Debug\DDrop.BL.csprojAssemblyReference.cache
+G:\Новая папка (2)\DDrop\DDrop.BL\obj\Debug\DDrop.BL.csproj.CoreCompileInputs.cache
+G:\Новая папка (2)\DDrop\DDrop.BL\obj\Debug\DDrop.BL.dll
+G:\Новая папка (2)\DDrop\DDrop.BL\obj\Debug\DDrop.BL.pdb
+G:\Новая папка (2)\DDrop\DDrop.BL\bin\Debug\DDrop.BL.dll
+G:\Новая папка (2)\DDrop\DDrop.BL\bin\Debug\DDrop.BL.pdb
+G:\Новая папка (2)\DDrop\DDrop.BL\bin\Debug\DDrop.BE.dll
+G:\Новая папка (2)\DDrop\DDrop.BL\bin\Debug\Emgu.CV.World.NetStandard.dll
+G:\Новая папка (2)\DDrop\DDrop.BL\bin\Debug\DDrop.BE.pdb
+G:\Новая папка (2)\DDrop\DDrop.BL\bin\Debug\DDrop.BE.dll.config
+G:\Новая папка (2)\DDrop\DDrop.BL\bin\Debug\Emgu.CV.World.NetStandard.xml
+G:\Новая папка (2)\DDrop\DDrop.BL\obj\Debug\DDrop.BL.csproj.CopyComplete
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.BL\bin\Debug\DDrop.BL.dll
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.BL\bin\Debug\DDrop.BL.pdb
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.BL\bin\Debug\DDrop.BE.dll
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.BL\bin\Debug\Emgu.CV.World.NetStandard.dll
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.BL\bin\Debug\DDrop.BE.pdb
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.BL\bin\Debug\DDrop.BE.dll.config
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.BL\bin\Debug\Emgu.CV.World.NetStandard.xml
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.BL\obj\Debug\DDrop.BL.csprojAssemblyReference.cache
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.BL\obj\Debug\DDrop.BL.csproj.CoreCompileInputs.cache
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.BL\obj\Debug\DDrop.BL.csproj.CopyComplete
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.BL\obj\Debug\DDrop.BL.dll
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.BL\obj\Debug\DDrop.BL.pdb
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.BL\bin\Debug\DDrop.BL.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.BL\bin\Debug\DDrop.BL.pdb
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.BL\bin\Debug\DDrop.BE.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.BL\bin\Debug\Emgu.CV.World.NetStandard.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.BL\bin\Debug\DDrop.BE.pdb
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.BL\bin\Debug\DDrop.BE.dll.config
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.BL\bin\Debug\Emgu.CV.World.NetStandard.xml
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.BL\obj\Debug\DDrop.BL.csprojAssemblyReference.cache
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.BL\obj\Debug\DDrop.BL.csproj.CoreCompileInputs.cache
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.BL\obj\Debug\DDrop.BL.csproj.CopyComplete
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.BL\obj\Debug\DDrop.BL.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.BL\obj\Debug\DDrop.BL.pdb

@@ -1,0 +1,506 @@
+C:\fallingsappy\DDrop\DDrop\bin\Debug\DDrop.exe.config
+C:\fallingsappy\DDrop\DDrop\bin\Debug\DDrop.exe
+C:\fallingsappy\DDrop\DDrop\bin\Debug\DDrop.pdb
+C:\fallingsappy\DDrop\DDrop\obj\Debug\DDrop.csprojAssemblyReference.cache
+C:\fallingsappy\DDrop\DDrop\obj\Debug\MainWindow.g.cs
+C:\fallingsappy\DDrop\DDrop\obj\Debug\App.g.cs
+C:\fallingsappy\DDrop\DDrop\obj\Debug\DDrop_MarkupCompile.cache
+C:\fallingsappy\DDrop\DDrop\obj\Debug\DDrop_MarkupCompile.lref
+C:\fallingsappy\DDrop\DDrop\obj\Debug\MainWindow.baml
+C:\fallingsappy\DDrop\DDrop\obj\Debug\DDrop.g.resources
+C:\fallingsappy\DDrop\DDrop\obj\Debug\DDrop.Properties.Resources.resources
+C:\fallingsappy\DDrop\DDrop\obj\Debug\DDrop.csproj.GenerateResource.cache
+C:\fallingsappy\DDrop\DDrop\obj\Debug\DDrop.csproj.CoreCompileInputs.cache
+C:\fallingsappy\DDrop\DDrop\obj\Debug\DDrop.exe
+C:\fallingsappy\DDrop\DDrop\obj\Debug\DDrop.pdb
+E:\fallingsappy\Data\Учеба в МЭИ\Аспирантура\2019-2020\DropDetector\DDrop\DDrop\bin\Debug\DDrop.exe.config
+E:\fallingsappy\Data\Учеба в МЭИ\Аспирантура\2019-2020\DropDetector\DDrop\DDrop\bin\Debug\DDrop.exe
+E:\fallingsappy\Data\Учеба в МЭИ\Аспирантура\2019-2020\DropDetector\DDrop\DDrop\bin\Debug\DDrop.pdb
+E:\fallingsappy\Data\Учеба в МЭИ\Аспирантура\2019-2020\DropDetector\DDrop\DDrop\obj\Debug\MainWindow.g.cs
+E:\fallingsappy\Data\Учеба в МЭИ\Аспирантура\2019-2020\DropDetector\DDrop\DDrop\obj\Debug\App.g.cs
+E:\fallingsappy\Data\Учеба в МЭИ\Аспирантура\2019-2020\DropDetector\DDrop\DDrop\obj\Debug\DDrop_MarkupCompile.cache
+E:\fallingsappy\Data\Учеба в МЭИ\Аспирантура\2019-2020\DropDetector\DDrop\DDrop\obj\Debug\MainWindow.baml
+E:\fallingsappy\Data\Учеба в МЭИ\Аспирантура\2019-2020\DropDetector\DDrop\DDrop\obj\Debug\DDrop.g.resources
+E:\fallingsappy\Data\Учеба в МЭИ\Аспирантура\2019-2020\DropDetector\DDrop\DDrop\obj\Debug\DDrop.Properties.Resources.resources
+E:\fallingsappy\Data\Учеба в МЭИ\Аспирантура\2019-2020\DropDetector\DDrop\DDrop\obj\Debug\DDrop.csproj.GenerateResource.cache
+E:\fallingsappy\Data\Учеба в МЭИ\Аспирантура\2019-2020\DropDetector\DDrop\DDrop\obj\Debug\DDrop.exe
+E:\fallingsappy\Data\Учеба в МЭИ\Аспирантура\2019-2020\DropDetector\DDrop\DDrop\obj\Debug\DDrop.pdb
+E:\fallingsappy\Data\Учеба в МЭИ\Аспирантура\2019-2020\DropDetector\DDrop\DDrop\obj\Debug\Options.g.cs
+E:\fallingsappy\Data\Учеба в МЭИ\Аспирантура\2019-2020\DropDetector\DDrop\DDrop\obj\Debug\Options.baml
+E:\fallingsappy\Data\Учеба в МЭИ\Аспирантура\2019-2020\DropDetector\DDrop\DDrop\bin\Debug\EPPlus.dll
+E:\fallingsappy\Data\Учеба в МЭИ\Аспирантура\2019-2020\DropDetector\DDrop\DDrop\bin\Debug\EPPlus.xml
+E:\fallingsappy\Data\Учеба в МЭИ\Аспирантура\2019-2020\DropDetector\DDrop\DDrop\obj\Debug\DDrop.csproj.CopyComplete
+E:\fallingsappy\Data\Учеба в МЭИ\Аспирантура\2019-2020\DropDetector\DDrop\DDrop\bin\Debug\Microsoft.WindowsAPICodePack.dll
+E:\fallingsappy\Data\Учеба в МЭИ\Аспирантура\2019-2020\DropDetector\DDrop\DDrop\bin\Debug\Microsoft.WindowsAPICodePack.Shell.dll
+E:\fallingsappy\Data\Учеба в МЭИ\Аспирантура\2019-2020\DropDetector\DDrop\DDrop\bin\Debug\Microsoft.WindowsAPICodePack.xml
+E:\fallingsappy\Data\Учеба в МЭИ\Аспирантура\2019-2020\DropDetector\DDrop\DDrop\bin\Debug\Microsoft.WindowsAPICodePack.Shell.xml
+E:\fallingsappy\Data\Учеба в МЭИ\Аспирантура\2019-2020\DropDetector\DDrop\DDrop\obj\Debug\GeneratedInternalTypeHelper.g.cs
+E:\fallingsappy\Data\Учеба в МЭИ\Аспирантура\2019-2020\DropDetector\DDrop\DDrop\obj\Debug\DDrop_MarkupCompile.lref
+E:\fallingsappy\Data\Учеба в МЭИ\Аспирантура\2019-2020\DropDetector\DDrop\DDrop\obj\Debug\App.baml
+E:\fallingsappy\Data\Учеба в МЭИ\Аспирантура\2019-2020\DropDetector\DDrop\DDrop\obj\Debug\Resources\Icons\Icons.baml
+E:\fallingsappy\Data\Учеба в МЭИ\Аспирантура\2019-2020\DropDetector\DDrop\DDrop\bin\Debug\Emgu.CV.World.NetStandard.dll
+E:\fallingsappy\Data\Учеба в МЭИ\Аспирантура\2019-2020\DropDetector\DDrop\DDrop\bin\Debug\Numpy.dll
+E:\fallingsappy\Data\Учеба в МЭИ\Аспирантура\2019-2020\DropDetector\DDrop\DDrop\bin\Debug\Python.Included.dll
+E:\fallingsappy\Data\Учеба в МЭИ\Аспирантура\2019-2020\DropDetector\DDrop\DDrop\bin\Debug\Python.Runtime.NETStandard.dll
+E:\fallingsappy\Data\Учеба в МЭИ\Аспирантура\2019-2020\DropDetector\DDrop\DDrop\bin\Debug\Emgu.CV.World.NetStandard.xml
+E:\fallingsappy\Data\Учеба в МЭИ\Аспирантура\2019-2020\DropDetector\DDrop\DDrop\obj\Debug\DDrop.csprojAssemblyReference.cache
+E:\fallingsappy\Data\Учеба в МЭИ\Аспирантура\2019-2020\DropDetector\DDrop\DDrop\obj\Debug\DDrop.csproj.CoreCompileInputs.cache
+E:\fallingsappy\Data\Учеба в МЭИ\Аспирантура\2019-2020\DropDetector\DDrop\DDrop\bin\Debug\ToastNotifications.dll
+E:\fallingsappy\Data\Учеба в МЭИ\Аспирантура\2019-2020\DropDetector\DDrop\DDrop\bin\Debug\ToastNotifications.Messages.dll
+E:\fallingsappy\Data\Учеба в МЭИ\Аспирантура\2019-2020\DropDetector\DDrop\DDrop\bin\Debug\LiveCharts.dll
+E:\fallingsappy\Data\Учеба в МЭИ\Аспирантура\2019-2020\DropDetector\DDrop\DDrop\bin\Debug\LiveCharts.Wpf.dll
+E:\fallingsappy\Data\Учеба в МЭИ\Аспирантура\2019-2020\DropDetector\DDrop\DDrop\bin\Debug\LiveCharts.pdb
+E:\fallingsappy\Data\Учеба в МЭИ\Аспирантура\2019-2020\DropDetector\DDrop\DDrop\bin\Debug\LiveCharts.xml
+E:\fallingsappy\Data\Учеба в МЭИ\Аспирантура\2019-2020\DropDetector\DDrop\DDrop\bin\Debug\LiveCharts.Wpf.pdb
+E:\fallingsappy\Data\Учеба в МЭИ\Аспирантура\2019-2020\DropDetector\DDrop\DDrop\bin\Debug\LiveCharts.Wpf.xml
+E:\fallingsappy\Data\Учеба в МЭИ\Аспирантура\2019-2020\DropDetector\DDrop\DDrop\bin\Debug\EntityFramework.dll
+E:\fallingsappy\Data\Учеба в МЭИ\Аспирантура\2019-2020\DropDetector\DDrop\DDrop\bin\Debug\EntityFramework.SqlServer.dll
+E:\fallingsappy\Data\Учеба в МЭИ\Аспирантура\2019-2020\DropDetector\DDrop\DDrop\bin\Debug\EntityFramework.xml
+E:\fallingsappy\Data\Учеба в МЭИ\Аспирантура\2019-2020\DropDetector\DDrop\DDrop\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\obj\Debug\DDrop.csprojAssemblyReference.cache
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\obj\Debug\ManualEdit.baml
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\obj\Debug\Options.baml
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\obj\Debug\Resources\Icons\Icons.baml
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\obj\Debug\App.baml
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\obj\Debug\Account.g.cs
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\obj\Debug\ManualEdit.g.cs
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\obj\Debug\Options.g.cs
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\obj\Debug\Regin.g.cs
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\obj\Debug\App.g.cs
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\obj\Debug\DDrop_MarkupCompile.cache
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\obj\Debug\DDrop_MarkupCompile.lref
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\bin\Debug\DDrop.exe.config
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\bin\Debug\DDrop.exe
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\bin\Debug\DDrop.pdb
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\bin\Debug\CommonServiceLocator.dll
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\bin\Debug\DDrop.BE.dll
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\bin\Debug\DDrop.BL.dll
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\bin\Debug\DDrop.Controls.dll
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\bin\Debug\DDrop.DAL.dll
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\bin\Debug\DDrop.Utility.dll
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\bin\Debug\Emgu.CV.World.NetStandard.dll
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\bin\Debug\EntityFramework.dll
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\bin\Debug\EPPlus.dll
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\bin\Debug\LiveCharts.dll
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\bin\Debug\Microsoft.WindowsAPICodePack.dll
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\bin\Debug\Microsoft.WindowsAPICodePack.Shell.dll
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\bin\Debug\Numpy.dll
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\bin\Debug\Python.Included.dll
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\bin\Debug\Python.Runtime.NETStandard.dll
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\bin\Debug\System.Windows.Interactivity.dll
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\bin\Debug\ToastNotifications.dll
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\bin\Debug\ToastNotifications.Messages.dll
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\bin\Debug\LiveCharts.Wpf.dll
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\bin\Debug\DDrop.BE.pdb
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\bin\Debug\DDrop.BL.pdb
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\bin\Debug\DDrop.Controls.pdb
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\bin\Debug\DDrop.DAL.pdb
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\bin\Debug\DDrop.Utility.pdb
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\bin\Debug\Emgu.CV.World.NetStandard.xml
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\bin\Debug\EntityFramework.xml
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\bin\Debug\EPPlus.xml
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\bin\Debug\LiveCharts.pdb
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\bin\Debug\LiveCharts.xml
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\bin\Debug\Microsoft.WindowsAPICodePack.xml
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\bin\Debug\Microsoft.WindowsAPICodePack.Shell.xml
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\bin\Debug\LiveCharts.Wpf.pdb
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\bin\Debug\LiveCharts.Wpf.xml
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\obj\Debug\MainWindow.baml
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\obj\Debug\MainWindow.g.cs
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\obj\Debug\Account.baml
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\obj\Debug\Regin.baml
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\obj\Debug\DDrop.g.resources
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\obj\Debug\DDrop.Properties.Resources.resources
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\obj\Debug\DDrop.csproj.GenerateResource.cache
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\obj\Debug\DDrop.csproj.CoreCompileInputs.cache
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\obj\Debug\DDrop.csproj.CopyComplete
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\obj\Debug\DDrop.exe
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\obj\Debug\DDrop.pdb
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\obj\Debug\PixelDrawer.baml
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\obj\Debug\PixelDrawer.g.cs
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop\obj\Debug\GeneratedInternalTypeHelper.g.cs
+G:\DDrop\DDrop\bin\Debug\DDrop.exe.config
+G:\DDrop\DDrop\bin\Debug\DDrop.exe
+G:\DDrop\DDrop\bin\Debug\DDrop.pdb
+G:\DDrop\DDrop\bin\Debug\CommonServiceLocator.dll
+G:\DDrop\DDrop\bin\Debug\DDrop.BE.dll
+G:\DDrop\DDrop\bin\Debug\DDrop.BL.dll
+G:\DDrop\DDrop\bin\Debug\DDrop.Controls.dll
+G:\DDrop\DDrop\bin\Debug\DDrop.DAL.dll
+G:\DDrop\DDrop\bin\Debug\DDrop.Utility.dll
+G:\DDrop\DDrop\bin\Debug\Emgu.CV.World.NetStandard.dll
+G:\DDrop\DDrop\bin\Debug\EntityFramework.dll
+G:\DDrop\DDrop\bin\Debug\EntityFramework.SqlServer.dll
+G:\DDrop\DDrop\bin\Debug\EPPlus.dll
+G:\DDrop\DDrop\bin\Debug\LiveCharts.dll
+G:\DDrop\DDrop\bin\Debug\Microsoft.WindowsAPICodePack.dll
+G:\DDrop\DDrop\bin\Debug\Microsoft.WindowsAPICodePack.Shell.dll
+G:\DDrop\DDrop\bin\Debug\Numpy.dll
+G:\DDrop\DDrop\bin\Debug\Python.Included.dll
+G:\DDrop\DDrop\bin\Debug\Python.Runtime.NETStandard.dll
+G:\DDrop\DDrop\bin\Debug\System.Windows.Interactivity.dll
+G:\DDrop\DDrop\bin\Debug\ToastNotifications.dll
+G:\DDrop\DDrop\bin\Debug\ToastNotifications.Messages.dll
+G:\DDrop\DDrop\bin\Debug\LiveCharts.Wpf.dll
+G:\DDrop\DDrop\bin\Debug\DDrop.BE.pdb
+G:\DDrop\DDrop\bin\Debug\DDrop.BL.pdb
+G:\DDrop\DDrop\bin\Debug\DDrop.Controls.pdb
+G:\DDrop\DDrop\bin\Debug\DDrop.DAL.pdb
+G:\DDrop\DDrop\bin\Debug\DDrop.Utility.pdb
+G:\DDrop\DDrop\bin\Debug\Emgu.CV.World.NetStandard.xml
+G:\DDrop\DDrop\bin\Debug\EntityFramework.xml
+G:\DDrop\DDrop\bin\Debug\EntityFramework.SqlServer.xml
+G:\DDrop\DDrop\bin\Debug\EPPlus.xml
+G:\DDrop\DDrop\bin\Debug\LiveCharts.pdb
+G:\DDrop\DDrop\bin\Debug\LiveCharts.xml
+G:\DDrop\DDrop\bin\Debug\Microsoft.WindowsAPICodePack.xml
+G:\DDrop\DDrop\bin\Debug\Microsoft.WindowsAPICodePack.Shell.xml
+G:\DDrop\DDrop\bin\Debug\LiveCharts.Wpf.pdb
+G:\DDrop\DDrop\bin\Debug\LiveCharts.Wpf.xml
+G:\DDrop\DDrop\obj\Debug\DDrop.csprojAssemblyReference.cache
+G:\DDrop\DDrop\obj\Debug\MainWindow.baml
+G:\DDrop\DDrop\obj\Debug\ManualEdit.baml
+G:\DDrop\DDrop\obj\Debug\Options.baml
+G:\DDrop\DDrop\obj\Debug\Resources\Icons\Icons.baml
+G:\DDrop\DDrop\obj\Debug\App.baml
+G:\DDrop\DDrop\obj\Debug\Account.g.cs
+G:\DDrop\DDrop\obj\Debug\MainWindow.g.cs
+G:\DDrop\DDrop\obj\Debug\ManualEdit.g.cs
+G:\DDrop\DDrop\obj\Debug\Options.g.cs
+G:\DDrop\DDrop\obj\Debug\Regin.g.cs
+G:\DDrop\DDrop\obj\Debug\App.g.cs
+G:\DDrop\DDrop\obj\Debug\DDrop_MarkupCompile.cache
+G:\DDrop\DDrop\obj\Debug\DDrop_MarkupCompile.lref
+G:\DDrop\DDrop\obj\Debug\Account.baml
+G:\DDrop\DDrop\obj\Debug\Regin.baml
+G:\DDrop\DDrop\obj\Debug\DDrop.g.resources
+G:\DDrop\DDrop\obj\Debug\DDrop.Properties.Resources.resources
+G:\DDrop\DDrop\obj\Debug\DDrop.csproj.GenerateResource.cache
+G:\DDrop\DDrop\obj\Debug\DDrop.csproj.CoreCompileInputs.cache
+G:\DDrop\DDrop\obj\Debug\DDrop.csproj.CopyComplete
+G:\DDrop\DDrop\obj\Debug\DDrop.exe
+G:\DDrop\DDrop\obj\Debug\DDrop.pdb
+G:\DDrop\DDrop\bin\Debug\DDrop.DAL.dll.config
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\bin\Debug\DDrop.exe.config
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\bin\Debug\DDrop.exe
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\bin\Debug\DDrop.pdb
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\bin\Debug\CommonServiceLocator.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\bin\Debug\DDrop.BE.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\bin\Debug\DDrop.BL.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\bin\Debug\DDrop.Controls.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\bin\Debug\DDrop.DAL.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\bin\Debug\DDrop.Utility.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\bin\Debug\Emgu.CV.World.NetStandard.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\bin\Debug\EntityFramework.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\bin\Debug\EPPlus.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\bin\Debug\LiveCharts.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\bin\Debug\Microsoft.WindowsAPICodePack.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\bin\Debug\Microsoft.WindowsAPICodePack.Shell.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\bin\Debug\Numpy.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\bin\Debug\Python.Included.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\bin\Debug\Python.Runtime.NETStandard.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\bin\Debug\System.Windows.Interactivity.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\bin\Debug\ToastNotifications.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\bin\Debug\ToastNotifications.Messages.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\bin\Debug\LiveCharts.Wpf.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\bin\Debug\DDrop.BE.pdb
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\bin\Debug\DDrop.BL.pdb
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\bin\Debug\DDrop.Controls.pdb
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\bin\Debug\DDrop.DAL.pdb
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\bin\Debug\DDrop.DAL.dll.config
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\bin\Debug\DDrop.Utility.pdb
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\bin\Debug\Emgu.CV.World.NetStandard.xml
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\bin\Debug\EntityFramework.xml
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\bin\Debug\EPPlus.xml
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\bin\Debug\LiveCharts.pdb
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\bin\Debug\LiveCharts.xml
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\bin\Debug\Microsoft.WindowsAPICodePack.xml
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\bin\Debug\Microsoft.WindowsAPICodePack.Shell.xml
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\bin\Debug\LiveCharts.Wpf.pdb
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\bin\Debug\LiveCharts.Wpf.xml
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\obj\Debug\DDrop.csprojAssemblyReference.cache
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\obj\Debug\MainWindow.baml
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\obj\Debug\ManualEdit.baml
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\obj\Debug\Options.baml
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\obj\Debug\Regin.baml
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\obj\Debug\Resources\Icons\Icons.baml
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\obj\Debug\App.baml
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\obj\Debug\Account.g.cs
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\obj\Debug\MainWindow.g.cs
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\obj\Debug\ManualEdit.g.cs
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\obj\Debug\Options.g.cs
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\obj\Debug\Regin.g.cs
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\obj\Debug\App.g.cs
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\obj\Debug\DDrop_MarkupCompile.cache
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\obj\Debug\DDrop_MarkupCompile.lref
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\obj\Debug\Account.baml
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\obj\Debug\DDrop.g.resources
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\obj\Debug\DDrop.Properties.Resources.resources
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\obj\Debug\DDrop.csproj.GenerateResource.cache
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\obj\Debug\DDrop.csproj.CoreCompileInputs.cache
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\obj\Debug\DDrop.csproj.CopyComplete
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\obj\Debug\DDrop.exe
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\obj\Debug\DDrop.pdb
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop\bin\Debug\DDrop.BE.dll.config
+G:\Новая папка (2)\DDrop\DDrop\bin\Debug\DDrop.exe.config
+G:\Новая папка (2)\DDrop\DDrop\bin\Debug\DDrop.exe
+G:\Новая папка (2)\DDrop\DDrop\bin\Debug\DDrop.pdb
+G:\Новая папка (2)\DDrop\DDrop\bin\Debug\CommonServiceLocator.dll
+G:\Новая папка (2)\DDrop\DDrop\bin\Debug\DDrop.BE.dll
+G:\Новая папка (2)\DDrop\DDrop\bin\Debug\DDrop.BL.dll
+G:\Новая папка (2)\DDrop\DDrop\bin\Debug\DDrop.Controls.dll
+G:\Новая папка (2)\DDrop\DDrop\bin\Debug\DDrop.DAL.dll
+G:\Новая папка (2)\DDrop\DDrop\bin\Debug\DDrop.Utility.dll
+G:\Новая папка (2)\DDrop\DDrop\bin\Debug\Emgu.CV.World.NetStandard.dll
+G:\Новая папка (2)\DDrop\DDrop\bin\Debug\EntityFramework.dll
+G:\Новая папка (2)\DDrop\DDrop\bin\Debug\EntityFramework.SqlServer.dll
+G:\Новая папка (2)\DDrop\DDrop\bin\Debug\EPPlus.dll
+G:\Новая папка (2)\DDrop\DDrop\bin\Debug\LiveCharts.dll
+G:\Новая папка (2)\DDrop\DDrop\bin\Debug\Microsoft.WindowsAPICodePack.dll
+G:\Новая папка (2)\DDrop\DDrop\bin\Debug\Microsoft.WindowsAPICodePack.Shell.dll
+G:\Новая папка (2)\DDrop\DDrop\bin\Debug\Numpy.dll
+G:\Новая папка (2)\DDrop\DDrop\bin\Debug\Python.Included.dll
+G:\Новая папка (2)\DDrop\DDrop\bin\Debug\Python.Runtime.NETStandard.dll
+G:\Новая папка (2)\DDrop\DDrop\bin\Debug\System.Windows.Interactivity.dll
+G:\Новая папка (2)\DDrop\DDrop\bin\Debug\ToastNotifications.dll
+G:\Новая папка (2)\DDrop\DDrop\bin\Debug\ToastNotifications.Messages.dll
+G:\Новая папка (2)\DDrop\DDrop\bin\Debug\LiveCharts.Wpf.dll
+G:\Новая папка (2)\DDrop\DDrop\bin\Debug\DDrop.BE.pdb
+G:\Новая папка (2)\DDrop\DDrop\bin\Debug\DDrop.BE.dll.config
+G:\Новая папка (2)\DDrop\DDrop\bin\Debug\DDrop.BL.pdb
+G:\Новая папка (2)\DDrop\DDrop\bin\Debug\DDrop.Controls.pdb
+G:\Новая папка (2)\DDrop\DDrop\bin\Debug\DDrop.DAL.pdb
+G:\Новая папка (2)\DDrop\DDrop\bin\Debug\DDrop.DAL.dll.config
+G:\Новая папка (2)\DDrop\DDrop\bin\Debug\DDrop.Utility.pdb
+G:\Новая папка (2)\DDrop\DDrop\bin\Debug\Emgu.CV.World.NetStandard.xml
+G:\Новая папка (2)\DDrop\DDrop\bin\Debug\EntityFramework.xml
+G:\Новая папка (2)\DDrop\DDrop\bin\Debug\EntityFramework.SqlServer.xml
+G:\Новая папка (2)\DDrop\DDrop\bin\Debug\EPPlus.xml
+G:\Новая папка (2)\DDrop\DDrop\bin\Debug\LiveCharts.pdb
+G:\Новая папка (2)\DDrop\DDrop\bin\Debug\LiveCharts.xml
+G:\Новая папка (2)\DDrop\DDrop\bin\Debug\Microsoft.WindowsAPICodePack.xml
+G:\Новая папка (2)\DDrop\DDrop\bin\Debug\Microsoft.WindowsAPICodePack.Shell.xml
+G:\Новая папка (2)\DDrop\DDrop\bin\Debug\LiveCharts.Wpf.pdb
+G:\Новая папка (2)\DDrop\DDrop\bin\Debug\LiveCharts.Wpf.xml
+G:\Новая папка (2)\DDrop\DDrop\obj\Debug\DDrop.csprojAssemblyReference.cache
+G:\Новая папка (2)\DDrop\DDrop\obj\Debug\MainWindow.baml
+G:\Новая папка (2)\DDrop\DDrop\obj\Debug\ManualEdit.baml
+G:\Новая папка (2)\DDrop\DDrop\obj\Debug\Options.baml
+G:\Новая папка (2)\DDrop\DDrop\obj\Debug\Resources\Icons\Icons.baml
+G:\Новая папка (2)\DDrop\DDrop\obj\Debug\App.baml
+G:\Новая папка (2)\DDrop\DDrop\obj\Debug\Account.g.cs
+G:\Новая папка (2)\DDrop\DDrop\obj\Debug\MainWindow.g.cs
+G:\Новая папка (2)\DDrop\DDrop\obj\Debug\ManualEdit.g.cs
+G:\Новая папка (2)\DDrop\DDrop\obj\Debug\Options.g.cs
+G:\Новая папка (2)\DDrop\DDrop\obj\Debug\App.g.cs
+G:\Новая папка (2)\DDrop\DDrop\obj\Debug\DDrop_MarkupCompile.cache
+G:\Новая папка (2)\DDrop\DDrop\obj\Debug\DDrop_MarkupCompile.lref
+G:\Новая папка (2)\DDrop\DDrop\obj\Debug\Account.baml
+G:\Новая папка (2)\DDrop\DDrop\obj\Debug\DDrop.g.resources
+G:\Новая папка (2)\DDrop\DDrop\obj\Debug\DDrop.Properties.Resources.resources
+G:\Новая папка (2)\DDrop\DDrop\obj\Debug\DDrop.csproj.GenerateResource.cache
+G:\Новая папка (2)\DDrop\DDrop\obj\Debug\DDrop.csproj.CoreCompileInputs.cache
+G:\Новая папка (2)\DDrop\DDrop\obj\Debug\DDrop.csproj.CopyComplete
+G:\Новая папка (2)\DDrop\DDrop\obj\Debug\DDrop.exe
+G:\Новая папка (2)\DDrop\DDrop\obj\Debug\DDrop.pdb
+G:\Новая папка (2)\DDrop\DDrop\obj\Debug\Login.baml
+G:\Новая папка (2)\DDrop\DDrop\obj\Debug\Login.g.cs
+G:\Новая папка (2)\DDrop\DDrop\obj\Debug\Registration.baml
+G:\Новая папка (2)\DDrop\DDrop\obj\Debug\Registration.g.cs
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\bin\Debug\DDrop.exe
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\bin\Debug\DDrop.BE.dll
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\bin\Debug\DDrop.Controls.dll
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\bin\Debug\DDrop.Utility.dll
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\bin\Debug\LiveCharts.dll
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\bin\Debug\ToastNotifications.dll
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\bin\Debug\ToastNotifications.Messages.dll
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\bin\Debug\LiveCharts.Wpf.dll
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\bin\Debug\CommonServiceLocator.dll
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\bin\Debug\DDrop.BL.dll
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\bin\Debug\DDrop.DAL.dll
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\bin\Debug\Emgu.CV.World.NetStandard.dll
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\bin\Debug\EntityFramework.dll
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\bin\Debug\EPPlus.dll
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\bin\Debug\Microsoft.WindowsAPICodePack.dll
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\bin\Debug\Microsoft.WindowsAPICodePack.Shell.dll
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\bin\Debug\Numpy.dll
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\bin\Debug\Python.Included.dll
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\bin\Debug\Python.Runtime.NETStandard.dll
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\bin\Debug\System.Windows.Interactivity.dll
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\bin\Debug\DDrop.BE.pdb
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\bin\Debug\DDrop.BE.dll.config
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\bin\Debug\DDrop.BL.pdb
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\bin\Debug\DDrop.Controls.pdb
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\bin\Debug\DDrop.DAL.pdb
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\bin\Debug\DDrop.DAL.dll.config
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\bin\Debug\DDrop.Utility.pdb
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\bin\Debug\Emgu.CV.World.NetStandard.xml
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\bin\Debug\EntityFramework.xml
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\bin\Debug\EPPlus.xml
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\bin\Debug\LiveCharts.pdb
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\bin\Debug\LiveCharts.xml
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\bin\Debug\Microsoft.WindowsAPICodePack.xml
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\bin\Debug\Microsoft.WindowsAPICodePack.Shell.xml
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\bin\Debug\LiveCharts.Wpf.pdb
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\bin\Debug\LiveCharts.Wpf.xml
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\obj\Debug\DDrop.csprojAssemblyReference.cache
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\obj\Debug\MainWindow.baml
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\obj\Debug\ManualEdit.baml
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\obj\Debug\Options.baml
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\obj\Debug\Registration.baml
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\obj\Debug\Resources\Icons\Icons.baml
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\obj\Debug\App.baml
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\obj\Debug\Account.g.cs
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\obj\Debug\Login.g.cs
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\obj\Debug\MainWindow.g.cs
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\obj\Debug\ManualEdit.g.cs
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\obj\Debug\Options.g.cs
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\obj\Debug\Registration.g.cs
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\obj\Debug\App.g.cs
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\obj\Debug\DDrop_MarkupCompile.cache
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\obj\Debug\Account.baml
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\obj\Debug\Login.baml
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\obj\Debug\DDrop.g.resources
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\obj\Debug\DDrop.Properties.Resources.resources
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\obj\Debug\DDrop.csproj.GenerateResource.cache
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\obj\Debug\DDrop.csproj.CoreCompileInputs.cache
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\obj\Debug\DDrop.exe
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\obj\Debug\DDrop.pdb
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\bin\Debug\DDrop.exe.config
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\bin\Debug\DDrop.pdb
+C:\Users\NovikovVA\Desktop\DDrop\DDrop\obj\Debug\DDrop.csproj.CopyComplete
+G:\Новая папка (4)\DDrop\DDrop\bin\Debug\DDrop.exe.config
+G:\Новая папка (4)\DDrop\DDrop\bin\Debug\DDrop.exe
+G:\Новая папка (4)\DDrop\DDrop\bin\Debug\DDrop.pdb
+G:\Новая папка (4)\DDrop\DDrop\bin\Debug\CommonServiceLocator.dll
+G:\Новая папка (4)\DDrop\DDrop\bin\Debug\DDrop.BE.dll
+G:\Новая папка (4)\DDrop\DDrop\bin\Debug\DDrop.BL.dll
+G:\Новая папка (4)\DDrop\DDrop\bin\Debug\DDrop.Controls.dll
+G:\Новая папка (4)\DDrop\DDrop\bin\Debug\DDrop.DAL.dll
+G:\Новая папка (4)\DDrop\DDrop\bin\Debug\DDrop.Utility.dll
+G:\Новая папка (4)\DDrop\DDrop\bin\Debug\Emgu.CV.World.NetStandard.dll
+G:\Новая папка (4)\DDrop\DDrop\bin\Debug\EntityFramework.dll
+G:\Новая папка (4)\DDrop\DDrop\bin\Debug\EntityFramework.SqlServer.dll
+G:\Новая папка (4)\DDrop\DDrop\bin\Debug\EPPlus.dll
+G:\Новая папка (4)\DDrop\DDrop\bin\Debug\LiveCharts.dll
+G:\Новая папка (4)\DDrop\DDrop\bin\Debug\Microsoft.WindowsAPICodePack.dll
+G:\Новая папка (4)\DDrop\DDrop\bin\Debug\Microsoft.WindowsAPICodePack.Shell.dll
+G:\Новая папка (4)\DDrop\DDrop\bin\Debug\Numpy.dll
+G:\Новая папка (4)\DDrop\DDrop\bin\Debug\Python.Included.dll
+G:\Новая папка (4)\DDrop\DDrop\bin\Debug\Python.Runtime.NETStandard.dll
+G:\Новая папка (4)\DDrop\DDrop\bin\Debug\System.Windows.Interactivity.dll
+G:\Новая папка (4)\DDrop\DDrop\bin\Debug\ToastNotifications.dll
+G:\Новая папка (4)\DDrop\DDrop\bin\Debug\ToastNotifications.Messages.dll
+G:\Новая папка (4)\DDrop\DDrop\bin\Debug\LiveCharts.Wpf.dll
+G:\Новая папка (4)\DDrop\DDrop\bin\Debug\DDrop.BE.pdb
+G:\Новая папка (4)\DDrop\DDrop\bin\Debug\DDrop.BE.dll.config
+G:\Новая папка (4)\DDrop\DDrop\bin\Debug\DDrop.BL.pdb
+G:\Новая папка (4)\DDrop\DDrop\bin\Debug\DDrop.Controls.pdb
+G:\Новая папка (4)\DDrop\DDrop\bin\Debug\DDrop.DAL.pdb
+G:\Новая папка (4)\DDrop\DDrop\bin\Debug\DDrop.DAL.dll.config
+G:\Новая папка (4)\DDrop\DDrop\bin\Debug\DDrop.Utility.pdb
+G:\Новая папка (4)\DDrop\DDrop\bin\Debug\Emgu.CV.World.NetStandard.xml
+G:\Новая папка (4)\DDrop\DDrop\bin\Debug\EntityFramework.xml
+G:\Новая папка (4)\DDrop\DDrop\bin\Debug\EntityFramework.SqlServer.xml
+G:\Новая папка (4)\DDrop\DDrop\bin\Debug\EPPlus.xml
+G:\Новая папка (4)\DDrop\DDrop\bin\Debug\LiveCharts.pdb
+G:\Новая папка (4)\DDrop\DDrop\bin\Debug\LiveCharts.xml
+G:\Новая папка (4)\DDrop\DDrop\bin\Debug\Microsoft.WindowsAPICodePack.xml
+G:\Новая папка (4)\DDrop\DDrop\bin\Debug\Microsoft.WindowsAPICodePack.Shell.xml
+G:\Новая папка (4)\DDrop\DDrop\bin\Debug\LiveCharts.Wpf.pdb
+G:\Новая папка (4)\DDrop\DDrop\bin\Debug\LiveCharts.Wpf.xml
+G:\Новая папка (4)\DDrop\DDrop\obj\Debug\DDrop.csprojAssemblyReference.cache
+G:\Новая папка (4)\DDrop\DDrop\obj\Debug\Account.baml
+G:\Новая папка (4)\DDrop\DDrop\obj\Debug\Login.baml
+G:\Новая папка (4)\DDrop\DDrop\obj\Debug\MainWindow.baml
+G:\Новая папка (4)\DDrop\DDrop\obj\Debug\ManualEdit.baml
+G:\Новая папка (4)\DDrop\DDrop\obj\Debug\Options.baml
+G:\Новая папка (4)\DDrop\DDrop\obj\Debug\Registration.baml
+G:\Новая папка (4)\DDrop\DDrop\obj\Debug\Resources\Icons\Icons.baml
+G:\Новая папка (4)\DDrop\DDrop\obj\Debug\App.baml
+G:\Новая папка (4)\DDrop\DDrop\obj\Debug\Account.g.cs
+G:\Новая папка (4)\DDrop\DDrop\obj\Debug\Login.g.cs
+G:\Новая папка (4)\DDrop\DDrop\obj\Debug\MainWindow.g.cs
+G:\Новая папка (4)\DDrop\DDrop\obj\Debug\ManualEdit.g.cs
+G:\Новая папка (4)\DDrop\DDrop\obj\Debug\Options.g.cs
+G:\Новая папка (4)\DDrop\DDrop\obj\Debug\Registration.g.cs
+G:\Новая папка (4)\DDrop\DDrop\obj\Debug\App.g.cs
+G:\Новая папка (4)\DDrop\DDrop\obj\Debug\DDrop_MarkupCompile.cache
+G:\Новая папка (4)\DDrop\DDrop\obj\Debug\DDrop.g.resources
+G:\Новая папка (4)\DDrop\DDrop\obj\Debug\DDrop.Properties.Resources.resources
+G:\Новая папка (4)\DDrop\DDrop\obj\Debug\DDrop.csproj.GenerateResource.cache
+G:\Новая папка (4)\DDrop\DDrop\obj\Debug\DDrop.csproj.CoreCompileInputs.cache
+G:\Новая папка (4)\DDrop\DDrop\obj\Debug\DDrop.csproj.CopyComplete
+G:\Новая папка (4)\DDrop\DDrop\obj\Debug\DDrop.exe
+G:\Новая папка (4)\DDrop\DDrop\obj\Debug\DDrop.pdb
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\bin\Debug\DDrop.exe.config
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\bin\Debug\DDrop.exe
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\bin\Debug\DDrop.pdb
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\bin\Debug\CommonServiceLocator.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\bin\Debug\DDrop.BE.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\bin\Debug\DDrop.BL.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\bin\Debug\DDrop.Controls.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\bin\Debug\DDrop.DAL.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\bin\Debug\DDrop.Utility.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\bin\Debug\Emgu.CV.World.NetStandard.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\bin\Debug\EntityFramework.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\bin\Debug\EPPlus.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\bin\Debug\LiveCharts.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\bin\Debug\Microsoft.WindowsAPICodePack.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\bin\Debug\Microsoft.WindowsAPICodePack.Shell.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\bin\Debug\Numpy.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\bin\Debug\Python.Included.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\bin\Debug\Python.Runtime.NETStandard.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\bin\Debug\System.Windows.Interactivity.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\bin\Debug\ToastNotifications.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\bin\Debug\ToastNotifications.Messages.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\bin\Debug\LiveCharts.Wpf.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\bin\Debug\DDrop.BE.pdb
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\bin\Debug\DDrop.BE.dll.config
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\bin\Debug\DDrop.BL.pdb
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\bin\Debug\DDrop.Controls.pdb
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\bin\Debug\DDrop.DAL.pdb
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\bin\Debug\DDrop.DAL.dll.config
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\bin\Debug\DDrop.Utility.pdb
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\bin\Debug\Emgu.CV.World.NetStandard.xml
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\bin\Debug\EntityFramework.xml
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\bin\Debug\EPPlus.xml
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\bin\Debug\LiveCharts.pdb
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\bin\Debug\LiveCharts.xml
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\bin\Debug\Microsoft.WindowsAPICodePack.xml
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\bin\Debug\Microsoft.WindowsAPICodePack.Shell.xml
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\bin\Debug\LiveCharts.Wpf.pdb
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\bin\Debug\LiveCharts.Wpf.xml
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\obj\Debug\DDrop.csprojAssemblyReference.cache
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\obj\Debug\Account.baml
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\obj\Debug\Login.baml
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\obj\Debug\MainWindow.baml
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\obj\Debug\ManualEdit.baml
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\obj\Debug\Options.baml
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\obj\Debug\Registration.baml
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\obj\Debug\Resources\Icons\Icons.baml
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\obj\Debug\App.baml
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\obj\Debug\Account.g.cs
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\obj\Debug\Login.g.cs
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\obj\Debug\MainWindow.g.cs
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\obj\Debug\ManualEdit.g.cs
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\obj\Debug\Options.g.cs
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\obj\Debug\Registration.g.cs
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\obj\Debug\App.g.cs
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\obj\Debug\DDrop_MarkupCompile.cache
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\obj\Debug\DDrop.g.resources
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\obj\Debug\DDrop.Properties.Resources.resources
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\obj\Debug\DDrop.csproj.GenerateResource.cache
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\obj\Debug\DDrop.csproj.CoreCompileInputs.cache
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\obj\Debug\DDrop.csproj.CopyComplete
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\obj\Debug\DDrop.exe
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\obj\Debug\DDrop.pdb
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop\obj\Debug\DDrop_MarkupCompile.lref

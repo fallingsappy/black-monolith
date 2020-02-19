@@ -1,0 +1,87 @@
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop.DAL\bin\Debug\DDrop.DAL.dll
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop.DAL\bin\Debug\DDrop.DAL.pdb
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.csproj.CoreCompileInputs.cache
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.dll
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.pdb
+G:\DDrop\DDrop.DAL\bin\Debug\DDrop.DAL.dll
+G:\DDrop\DDrop.DAL\bin\Debug\DDrop.DAL.pdb
+G:\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.csproj.CoreCompileInputs.cache
+G:\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.dll
+G:\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.pdb
+G:\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.csprojAssemblyReference.cache
+G:\DDrop\DDrop.DAL\bin\Debug\DDrop.DAL.dll.config
+G:\DDrop\DDrop.DAL\bin\Debug\DDrop.BE.dll
+G:\DDrop\DDrop.DAL\bin\Debug\EntityFramework.dll
+G:\DDrop\DDrop.DAL\bin\Debug\EntityFramework.SqlServer.dll
+G:\DDrop\DDrop.DAL\bin\Debug\DDrop.BE.pdb
+G:\DDrop\DDrop.DAL\bin\Debug\EntityFramework.xml
+G:\DDrop\DDrop.DAL\bin\Debug\EntityFramework.SqlServer.xml
+G:\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.csproj.CopyComplete
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.DAL\bin\Debug\DDrop.DAL.dll.config
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.DAL\bin\Debug\DDrop.DAL.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.DAL\bin\Debug\DDrop.DAL.pdb
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.DAL\bin\Debug\DDrop.BE.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.DAL\bin\Debug\EntityFramework.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.DAL\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.DAL\bin\Debug\DDrop.BE.pdb
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.DAL\bin\Debug\EntityFramework.xml
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.DAL\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.csprojAssemblyReference.cache
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.csproj.CoreCompileInputs.cache
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.csproj.CopyComplete
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.pdb
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.DAL\bin\Debug\DDrop.BE.dll.config
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.Migrations.InitialCreate.resources
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.csproj.GenerateResource.cache
+G:\Новая папка (2)\DDrop\DDrop.DAL\bin\Debug\DDrop.DAL.dll.config
+G:\Новая папка (2)\DDrop\DDrop.DAL\bin\Debug\DDrop.DAL.dll
+G:\Новая папка (2)\DDrop\DDrop.DAL\bin\Debug\DDrop.DAL.pdb
+G:\Новая папка (2)\DDrop\DDrop.DAL\bin\Debug\DDrop.BE.dll
+G:\Новая папка (2)\DDrop\DDrop.DAL\bin\Debug\EntityFramework.dll
+G:\Новая папка (2)\DDrop\DDrop.DAL\bin\Debug\EntityFramework.SqlServer.dll
+G:\Новая папка (2)\DDrop\DDrop.DAL\bin\Debug\DDrop.BE.pdb
+G:\Новая папка (2)\DDrop\DDrop.DAL\bin\Debug\DDrop.BE.dll.config
+G:\Новая папка (2)\DDrop\DDrop.DAL\bin\Debug\EntityFramework.xml
+G:\Новая папка (2)\DDrop\DDrop.DAL\bin\Debug\EntityFramework.SqlServer.xml
+G:\Новая папка (2)\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.csprojAssemblyReference.cache
+G:\Новая папка (2)\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.Migrations.InitialCreate.resources
+G:\Новая папка (2)\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.csproj.GenerateResource.cache
+G:\Новая папка (2)\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.csproj.CoreCompileInputs.cache
+G:\Новая папка (2)\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.csproj.CopyComplete
+G:\Новая папка (2)\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.dll
+G:\Новая папка (2)\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.pdb
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.DAL\bin\Debug\DDrop.DAL.dll.config
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.DAL\bin\Debug\DDrop.DAL.dll
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.DAL\bin\Debug\DDrop.DAL.pdb
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.DAL\bin\Debug\DDrop.BE.dll
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.DAL\bin\Debug\EntityFramework.dll
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.DAL\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.DAL\bin\Debug\DDrop.BE.pdb
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.DAL\bin\Debug\DDrop.BE.dll.config
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.DAL\bin\Debug\EntityFramework.xml
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.DAL\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.csprojAssemblyReference.cache
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.Migrations.InitialCreate.resources
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.csproj.GenerateResource.cache
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.csproj.CoreCompileInputs.cache
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.csproj.CopyComplete
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.dll
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.pdb
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.DAL\bin\Debug\DDrop.DAL.dll.config
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.DAL\bin\Debug\DDrop.DAL.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.DAL\bin\Debug\DDrop.DAL.pdb
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.DAL\bin\Debug\DDrop.BE.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.DAL\bin\Debug\EntityFramework.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.DAL\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.DAL\bin\Debug\DDrop.BE.pdb
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.DAL\bin\Debug\DDrop.BE.dll.config
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.DAL\bin\Debug\EntityFramework.xml
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.DAL\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.csprojAssemblyReference.cache
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.Migrations.InitialCreate.resources
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.csproj.GenerateResource.cache
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.csproj.CoreCompileInputs.cache
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.csproj.CopyComplete
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.pdb

@@ -1,0 +1,181 @@
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.csprojAssemblyReference.cache
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop.Controls\obj\Debug\ScatterPlot\ScatterPlot.g.cs
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop.Controls\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls_MarkupCompile.cache
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls_MarkupCompile.lref
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop.Controls\bin\Debug\DDrop.Controls.dll
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop.Controls\bin\Debug\DDrop.Controls.pdb
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop.Controls\bin\Debug\DDrop.BE.dll
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop.Controls\bin\Debug\LiveCharts.dll
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop.Controls\bin\Debug\LiveCharts.Wpf.dll
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop.Controls\bin\Debug\DDrop.BE.pdb
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop.Controls\bin\Debug\LiveCharts.pdb
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop.Controls\bin\Debug\LiveCharts.xml
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop.Controls\bin\Debug\LiveCharts.Wpf.pdb
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop.Controls\bin\Debug\LiveCharts.Wpf.xml
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop.Controls\obj\Debug\ScatterPlot\ScatterPlot.baml
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop.Controls\obj\Debug\Themes\Generic.baml
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.g.resources
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.Properties.Resources.resources
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.csproj.GenerateResource.cache
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.csproj.CoreCompileInputs.cache
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.csproj.CopyComplete
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.dll
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.pdb
+G:\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.csprojAssemblyReference.cache
+G:\DDrop\DDrop.Controls\obj\Debug\PixelDrawer\PixelDrawer.baml
+G:\DDrop\DDrop.Controls\obj\Debug\PixelDrawer\PixelDrawer.g.cs
+G:\DDrop\DDrop.Controls\obj\Debug\ScatterPlot\ScatterPlot.g.cs
+G:\DDrop\DDrop.Controls\obj\Debug\GeneratedInternalTypeHelper.g.cs
+G:\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls_MarkupCompile.cache
+G:\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls_MarkupCompile.lref
+G:\DDrop\DDrop.Controls\bin\Debug\DDrop.Controls.dll
+G:\DDrop\DDrop.Controls\bin\Debug\DDrop.Controls.pdb
+G:\DDrop\DDrop.Controls\bin\Debug\DDrop.BE.dll
+G:\DDrop\DDrop.Controls\bin\Debug\LiveCharts.dll
+G:\DDrop\DDrop.Controls\bin\Debug\LiveCharts.Wpf.dll
+G:\DDrop\DDrop.Controls\bin\Debug\DDrop.BE.pdb
+G:\DDrop\DDrop.Controls\bin\Debug\LiveCharts.pdb
+G:\DDrop\DDrop.Controls\bin\Debug\LiveCharts.xml
+G:\DDrop\DDrop.Controls\bin\Debug\LiveCharts.Wpf.pdb
+G:\DDrop\DDrop.Controls\bin\Debug\LiveCharts.Wpf.xml
+G:\DDrop\DDrop.Controls\obj\Debug\ScatterPlot\ScatterPlot.baml
+G:\DDrop\DDrop.Controls\obj\Debug\Themes\Generic.baml
+G:\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.g.resources
+G:\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.Properties.Resources.resources
+G:\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.csproj.GenerateResource.cache
+G:\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.csproj.CoreCompileInputs.cache
+G:\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.csproj.CopyComplete
+G:\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.dll
+G:\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.pdb
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.Controls\bin\Debug\DDrop.Controls.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.Controls\bin\Debug\DDrop.Controls.pdb
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.Controls\bin\Debug\DDrop.BE.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.Controls\bin\Debug\LiveCharts.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.Controls\bin\Debug\LiveCharts.Wpf.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.Controls\bin\Debug\DDrop.BE.pdb
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.Controls\bin\Debug\LiveCharts.pdb
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.Controls\bin\Debug\LiveCharts.xml
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.Controls\bin\Debug\LiveCharts.Wpf.pdb
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.Controls\bin\Debug\LiveCharts.Wpf.xml
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.csprojAssemblyReference.cache
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.Controls\obj\Debug\PixelDrawer\PixelDrawer.baml
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.Controls\obj\Debug\PixelDrawer\PixelDrawer.g.cs
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.Controls\obj\Debug\ScatterPlot\ScatterPlot.g.cs
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.Controls\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls_MarkupCompile.cache
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls_MarkupCompile.lref
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.Controls\obj\Debug\ScatterPlot\ScatterPlot.baml
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.Controls\obj\Debug\Themes\Generic.baml
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.g.resources
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.Properties.Resources.resources
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.csproj.GenerateResource.cache
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.csproj.CoreCompileInputs.cache
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.csproj.CopyComplete
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.pdb
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.Controls\bin\Debug\EntityFramework.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.Controls\bin\Debug\DDrop.BE.dll.config
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.Controls\bin\Debug\EntityFramework.xml
+G:\Новая папка (2)\DDrop\DDrop.Controls\bin\Debug\DDrop.Controls.dll
+G:\Новая папка (2)\DDrop\DDrop.Controls\bin\Debug\DDrop.Controls.pdb
+G:\Новая папка (2)\DDrop\DDrop.Controls\bin\Debug\DDrop.BE.dll
+G:\Новая папка (2)\DDrop\DDrop.Controls\bin\Debug\LiveCharts.dll
+G:\Новая папка (2)\DDrop\DDrop.Controls\bin\Debug\LiveCharts.Wpf.dll
+G:\Новая папка (2)\DDrop\DDrop.Controls\bin\Debug\DDrop.BE.pdb
+G:\Новая папка (2)\DDrop\DDrop.Controls\bin\Debug\DDrop.BE.dll.config
+G:\Новая папка (2)\DDrop\DDrop.Controls\bin\Debug\LiveCharts.pdb
+G:\Новая папка (2)\DDrop\DDrop.Controls\bin\Debug\LiveCharts.xml
+G:\Новая папка (2)\DDrop\DDrop.Controls\bin\Debug\LiveCharts.Wpf.pdb
+G:\Новая папка (2)\DDrop\DDrop.Controls\bin\Debug\LiveCharts.Wpf.xml
+G:\Новая папка (2)\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.csprojAssemblyReference.cache
+G:\Новая папка (2)\DDrop\DDrop.Controls\obj\Debug\PixelDrawer\PixelDrawer.baml
+G:\Новая папка (2)\DDrop\DDrop.Controls\obj\Debug\PixelDrawer\PixelDrawer.g.cs
+G:\Новая папка (2)\DDrop\DDrop.Controls\obj\Debug\ScatterPlot\ScatterPlot.g.cs
+G:\Новая папка (2)\DDrop\DDrop.Controls\obj\Debug\GeneratedInternalTypeHelper.g.cs
+G:\Новая папка (2)\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls_MarkupCompile.cache
+G:\Новая папка (2)\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls_MarkupCompile.lref
+G:\Новая папка (2)\DDrop\DDrop.Controls\obj\Debug\ScatterPlot\ScatterPlot.baml
+G:\Новая папка (2)\DDrop\DDrop.Controls\obj\Debug\Themes\Generic.baml
+G:\Новая папка (2)\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.g.resources
+G:\Новая папка (2)\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.Properties.Resources.resources
+G:\Новая папка (2)\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.csproj.GenerateResource.cache
+G:\Новая папка (2)\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.csproj.CoreCompileInputs.cache
+G:\Новая папка (2)\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.csproj.CopyComplete
+G:\Новая папка (2)\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.dll
+G:\Новая папка (2)\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.pdb
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.Controls\bin\Debug\DDrop.Controls.dll
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.Controls\bin\Debug\DDrop.Controls.pdb
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.Controls\bin\Debug\DDrop.BE.dll
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.Controls\bin\Debug\LiveCharts.dll
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.Controls\bin\Debug\LiveCharts.Wpf.dll
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.Controls\bin\Debug\DDrop.BE.pdb
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.Controls\bin\Debug\DDrop.BE.dll.config
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.Controls\bin\Debug\LiveCharts.pdb
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.Controls\bin\Debug\LiveCharts.xml
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.Controls\bin\Debug\LiveCharts.Wpf.pdb
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.Controls\bin\Debug\LiveCharts.Wpf.xml
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.csprojAssemblyReference.cache
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.Controls\obj\Debug\PixelDrawer\PixelDrawer.baml
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.Controls\obj\Debug\PixelDrawer\PixelDrawer.g.cs
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.Controls\obj\Debug\ScatterPlot\ScatterPlot.g.cs
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls_MarkupCompile.cache
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls_MarkupCompile.lref
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.Controls\obj\Debug\ScatterPlot\ScatterPlot.baml
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.g.resources
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.Properties.Resources.resources
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.csproj.GenerateResource.cache
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.csproj.CoreCompileInputs.cache
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.csproj.CopyComplete
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.dll
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.pdb
+G:\Новая папка (4)\DDrop\DDrop.Controls\bin\Debug\DDrop.Controls.dll
+G:\Новая папка (4)\DDrop\DDrop.Controls\bin\Debug\DDrop.Controls.pdb
+G:\Новая папка (4)\DDrop\DDrop.Controls\bin\Debug\DDrop.BE.dll
+G:\Новая папка (4)\DDrop\DDrop.Controls\bin\Debug\LiveCharts.dll
+G:\Новая папка (4)\DDrop\DDrop.Controls\bin\Debug\LiveCharts.Wpf.dll
+G:\Новая папка (4)\DDrop\DDrop.Controls\bin\Debug\DDrop.BE.pdb
+G:\Новая папка (4)\DDrop\DDrop.Controls\bin\Debug\DDrop.BE.dll.config
+G:\Новая папка (4)\DDrop\DDrop.Controls\bin\Debug\LiveCharts.pdb
+G:\Новая папка (4)\DDrop\DDrop.Controls\bin\Debug\LiveCharts.xml
+G:\Новая папка (4)\DDrop\DDrop.Controls\bin\Debug\LiveCharts.Wpf.pdb
+G:\Новая папка (4)\DDrop\DDrop.Controls\bin\Debug\LiveCharts.Wpf.xml
+G:\Новая папка (4)\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.csprojAssemblyReference.cache
+G:\Новая папка (4)\DDrop\DDrop.Controls\obj\Debug\PixelDrawer\PixelDrawer.baml
+G:\Новая папка (4)\DDrop\DDrop.Controls\obj\Debug\PixelDrawer\PixelDrawer.g.cs
+G:\Новая папка (4)\DDrop\DDrop.Controls\obj\Debug\ScatterPlot\ScatterPlot.g.cs
+G:\Новая папка (4)\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls_MarkupCompile.cache
+G:\Новая папка (4)\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls_MarkupCompile.lref
+G:\Новая папка (4)\DDrop\DDrop.Controls\obj\Debug\ScatterPlot\ScatterPlot.baml
+G:\Новая папка (4)\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.g.resources
+G:\Новая папка (4)\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.Properties.Resources.resources
+G:\Новая папка (4)\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.csproj.GenerateResource.cache
+G:\Новая папка (4)\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.csproj.CoreCompileInputs.cache
+G:\Новая папка (4)\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.csproj.CopyComplete
+G:\Новая папка (4)\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.dll
+G:\Новая папка (4)\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.pdb
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.Controls\bin\Debug\DDrop.Controls.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.Controls\bin\Debug\DDrop.Controls.pdb
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.Controls\bin\Debug\DDrop.BE.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.Controls\bin\Debug\LiveCharts.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.Controls\bin\Debug\LiveCharts.Wpf.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.Controls\bin\Debug\DDrop.BE.pdb
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.Controls\bin\Debug\DDrop.BE.dll.config
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.Controls\bin\Debug\LiveCharts.pdb
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.Controls\bin\Debug\LiveCharts.xml
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.Controls\bin\Debug\LiveCharts.Wpf.pdb
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.Controls\bin\Debug\LiveCharts.Wpf.xml
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.csprojAssemblyReference.cache
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.Controls\obj\Debug\PixelDrawer\PixelDrawer.baml
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.Controls\obj\Debug\PixelDrawer\PixelDrawer.g.cs
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.Controls\obj\Debug\ScatterPlot\ScatterPlot.g.cs
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls_MarkupCompile.cache
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls_MarkupCompile.lref
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.Controls\obj\Debug\ScatterPlot\ScatterPlot.baml
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.g.resources
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.Properties.Resources.resources
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.csproj.GenerateResource.cache
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.csproj.CoreCompileInputs.cache
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.csproj.CopyComplete
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.pdb

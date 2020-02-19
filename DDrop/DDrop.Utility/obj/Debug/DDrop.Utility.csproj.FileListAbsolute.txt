@@ -1,0 +1,72 @@
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop.Utility\bin\Debug\DDrop.Utility.dll
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop.Utility\bin\Debug\DDrop.Utility.pdb
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop.Utility\bin\Debug\DDrop.BE.dll
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop.Utility\bin\Debug\EPPlus.dll
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop.Utility\bin\Debug\DDrop.BE.pdb
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop.Utility\bin\Debug\EPPlus.xml
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.csprojAssemblyReference.cache
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.csproj.CoreCompileInputs.cache
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.csproj.CopyComplete
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.dll
+C:\Users\FallingsappyPC\Desktop\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.pdb
+G:\DDrop\DDrop.Utility\bin\Debug\DDrop.Utility.dll
+G:\DDrop\DDrop.Utility\bin\Debug\DDrop.Utility.pdb
+G:\DDrop\DDrop.Utility\bin\Debug\DDrop.BE.dll
+G:\DDrop\DDrop.Utility\bin\Debug\EPPlus.dll
+G:\DDrop\DDrop.Utility\bin\Debug\DDrop.BE.pdb
+G:\DDrop\DDrop.Utility\bin\Debug\EPPlus.xml
+G:\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.csprojAssemblyReference.cache
+G:\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.csproj.CoreCompileInputs.cache
+G:\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.csproj.CopyComplete
+G:\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.dll
+G:\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.pdb
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.Utility\bin\Debug\DDrop.Utility.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.Utility\bin\Debug\DDrop.Utility.pdb
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.Utility\bin\Debug\DDrop.BE.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.Utility\bin\Debug\EPPlus.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.Utility\bin\Debug\DDrop.BE.pdb
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.Utility\bin\Debug\EPPlus.xml
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.csprojAssemblyReference.cache
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.csproj.CoreCompileInputs.cache
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.csproj.CopyComplete
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.pdb
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.Utility\bin\Debug\EntityFramework.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.Utility\bin\Debug\DDrop.BE.dll.config
+C:\Users\FallingsappyPC\Desktop\Новая папка\DDrop\DDrop.Utility\bin\Debug\EntityFramework.xml
+G:\Новая папка (2)\DDrop\DDrop.Utility\bin\Debug\DDrop.Utility.dll
+G:\Новая папка (2)\DDrop\DDrop.Utility\bin\Debug\DDrop.Utility.pdb
+G:\Новая папка (2)\DDrop\DDrop.Utility\bin\Debug\DDrop.BE.dll
+G:\Новая папка (2)\DDrop\DDrop.Utility\bin\Debug\EPPlus.dll
+G:\Новая папка (2)\DDrop\DDrop.Utility\bin\Debug\DDrop.BE.pdb
+G:\Новая папка (2)\DDrop\DDrop.Utility\bin\Debug\DDrop.BE.dll.config
+G:\Новая папка (2)\DDrop\DDrop.Utility\bin\Debug\EPPlus.xml
+G:\Новая папка (2)\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.csprojAssemblyReference.cache
+G:\Новая папка (2)\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.csproj.CoreCompileInputs.cache
+G:\Новая папка (2)\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.csproj.CopyComplete
+G:\Новая папка (2)\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.dll
+G:\Новая папка (2)\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.pdb
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.Utility\bin\Debug\DDrop.Utility.dll
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.Utility\bin\Debug\DDrop.Utility.pdb
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.Utility\bin\Debug\DDrop.BE.dll
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.Utility\bin\Debug\EPPlus.dll
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.Utility\bin\Debug\DDrop.BE.pdb
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.Utility\bin\Debug\DDrop.BE.dll.config
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.Utility\bin\Debug\EPPlus.xml
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.csprojAssemblyReference.cache
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.csproj.CoreCompileInputs.cache
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.csproj.CopyComplete
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.dll
+C:\Users\NovikovVA\Desktop\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.pdb
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.Utility\bin\Debug\DDrop.Utility.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.Utility\bin\Debug\DDrop.Utility.pdb
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.Utility\bin\Debug\DDrop.BE.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.Utility\bin\Debug\EPPlus.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.Utility\bin\Debug\DDrop.BE.pdb
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.Utility\bin\Debug\DDrop.BE.dll.config
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.Utility\bin\Debug\EPPlus.xml
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.csprojAssemblyReference.cache
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.csproj.CoreCompileInputs.cache
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.csproj.CopyComplete
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.dll
+C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.pdb
