@@ -538,7 +538,7 @@ namespace DDrop
             {
                 seriesTitle = OneLineSetterValue.Text;
 
-                Series seriesToAdd = new Series()
+                Series seriesToAdd = new Series(User)
                 {
                     Title = seriesTitle,
                     ReferencePhotoForSeries = new ReferencePhoto()
@@ -547,6 +547,7 @@ namespace DDrop
                 seriesToAdd.PropertyChanged += EntryOnPropertyChanged;
 
                 User.UserSeries.Add(seriesToAdd);
+                SeriesDataGrid.ItemsSource = User.UserSeries;
                 OneLineSetterValue.Text = "";
             }
             else
@@ -559,7 +560,7 @@ namespace DDrop
         {
             if (User.UserSeries.Count > 0 && SeriesDataGrid.SelectedItem != null)
             {
-                Series old = new Series();
+                Series old = new Series(User);
 
                 if (e.RemovedItems.Count > 0)
                     old = e.RemovedItems[0] as Series;

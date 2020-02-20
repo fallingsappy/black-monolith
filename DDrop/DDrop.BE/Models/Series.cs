@@ -7,8 +7,10 @@ namespace DDrop.BE.Models
 {
     public class Series : INotifyPropertyChanged
     {
-        public Series()
+        User _user;
+        public Series(User user)
         {
+            _user = user;
             _dropPhotosSeries = new ObservableCollection<DropPhoto>();
             _dropPhotosSeries.CollectionChanged += _dropPhotosSeries_CollectionChanged;
         }
@@ -16,6 +18,7 @@ namespace DDrop.BE.Models
         private void _dropPhotosSeries_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             OnPropertyChanged(new PropertyChangedEventArgs(nameof(CanDrawPlot)));
+            _user.OnPropertyChanged(new PropertyChangedEventArgs(nameof(User.IsAnySelectedSeriesCanDrawPlot))); ;
         }
 
         public Guid SeriesId { get; set; }
@@ -109,7 +112,12 @@ namespace DDrop.BE.Models
         {
             get
             {
-                return _dropPhotosSeries?.Where(x => x.Drop.RadiusInMeters != null).ToList().Count > 1 && _dropPhotosSeries?.Where(x => x.Drop.RadiusInMeters == null).ToList().Count == 0 && IntervalBetweenPhotos != 0;
+                if(_dropPhotosSeries?.Where(x => x.Drop.RadiusInMeters != null).ToList().Count > 1 && _dropPhotosSeries?.Where(x => x.Drop.RadiusInMeters == null).ToList().Count == 0 && IntervalBetweenPhotos != 0)
+                {
+                    return true;
+                }
+
+                return false;
             }
             set
             {
@@ -123,6 +131,9 @@ namespace DDrop.BE.Models
         {
             if (e.PropertyName == nameof(IntervalBetweenPhotos))
                 OnPropertyChanged(new PropertyChangedEventArgs(nameof(CanDrawPlot)));
+
+            if(e.PropertyName == nameof(IsChecked))
+                _user.OnPropertyChanged(new PropertyChangedEventArgs(nameof(User.IsAnySelectedSeriesCanDrawPlot))); ;
 
             PropertyChanged?.Invoke(this, e);
         }

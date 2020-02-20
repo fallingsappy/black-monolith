@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,6 +9,17 @@ namespace DDrop.BE.Models
 {
     public class User : INotifyPropertyChanged
     {
+        public User()
+        {
+            _userSeries = new ObservableCollection<Series>();
+            _userSeries.CollectionChanged += _userSeries_CollectionChanged;
+        }
+
+        private void _userSeries_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            OnPropertyChanged(new PropertyChangedEventArgs(nameof(IsAnySelectedSeriesCanDrawPlot)));
+        }
+
         public Guid UserId { get; set; }
 
         private string _firstName;
@@ -96,11 +108,23 @@ namespace DDrop.BE.Models
 
         private bool _isAnySelectedSeriesCantDrawPlot;
         [NotMapped]
-        public bool IsAnySelectedSeriesCantDrawPlot
+        public bool IsAnySelectedSeriesCanDrawPlot
         {
             get
             {
-                return _userSeries?.Where(x => x?.CanDrawPlot == false).ToList().Count > 0;
+                List<Series> checkedSeries = _userSeries?.Where(x => x.IsChecked).ToList();
+
+                if (checkedSeries.Count != 0)
+                {
+                    bool isAnyCheckedCantDrawPlot = checkedSeries?.Where(x => x.CanDrawPlot != true).ToList().Count > 0;
+
+                    if (isAnyCheckedCantDrawPlot)
+                        return false;
+
+                    return true;
+                }
+
+                return false;
             }
             set
             {

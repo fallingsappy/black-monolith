@@ -68,7 +68,7 @@ namespace DDrop.Controls
         {
             for (int i = 0; i < User.UserSeries.Count; i++)
             {
-                if (User.UserSeries[i].CanDrawPlot == true)
+                if (User.UserSeries[i].CanDrawPlot == true && User.UserSeries[i].IsChecked)
                 {
                     seriesValues.Add(new ChartValues<ObservablePoint>());
                     for (int j = 0; j < User.UserSeries[i].DropPhotosSeries.Count; j++)

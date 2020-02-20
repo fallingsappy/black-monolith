@@ -179,7 +179,7 @@
                     </TabControl>
                 </Grid>
             </TabItem>
-            <TabItem IsEnabled="{Binding ElementName=AppMainWindow, Path=User.IsAnySelectedSeriesCantDrawPlot}" Name="CombinedSeriesPlot" Header="Общий график серий">
+            <TabItem IsEnabled="{Binding ElementName=AppMainWindow, Path=User.IsAnySelectedSeriesCanDrawPlot}" Name="CombinedSeriesPlot" Header="Общий график серий">
                 <uc:ScatterPlot User="{Binding User, ElementName=AppMainWindow, UpdateSourceTrigger=PropertyChanged}"/>
             </TabItem>
         </TabControl>
