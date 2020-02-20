@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums\Image\ImageFormat.cs" />
     <Compile Include="Enums\Options\OptionsEnum.cs" />
     <Compile Include="Models\Drop.cs" />
     <Compile Include="Models\DropPhoto.cs" />

@@ -5,7 +5,6 @@ using DDrop.Utility.ImageOperations;
 using DDrop.Utility.PythonOperations;
 using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
@@ -310,12 +309,19 @@ namespace DDrop
                             break;
                         }
                     }
-
-                    if (unique)
+                    if (ImageValidator.ValidateImage(imageForAdding.Content))
                     {
-                        imageForAdding.PropertyChanged += PhotosOnPropertyChanged;
-                        CurrentSeries.DropPhotosSeries.Add(imageForAdding);
+                        if (unique)
+                        {
+                            imageForAdding.PropertyChanged += PhotosOnPropertyChanged;
+                            CurrentSeries.DropPhotosSeries.Add(imageForAdding);
+                            notifier.ShowSuccess($"Снимок {imageForAdding.Name} добавлен.");
+                        }
                     }
+                    else
+                    {
+                        notifier.ShowError($"Файл {imageForAdding.Name} имеет неизвестный формат.");
+                    }                   
                 }
             }
         }
@@ -329,19 +335,29 @@ namespace DDrop
             openFileDialog.AddExtension = true;
             if (openFileDialog.ShowDialog() == true)
             {
-                Properties.Settings.Default.Reference = openFileDialog.FileName;
-                MainWindowPixelDrawer.TwoLineMode = false;
-                if (CurrentSeries.ReferencePhotoForSeries.Line != null)
+                if (ImageValidator.ValidateImage(ImageConverter.FileToByteArray(openFileDialog.FileName)))
                 {
-                    MainWindowPixelDrawer.CanDrawing.Children.Remove(CurrentSeries.ReferencePhotoForSeries.Line);
+                    Properties.Settings.Default.Reference = openFileDialog.FileName;
+                    MainWindowPixelDrawer.TwoLineMode = false;
+                    if (CurrentSeries.ReferencePhotoForSeries.Line != null)
+                    {
+                        MainWindowPixelDrawer.CanDrawing.Children.Remove(CurrentSeries.ReferencePhotoForSeries.Line);
 
-                    MainWindowPixelDrawer.PixelsInMillimeter = "";
-                    CurrentSeries.ReferencePhotoForSeries.Line = null;
-                    CurrentSeries.ReferencePhotoForSeries.PixelsInMillimeter = 0;
+                        MainWindowPixelDrawer.PixelsInMillimeter = "";
+                        CurrentSeries.ReferencePhotoForSeries.Line = null;
+                        CurrentSeries.ReferencePhotoForSeries.PixelsInMillimeter = 0;
+                    }
+                    CurrentSeries.ReferencePhotoForSeries.Name = openFileDialog.Title;
+                    CurrentSeries.ReferencePhotoForSeries.Line = new Line();
+                    CurrentSeries.ReferencePhotoForSeries.Content = ImageConverter.FileToByteArray(openFileDialog.FileName);
+                    ReferenceImage = ImageConverter.LoadImage(CurrentSeries.ReferencePhotoForSeries.Content);
+
+                    notifier.ShowSuccess($"Референсный снимок {CurrentSeries.ReferencePhotoForSeries.Name} добавлен.");
                 }
-                CurrentSeries.ReferencePhotoForSeries.Line = new Line();
-                CurrentSeries.ReferencePhotoForSeries.Content = ImageConverter.FileToByteArray(openFileDialog.FileName);
-                ReferenceImage = ImageConverter.LoadImage(CurrentSeries.ReferencePhotoForSeries.Content);
+                else
+                {
+                    notifier.ShowError($"Файл {openFileDialog.FileName} имеет неизвестный формат.");
+                }
             }
         }
 
@@ -407,12 +423,16 @@ namespace DDrop
                 }
             }
             else
-                notifier.ShowInformation("Нет загруженных фотографий.");
+            {
+                notifier.ShowInformation("Нет снимков для удаления.");
+            }
         }
 
         private void DeleteSingleInputPhotoButton_Click(object sender, RoutedEventArgs e)
         {
-            CurrentSeries.DropPhotosSeries.RemoveAt(Photos.SelectedIndex);
+            notifier.ShowSuccess($"Снимок {CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].Name} удален.");
+
+            CurrentSeries.DropPhotosSeries.RemoveAt(Photos.SelectedIndex);  
         }
 
         private void EditInputPhotoButton_Click(object sender, RoutedEventArgs e)
@@ -429,9 +449,12 @@ namespace DDrop
 
                 ManualEdit manualEdit = new ManualEdit(CurrentDropPhoto);
                 manualEdit.ShowDialog();
+
                 CurrentDropPhoto.Drop = DropletSizeCalculator.PerformCalculation(
                     Convert.ToInt32(PixelsInMillimeterTextBox.Text), CurrentDropPhoto.XDiameterInPixels,
                     CurrentDropPhoto.YDiameterInPixels, CurrentSeries);
+
+                notifier.ShowSuccess($"Расчет для снимка {CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].Name} выполнен.");
             }
             else
             {
@@ -451,11 +474,14 @@ namespace DDrop
             {
                 MainWindowPixelDrawer.CanDrawing.Children.Remove(CurrentSeries.ReferencePhotoForSeries.Line);
 
+                notifier.ShowSuccess($"Референсный снимок {CurrentSeries.ReferencePhotoForSeries.Name} удален.");
+
                 MainWindowPixelDrawer.PixelsInMillimeter = "";
+                CurrentSeries.ReferencePhotoForSeries.Name = null;
                 CurrentSeries.ReferencePhotoForSeries.Line = null;
                 CurrentSeries.ReferencePhotoForSeries.PixelsInMillimeter = 0;
                 CurrentSeries.ReferencePhotoForSeries.Content = null;
-                ReferenceImage = null;
+                ReferenceImage = null;               
             }
         }
 
@@ -480,7 +506,6 @@ namespace DDrop
                 LogInMenuItem.Visibility = Visibility.Collapsed;
                 LogOutMenuItem.Visibility = Visibility.Visible;
             }
-
         }
 
         private void AccountMenuItem_Click(object sender, RoutedEventArgs e)
@@ -553,6 +578,8 @@ namespace DDrop
                 User.UserSeries.Add(seriesToAdd);
                 SeriesDataGrid.ItemsSource = User.UserSeries;
                 OneLineSetterValue.Text = "";
+
+                notifier.ShowSuccess($"Серия {seriesToAdd.Title} добавлена.");
             }
             else
             {
@@ -590,10 +617,12 @@ namespace DDrop
 
         private void DeleteSingleSeriesButton_Click(object sender, RoutedEventArgs e)
         {
+            notifier.ShowSuccess($"Серия {User.UserSeries[SeriesDataGrid.SelectedIndex].Title} была удалена.");
+
             User.UserSeries.RemoveAt(SeriesDataGrid.SelectedIndex);
             Photos.ItemsSource = null;
             ImgPreview.Source = null;
-            SeriesPreviewDataGrid.ItemsSource = null;
+            SeriesPreviewDataGrid.ItemsSource = null;  
         }
 
         private void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -636,7 +665,7 @@ namespace DDrop
 
         private void ExportSeriesButton_Click(object sender, RoutedEventArgs e)
         {
-            if (CurrentSeries.DropPhotosSeries.Count > 0)
+            if (User.IsAnySelectedSeriesCanDrawPlot)
             {
                 SaveFileDialog saveFileDialog = new SaveFileDialog();
                 saveFileDialog.Filter = "Excel files (*.xlsx)|*.xlsx|All files (*.*)|*.*";
@@ -651,7 +680,7 @@ namespace DDrop
                 }
             }
             else
-                notifier.ShowInformation("Нет загруженных фотографий.");
+                notifier.ShowInformation("Нельзя построить график для выбранных серий.");
         }
 
         private void DeleteSeriesButton_Click(object sender, RoutedEventArgs e)
@@ -670,6 +699,8 @@ namespace DDrop
                             if (User.UserSeries[i].IsChecked)
                                 User.UserSeries.RemoveAt(i);
                         }
+
+                        notifier.ShowSuccess("Выбранные серии были удалены.");
                     }
                 }
                 else
@@ -677,7 +708,11 @@ namespace DDrop
                     MessageBoxResult messageBoxResult = MessageBox.Show("Удалить все серии?", "Подтверждение удаления", MessageBoxButton.YesNo);
                     if (messageBoxResult == MessageBoxResult.Yes)
                         User.UserSeries.Clear();
+
+                    notifier.ShowSuccess("Все серии были удалены.");
                 }
+
+                SeriesPreviewDataGrid.SelectedIndex = -1;
             }
             else
             {
@@ -693,9 +728,15 @@ namespace DDrop
             {
                 notifier.ShowSuccess("Новый график построен");
             }
-            else
+        }
+
+        private void CombinedSeriesPlot_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            var tabItem = (TabItem)sender;
+
+            if (tabItem.IsEnabled)
             {
-                notifier.ShowInformation("Для построения графика необходимо указать интервал между снимками и произвести расчет для минимум двух снимков.");
+                notifier.ShowSuccess("Новый общий график серий построен");
             }
         }
     }
