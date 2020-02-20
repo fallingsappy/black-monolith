@@ -28,6 +28,8 @@ namespace DDrop
     {
         private bool _allSelectedSeriesChanging;
         private bool? _allSelectedSeries = false;
+        private bool _allSelectedPhotosChanging;
+        private bool? _allSelectedPhotos = false;
 
         private void AllSelectedChanged()
         {
@@ -99,6 +101,80 @@ namespace DDrop
         {
             if (args.PropertyName == nameof(Series.IsChecked))
                 RecheckAllSelected();
+        }
+
+
+
+        private void AllSelectedPhotosChanged()
+        {
+            if (CurrentSeries.DropPhotosSeries != null)
+            {
+                if (_allSelectedPhotosChanging) return;
+
+                try
+                {
+                    _allSelectedPhotosChanging = true;
+
+                    if (AllSelectedPhotos == true)
+                    {
+                        foreach (var dropPhoto in CurrentSeries.DropPhotosSeries)
+                            dropPhoto.IsChecked = true;
+                    }
+                    else if (AllSelectedPhotos == false)
+                    {
+                        foreach (var dropPhoto in CurrentSeries.DropPhotosSeries)
+                            dropPhoto.IsChecked = false;
+                    }
+                }
+                finally
+                {
+                    _allSelectedPhotosChanging = false;
+                }
+            }
+            else
+            {
+                AllSelectedPhotos = false;
+            }
+        }
+
+        private void RecheckAllSelectedPhotos()
+        {
+            if (_allSelectedPhotosChanging) return;
+
+            try
+            {
+                _allSelectedPhotosChanging = true;
+
+                if (CurrentSeries.DropPhotosSeries.All(e => e.IsChecked))
+                    AllSelectedPhotos = true;
+                else if (CurrentSeries.DropPhotosSeries.All(e => !e.IsChecked))
+                    AllSelectedPhotos = false;
+                else
+                    AllSelectedPhotos = null;
+            }
+            finally
+            {
+                _allSelectedPhotosChanging = false;
+            }
+        }
+
+        public bool? AllSelectedPhotos
+        {
+            get => _allSelectedPhotos;
+            set
+            {
+                if (value == _allSelectedPhotos) return;
+                _allSelectedPhotos = value;
+
+                AllSelectedPhotosChanged();
+                OnPropertyChanged(new PropertyChangedEventArgs("AllSelectedPhotos"));
+            }
+        }
+
+        private void PhotosOnPropertyChanged(object sender, PropertyChangedEventArgs args)
+        {
+            if (args.PropertyName == nameof(DropPhoto.IsChecked))
+                RecheckAllSelectedPhotos();
         }
 
         PythonProvider pythonProvider = new PythonProvider();
@@ -239,6 +315,7 @@ namespace DDrop
 
                     if (unique)
                     {
+                        imageForAdding.PropertyChanged += PhotosOnPropertyChanged;
                         CurrentSeries.DropPhotosSeries.Add(imageForAdding);
                     }
                 }
@@ -301,15 +378,34 @@ namespace DDrop
                 ImgCurrent.Source = null;
         }
 
-        private void DeleteAllInputPhotos_OnClick(object sender, RoutedEventArgs e)
+        private void DeleteInputPhotos_OnClick(object sender, RoutedEventArgs e)
         {
             if (CurrentSeries.DropPhotosSeries.Count > 0)
             {
-                MessageBoxResult messageBoxResult = MessageBox.Show("Закончить работу с этими фотографиями?", "Подтверждение", MessageBoxButton.YesNo);
-                if (messageBoxResult == MessageBoxResult.Yes)
+                bool isAnyChecked = CurrentSeries.DropPhotosSeries.Any(x => x.IsChecked);
+
+                if (isAnyChecked)
                 {
-                    CurrentSeries.DropPhotosSeries.Clear();
-                    notifier.ShowSuccess("Фотографии выгружены из памяти.");
+                    MessageBoxResult messageBoxResult = MessageBox.Show("Удалить выбранные снимки?", "Подтверждение удаления", MessageBoxButton.YesNo);
+                    if (messageBoxResult == MessageBoxResult.Yes)
+                    {
+                        for (int i = CurrentSeries.DropPhotosSeries.Count - 1; i >= 0; i--)
+                        {
+                            if (CurrentSeries.DropPhotosSeries[i].IsChecked)
+                                CurrentSeries.DropPhotosSeries.RemoveAt(i);                            
+                        }
+
+                        notifier.ShowSuccess("Выбранные снимки удалены.");
+                    }
+                }
+                else
+                {
+                    MessageBoxResult messageBoxResult = MessageBox.Show("Удалить все снимки?", "Подтверждение удаления", MessageBoxButton.YesNo);
+                    if (messageBoxResult == MessageBoxResult.Yes)
+                    {
+                        CurrentSeries.DropPhotosSeries.Clear();
+                        notifier.ShowSuccess("Все снимки удалены");
+                    }
                 }
             }
             else
@@ -523,12 +619,6 @@ namespace DDrop
             }
             else
                 ImgPreview.Source = null;
-        }
-
-        private void SeriesNotifier_Click(object sender, RoutedEventArgs e)
-        {
-            if (!SingleSeries.IsEnabled)
-                notifier.ShowInformation("Выберите серию.");
         }
 
         private void IntervalBetweenPhotos_TextChanged(object sender, TextChangedEventArgs e)
