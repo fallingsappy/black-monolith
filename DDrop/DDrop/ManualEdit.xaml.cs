@@ -47,6 +47,13 @@ namespace DDrop
             _initialXDiameterInPixels = dropPhoto.XDiameterInPixels;
             _initialYDiameterInPixels = dropPhoto.YDiameterInPixels;
             CurrentDropPhoto = dropPhoto;
+
+            if (CurrentDropPhoto.HorizontalLine != null)
+                EditWindowPixelDrawer.CanDrawing.Children.Add(CurrentDropPhoto.HorizontalLine);
+
+            if (CurrentDropPhoto.VerticalLine != null)
+                EditWindowPixelDrawer.CanDrawing.Children.Add(CurrentDropPhoto.VerticalLine);
+
             PixelsInMillimeterHorizontalTextBox.Text = _initialXDiameterInPixels.ToString();
             PixelsInMillimeterVerticalTextBox.Text = _initialYDiameterInPixels.ToString();
         }
@@ -110,6 +117,9 @@ namespace DDrop
                     SavePixelDiameters();
                 }
             }
+
+            EditWindowPixelDrawer.CanDrawing.Children.Remove(CurrentDropPhoto.HorizontalLine);
+            EditWindowPixelDrawer.CanDrawing.Children.Remove(CurrentDropPhoto.VerticalLine);
         }
 
         private void VerticalRulerToggleButton_Checked(object sender, RoutedEventArgs e)

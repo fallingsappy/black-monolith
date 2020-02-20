@@ -50,7 +50,7 @@
         </ToggleButton>
         <Border Name="Border" BorderThickness="1" BorderBrush="#34558b" Margin="10,192,10,10">
             <utility:ZoomBorder x:Name="ZoomBorder" ClipToBounds="True" Background="Gray" Margin="0,-1,0,0">
-                <pixelDrawer:PixelDrawer CurrentDropPhoto="{Binding CurrentDropPhoto, ElementName=AppEditWindow}" ImageSource="{Binding ImageForEdit, ElementName=AppEditWindow}" x:Name="EditWindowPixelDrawer"/>
+                <pixelDrawer:PixelDrawer PixelsInMillimeterHorizontal="{Binding CurrentDropPhoto.XDiameterInPixels, ElementName=AppEditWindow}" PixelsInMillimeterVertical="{Binding CurrentDropPhoto.YDiameterInPixels, ElementName=AppEditWindow}" CurrentDropPhoto="{Binding CurrentDropPhoto, ElementName=AppEditWindow}" ImageSource="{Binding ImageForEdit, ElementName=AppEditWindow}" x:Name="EditWindowPixelDrawer"/>
             </utility:ZoomBorder>
         </Border>
     </Grid>

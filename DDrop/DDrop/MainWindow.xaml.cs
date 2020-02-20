@@ -103,8 +103,6 @@ namespace DDrop
                 RecheckAllSelected();
         }
 
-
-
         private void AllSelectedPhotosChanged()
         {
             if (CurrentSeries.DropPhotosSeries != null)
@@ -392,7 +390,7 @@ namespace DDrop
                         for (int i = CurrentSeries.DropPhotosSeries.Count - 1; i >= 0; i--)
                         {
                             if (CurrentSeries.DropPhotosSeries[i].IsChecked)
-                                CurrentSeries.DropPhotosSeries.RemoveAt(i);                            
+                                CurrentSeries.DropPhotosSeries.RemoveAt(i);
                         }
 
                         notifier.ShowSuccess("Выбранные снимки удалены.");
@@ -422,7 +420,13 @@ namespace DDrop
             if (!string.IsNullOrWhiteSpace(PixelsInMillimeterTextBox.Text) && PixelsInMillimeterTextBox.Text != "0")
             {
                 CurrentDropPhoto = CurrentSeries.DropPhotosSeries[Photos.SelectedIndex];
-                CurrentDropPhoto.HorizontalLine = new List<Line>();
+
+                if (CurrentDropPhoto.HorizontalLine == null)
+                    CurrentDropPhoto.HorizontalLine = new Line();
+
+                if (CurrentDropPhoto.VerticalLine == null)
+                    CurrentDropPhoto.VerticalLine = new Line();
+
                 ManualEdit manualEdit = new ManualEdit(CurrentDropPhoto);
                 manualEdit.ShowDialog();
                 CurrentDropPhoto.Drop = DropletSizeCalculator.PerformCalculation(
@@ -661,7 +665,7 @@ namespace DDrop
                     MessageBoxResult messageBoxResult = MessageBox.Show("Удалить выбранные серии?", "Подтверждение удаления", MessageBoxButton.YesNo);
                     if (messageBoxResult == MessageBoxResult.Yes)
                     {
-                        for (int i = User.UserSeries.Count - 1; i >=0; i--)
+                        for (int i = User.UserSeries.Count - 1; i >= 0; i--)
                         {
                             if (User.UserSeries[i].IsChecked)
                                 User.UserSeries.RemoveAt(i);

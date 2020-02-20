@@ -92,8 +92,8 @@ namespace DDrop.BE.Models
             }
         }
 
-        private List<Line> _horizontalLine;
-        public List<Line> HorizontalLine
+        private Line _horizontalLine;
+        public Line HorizontalLine
         {
             get
             {
@@ -120,8 +120,8 @@ namespace DDrop.BE.Models
             }
         }
 
-        private List<Line> _verticalLine;
-        public List<Line> VerticalLine
+        private Line _verticalLine;
+        public Line VerticalLine
         {
             get
             {

@@ -5,7 +5,7 @@ namespace DDrop.BL.Calculation.DropletSizeCalculator
 {
     public static class DropletSizeCalculator
     {
-        public static Drop PerformCalculation(int pixelsInMillimeter, int xDiameterInPixels, int yDiameterInPixels, Series CurrentSerries, int zDiameterInPixels = 0,  bool exactCalculationModel = false )
+        public static Drop PerformCalculation(int pixelsInMillimeter, int xDiameterInPixels, int yDiameterInPixels, Series CurrentSerries, int zDiameterInPixels = 0, bool exactCalculationModel = false)
         {
             if (exactCalculationModel)
             {

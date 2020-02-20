@@ -171,29 +171,49 @@ namespace DDrop.Controls.PixelDrawer
                     if (Math.Abs(_selectedLine.X1 - _selectedLine.X2) > Math.Abs(_selectedLine.Y1 - _selectedLine.Y2) && !_drawingVerticalLine || _drawingHorizontalLine)
                     {
                         _selectedLine.Stroke = Brushes.DeepPink;
+
+                        CanDrawing.Children.Remove(CurrentDropPhoto.HorizontalLine);
+
                         if (_horizontalLines.Count > 0)
                         {
                             CanDrawing.Children.Remove(_horizontalLines[_horizontalLines.Count - 1]);
                         }
 
                         _horizontalLines.Add(_selectedLine);
+                        CurrentDropPhoto.HorizontalLine = _selectedLine;
+                        CurrentDropPhoto.SimpleHorizontalLine = new SimpleLine
+                        {
+                            X1 = _selectedLine.X1,
+                            X2 = _selectedLine.X2,
+                            Y1 = _selectedLine.Y1,
+                            Y2 = _selectedLine.Y2
+                        };
 
                         PixelsInMillimeterHorizontal = GetPointsOnLine(point11, point22).Count.ToString();
                     }
                     else if (Math.Abs(_selectedLine.X1 - _selectedLine.X2) < Math.Abs(_selectedLine.Y1 - _selectedLine.Y2) && !_drawingHorizontalLine || _drawingVerticalLine)
                     {
                         _selectedLine.Stroke = Brushes.Green;
+
+                        CanDrawing.Children.Remove(CurrentDropPhoto.VerticalLine);
+
                         if (_verticalLines.Count > 0)
                         {
                             CanDrawing.Children.Remove(_verticalLines[_verticalLines.Count - 1]);
                         }
 
                         _verticalLines.Add(_selectedLine);
+                        CurrentDropPhoto.VerticalLine = _selectedLine;
+                        CurrentDropPhoto.SimpleVerticalLine = new SimpleLine
+                        {
+                            X1 = _selectedLine.X1,
+                            X2 = _selectedLine.X2,
+                            Y1 = _selectedLine.Y1,
+                            Y2 = _selectedLine.Y2
+                        };
 
                         PixelsInMillimeterVertical = GetPointsOnLine(point11, point22).Count.ToString();
                     }
-
-                    CurrentDropPhoto.HorizontalLine.Add(_selectedLine);
                 }
                 else
                 {
