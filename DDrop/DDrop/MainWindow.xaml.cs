@@ -627,7 +627,6 @@ namespace DDrop
             {
                 if (ImageValidator.ValidateImage(ImageInterpreter.FileToByteArray(openFileDialog.FileName)))
                 {
-                    Properties.Settings.Default.Reference = openFileDialog.FileName;
                     MainWindowPixelDrawer.TwoLineMode = false;
                     if (CurrentSeries.ReferencePhotoForSeries.Line != null)
                     {

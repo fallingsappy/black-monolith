@@ -21,8 +21,6 @@ namespace DDrop
         private void InitializePaths()
         {
             InterpreterTextBox.Text = Properties.Settings.Default.Interpreter;
-            ReferenceTextBox.Text = Properties.Settings.Default.Reference;
-            SaveToTextBox.Text = Properties.Settings.Default.SaveTo;
             ScriptToRunTextBox.Text = Properties.Settings.Default.ScriptToRun;
         }
 
@@ -57,16 +55,6 @@ namespace DDrop
                     Properties.Settings.Default.Interpreter = path;
                     Properties.Settings.Default.Save();
                     InterpreterTextBox.Text = path;
-                    break;
-                case OptionsEnum.Reference:
-                    Properties.Settings.Default.Reference = path;
-                    Properties.Settings.Default.Save();
-                    ReferenceTextBox.Text = path;
-                    break;
-                case OptionsEnum.SaveTo:
-                    Properties.Settings.Default.SaveTo = path;
-                    Properties.Settings.Default.Save();
-                    SaveToTextBox.Text = path;
                     break;
                 case OptionsEnum.ScriptToRun:
                     Properties.Settings.Default.ScriptToRun = path;

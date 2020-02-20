@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Опции" Height="250" Width="800" MinWidth="400" MinHeight="200" Icon="Resources/Icons/MainIcon.png" WindowStartupLocation="CenterScreen">
+        Title="Опции" Height="110" Width="800" MinWidth="400" MinHeight="50" Icon="Resources/Icons/MainIcon.png" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     <Grid>
         <Label Content="Интерпритатор:" HorizontalAlignment="Left" Margin="10,6,0,0" Height="26" VerticalAlignment="Top"/>
         <TextBox Name="InterpreterTextBox" Margin="113,10,62,0" TextWrapping="Wrap" IsEnabled="False" Height="23" VerticalAlignment="Top"/>
@@ -15,27 +15,9 @@
                 </Rectangle.OpacityMask>
             </Rectangle>
         </Button>
-        <Label Content="Референс:" HorizontalAlignment="Left" Margin="10,35,0,0" Height="26" VerticalAlignment="Top"/>
-        <TextBox Name="ReferenceTextBox" Margin="113,38,62,0" TextWrapping="Wrap" IsEnabled="False" Height="23" VerticalAlignment="Top"/>
-        <Button Name="Reference" Click="ChooseFilePath_OnClick" Margin="0,38,10,0" VerticalAlignment="Top" Height="23" HorizontalAlignment="Right" Width="47" Background="{x:Null}" BorderBrush="{x:Null}">
-            <Rectangle Fill="#34558b" RenderTransformOrigin="0.704,0.315" Height="19" Width="19">
-                <Rectangle.OpacityMask>
-                    <VisualBrush Stretch="Fill" Visual="{StaticResource EditIcon}" />
-                </Rectangle.OpacityMask>
-            </Rectangle>
-        </Button>
-        <Label Content="Сохранить в:" HorizontalAlignment="Left" Margin="10,63,0,0" Height="26" VerticalAlignment="Top"/>
-        <TextBox Name="SaveToTextBox" Margin="113,66,62,0" TextWrapping="Wrap" IsEnabled="False" Height="23" VerticalAlignment="Top"/>
-        <Button Name="SaveTo" Click="ChooseFolderPath_OnClick" Margin="0,66,10,0" VerticalAlignment="Top" Height="23" HorizontalAlignment="Right" Width="47" BorderBrush="{x:Null}" Background="{x:Null}">
-            <Rectangle Fill="#34558b" RenderTransformOrigin="0.704,0.315" Height="19" Width="19">
-                <Rectangle.OpacityMask>
-                    <VisualBrush Stretch="Fill" Visual="{StaticResource EditIcon}" />
-                </Rectangle.OpacityMask>
-            </Rectangle>
-        </Button>
-        <Label Content="Скрипт:" HorizontalAlignment="Left" Margin="10,91,0,0" Height="26" VerticalAlignment="Top"/>
-        <TextBox Name="ScriptToRunTextBox" Margin="113,94,62,0" TextWrapping="Wrap" IsEnabled="False" Height="23" VerticalAlignment="Top"/>
-        <Button Name="ScriptToRun" Click="ChooseFilePath_OnClick" Margin="0,94,10,0" VerticalAlignment="Top" Height="23" HorizontalAlignment="Right" Width="47" Background="{x:Null}" BorderBrush="{x:Null}">
+        <Label Content="Скрипт:" HorizontalAlignment="Left" Margin="10,37,0,0" Height="26" VerticalAlignment="Top"/>
+        <TextBox Name="ScriptToRunTextBox" Margin="113,38,62,0" TextWrapping="Wrap" IsEnabled="False" Height="23" VerticalAlignment="Top"/>
+        <Button Name="ScriptToRun" Click="ChooseFilePath_OnClick" Margin="0,38,10,0" VerticalAlignment="Top" Height="23" HorizontalAlignment="Right" Width="47" Background="{x:Null}" BorderBrush="{x:Null}">
             <Rectangle Fill="#34558b" RenderTransformOrigin="0.704,0.315" Height="19" Width="19">
                 <Rectangle.OpacityMask>
                     <VisualBrush Stretch="Fill" Visual="{StaticResource EditIcon}" />
