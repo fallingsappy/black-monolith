@@ -224,7 +224,7 @@ namespace DDrop
                         Name = openFileDialog.SafeFileNames[i],
                         Path = openFileDialog.FileNames[i],
                         Content = File.ReadAllBytes(openFileDialog.FileNames[i]),
-                        Drop = new Drop()
+                        Drop = new Drop(CurrentSeries)
                     };
 
                     foreach (var dropImage in CurrentSeries.DropPhotosSeries)
@@ -240,7 +240,6 @@ namespace DDrop
                     if (unique)
                     {
                         CurrentSeries.DropPhotosSeries.Add(imageForAdding);
-                        SingleSeriesPlotTabItem.IsEnabled = false;
                     }
                 }
             }
@@ -282,7 +281,7 @@ namespace DDrop
                                                              Properties.Settings.Default.Interpreter);
                     CurrentSeries.DropPhotosSeries[i].Drop = DropletSizeCalculator.PerformCalculation(
                         Convert.ToInt32(PixelsInMillimeterTextBox.Text), CurrentSeries.DropPhotosSeries[i].XDiameterInPixels,
-                        CurrentSeries.DropPhotosSeries[i].YDiameterInPixels);
+                        CurrentSeries.DropPhotosSeries[i].YDiameterInPixels, CurrentSeries);
                 }
 
                 notifier.ShowSuccess("Расчет завершен.");
@@ -320,15 +319,6 @@ namespace DDrop
         private void DeleteSingleInputPhotoButton_Click(object sender, RoutedEventArgs e)
         {
             CurrentSeries.DropPhotosSeries.RemoveAt(Photos.SelectedIndex);
-
-            if (CurrentSeries.CanDrawPlot)
-            {
-                SingleSeriesPlotTabItem.IsEnabled = true;
-            }
-            else
-            {
-                SingleSeriesPlotTabItem.IsEnabled = false;
-            }
         }
 
         private void EditInputPhotoButton_Click(object sender, RoutedEventArgs e)
@@ -341,16 +331,7 @@ namespace DDrop
                 manualEdit.ShowDialog();
                 CurrentDropPhoto.Drop = DropletSizeCalculator.PerformCalculation(
                     Convert.ToInt32(PixelsInMillimeterTextBox.Text), CurrentDropPhoto.XDiameterInPixels,
-                    CurrentDropPhoto.YDiameterInPixels);
-
-                if (CurrentSeries.CanDrawPlot)
-                {
-                    SingleSeriesPlotTabItem.IsEnabled = true;
-                }
-                else
-                {
-                    SingleSeriesPlotTabItem.IsEnabled = false;
-                }
+                    CurrentDropPhoto.YDiameterInPixels, CurrentSeries);
             }
             else
             {
@@ -461,7 +442,7 @@ namespace DDrop
             {
                 seriesTitle = OneLineSetterValue.Text;
 
-                Series seriesToAdd = new Series
+                Series seriesToAdd = new Series()
                 {
                     Title = seriesTitle,
                     ReferencePhotoForSeries = new ReferencePhoto()
@@ -494,15 +475,6 @@ namespace DDrop
                 SeriesPreviewDataGrid.ItemsSource = CurrentSeries.DropPhotosSeries;
                 ReferenceImage = null;
                 ParticularSeriesIndex = SeriesDataGrid.SelectedIndex;
-
-                if (CurrentSeries.CanDrawPlot)
-                {
-                    SingleSeriesPlotTabItem.IsEnabled = true;
-                }
-                else
-                {
-                    SingleSeriesPlotTabItem.IsEnabled = false;
-                }
 
                 if (CurrentSeries?.ReferencePhotoForSeries?.Content != null)
                 {
@@ -557,12 +529,6 @@ namespace DDrop
         {
             if (!SingleSeries.IsEnabled)
                 notifier.ShowInformation("Выберите серию.");
-        }
-
-        private void SingleSeriesPlotNotifier_Click(object sender, RoutedEventArgs e)
-        {
-            if (!SingleSeriesPlotTabItem.IsEnabled)
-                notifier.ShowInformation("Недостаточно точек для построения.");
         }
 
         private void IntervalBetweenPhotos_TextChanged(object sender, TextChangedEventArgs e)
@@ -621,6 +587,20 @@ namespace DDrop
             else
             {
                 notifier.ShowInformation("Нет серий для удаления.");
+            }
+        }
+
+        private void SingleSeriesPlotTabItem_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            var tabItem = (TabItem)sender;
+
+            if (tabItem.IsEnabled)
+            {
+                notifier.ShowSuccess("Новый график построен");
+            }
+            else
+            {
+                notifier.ShowInformation("Для построения графика необходимо указать интервал между снимками и произвести расчет для минимум двух снимков.");
             }
         }
     }

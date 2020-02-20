@@ -7,6 +7,17 @@ namespace DDrop.BE.Models
 {
     public class Series : INotifyPropertyChanged
     {
+        public Series()
+        {
+            _dropPhotosSeries = new ObservableCollection<DropPhoto>();
+            _dropPhotosSeries.CollectionChanged += _dropPhotosSeries_CollectionChanged;
+        }
+
+        private void _dropPhotosSeries_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            OnPropertyChanged(new PropertyChangedEventArgs(nameof(CanDrawPlot)));
+        }
+
         public Guid SeriesId { get; set; }
 
         private string _title;
@@ -98,7 +109,7 @@ namespace DDrop.BE.Models
         {
             get
             {
-                return _dropPhotosSeries?.Where(x => x.Drop.RadiusInMeters != null).ToList().Count > 1 && _dropPhotosSeries?.Where(x => x.Drop.RadiusInMeters == null).ToList().Count == 0;
+                return _dropPhotosSeries?.Where(x => x.Drop.RadiusInMeters != null).ToList().Count > 1 && _dropPhotosSeries?.Where(x => x.Drop.RadiusInMeters == null).ToList().Count == 0 && IntervalBetweenPhotos != 0;
             }
             set
             {
@@ -110,6 +121,9 @@ namespace DDrop.BE.Models
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged(PropertyChangedEventArgs e)
         {
+            if (e.PropertyName == nameof(IntervalBetweenPhotos))
+                OnPropertyChanged(new PropertyChangedEventArgs(nameof(CanDrawPlot)));
+
             PropertyChanged?.Invoke(this, e);
         }
     }

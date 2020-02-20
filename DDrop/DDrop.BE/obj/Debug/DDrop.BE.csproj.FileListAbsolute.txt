@@ -54,3 +54,15 @@ C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.BE\obj\Deb
 C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.BE\obj\Debug\DDrop.BE.dll
 C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.BE\obj\Debug\DDrop.BE.pdb
 C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.BE\obj\Debug\DDrop.BE.csprojAssemblyReference.cache
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BE\bin\Debug\DDrop.BE.dll.config
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BE\bin\Debug\DDrop.BE.dll
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BE\bin\Debug\DDrop.BE.pdb
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BE\bin\Debug\EntityFramework.dll
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BE\bin\Debug\EntityFramework.SqlServer.dll
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BE\bin\Debug\EntityFramework.xml
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BE\bin\Debug\EntityFramework.SqlServer.xml
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BE\obj\Debug\DDrop.BE.csproj.CoreCompileInputs.cache
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BE\obj\Debug\DDrop.BE.csproj.CopyComplete
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BE\obj\Debug\DDrop.BE.dll
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BE\obj\Debug\DDrop.BE.pdb
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BE\obj\Debug\DDrop.BE.csprojAssemblyReference.cache

@@ -70,3 +70,15 @@ C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.Utility\ob
 C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.csproj.CopyComplete
 C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.dll
 C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.pdb
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Utility\bin\Debug\DDrop.Utility.dll
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Utility\bin\Debug\DDrop.Utility.pdb
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Utility\bin\Debug\DDrop.BE.dll
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Utility\bin\Debug\EPPlus.dll
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Utility\bin\Debug\DDrop.BE.pdb
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Utility\bin\Debug\DDrop.BE.dll.config
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Utility\bin\Debug\EPPlus.xml
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.csprojAssemblyReference.cache
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.csproj.CoreCompileInputs.cache
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.csproj.CopyComplete
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.dll
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.pdb

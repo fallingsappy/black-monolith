@@ -5,6 +5,12 @@ namespace DDrop.BE.Models
 {
     public class Drop : INotifyPropertyChanged
     {
+        Series _series;
+        public Drop(Series series)
+        {
+            _series = series;
+        }
+
         public Guid DropId { get; set; }
         private double _xDiameterInMeters;
         public double XDiameterInMeters
@@ -72,6 +78,7 @@ namespace DDrop.BE.Models
             set
             {
                 _radiusInMeters = value;
+                _series.OnPropertyChanged(new PropertyChangedEventArgs(nameof(Series.CanDrawPlot)));
                 OnPropertyChanged(new PropertyChangedEventArgs("RadiusInMeters"));
             }
         }

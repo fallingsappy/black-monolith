@@ -85,3 +85,20 @@ C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.DAL\obj\De
 C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.csproj.CopyComplete
 C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.dll
 C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.pdb
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.DAL\bin\Debug\DDrop.DAL.dll.config
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.DAL\bin\Debug\DDrop.DAL.dll
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.DAL\bin\Debug\DDrop.DAL.pdb
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.DAL\bin\Debug\DDrop.BE.dll
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.DAL\bin\Debug\EntityFramework.dll
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.DAL\bin\Debug\EntityFramework.SqlServer.dll
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.DAL\bin\Debug\DDrop.BE.pdb
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.DAL\bin\Debug\DDrop.BE.dll.config
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.DAL\bin\Debug\EntityFramework.xml
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.DAL\bin\Debug\EntityFramework.SqlServer.xml
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.csprojAssemblyReference.cache
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.Migrations.InitialCreate.resources
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.csproj.GenerateResource.cache
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.csproj.CoreCompileInputs.cache
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.csproj.CopyComplete
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.dll
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.pdb

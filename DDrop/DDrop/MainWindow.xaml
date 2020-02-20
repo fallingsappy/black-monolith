@@ -166,7 +166,7 @@
                                 </Button>
                             </Grid>
                         </TabItem>
-                        <TabItem x:Name="SingleSeriesPlotTabItem" Header="График" >
+                        <TabItem IsEnabledChanged="SingleSeriesPlotTabItem_IsEnabledChanged" IsEnabled="{Binding CurrentSeries.CanDrawPlot, ElementName=AppMainWindow,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  x:Name="SingleSeriesPlotTabItem" Header="График" >
                             <uc:ScatterPlot x:Name="SingleSeriesPlot" User="{Binding User, ElementName=AppMainWindow}" ParticularSeriesIndex="{Binding ParticularSeriesIndex, ElementName=AppMainWindow}"/>
                         </TabItem>
                     </TabControl>
