@@ -61,7 +61,7 @@ namespace DDrop
             openFileDialog.AddExtension = true;
             if (openFileDialog.ShowDialog() == true)
             {
-                UserPhoto = ImageConverter.FileToByteArray(openFileDialog.FileName);
+                UserPhoto = ImageInterpreter.FileToByteArray(openFileDialog.FileName);
                 ProfilePicture.Source = new BitmapImage(new Uri(openFileDialog.FileName));
             }
         }

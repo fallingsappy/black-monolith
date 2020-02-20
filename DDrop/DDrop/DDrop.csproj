@@ -176,7 +176,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="packages.config" />
@@ -220,6 +220,11 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Cursors\RulerVerticalResize.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\AnonymousUser\cool-profile-picture-300x219_vectorized %281%29.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

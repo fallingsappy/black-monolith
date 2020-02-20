@@ -263,7 +263,7 @@ namespace DDrop
 
                 if (CurrentSeries?.ReferencePhotoForSeries?.Content != null)
                 {
-                    ReferenceImage = ImageConverter.LoadImage(CurrentSeries.ReferencePhotoForSeries.Content);
+                    ReferenceImage = ImageInterpreter.LoadImage(CurrentSeries.ReferencePhotoForSeries.Content);
                 }
             }
             else
@@ -287,7 +287,7 @@ namespace DDrop
             DropPhoto selectedFile = (DropPhoto)SeriesPreviewDataGrid.SelectedItem;
             if (selectedFile != null)
             {
-                ImgPreview.Source = ImageConverter.LoadImage(selectedFile.Content);
+                ImgPreview.Source = ImageInterpreter.LoadImage(selectedFile.Content);
             }
             else
                 ImgPreview.Source = null;
@@ -526,7 +526,7 @@ namespace DDrop
             DropPhoto selectedFile = (DropPhoto)Photos.SelectedItem;
             if (selectedFile != null)
             {
-                ImgCurrent.Source = ImageConverter.LoadImage(selectedFile.Content);
+                ImgCurrent.Source = ImageInterpreter.LoadImage(selectedFile.Content);
             }
             else
                 ImgCurrent.Source = null;
@@ -625,7 +625,7 @@ namespace DDrop
 
             if (openFileDialog.ShowDialog() == true)
             {
-                if (ImageValidator.ValidateImage(ImageConverter.FileToByteArray(openFileDialog.FileName)))
+                if (ImageValidator.ValidateImage(ImageInterpreter.FileToByteArray(openFileDialog.FileName)))
                 {
                     Properties.Settings.Default.Reference = openFileDialog.FileName;
                     MainWindowPixelDrawer.TwoLineMode = false;
@@ -639,8 +639,8 @@ namespace DDrop
                     }
                     CurrentSeries.ReferencePhotoForSeries.Name = openFileDialog.Title;
                     CurrentSeries.ReferencePhotoForSeries.Line = new Line();
-                    CurrentSeries.ReferencePhotoForSeries.Content = ImageConverter.FileToByteArray(openFileDialog.FileName);
-                    ReferenceImage = ImageConverter.LoadImage(CurrentSeries.ReferencePhotoForSeries.Content);
+                    CurrentSeries.ReferencePhotoForSeries.Content = ImageInterpreter.FileToByteArray(openFileDialog.FileName);
+                    ReferenceImage = ImageInterpreter.LoadImage(CurrentSeries.ReferencePhotoForSeries.Content);
 
                     notifier.ShowSuccess($"Референсный снимок {CurrentSeries.ReferencePhotoForSeries.Name} добавлен.");
                 }

@@ -1,4 +1,7 @@
 ﻿using DDrop.BE.Models;
+using DDrop.Utility.Cryptography;
+using DDrop.Utility.ImageOperations;
+using System;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
@@ -95,6 +98,22 @@ namespace DDrop
             LoginPasswordBox.Visibility = Visibility.Visible;
             PasswordUnmask.Visibility = Visibility.Hidden;
             LoginPasswordBox.Password = PasswordUnmask.Text;
+        }
+
+        private void LoginOfflineButton_Click(object sender, RoutedEventArgs e)
+        {
+            UserLogin = new User()
+            {
+                Email = "anonymousUser@anonymousUser.com",
+                UserPhoto = ImageInterpreter.ImageToByteArray(Properties.Resources.cool_profile_picture_300x219_vectorized__1_),
+                FirstName = "Неизвестно",
+                LastName = "Неизвестно",
+                IsLoggedIn = true,
+                Password = PasswordEncoding.EncodePassword("1q2w3e4r5t6y"),
+                UserId = Guid.NewGuid()
+            };
+
+            Close();
         }
     }
 }

@@ -24,7 +24,7 @@ namespace DDrop
 
             User = user;
 
-            ProfilePicture.Source = ImageConverter.LoadImage(User.UserPhoto);
+            ProfilePicture.Source = ImageInterpreter.LoadImage(User.UserPhoto);
         }
 
         private void ChooseProfilePicture_OnClick(object sender, RoutedEventArgs e)
@@ -37,8 +37,8 @@ namespace DDrop
             if (openFileDialog.ShowDialog() == true)
             {
                 Properties.Settings.Default.Reference = openFileDialog.FileName;
-                User.UserPhoto = ImageConverter.FileToByteArray(openFileDialog.FileName);
-                ProfilePicture.Source = ImageConverter.LoadImage(User.UserPhoto);
+                User.UserPhoto = ImageInterpreter.FileToByteArray(openFileDialog.FileName);
+                ProfilePicture.Source = ImageInterpreter.LoadImage(User.UserPhoto);
             }
         }
     }
