@@ -82,3 +82,7 @@ E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\obj\Debug\DDrop.BL.csp
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\obj\Debug\DDrop.BL.csproj.CopyComplete
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\obj\Debug\DDrop.BL.dll
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\obj\Debug\DDrop.BL.pdb
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\bin\Debug\DDrop.Utility.dll
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\bin\Debug\EPPlus.dll
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\bin\Debug\DDrop.Utility.pdb
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\bin\Debug\EPPlus.xml

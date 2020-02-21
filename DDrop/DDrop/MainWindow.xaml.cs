@@ -674,42 +674,57 @@ namespace DDrop
 
         private void Calculate_OnClick(object sender, RoutedEventArgs e)
         {
-            if (CurrentSeries.DropPhotosSeries.Count > 0)
+            if (PythonMenuItem.IsChecked)
             {
-                bool isAnyPhotoChecked = CurrentSeries.DropPhotosSeries.Any(x => x.IsChecked);
-
-                if (isAnyPhotoChecked)
+                bool interpreterAndScriptCheck = string.IsNullOrWhiteSpace(Properties.Settings.Default.ScriptToRun) || string.IsNullOrWhiteSpace(Properties.Settings.Default.Interpreter);
+                if (!interpreterAndScriptCheck)
                 {
-                    for (int i = 0; i < CurrentSeries.DropPhotosSeries.Count; i++)
+                    if (CurrentSeries.DropPhotosSeries.Count > 0)
                     {
-                        if (CurrentSeries.DropPhotosSeries[i].IsChecked)
+                        bool isAnyPhotoChecked = CurrentSeries.DropPhotosSeries.Any(x => x.IsChecked);
+
+                        if (isAnyPhotoChecked)
                         {
-                            CurrentSeries.DropPhotosSeries[i] = pythonProvider.RunScript(CurrentSeries.DropPhotosSeries[i].Path, Properties.Settings.Default.SaveTo,
-                            CurrentSeries.DropPhotosSeries[i], Properties.Settings.Default.ScriptToRun,
-                                         Properties.Settings.Default.Interpreter);
-                            CurrentSeries.DropPhotosSeries[i].Drop = DropletSizeCalculator.PerformCalculation(
-                                Convert.ToInt32(PixelsInMillimeterTextBox.Text), CurrentSeries.DropPhotosSeries[i].XDiameterInPixels,
-                                CurrentSeries.DropPhotosSeries[i].YDiameterInPixels, CurrentSeries);
+                            for (int i = 0; i < CurrentSeries.DropPhotosSeries.Count; i++)
+                            {
+                                if (CurrentSeries.DropPhotosSeries[i].IsChecked)
+                                {
+                                    CurrentSeries.DropPhotosSeries[i] = pythonProvider.RunScript(CurrentSeries.DropPhotosSeries[i].Path, Properties.Settings.Default.SaveTo,
+                                    CurrentSeries.DropPhotosSeries[i], Properties.Settings.Default.ScriptToRun,
+                                                 Properties.Settings.Default.Interpreter);
+                                    CurrentSeries.DropPhotosSeries[i].Drop = DropletSizeCalculator.PerformCalculation(
+                                        Convert.ToInt32(PixelsInMillimeterTextBox.Text), CurrentSeries.DropPhotosSeries[i].XDiameterInPixels,
+                                        CurrentSeries.DropPhotosSeries[i].YDiameterInPixels, CurrentSeries);
+                                }
+                            }
                         }
+                        else
+                        {
+                            for (int i = 0; i < CurrentSeries.DropPhotosSeries.Count; ++i)
+                            {
+                                CurrentSeries.DropPhotosSeries[i] = pythonProvider.RunScript(CurrentSeries.DropPhotosSeries[i].Path, Properties.Settings.Default.SaveTo,
+                                    CurrentSeries.DropPhotosSeries[i], Properties.Settings.Default.ScriptToRun,
+                                                                         Properties.Settings.Default.Interpreter);
+                                CurrentSeries.DropPhotosSeries[i].Drop = DropletSizeCalculator.PerformCalculation(
+                                    Convert.ToInt32(PixelsInMillimeterTextBox.Text), CurrentSeries.DropPhotosSeries[i].XDiameterInPixels,
+                                    CurrentSeries.DropPhotosSeries[i].YDiameterInPixels, CurrentSeries);
+                            }
+                        }
+
+                        notifier.ShowSuccess("Расчет завершен.");
                     }
+                    else
+                        notifier.ShowInformation("Выберите фотографии для расчета.");
                 }
                 else
                 {
-                    for (int i = 0; i < CurrentSeries.DropPhotosSeries.Count; ++i)
-                    {
-                        CurrentSeries.DropPhotosSeries[i] = pythonProvider.RunScript(CurrentSeries.DropPhotosSeries[i].Path, Properties.Settings.Default.SaveTo,
-                            CurrentSeries.DropPhotosSeries[i], Properties.Settings.Default.ScriptToRun,
-                                                                 Properties.Settings.Default.Interpreter);
-                        CurrentSeries.DropPhotosSeries[i].Drop = DropletSizeCalculator.PerformCalculation(
-                            Convert.ToInt32(PixelsInMillimeterTextBox.Text), CurrentSeries.DropPhotosSeries[i].XDiameterInPixels,
-                            CurrentSeries.DropPhotosSeries[i].YDiameterInPixels, CurrentSeries);
-                    }
+                    notifier.ShowInformation("Выберите интерпритатор python и исполняемый скрипт в меню \"Опции\"");
                 }
-
-                notifier.ShowSuccess("Расчет завершен.");
             }
             else
-                notifier.ShowInformation("Выберите фотографии для расчета.");
+            {
+                notifier.ShowInformation("Эта функция в разработке.");
+            }
         }
 
         private void PythonOption_OnClick(object sender, RoutedEventArgs e)
@@ -788,6 +803,12 @@ namespace DDrop
         private void AppMainWindow_Closing(object sender, CancelEventArgs e)
         {
             notifier.Dispose();
+        }
+
+        private void Information_Click(object sender, RoutedEventArgs e)
+        {
+            Information information = new Information();
+            information.ShowDialog();
         }
 
         #endregion

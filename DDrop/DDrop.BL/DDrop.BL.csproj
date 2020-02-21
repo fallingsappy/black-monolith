@@ -34,8 +34,10 @@
     <Reference Include="Emgu.CV.World.NetStandard, Version=1.0.0.0, Culture=neutral, PublicKeyToken=7281126722ab4438, processorArchitecture=MSIL">
       <HintPath>..\packages\Emgu.CV.4.2.0.3636\lib\netstandard2.0\Emgu.CV.World.NetStandard.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -55,6 +57,10 @@
     <ProjectReference Include="..\DDrop.BE\DDrop.BE.csproj">
       <Project>{19d17b23-5ba3-4387-b0fa-f2c66c7ec5bc}</Project>
       <Name>DDrop.BE</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DDrop.Utility\DDrop.Utility.csproj">
+      <Project>{85478E42-C1EA-4839-87E1-7CAAB53CF4C8}</Project>
+      <Name>DDrop.Utility</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

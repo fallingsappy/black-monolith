@@ -7,6 +7,7 @@
         Title="Login" Height="450" Width="500" ResizeMode="NoResize" Topmost="True" WindowStartupLocation="CenterScreen" Icon="Resources/Icons/MainIcon.png">
     <Grid>
         <Grid>
+            <Image Source="Resources/Icons/MainIcon.png" Margin="195,10,189,318"/>
             <TextBlock TextWrapping="Wrap" TextAlignment="Center" Height="35" HorizontalAlignment="Left" x:Name ="ErrorMessage" VerticalAlignment="Top" Width="166" Margin="167,103,0,0"  OpacityMask="Crimson" Foreground="#FFE5572C"  />
             <TextBox TextInput="TextBoxLogin_OnTextChanged" Name="TextBoxEmail" Margin="175,164,0,0" TextWrapping="Wrap" Height="25" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150"/>
             <PasswordBox Name="LoginPasswordBox" TextInput="TextBoxLogin_OnTextChanged" Margin="175,218,0,0" PasswordChar="•" HorizontalAlignment="Left" Width="150" Height="25" VerticalAlignment="Top"/>

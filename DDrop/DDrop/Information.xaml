@@ -1,0 +1,66 @@
+﻿<Window x:Class="DDrop.Information"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DDrop"
+        mc:Ignorable="d"
+        Title="Информация" Height="450" Width="800" ResizeMode="NoResize" Icon="Resources/Icons/MainIcon.png">
+    <Grid>
+        <TabControl HorizontalAlignment="Left" Height="399" Margin="10,10,0,0" VerticalAlignment="Top" Width="772">
+            <TabItem Header="О программе">
+                <Grid Background="#FFE5E5E5">
+                    <RichTextBox IsReadOnly="True" HorizontalAlignment="Left" Height="351" Margin="10,10,0,0" VerticalAlignment="Top" Width="746">
+                        <FlowDocument>
+                            <Paragraph TextAlignment="Center">
+                                <Run FontSize="22" Text="DDrop" FontWeight="Bold"/>
+                            </Paragraph>
+                            <Paragraph TextAlignment="Justify" TextIndent="25">
+                                <Run FontSize="14" Text="Программа DDrop создана с целью оптимизации процесса обработки результатов экспериментов по акустической левитации. Приложение позволяет загружать экспериментальные снимки, обрабатывать их в визуальном редакторе, производить автоматический расчет характеристик левитирующей капли, строить графики как для одной серии, так и комбинированный график, сохранять автоматические сгенерированные отчеты в Excel документ, автоматически обнаруживать каплю на фотографии, получать ее диаметры и контур для дальнейшего расчета характеристик, выбирать референсное расстояние в один клик и многое другое."/>
+                            </Paragraph>
+                        </FlowDocument>
+                    </RichTextBox>
+                    <Image Source="Resources/Icons/MainIcon.png" Margin="238,190,238,40"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Справка">
+                <Grid Background="#FFE5E5E5">
+                    <TabControl>
+                        <TabItem Header="Меню">
+                            <TabControl>
+                                <TabItem Header="Меню" ></TabItem>
+                                <TabItem Header="Расчет" ></TabItem>
+                                <TabItem Header="Учетная запись" ></TabItem>
+                            </TabControl>
+                        </TabItem>
+                        <TabItem Header="Менеджер серий">
+                            
+                        </TabItem>
+                        <TabItem Header="Серия">
+                            <TabControl>
+                                <TabItem Header="Фотографии">
+                                    
+                                </TabItem>
+                                <TabItem Header="Референс">
+
+                                </TabItem>
+                                <TabItem Header="График">
+
+                                </TabItem>
+                            </TabControl>
+                        </TabItem>
+                        <TabItem Header="Общий график серий">
+                            
+                        </TabItem>
+                    </TabControl>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Авторы">
+                <Grid Background="#FFE5E5E5">
+                    <RichTextBox IsReadOnly="True"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
+
+    </Grid>
+</Window>

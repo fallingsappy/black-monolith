@@ -200,6 +200,15 @@
                         </Rectangle>
                     </MenuItem.Icon>
                 </MenuItem>
+                <MenuItem Header="Информация" Click="Information_Click" Name="Information">
+                    <MenuItem.Icon>
+                        <Rectangle Fill="#34558b" Margin="2,1,0,1" RenderTransformOrigin="0.704,0.315">
+                            <Rectangle.OpacityMask>
+                                <VisualBrush Stretch="Fill" Visual="{StaticResource Information}" />
+                            </Rectangle.OpacityMask>
+                        </Rectangle>
+                    </MenuItem.Icon>
+                </MenuItem>
                 <MenuItem Header="Выйти" Click="MenuItem_OnClick"/>
             </MenuItem>
             <MenuItem Header="Расчет">
