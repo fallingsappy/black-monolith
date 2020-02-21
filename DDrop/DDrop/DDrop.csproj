@@ -163,6 +163,7 @@
     <Page Include="Resources\Icons\Icons.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -223,10 +224,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\Cursors\RulerHorizontalResize.cur" />
+    <Resource Include="Resources\Cursors\RulerHorizontalResize.cur">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\Cursors\RulerVerticalResize.cur" />
+    <Resource Include="Resources\Cursors\RulerVerticalResize.cur">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\AnonymousUser\cool-profile-picture-300x219_vectorized %281%29.jpg">
