@@ -116,7 +116,7 @@ namespace DDrop.Controls.PixelDrawer
             }
             else
             {
-                newCursor = Cursors.Cross;
+                newCursor = ((TextBlock)Application.Current.Resources["CursorDrawing"]).Cursor;
             }
 
             if (CanDrawing.Cursor != newCursor)
@@ -168,7 +168,7 @@ namespace DDrop.Controls.PixelDrawer
 
                 if (TwoLineMode)
                 {
-                    if (Math.Abs(_selectedLine.X1 - _selectedLine.X2) > Math.Abs(_selectedLine.Y1 - _selectedLine.Y2) && !_drawingVerticalLine || _drawingHorizontalLine)
+                    if (Math.Abs(_selectedLine.X1 - _selectedLine.X2) >= Math.Abs(_selectedLine.Y1 - _selectedLine.Y2) && !_drawingVerticalLine || _drawingHorizontalLine)
                     {
                         _selectedLine.Stroke = Brushes.DeepPink;
 

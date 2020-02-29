@@ -91,7 +91,7 @@
             </TabItem>
             <TabItem Name="SingleSeries" IsEnabled = "False" Header="Серия">
                 <Grid>
-                    <TabControl Margin="10,10,10,5">
+                    <TabControl x:Name="SingleSeriesTabControl" Margin="10,10,10,5">
                         <TabItem Header="Фотографии">
                             <Grid Background="#FFE5E5E5" RenderTransformOrigin="0.56,0.503">
                                 <Grid.RowDefinitions>
@@ -111,7 +111,7 @@
                                         <Label Content="Интервал между снимками (c):" Margin="0,0,130,-4" VerticalAlignment="Top" Height="30" Background="{x:Null}" HorizontalAlignment="Right" Width="180"/>
                                     </Grid>
                                 </Border>
-                                <DataGrid CanUserAddRows="false" AutoGenerateColumns="False" Grid.Row="0" HorizontalAlignment="Stretch" Name="Photos" Margin="10,43,10,10" SelectionMode="Single" SelectionChanged="Photos_SelectionChanged" IsReadOnly="False" ItemsSource="{Binding CurrentSeries.DropPhotosSeries}">
+                                <DataGrid CanUserSortColumns="False" CanUserAddRows="false" AutoGenerateColumns="False" Grid.Row="0" HorizontalAlignment="Stretch" Name="Photos" Margin="10,43,10,10" SelectionMode="Single" SelectionChanged="Photos_SelectionChanged" IsReadOnly="False" ItemsSource="{Binding CurrentSeries.DropPhotosSeries}">
                                     <DataGrid.Columns>
                                         <DataGridCheckBoxColumn IsReadOnly="False" Binding="{Binding IsChecked, UpdateSourceTrigger=PropertyChanged}" CanUserResize="False">
                                             <DataGridCheckBoxColumn.HeaderTemplate>
@@ -142,6 +142,19 @@
                                                     <Button Name="DeleteSingleInputPhotoButton"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="27" Background="{x:Null}" BorderBrush="{x:Null}" Height="25" Click="DeleteSingleInputPhotoButton_Click">
                                                         <ContentControl Content="{StaticResource DeleteIcon}" Height="20"/>
                                                     </Button>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTemplateColumn Header="Статус" IsReadOnly="True" CanUserResize="False">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <ContentControl ToolTip="Радиусы всех капель должны быть расчитаны, чтобы построить график." x:Name="PhotosStatus" Content="{StaticResource Warning}" Height="25" Width="25" HorizontalAlignment="Center"/>
+                                                    <DataTemplate.Triggers>
+                                                        <DataTrigger Binding="{Binding Processed}" Value="true">
+                                                            <Setter Property="Content" Value="{StaticResource Ok}" TargetName="PhotosStatus"/>
+                                                            <Setter Property="ToolTip" Value="Радиус капли расчитан успешно." TargetName="PhotosStatus"/>
+                                                        </DataTrigger>
+                                                    </DataTemplate.Triggers>
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>

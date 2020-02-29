@@ -190,6 +190,23 @@ namespace DDrop.BE.Models
             }
         }
 
+        private bool _processed;
+        public bool Processed
+        {
+            get
+            {
+                if (_drop.RadiusInMeters > 0)
+                    return true;
+
+                return false;
+            }
+            set
+            {
+                _processed = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("Processed"));
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged(PropertyChangedEventArgs e)
         {

@@ -1,14 +1,17 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Linq;
 
 namespace DDrop.BE.Models
 {
     public class Drop : INotifyPropertyChanged
     {
         Series _series;
-        public Drop(Series series)
+        DropPhoto _dropPhoto;
+        public Drop(Series series, DropPhoto dropPhoto)
         {
             _series = series;
+            _dropPhoto = dropPhoto;
         }
 
         public Guid DropId { get; set; }
@@ -79,6 +82,7 @@ namespace DDrop.BE.Models
             {
                 _radiusInMeters = value;
                 _series.OnPropertyChanged(new PropertyChangedEventArgs(nameof(Series.CanDrawPlot)));
+                _dropPhoto.OnPropertyChanged(new PropertyChangedEventArgs(nameof(DropPhoto.Processed)));
                 OnPropertyChanged(new PropertyChangedEventArgs("RadiusInMeters"));
             }
         }

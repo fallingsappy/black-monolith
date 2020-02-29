@@ -297,7 +297,7 @@ namespace DDrop
         {
             var tabItem = (TabItem)sender;
 
-            if (tabItem.IsEnabled)
+            if (tabItem.IsEnabled && User != null)
             {
                 notifier.ShowSuccess("Новый общий график серий построен");
             }
@@ -373,7 +373,7 @@ namespace DDrop
         {
             var tabItem = (TabItem)sender;
 
-            if (tabItem.IsEnabled)
+            if (tabItem.IsEnabled && User != null)
             {
                 notifier.ShowSuccess("Новый график построен");
             }
@@ -387,9 +387,15 @@ namespace DDrop
             if (tc != null)
             {
                 TabItem item = (TabItem)tc.SelectedItem;
+
                 if (item.Name == "SingleSeries")
                 {
                     Photos.ItemsSource = CurrentSeries.DropPhotosSeries;
+
+                    if (!CurrentSeries.CanDrawPlot && SingleSeriesTabControl.SelectedIndex == 2)
+                    {
+                        SingleSeriesTabControl.SelectedIndex = 0;
+                    }
                 }
                 else if (item.Name == "SeriesManager")
                 {
@@ -500,9 +506,9 @@ namespace DDrop
                     {
                         Name = openFileDialog.SafeFileNames[i],
                         Path = openFileDialog.FileNames[i],
-                        Content = File.ReadAllBytes(openFileDialog.FileNames[i]),
-                        Drop = new Drop(CurrentSeries)
+                        Content = File.ReadAllBytes(openFileDialog.FileNames[i])
                     };
+                    
 
                     foreach (var dropImage in CurrentSeries.DropPhotosSeries)
                     {
@@ -519,6 +525,7 @@ namespace DDrop
                         {
                             imageForAdding.PropertyChanged += PhotosOnPropertyChanged;
                             CurrentSeries.DropPhotosSeries.Add(imageForAdding);
+                            CurrentSeries.DropPhotosSeries[CurrentSeries.DropPhotosSeries.Count - 1].Drop = new Drop(CurrentSeries, CurrentSeries.DropPhotosSeries[i]);
                             notifier.ShowSuccess($"Снимок {imageForAdding.Name} добавлен.");
                         }
                     }
@@ -601,13 +608,13 @@ namespace DDrop
 
                 CurrentDropPhoto.Drop = DropletSizeCalculator.PerformCalculation(
                     Convert.ToInt32(PixelsInMillimeterTextBox.Text), CurrentDropPhoto.XDiameterInPixels,
-                    CurrentDropPhoto.YDiameterInPixels, CurrentSeries);
+                    CurrentDropPhoto.YDiameterInPixels, CurrentSeries, CurrentDropPhoto);
 
                 notifier.ShowSuccess($"Расчет для снимка {CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].Name} выполнен.");
             }
             else
             {
-                notifier.ShowInformation("Заполните поле \"Пикселей в миллиметре\".");
+                notifier.ShowInformation("Выберите референсное расстояние на референсном снимке.");
             }
         }
 
@@ -710,7 +717,7 @@ namespace DDrop
                                                  Properties.Settings.Default.Interpreter);
                                     CurrentSeries.DropPhotosSeries[i].Drop = DropletSizeCalculator.PerformCalculation(
                                         Convert.ToInt32(PixelsInMillimeterTextBox.Text), CurrentSeries.DropPhotosSeries[i].XDiameterInPixels,
-                                        CurrentSeries.DropPhotosSeries[i].YDiameterInPixels, CurrentSeries);
+                                        CurrentSeries.DropPhotosSeries[i].YDiameterInPixels, CurrentSeries, CurrentDropPhoto);
                                 }
                             }
                         }
@@ -723,7 +730,7 @@ namespace DDrop
                                                                          Properties.Settings.Default.Interpreter);
                                 CurrentSeries.DropPhotosSeries[i].Drop = DropletSizeCalculator.PerformCalculation(
                                     Convert.ToInt32(PixelsInMillimeterTextBox.Text), CurrentSeries.DropPhotosSeries[i].XDiameterInPixels,
-                                    CurrentSeries.DropPhotosSeries[i].YDiameterInPixels, CurrentSeries);
+                                    CurrentSeries.DropPhotosSeries[i].YDiameterInPixels, CurrentSeries, CurrentDropPhoto);
                             }
                         }
 
@@ -779,23 +786,32 @@ namespace DDrop
 
         private void LogoutMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            AccountMenuItem.Visibility = Visibility.Collapsed;
-            LogOutMenuItem.Visibility = Visibility.Collapsed;
-            LogInMenuItem.Visibility = Visibility.Visible;
-            Login login = new Login();
-            login.Owner = this;
-            login.ShowDialog();
-            User = login.UserLogin;
+            MessageBoxResult messageBoxResult = MessageBox.Show($"Выйти из учетной записи {User.Email}?", "Подтверждение выхода", MessageBoxButton.YesNo);
+            if (messageBoxResult == MessageBoxResult.Yes)
+            {
+                User.UserSeries.Clear(); 
+                User = null;
+                CurrentSeries.DropPhotosSeries.Clear();
+                CurrentSeries = null;
 
-            if (User == null)
-            {
-                Close();
-            }
-            else
-            {
-                AccountMenuItem.Visibility = Visibility.Visible;
-                LogInMenuItem.Visibility = Visibility.Collapsed;
-                LogOutMenuItem.Visibility = Visibility.Visible;
+                AccountMenuItem.Visibility = Visibility.Collapsed;
+                LogOutMenuItem.Visibility = Visibility.Collapsed;
+                LogInMenuItem.Visibility = Visibility.Visible;
+                Login login = new Login();
+                login.Owner = this;
+                login.ShowDialog();
+                User = login.UserLogin;
+
+                if (User == null)
+                {
+                    Close();
+                }
+                else
+                {
+                    AccountMenuItem.Visibility = Visibility.Visible;
+                    LogInMenuItem.Visibility = Visibility.Collapsed;
+                    LogOutMenuItem.Visibility = Visibility.Visible;
+                }
             }
         }
 
@@ -818,7 +834,18 @@ namespace DDrop
 
         private void AppMainWindow_Closing(object sender, CancelEventArgs e)
         {
-            notifier.Dispose();
+            if (User != null)
+            {
+                MessageBoxResult messageBoxResult = MessageBox.Show("Закрыть приложение?", "Подтверждение выхода", MessageBoxButton.YesNo);
+                if (messageBoxResult == MessageBoxResult.Yes)
+                {
+                    notifier.Dispose();
+                }
+                else
+                {
+                    e.Cancel = true;
+                }
+            }
         }
 
         private void Information_Click(object sender, RoutedEventArgs e)

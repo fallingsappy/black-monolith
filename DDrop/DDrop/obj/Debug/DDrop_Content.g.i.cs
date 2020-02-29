@@ -8,6 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("resources/icons/mainicon_vectorized.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("resources/cursors/aero_normal-transparent.cur")]
 
 

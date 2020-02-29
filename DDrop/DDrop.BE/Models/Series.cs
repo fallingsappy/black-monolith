@@ -112,7 +112,7 @@ namespace DDrop.BE.Models
         {
             get
             {
-                if (_dropPhotosSeries?.Where(x => x.Drop.RadiusInMeters != null).ToList().Count > 1 && _dropPhotosSeries?.Where(x => x.Drop.RadiusInMeters == null).ToList().Count == 0 && IntervalBetweenPhotos != 0)
+                if (_dropPhotosSeries?.Where(x => x.Drop?.RadiusInMeters != null).ToList().Count > 1 && _dropPhotosSeries?.Where(x => x.Drop?.RadiusInMeters == null).ToList().Count == 0 && IntervalBetweenPhotos != 0)
                 {
                     return true;
                 }
