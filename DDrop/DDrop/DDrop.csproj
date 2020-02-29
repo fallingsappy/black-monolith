@@ -186,12 +186,26 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="Resources\Texts\InformationAboutApp\About\About.rtf" />
+    <None Include="Resources\Texts\InformationAboutApp\Development\Developers\Developers.rtf" />
+    <None Include="Resources\Texts\InformationAboutApp\Development\Testers\Testers.rtf" />
+    <None Include="Resources\Texts\InformationAboutApp\Help\CalculationModel\CalculationModel.rtf" />
+    <None Include="Resources\Texts\InformationAboutApp\Help\CommonSeriesPlot\CommonSeriesPlot.rtf" />
+    <None Include="Resources\Texts\InformationAboutApp\Help\Menu\Account\Account.rtf" />
+    <None Include="Resources\Texts\InformationAboutApp\Help\Menu\Calculation\Calculation.rtf" />
+    <None Include="Resources\Texts\InformationAboutApp\Help\Menu\Menu\Menu.rtf" />
+    <None Include="Resources\Texts\InformationAboutApp\Help\SeriesManager\SeriesManager.rtf" />
+    <None Include="Resources\Texts\InformationAboutApp\Help\Series\CommonInformation\CommonSeriesInformation.rtf" />
+    <None Include="Resources\Texts\InformationAboutApp\Help\Series\Photos\Photos.rtf" />
+    <None Include="Resources\Texts\InformationAboutApp\Help\Series\Plot\Plot.rtf" />
+    <None Include="Resources\Texts\InformationAboutApp\Help\Series\Reference\Reference.rtf" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -237,6 +251,9 @@
     <Resource Include="Resources\AnonymousUser\cool-profile-picture-300x219_vectorized %281%29.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\MainIcon_vectorized.png" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

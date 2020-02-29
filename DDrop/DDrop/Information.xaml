@@ -5,22 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DDrop"
         mc:Ignorable="d"
-        Title="Информация" Height="450" Width="800" ResizeMode="NoResize" Icon="Resources/Icons/MainIcon.png">
+        Title="Информация" MinHeight="450" MinWidth="800" Icon="Resources/Icons/MainIcon.png" WindowStartupLocation="CenterScreen" WindowState="Maximized" Width="791">
     <Grid>
-        <TabControl HorizontalAlignment="Left" Height="399" Margin="10,10,0,0" VerticalAlignment="Top" Width="772">
+        <TabControl Margin="10">
             <TabItem Header="О программе">
                 <Grid Background="#FFE5E5E5">
-                    <RichTextBox IsReadOnly="True" HorizontalAlignment="Left" Height="351" Margin="10,10,0,0" VerticalAlignment="Top" Width="746">
-                        <FlowDocument>
-                            <Paragraph TextAlignment="Center">
-                                <Run FontSize="22" Text="DDrop" FontWeight="Bold"/>
-                            </Paragraph>
-                            <Paragraph TextAlignment="Justify" TextIndent="25">
-                                <Run FontSize="14" Text="Программа DDrop создана с целью оптимизации процесса обработки результатов экспериментов по акустической левитации. Приложение позволяет загружать экспериментальные снимки, обрабатывать их в визуальном редакторе, производить автоматический расчет характеристик левитирующей капли, строить графики как для одной серии, так и комбинированный график, сохранять автоматические сгенерированные отчеты в Excel документ, автоматически обнаруживать каплю на фотографии, получать ее диаметры и контур для дальнейшего расчета характеристик, выбирать референсное расстояние в один клик и многое другое."/>
-                            </Paragraph>
-                        </FlowDocument>
+                    <RichTextBox x:Name="AboutRTB" IsReadOnly="True" Margin="10">
                     </RichTextBox>
-                    <Image Source="Resources/Icons/MainIcon.png" Margin="238,190,238,40"/>
+                    <Image Source="Resources/Icons/MainIcon_vectorized.png" Margin="282,190,283,40"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Справка">
@@ -28,36 +20,55 @@
                     <TabControl>
                         <TabItem Header="Меню">
                             <TabControl>
-                                <TabItem Header="Меню" ></TabItem>
-                                <TabItem Header="Расчет" ></TabItem>
-                                <TabItem Header="Учетная запись" ></TabItem>
+                                <TabItem Header="Меню">
+                                    <RichTextBox x:Name="MenuRTB" IsReadOnly="True"/>
+                                </TabItem>
+                                <TabItem Header="Расчет" >
+                                    <RichTextBox x:Name="CalculationRTB" IsReadOnly="True"/>
+                                </TabItem>
+                                <TabItem Header="Учетная запись" >
+                                    <RichTextBox x:Name="AccountRTB" IsReadOnly="True"/>
+                                </TabItem>
                             </TabControl>
                         </TabItem>
                         <TabItem Header="Менеджер серий">
-                            
+                            <RichTextBox x:Name="SeriesManagerRTB" IsReadOnly="True"/>
                         </TabItem>
                         <TabItem Header="Серия">
                             <TabControl>
+                                <TabItem Header="Общая информация">
+                                    <RichTextBox x:Name="CommonSeriesInformationRTB" IsReadOnly="True"/>
+                                </TabItem>
                                 <TabItem Header="Фотографии">
-                                    
+                                    <RichTextBox x:Name="PhotosRTB" IsReadOnly="True"/>
                                 </TabItem>
                                 <TabItem Header="Референс">
-
+                                    <RichTextBox x:Name="ReferenceRTB" IsReadOnly="True"/>
                                 </TabItem>
                                 <TabItem Header="График">
-
+                                    <RichTextBox x:Name="SeriesPlotRTB" IsReadOnly="True"/>
                                 </TabItem>
                             </TabControl>
                         </TabItem>
                         <TabItem Header="Общий график серий">
-                            
+                            <RichTextBox x:Name="CommonSeriesPlotRTB" IsReadOnly="True"/>
+                        </TabItem>
+                        <TabItem Header="Расчетная модель">
+                            <RichTextBox Name="CalculationModelRTB" IsReadOnly="True"/>
                         </TabItem>
                     </TabControl>
                 </Grid>
             </TabItem>
-            <TabItem Header="Авторы">
+            <TabItem Header="Разработка">
                 <Grid Background="#FFE5E5E5">
-                    <RichTextBox IsReadOnly="True"/>
+                    <TabControl>
+                        <TabItem Header="Разработчики">
+                            <RichTextBox x:Name="DevelopmentRTB" IsReadOnly="True"/>
+                        </TabItem>
+                        <TabItem Header="Тестировщики">
+                            <RichTextBox x:Name="TestingRTB" IsReadOnly="True"/>
+                        </TabItem>
+                    </TabControl>
                 </Grid>
             </TabItem>
         </TabControl>

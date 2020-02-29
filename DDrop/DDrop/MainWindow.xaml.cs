@@ -305,27 +305,36 @@ namespace DDrop
 
         private void ExportSeriesButton_Click(object sender, RoutedEventArgs e)
         {
-            if (User.IsAnySelectedSeriesCanDrawPlot)
+            if (User.UserSeries.Any(x => x.IsChecked))
             {
-                SaveFileDialog saveFileDialog = new SaveFileDialog();
-                saveFileDialog.Filter = "Excel files (*.xlsx)|*.xlsx|All files (*.*)|*.*";
-                saveFileDialog.AddExtension = true;
-                saveFileDialog.CheckPathExists = true;
-
-                if (saveFileDialog.ShowDialog() == true)
+                if (User.IsAnySelectedSeriesCanDrawPlot)
                 {
-                    ExcelOperations.CreateSingleSeriesExcelFile(User, saveFileDialog.FileName);
+                    SaveFileDialog saveFileDialog = new SaveFileDialog();
+                    saveFileDialog.Filter = "Excel files (*.xlsx)|*.xlsx|All files (*.*)|*.*";
+                    saveFileDialog.AddExtension = true;
+                    saveFileDialog.CheckPathExists = true;
 
-                    notifier.ShowSuccess($"Файл {saveFileDialog.SafeFileName} успешно сохранен.");
+                    if (saveFileDialog.ShowDialog() == true)
+                    {
+                        ExcelOperations.CreateSingleSeriesExcelFile(User, saveFileDialog.FileName);
+
+                        notifier.ShowSuccess($"Файл {saveFileDialog.SafeFileName} успешно сохранен.");
+                    }
+                }
+                else
+                {
+                    notifier.ShowInformation("Нельзя построить график для выбранных серий.");
                 }
             }
             else
-                notifier.ShowInformation("Нельзя построить график для выбранных серий.");
+            {
+                notifier.ShowInformation("Нет выбранных серий.");
+            }
         }
 
         private void DeleteSeriesButton_Click(object sender, RoutedEventArgs e)
         {
-            if (User.UserSeries != null)
+            if (User.UserSeries.Count > 0)
             {
                 bool isAnyChecked = User.UserSeries.Any(x => x.IsChecked);
 
@@ -652,19 +661,26 @@ namespace DDrop
 
         private void DeleteReferencePhotoButton_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult messageBoxResult = MessageBox.Show("Удалить референсный снимок?", "Подтверждение удаления", MessageBoxButton.YesNo);
-            if (messageBoxResult == MessageBoxResult.Yes)
+            if(CurrentSeries.ReferencePhotoForSeries.Content != null)
             {
-                MainWindowPixelDrawer.CanDrawing.Children.Remove(CurrentSeries.ReferencePhotoForSeries.Line);
+                MessageBoxResult messageBoxResult = MessageBox.Show("Удалить референсный снимок?", "Подтверждение удаления", MessageBoxButton.YesNo);
+                if (messageBoxResult == MessageBoxResult.Yes)
+                {
+                    MainWindowPixelDrawer.CanDrawing.Children.Remove(CurrentSeries.ReferencePhotoForSeries.Line);
 
-                notifier.ShowSuccess($"Референсный снимок {CurrentSeries.ReferencePhotoForSeries.Name} удален.");
+                    notifier.ShowSuccess($"Референсный снимок {CurrentSeries.ReferencePhotoForSeries.Name} удален.");
 
-                MainWindowPixelDrawer.PixelsInMillimeter = "";
-                CurrentSeries.ReferencePhotoForSeries.Name = null;
-                CurrentSeries.ReferencePhotoForSeries.Line = null;
-                CurrentSeries.ReferencePhotoForSeries.PixelsInMillimeter = 0;
-                CurrentSeries.ReferencePhotoForSeries.Content = null;
-                ReferenceImage = null;
+                    MainWindowPixelDrawer.PixelsInMillimeter = "";
+                    CurrentSeries.ReferencePhotoForSeries.Name = null;
+                    CurrentSeries.ReferencePhotoForSeries.Line = null;
+                    CurrentSeries.ReferencePhotoForSeries.PixelsInMillimeter = 0;
+                    CurrentSeries.ReferencePhotoForSeries.Content = null;
+                    ReferenceImage = null;
+                }
+            }
+            else
+            {
+                notifier.ShowInformation("Нет референсного снимка для удаления.");
             }
         }
 

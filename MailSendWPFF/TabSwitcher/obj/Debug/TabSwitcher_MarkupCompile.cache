@@ -4,7 +4,7 @@
 library
 C#
 .cs
-C:\Fallingsappy\Data\Programming\CSharp3\Homework\Homework4\MailSendWPFF\TabSwitcher\obj\Debug\
+E:\fallingsappy\Data\Programming\portfolio\MailSendWPFF\TabSwitcher\obj\Debug\
 TabSwitcher
 none
 false
@@ -16,5 +16,5 @@ DEBUG;TRACE
 131569487696
 TabSwitcherControl.xaml;
 
-False
+True
 

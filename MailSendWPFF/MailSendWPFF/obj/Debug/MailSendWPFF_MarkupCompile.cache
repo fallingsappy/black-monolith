@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Fallingsappy\Data\Programming\CSharp3\Homework\Homework4\MailSendWPFF\MailSendWPFF\obj\Debug\
+E:\fallingsappy\Data\Programming\portfolio\MailSendWPFF\MailSendWPFF\obj\Debug\
 MailSendWPFF
 none
 false
 DEBUG;TRACE
-C:\Fallingsappy\Data\Programming\CSharp3\Homework\Homework4\MailSendWPFF\MailSendWPFF\App.xaml
-6-1569593220
+E:\fallingsappy\Data\Programming\portfolio\MailSendWPFF\MailSendWPFF\App.xaml
+7-1648463701
 2-1847399406
-211489347133
-79-1938017394
-View\SendEndWindow.xaml;View\SendErrorWindow.xaml;Resources\Theme.xaml;View\EmailInfoView.xaml;View\SaveEmailView.xaml;View\WpfMailSender.xaml;
+22-1403799101
+831639907918
+View\ListViewItemScheduler.xaml;View\SendEndWindow.xaml;View\SendErrorWindow.xaml;Resources\Theme.xaml;View\EmailInfoView.xaml;View\SaveEmailView.xaml;View\WpfMailSender.xaml;
 
-False
+True
 

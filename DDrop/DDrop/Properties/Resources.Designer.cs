@@ -61,12 +61,207 @@ namespace DDrop.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1251\deff0\nouicompat\deflang1049{\fonttbl{\f0\fnil\fcharset0 Segoe UI;}{\f1\fnil\fcharset204 Segoe UI;}{\f2\fnil\fcharset0 Calibri;}}
+        ///{\colortbl ;\red0\green0\blue0;}
+        ///{\*\generator Riched20 10.0.18362}\viewkind4\uc1 
+        ///\pard\qc\cf1\b\f0\fs33\lang1033 DDrop\b0\par
+        ///
+        ///\pard\fi375\qj\f1\fs21\lang1049\&apos;cf\&apos;f0\&apos;ee\&apos;e3\&apos;f0\&apos;e0\&apos;ec\&apos;ec\&apos;e0 DDrop \&apos;f1\&apos;ee\&apos;e7\&apos;e4\&apos;e0\&apos;ed\&apos;e0 \&apos;f1 \&apos;f6\&apos;e5\&apos;eb\&apos;fc\&apos;fe \&apos;ee\&apos;ef\&apos;f2\&apos;e8\&apos;ec\&apos;e8\&apos;e7\&apos;e0\&apos;f6\&apos;e8\&apos;e8 \&apos;ef\&apos;f0\&apos;ee\&apos;f6\&apos;e5\&apos;f1\&apos;f1\&apos;e0 \&apos;ee\&apos;e1\&apos;f0\&apos;e0\ [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string About {
+            get {
+                return ResourceManager.GetString("About", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1251\deff0\nouicompat\deflang1049{\fonttbl{\f0\fnil\fcharset204 Segoe UI;}{\f1\fnil\fcharset0 Segoe UI;}{\f2\fnil\fcharset0 Calibri;}}
+        ///{\colortbl ;\red0\green0\blue0;}
+        ///{\*\generator Riched20 10.0.18362}\viewkind4\uc1 
+        ///\pard\qc\cf1\b\f0\fs33\&apos;d3\&apos;f7\&apos;e5\&apos;f2\&apos;ed\&apos;e0\&apos;ff \&apos;e7\&apos;e0\&apos;ef\&apos;e8\&apos;f1\&apos;fc\b0\f1\lang1033\par
+        ///
+        ///\pard\fi375\qj\f0\fs21\lang1049\&apos;c2 \&apos;f0\&apos;e0\&apos;e7\&apos;f0\&apos;e0\&apos;e1\&apos;ee\&apos;f2\&apos;ea\&apos;e5...\f1\lang1033\par
+        ///
+        ///\pard\sa200\sl276\slmult1\cf0\f2\fs22\lang9\par
+        ///}
+        ///.
+        /// </summary>
+        public static string Account {
+            get {
+                return ResourceManager.GetString("Account", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1251\deff0\nouicompat\deflang1049{\fonttbl{\f0\fnil\fcharset204 Segoe UI;}{\f1\fnil\fcharset0 Segoe UI;}{\f2\fnil\fcharset0 Calibri;}}
+        ///{\colortbl ;\red0\green0\blue0;}
+        ///{\*\generator Riched20 10.0.18362}\viewkind4\uc1 
+        ///\pard\qc\cf1\b\f0\fs33\&apos;d0\&apos;e0\&apos;f1\&apos;f7\&apos;e5\&apos;f2\b0\f1\lang1033\par
+        ///
+        ///\pard\fi375\qj\f0\fs21\lang1049\&apos;c2 \&apos;f0\&apos;e0\&apos;e7\&apos;f0\&apos;e0\&apos;e1\&apos;ee\&apos;f2\&apos;ea\&apos;e5...\f1\lang1033\par
+        ///
+        ///\pard\sa200\sl276\slmult1\cf0\f2\fs22\lang9\par
+        ///}
+        ///.
+        /// </summary>
+        public static string Calculation {
+            get {
+                return ResourceManager.GetString("Calculation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1251\deff0\nouicompat\deflang1049\deflangfe1049{\fonttbl{\f0\fswiss\fprq2\fcharset204 Segoe UI;}{\f1\fnil\fcharset0 Calibri;}{\f2\fswiss\fprq2\fcharset204 Calibri;}}
+        ///{\colortbl ;\red0\green0\blue0;}
+        ///{\*\generator Riched20 10.0.18362}{\*\mmathPr\mdispDef1\mwrapIndent1440 }\viewkind4\uc1 
+        ///\pard\widctlpar\qc\cf1\b\f0\fs33\&apos;d0\&apos;e0\&apos;f1\&apos;f7\&apos;e5\&apos;f2\&apos;ed\&apos;e0\&apos;ff \&apos;ec\&apos;ee\&apos;e4\&apos;e5\&apos;eb\&apos;fc\b0\par
+        ///
+        ///\pard\widctlpar\fi375\qj\fs21\&apos;d0\&apos;e0\&apos;f1\&apos;f7\&apos;e5\&apos;f2\&apos;ed\&apos;e0\&apos;ff \&apos;ec\&apos;ee\&apos;e4\&apos;e5\&apos;eb\&apos;fc \&apos;e1\&apos;e [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string CalculationModel {
+            get {
+                return ResourceManager.GetString("CalculationModel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1251\deff0\nouicompat\deflang1049{\fonttbl{\f0\fnil\fcharset204 Segoe UI;}{\f1\fnil\fcharset0 Segoe UI;}{\f2\fnil\fcharset0 Calibri;}}
+        ///{\colortbl ;\red0\green0\blue0;}
+        ///{\*\generator Riched20 10.0.18362}\viewkind4\uc1 
+        ///\pard\qc\cf1\b\f0\fs33\&apos;ce\&apos;e1\&apos;f9\&apos;e0\&apos;ff \&apos;e8\&apos;ed\&apos;f4\&apos;ee\&apos;f0\&apos;ec\&apos;e0\&apos;f6\&apos;e8\&apos;ff\b0\f1\lang1033\par
+        ///
+        ///\pard\fi375\qj\f0\fs21\lang1049\&apos;cd\&apos;e0 \&apos;fd\&apos;f2\&apos;ee\&apos;e9 \&apos;e2\&apos;ea\&apos;eb\&apos;e0\&apos;e4\&apos;ea\&apos;e5 \&apos;ef\&apos;f0\&apos;ee\&apos;e8\&apos;f1\&apos;f5\&apos;ee\&apos;e4\&apos;e8\&apos;f2 \&apos;f0\&apos;e0\&apos;e1\&apos;ee\&apos;f2\&apos;e0 \&apos;f1 \&apos;ea\&apos;ee\ [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string CommonSeriesInformation {
+            get {
+                return ResourceManager.GetString("CommonSeriesInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1251\deff0\nouicompat\deflang1049{\fonttbl{\f0\fnil\fcharset204 Segoe UI;}{\f1\fnil\fcharset0 Segoe UI;}{\f2\fnil\fcharset0 Calibri;}}
+        ///{\colortbl ;\red0\green0\blue0;}
+        ///{\*\generator Riched20 10.0.18362}\viewkind4\uc1 
+        ///\pard\qc\cf1\b\f0\fs33\&apos;ce\&apos;e1\&apos;f9\&apos;e8\&apos;e9 \&apos;e3\&apos;f0\&apos;e0\&apos;f4\&apos;e8\&apos;ea \&apos;f1\&apos;e5\&apos;f0\&apos;e8\&apos;e9\b0\f1\lang1033\par
+        ///
+        ///\pard\fi375\qj\f0\fs21\lang1049\&apos;d7\&apos;f2\&apos;ee\&apos;e1\&apos;fb \&apos;ef\&apos;ee\&apos;f1\&apos;f2\&apos;f0\&apos;ee\&apos;e8\&apos;f2\&apos;fc \&apos;e3\&apos;f0\&apos;e0\&apos;f4\&apos;e8\&apos;ea \&apos;ed\&apos;e5\&apos;ee\&apos;e1\&apos;f5\&apos;ee\&apos;e4\&apos;e8\&apos;ec\&apos;ee \&apos;e2\&apos; [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string CommonSeriesPlot {
+            get {
+                return ResourceManager.GetString("CommonSeriesPlot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         public static System.Drawing.Bitmap cool_profile_picture_300x219_vectorized__1_ {
             get {
                 object obj = ResourceManager.GetObject("cool_profile_picture_300x219_vectorized__1_", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1251\deff0\nouicompat\deflang1049{\fonttbl{\f0\fnil\fcharset204 Segoe UI;}{\f1\fnil\fcharset0 Segoe UI;}{\f2\fnil\fcharset0 Calibri;}{\f3\fnil\fcharset2 Symbol;}}
+        ///{\colortbl ;\red0\green0\blue0;}
+        ///{\*\generator Riched20 10.0.18362}\viewkind4\uc1 
+        ///\pard\qc\cf1\b\f0\fs33\&apos;d0\&apos;e0\&apos;e7\&apos;f0\&apos;e0\&apos;e1\&apos;ee\&apos;f2\&apos;f7\&apos;e8\&apos;ea\&apos;e8\b0\f1\lang1033\par
+        ///
+        ///\pard{\pntext\f3\&apos;B7\tab}{\*\pn\pnlvlblt\pnf3\pnindent0{\pntxtb\&apos;B7}}\fi-360\li720\qj\f0\fs21\lang1049\&apos;cd\&apos;ee\&apos;e2\&apos;e8\&apos;ea\&apos;ee\&apos;e2 \&apos;c2\&apos;eb\&apos;e0\&apos;e4\&apos;e8 [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string Developers {
+            get {
+                return ResourceManager.GetString("Developers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1251\deff0\nouicompat\deflang1049{\fonttbl{\f0\fnil\fcharset204 Segoe UI;}{\f1\fnil\fcharset0 Segoe UI;}{\f2\fnil\fcharset0 Calibri;}}
+        ///{\colortbl ;\red0\green0\blue0;}
+        ///{\*\generator Riched20 10.0.18362}\viewkind4\uc1 
+        ///\pard\qc\cf1\b\f0\fs33\&apos;cc\&apos;e5\&apos;ed\&apos;fe\b0\f1\lang1033\par
+        ///
+        ///\pard\fi375\qj\f0\fs21\lang1049\&apos;cc\&apos;e5\&apos;ed\&apos;fe \&apos;f1\&apos;ee\&apos;f1\&apos;f2\&apos;ee\&apos;e8\&apos;f2 \&apos;e8\&apos;e7 \&apos;ed\&apos;e5\&apos;f1\&apos;ea\&apos;ee\&apos;eb\&apos;fc\&apos;ea\&apos;e8\&apos;f5 \&apos;ef\&apos;f3\&apos;ed\&apos;ea\&apos;f2\&apos;ee\&apos;e2:\f1\lang1033\par
+        ///
+        ///\pard 
+        ///{\pntext\f1 1.\tab}{\*\pn\p [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string Menu {
+            get {
+                return ResourceManager.GetString("Menu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1251\deff0\nouicompat\deflang1049{\fonttbl{\f0\fnil\fcharset204 Segoe UI;}{\f1\fnil\fcharset0 Segoe UI;}{\f2\fnil\fcharset0 Calibri;}}
+        ///{\colortbl ;\red0\green0\blue0;}
+        ///{\*\generator Riched20 10.0.18362}\viewkind4\uc1 
+        ///\pard\qc\cf1\b\f0\fs33\&apos;d4\&apos;ee\&apos;f2\&apos;ee\&apos;e3\&apos;f0\&apos;e0\&apos;f4\&apos;e8\&apos;e8\b0\f1\lang1033\par
+        ///
+        ///\pard\fi375\qj\f0\fs21\lang1049\&apos;cd\&apos;e0 \&apos;fd\&apos;f2\&apos;ee\&apos;e9 \&apos;e2\&apos;ea\&apos;eb\&apos;e0\&apos;e4\&apos;ea\&apos;e5 \&apos;ec\&apos;ee\&apos;e6\&apos;ed\&apos;ee \&apos;e7\&apos;e0\&apos;e3\&apos;f0\&apos;f3\&apos;e7\&apos;e8\&apos;f2\&apos;fc \&apos;ed\&apos;ee\&apos;e2\&apos;fb\&apos;e5 \&apos;f1\&apos;ed\&apos;e8\&apos;ec\&apos;ea\&apos; [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string Photos {
+            get {
+                return ResourceManager.GetString("Photos", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1251\deff0\nouicompat\deflang1049{\fonttbl{\f0\fnil\fcharset204 Segoe UI;}{\f1\fnil\fcharset0 Segoe UI;}{\f2\fnil\fcharset0 Calibri;}}
+        ///{\colortbl ;\red0\green0\blue0;}
+        ///{\*\generator Riched20 10.0.18362}\viewkind4\uc1 
+        ///\pard\qc\cf1\b\f0\fs33\&apos;c3\&apos;f0\&apos;e0\&apos;f4\&apos;e8\&apos;ea\b0\f1\lang1033\par
+        ///
+        ///\pard\fi375\qj\f0\fs21\lang1049\&apos;cf\&apos;f0\&apos;e8 \&apos;f1\&apos;ee\&apos;e7\&apos;e4\&apos;e0\&apos;ed\&apos;e8\&apos;e8 \&apos;ed\&apos;ee\&apos;e2\&apos;ee\&apos;e9 \&apos;f1\&apos;e5\&apos;f0\&apos;e8\&apos;e8 \&apos;ea\&apos;ed\&apos;ee\&apos;ef\&apos;ea\&apos;e0 \&apos;e3\&apos;f0\&apos;e0\&apos;f4\&apos;e8\&apos;ea \&apos;ed\&apos;e5\&apos;e4\&apos;ee\&apos;f1\&apos;f2\&apos;f3\&apos;ef\&apos; [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string Plot {
+            get {
+                return ResourceManager.GetString("Plot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1251\deff0\nouicompat\deflang1049{\fonttbl{\f0\fnil\fcharset204 Segoe UI;}{\f1\fnil\fcharset0 Segoe UI;}{\f2\fnil\fcharset0 Calibri;}}
+        ///{\colortbl ;\red0\green0\blue0;}
+        ///{\*\generator Riched20 10.0.18362}\viewkind4\uc1 
+        ///\pard\qc\cf1\b\f0\fs33\&apos;d0\&apos;e5\&apos;f4\&apos;e5\&apos;f0\&apos;e5\&apos;ed\&apos;f1\b0\f1\lang1033\par
+        ///
+        ///\pard\fi375\qj\f0\fs21\lang1049\&apos;c2\&apos;ea\&apos;eb\&apos;e0\&apos;e4\&apos;ea\&apos;e0 \&apos;f1\&apos;ee\&apos;f1\&apos;f2\&apos;ee\&apos;e8\&apos;f2 \&apos;e8\&apos;e7 \&apos;e2\&apos;e5\&apos;f0\&apos;f5\&apos;ed\&apos;e5\&apos;e3\&apos;ee \&apos;ec\&apos;e5\&apos;ed\&apos;fe \&apos;e8 \&apos;ee\&apos;e1\&apos;eb\&apos;e0\&apos;f1\&apos;f2\&apos;e8 \&apos;e3\&apos;f0\&apos;e0\ [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string Reference {
+            get {
+                return ResourceManager.GetString("Reference", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1251\deff0\nouicompat\deflang1049{\fonttbl{\f0\fnil\fcharset204 Segoe UI;}{\f1\fnil\fcharset0 Segoe UI;}{\f2\fnil\fcharset0 Calibri;}}
+        ///{\colortbl ;\red0\green0\blue0;}
+        ///{\*\generator Riched20 10.0.18362}\viewkind4\uc1 
+        ///\pard\qc\cf1\b\f0\fs33\&apos;cc\&apos;e5\&apos;ed\&apos;e5\&apos;e4\&apos;e6\&apos;e5\&apos;f0 \&apos;f1\&apos;e5\&apos;f0\&apos;e8\&apos;e9\b0\f1\lang1033\par
+        ///
+        ///\pard\fi375\qj\f0\fs21\lang1049\&apos;cc\&apos;e5\&apos;ed\&apos;e5\&apos;e4\&apos;e6\&apos;e5\&apos;f0 \&apos;f1\&apos;e5\&apos;f0\&apos;e8\&apos;e9 \&apos;f1\&apos;ee\&apos;f1\&apos;f2\&apos;ee\&apos;e8\&apos;f2 \&apos;e8\&apos;e7 \&apos;f2\&apos;f0\&apos;e5\&apos;f5 \&apos;e7\&apos;ee\&apos;ed:\f1\lang1033\par
+        ///
+        ///\ [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string SeriesManager {
+            get {
+                return ResourceManager.GetString("SeriesManager", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1251\deff0\nouicompat\deflang1049{\fonttbl{\f0\fnil\fcharset204 Segoe UI;}{\f1\fnil\fcharset0 Segoe UI;}{\f2\fnil\fcharset0 Calibri;}{\f3\fnil\fcharset2 Symbol;}}
+        ///{\colortbl ;\red0\green0\blue0;}
+        ///{\*\generator Riched20 10.0.18362}\viewkind4\uc1 
+        ///\pard\qc\cf1\b\f0\fs33\&apos;d2\&apos;e5\&apos;f1\&apos;f2\&apos;e8\&apos;f0\&apos;ee\&apos;e2\&apos;f9\&apos;e8\&apos;ea\&apos;e8\b0\f1\lang1033\par
+        ///
+        ///\pard{\pntext\f3\&apos;B7\tab}{\*\pn\pnlvlblt\pnf3\pnindent0{\pntxtb\&apos;B7}}\fi-360\li720\qj\f0\fs21\lang1049\&apos;c0\&apos;ed\&apos;e4\&apos;f0\&apos;e5\&apos;e9 \&apos;cb\&apos;e8\&apos;f2\&apos;f3\&apos;ed\&apos;ee [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string Testers {
+            get {
+                return ResourceManager.GetString("Testers", resourceCulture);
             }
         }
     }
