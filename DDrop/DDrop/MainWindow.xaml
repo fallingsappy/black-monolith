@@ -5,6 +5,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:utility="clr-namespace:DDrop.Utility.ImageOperations;assembly=DDrop.Utility"
+        xmlns:utilityVisualHelper="clr-namespace:DDrop.Utility.DataGrid;assembly=DDrop.Utility"
         xmlns:uc="clr-namespace:DDrop.Controls;assembly=DDrop.Controls"
         xmlns:pixelDrawer="clr-namespace:DDrop.Controls.PixelDrawer;assembly=DDrop.Controls"
         mc:Ignorable="d"
@@ -47,7 +48,7 @@
                                         </DataTemplate>
                                     </DataGridCheckBoxColumn.HeaderTemplate>
                                 </DataGridCheckBoxColumn>
-                                <DataGridTextColumn IsReadOnly="True" Header="Название" Binding="{Binding Title}"/>
+                                <DataGridTextColumn IsReadOnly="False" Header="Название" Binding="{Binding Title}"/>
                                 <DataGridTextColumn IsReadOnly="True" Header="Количество фотографий" Binding="{Binding DropPhotosSeries.Count}"/>
                                 <DataGridTextColumn IsReadOnly="True" Header="Интервал между снимками" Binding="{Binding IntervalBetweenPhotos}"/>
                                 <DataGridTemplateColumn IsReadOnly="True" CanUserResize="False">
@@ -128,7 +129,7 @@
                                         <Label Content="Интервал между снимками (c):" Margin="0,0,130,-4" VerticalAlignment="Top" Height="30" Background="{x:Null}" HorizontalAlignment="Right" Width="180"/>
                                     </Grid>
                                 </Border>
-                                <DataGrid CanUserSortColumns="False" CanUserAddRows="false" AutoGenerateColumns="False" Grid.Row="0" HorizontalAlignment="Stretch" Name="Photos" Margin="10,43,10,10" SelectionMode="Single" SelectionChanged="Photos_SelectionChanged" IsReadOnly="False" ItemsSource="{Binding CurrentSeries.DropPhotosSeries}">
+                                <DataGrid utilityVisualHelper:VisualHelper.EnableRowsMove="True" CanUserSortColumns="False" CanUserAddRows="false" AutoGenerateColumns="False" Grid.Row="0" HorizontalAlignment="Stretch" Name="Photos" Margin="10,43,10,10" SelectionMode="Single" SelectionChanged="Photos_SelectionChanged" IsReadOnly="False" ItemsSource="{Binding CurrentSeries.DropPhotosSeries}">
                                     <DataGrid.Columns>
                                         <DataGridCheckBoxColumn IsReadOnly="False" Binding="{Binding IsChecked, UpdateSourceTrigger=PropertyChanged}" CanUserResize="False">
                                             <DataGridCheckBoxColumn.HeaderTemplate>
@@ -137,7 +138,7 @@
                                                 </DataTemplate>
                                             </DataGridCheckBoxColumn.HeaderTemplate>
                                         </DataGridCheckBoxColumn>
-                                        <DataGridTextColumn IsReadOnly="True" Header="Имя файла" Binding="{Binding Name}"/>
+                                        <DataGridTextColumn IsReadOnly="False" Header="Имя файла" Binding="{Binding Name}"/>
                                         <DataGridTextColumn IsReadOnly="True" Header="Горизонтальный диаметр, px" Binding="{Binding XDiameterInPixels}"/>
                                         <DataGridTextColumn IsReadOnly="True" Header="Вертикальный диаметр, px" Binding="{Binding YDiameterInPixels}"/>
                                         <DataGridTextColumn IsReadOnly="True" Header="Горизонтальный диаметр, м" Binding="{Binding Drop.XDiameterInMeters}" />

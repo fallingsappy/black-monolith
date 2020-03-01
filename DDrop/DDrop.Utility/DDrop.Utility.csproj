@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cryptography\PasswordEncoding.cs" />
+    <Compile Include="DataGrid\VisualHelper.cs" />
     <Compile Include="ExcelOperations\ExcelOperations.cs" />
     <Compile Include="ImageOperations\ImageInterpreter.cs" />
     <Compile Include="ImageOperations\ImageValidator.cs" />

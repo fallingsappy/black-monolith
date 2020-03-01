@@ -274,14 +274,17 @@ namespace DDrop
 
         private void DeleteSingleSeriesButton_Click(object sender, RoutedEventArgs e)
         {
-            notifier.ShowSuccess($"Серия {User.UserSeries[SeriesDataGrid.SelectedIndex].Title} была удалена.");
+            MessageBoxResult messageBoxResult = MessageBox.Show($"Удалить серию {User.UserSeries[SeriesDataGrid.SelectedIndex].Title}?", "Подтверждение удаления", MessageBoxButton.YesNo);
+            if (messageBoxResult == MessageBoxResult.Yes)
+            {
+                notifier.ShowSuccess($"Серия {User.UserSeries[SeriesDataGrid.SelectedIndex].Title} была удалена.");
 
-            User.UserSeries.RemoveAt(SeriesDataGrid.SelectedIndex);
-            Photos.ItemsSource = null;
-            ImgPreview.Source = null;
-            SeriesPreviewDataGrid.ItemsSource = null;
+                User.UserSeries.RemoveAt(SeriesDataGrid.SelectedIndex);
+                Photos.ItemsSource = null;
+                ImgPreview.Source = null;
+                SeriesPreviewDataGrid.ItemsSource = null;
+            }
         }
-
         private void SeriesPreviewDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             DropPhoto selectedFile = (DropPhoto)SeriesPreviewDataGrid.SelectedItem;
@@ -525,7 +528,7 @@ namespace DDrop
                         {
                             imageForAdding.PropertyChanged += PhotosOnPropertyChanged;
                             CurrentSeries.DropPhotosSeries.Add(imageForAdding);
-                            CurrentSeries.DropPhotosSeries[CurrentSeries.DropPhotosSeries.Count - 1].Drop = new Drop(CurrentSeries, CurrentSeries.DropPhotosSeries[i]);
+                            CurrentSeries.DropPhotosSeries[CurrentSeries.DropPhotosSeries.Count - 1].Drop = new Drop(CurrentSeries, CurrentSeries.DropPhotosSeries[CurrentSeries.DropPhotosSeries.Count - 1]);
                             notifier.ShowSuccess($"Снимок {imageForAdding.Name} добавлен.");
                         }
                     }
@@ -586,9 +589,13 @@ namespace DDrop
 
         private void DeleteSingleInputPhotoButton_Click(object sender, RoutedEventArgs e)
         {
-            notifier.ShowSuccess($"Снимок {CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].Name} удален.");
+            MessageBoxResult messageBoxResult = MessageBox.Show($"Удалить снимок {CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].Name}?", "Подтверждение удаления", MessageBoxButton.YesNo);
+            if (messageBoxResult == MessageBoxResult.Yes)
+            {
+                notifier.ShowSuccess($"Снимок {CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].Name} удален.");
 
-            CurrentSeries.DropPhotosSeries.RemoveAt(Photos.SelectedIndex);
+                CurrentSeries.DropPhotosSeries.RemoveAt(Photos.SelectedIndex);
+            }
         }
 
         private void EditInputPhotoButton_Click(object sender, RoutedEventArgs e)
