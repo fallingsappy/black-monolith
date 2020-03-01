@@ -59,6 +59,23 @@
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="Статус" IsReadOnly="True" CanUserResize="False">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <TextBlock x:Name="PhotosStatusToolTip" ToolTip="Чтобы построить график, необходимо указать интервал между снимками, рассчитать радиус для каждой фотографии серии." Height="25" Width="25"/>
+                                                <ContentControl  x:Name="PhotosStatus" ToolTip="Радиусы всех капель должны быть расчитаны, чтобы построить график." Content="{StaticResource Warning}" Height="25" Width="25" HorizontalAlignment="Center"/>
+                                            </Grid>
+                                            <DataTemplate.Triggers>
+                                                <DataTrigger Binding="{Binding CanDrawPlot}" Value="true">
+                                                    <Setter Property="Content" Value="{StaticResource Ok}" TargetName="PhotosStatus"/>
+                                                    <Setter Property="ToolTip" Value="График может быть построен." TargetName="PhotosStatusToolTip"/>
+                                                    <Setter Property="ToolTip" Value="График может быть построен." TargetName="PhotosStatus"/>
+                                                </DataTrigger>
+                                            </DataTemplate.Triggers>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
                             </DataGrid.Columns>
                         </DataGrid>
                     </Border>
@@ -148,10 +165,14 @@
                                         <DataGridTemplateColumn Header="Статус" IsReadOnly="True" CanUserResize="False">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
-                                                    <ContentControl ToolTip="Радиусы всех капель должны быть расчитаны, чтобы построить график." x:Name="PhotosStatus" Content="{StaticResource Warning}" Height="25" Width="25" HorizontalAlignment="Center"/>
+                                                    <Grid>
+                                                        <TextBlock x:Name="PhotosStatusToolTip" ToolTip="Радиусы всех капель должны быть расчитаны, чтобы построить график." Height="25" Width="25"/>
+                                                        <ContentControl  x:Name="PhotosStatus" ToolTip="Радиусы всех капель должны быть расчитаны, чтобы построить график." Content="{StaticResource Warning}" Height="25" Width="25" HorizontalAlignment="Center"/>
+                                                    </Grid>
                                                     <DataTemplate.Triggers>
                                                         <DataTrigger Binding="{Binding Processed}" Value="true">
                                                             <Setter Property="Content" Value="{StaticResource Ok}" TargetName="PhotosStatus"/>
+                                                            <Setter Property="ToolTip" Value="Радиус капли расчитан успешно." TargetName="PhotosStatusToolTip"/>
                                                             <Setter Property="ToolTip" Value="Радиус капли расчитан успешно." TargetName="PhotosStatus"/>
                                                         </DataTrigger>
                                                     </DataTemplate.Triggers>
