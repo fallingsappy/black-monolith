@@ -4,9 +4,9 @@ import numpy as np
 from os.path import basename, splitext
 
 def main():
-    input_path = sys.argv[1]
+    input_path = 'C:/Users/FallingsappyPC/source/repos/ConsoleApp3/bin/Debug/test/IMG_8919.JPG'
     print(input_path)
-    output_path = sys.argv[2]
+    output_path = 'C:/Users/FallingsappyPC/Desktop'
     print(output_path)
     image = load_image(input_path)
     image_name = load_image_name(input_path)

@@ -12,6 +12,7 @@
 using DDrop;
 using DDrop.Controls;
 using DDrop.Controls.PixelDrawer;
+using DDrop.Utility.DataGrid;
 using DDrop.Utility.ImageOperations;
 using System;
 using System.Diagnostics;

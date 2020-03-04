@@ -95,12 +95,23 @@ namespace DDrop.Utility.DataGrid
                     throw new ApplicationException("EnableRowsMoveProperty requires the ItemsSource property of DataGrid to be at least IList inherited collection. Use ObservableCollection to have movements reflected in UI.");
                 //get target index
                 var targetIndex = list.IndexOf(targetItem);
+                var draggedIndex = list.IndexOf(draggeditem);
+
+                list.Add(draggeditem);
+                
                 //remove the source from the list
-                list.Remove(draggeditem);
+                list.RemoveAt(draggedIndex);
 
                 //move source at the target's location
                 list.Insert(targetIndex, draggeditem);
+
+                list.RemoveAt(list.Count - 1);
             }
+        }
+
+        private static void SafeSwap()
+        {
+
         }
 
         public static T FindVisualParent<T>(DependencyObject child)

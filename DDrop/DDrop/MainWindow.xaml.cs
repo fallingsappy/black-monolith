@@ -115,6 +115,10 @@ namespace DDrop
             login.ShowDialog();
             User = login.UserLogin;
 
+            pythonProvider.RunScript("C:/Users/FallingsappyPC/source/repos/ConsoleApp3/bin/Debug/test/IMG_8919.JPG", "C:/Users/FallingsappyPC/Desktop",
+                new DropPhoto(), Properties.Settings.Default.ScriptToRun,
+                Properties.Settings.Default.Interpreter);
+
             if (User == null)
             {
                 Close();
@@ -613,11 +617,18 @@ namespace DDrop
                 ManualEdit manualEdit = new ManualEdit(CurrentDropPhoto);
                 manualEdit.ShowDialog();
 
-                CurrentDropPhoto.Drop = DropletSizeCalculator.PerformCalculation(
-                    Convert.ToInt32(PixelsInMillimeterTextBox.Text), CurrentDropPhoto.XDiameterInPixels,
-                    CurrentDropPhoto.YDiameterInPixels, CurrentSeries, CurrentDropPhoto);
+                if (CurrentDropPhoto.XDiameterInPixels != 0 && CurrentDropPhoto.YDiameterInPixels != 0)
+                {
+                    DropletSizeCalculator.PerformCalculation(
+                        Convert.ToInt32(PixelsInMillimeterTextBox.Text), CurrentDropPhoto.XDiameterInPixels,
+                        CurrentDropPhoto.YDiameterInPixels, CurrentSeries, CurrentDropPhoto);
 
-                notifier.ShowSuccess($"Расчет для снимка {CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].Name} выполнен.");
+                    notifier.ShowSuccess($"Расчет для снимка {CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].Name} выполнен.");
+                }
+                else
+                {
+                    notifier.ShowInformation($"Не указан один из диаметров. Расчет для снимка {CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].Name} не выполнен.");
+                }
             }
             else
             {
@@ -631,6 +642,11 @@ namespace DDrop
 
             if (int.TryParse(intervalBetweenPhotosTextBox.Text, out int intervalBetweenPhotos))
                 CurrentSeries.IntervalBetweenPhotos = intervalBetweenPhotos;
+            else
+            {
+                CurrentSeries.IntervalBetweenPhotos = 0;
+                notifier.ShowInformation("Некорректное значение для интервала между снимками. Укажите интервал между снимками в секундах.");
+            }
         }
 
         #endregion
@@ -719,10 +735,10 @@ namespace DDrop
                             {
                                 if (CurrentSeries.DropPhotosSeries[i].IsChecked)
                                 {
-                                    CurrentSeries.DropPhotosSeries[i] = pythonProvider.RunScript(CurrentSeries.DropPhotosSeries[i].Path, Properties.Settings.Default.SaveTo,
+                                    CurrentSeries.DropPhotosSeries[i] = pythonProvider.RunScript(CurrentSeries.DropPhotosSeries[i].Path, @"C:\Users\FallingsappyPC\Desktop\",
                                     CurrentSeries.DropPhotosSeries[i], Properties.Settings.Default.ScriptToRun,
                                                  Properties.Settings.Default.Interpreter);
-                                    CurrentSeries.DropPhotosSeries[i].Drop = DropletSizeCalculator.PerformCalculation(
+                                    DropletSizeCalculator.PerformCalculation(
                                         Convert.ToInt32(PixelsInMillimeterTextBox.Text), CurrentSeries.DropPhotosSeries[i].XDiameterInPixels,
                                         CurrentSeries.DropPhotosSeries[i].YDiameterInPixels, CurrentSeries, CurrentDropPhoto);
                                 }
@@ -735,7 +751,7 @@ namespace DDrop
                                 CurrentSeries.DropPhotosSeries[i] = pythonProvider.RunScript(CurrentSeries.DropPhotosSeries[i].Path, Properties.Settings.Default.SaveTo,
                                     CurrentSeries.DropPhotosSeries[i], Properties.Settings.Default.ScriptToRun,
                                                                          Properties.Settings.Default.Interpreter);
-                                CurrentSeries.DropPhotosSeries[i].Drop = DropletSizeCalculator.PerformCalculation(
+                                DropletSizeCalculator.PerformCalculation(
                                     Convert.ToInt32(PixelsInMillimeterTextBox.Text), CurrentSeries.DropPhotosSeries[i].XDiameterInPixels,
                                     CurrentSeries.DropPhotosSeries[i].YDiameterInPixels, CurrentSeries, CurrentDropPhoto);
                             }

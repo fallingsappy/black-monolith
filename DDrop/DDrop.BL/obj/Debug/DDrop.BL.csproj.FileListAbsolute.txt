@@ -78,7 +78,6 @@ E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\bin\Debug\DDrop.BE.pdb
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\bin\Debug\DDrop.BE.dll.config
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\bin\Debug\Emgu.CV.World.NetStandard.xml
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\obj\Debug\DDrop.BL.csprojAssemblyReference.cache
-E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\obj\Debug\DDrop.BL.csproj.CoreCompileInputs.cache
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\obj\Debug\DDrop.BL.csproj.CopyComplete
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\obj\Debug\DDrop.BL.dll
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\obj\Debug\DDrop.BL.pdb
