@@ -115,10 +115,6 @@ namespace DDrop
             login.ShowDialog();
             User = login.UserLogin;
 
-            pythonProvider.RunScript("C:/Users/FallingsappyPC/source/repos/ConsoleApp3/bin/Debug/test/IMG_8919.JPG", "C:/Users/FallingsappyPC/Desktop",
-                new DropPhoto(), Properties.Settings.Default.ScriptToRun,
-                Properties.Settings.Default.Interpreter);
-
             if (User == null)
             {
                 Close();
@@ -735,12 +731,15 @@ namespace DDrop
                             {
                                 if (CurrentSeries.DropPhotosSeries[i].IsChecked)
                                 {
-                                    CurrentSeries.DropPhotosSeries[i] = pythonProvider.RunScript(CurrentSeries.DropPhotosSeries[i].Path, @"C:\Users\FallingsappyPC\Desktop\",
-                                    CurrentSeries.DropPhotosSeries[i], Properties.Settings.Default.ScriptToRun,
-                                                 Properties.Settings.Default.Interpreter);
-                                    DropletSizeCalculator.PerformCalculation(
-                                        Convert.ToInt32(PixelsInMillimeterTextBox.Text), CurrentSeries.DropPhotosSeries[i].XDiameterInPixels,
-                                        CurrentSeries.DropPhotosSeries[i].YDiameterInPixels, CurrentSeries, CurrentDropPhoto);
+                                    string fs = pythonProvider.RunScript(Properties.Settings.Default.ScriptToRun,
+                                        Properties.Settings.Default.Interpreter,
+                                        CurrentSeries.DropPhotosSeries[i].Content);
+                                    //CurrentSeries.DropPhotosSeries[i] = pythonProvider.RunScript(CurrentSeries.DropPhotosSeries[i].Path, @"C:\Users\FallingsappyPC\Desktop\",
+                                    //CurrentSeries.DropPhotosSeries[i], Properties.Settings.Default.ScriptToRun,
+                                    //             Properties.Settings.Default.Interpreter);
+                                    //DropletSizeCalculator.PerformCalculation(
+                                    //    Convert.ToInt32(PixelsInMillimeterTextBox.Text), CurrentSeries.DropPhotosSeries[i].XDiameterInPixels,
+                                    //    CurrentSeries.DropPhotosSeries[i].YDiameterInPixels, CurrentSeries, CurrentDropPhoto);
                                 }
                             }
                         }
@@ -748,9 +747,9 @@ namespace DDrop
                         {
                             for (int i = 0; i < CurrentSeries.DropPhotosSeries.Count; ++i)
                             {
-                                CurrentSeries.DropPhotosSeries[i] = pythonProvider.RunScript(CurrentSeries.DropPhotosSeries[i].Path, Properties.Settings.Default.SaveTo,
-                                    CurrentSeries.DropPhotosSeries[i], Properties.Settings.Default.ScriptToRun,
-                                                                         Properties.Settings.Default.Interpreter);
+                                //CurrentSeries.DropPhotosSeries[i] = pythonProvider.RunScript(CurrentSeries.DropPhotosSeries[i].Path, Properties.Settings.Default.SaveTo,
+                                //    CurrentSeries.DropPhotosSeries[i], Properties.Settings.Default.ScriptToRun,
+                                //                                         Properties.Settings.Default.Interpreter);
                                 DropletSizeCalculator.PerformCalculation(
                                     Convert.ToInt32(PixelsInMillimeterTextBox.Text), CurrentSeries.DropPhotosSeries[i].XDiameterInPixels,
                                     CurrentSeries.DropPhotosSeries[i].YDiameterInPixels, CurrentSeries, CurrentDropPhoto);

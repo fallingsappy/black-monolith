@@ -4,18 +4,25 @@ import numpy as np
 from os.path import basename, splitext
 
 def main():
-    arr = sys.argv[1]
-    ksize = sys.argv[2]
-    treshold1 = sys.argv[3]
-    treshold2 = sys.argv[4]
-    size1 = sys.argv[5]
-    size2 = sys.argv[6]
-    contours = process_image(arr, ksize=9, 
-                             treshold1=50, treshold2=5,
-                             size1=100, size2=250)
-    return contours
+	input_path = sys.argv[1].encode()
+	ksize = int(sys.argv[2])
+	treshold1 = int(sys.argv[3])
+	treshold2 = int(sys.argv[4])
+	size1 = int(sys.argv[5])
+	size2 = int(sys.argv[6])
+	contours = process_image(arr,ksize,treshold1,treshold2,size1,size2)
+	print(ksize)
+	print(treshold1)
+	print(treshold2)
+	print(size1)
+	print(size2)
+	return contours
 
-def process_image(arr, ksize=9, treshold1=50, treshold2=5, size1=100, size2=250):    
+def load_image(input_path):
+    image = cv2.imread(input_path)
+    return image
+
+def process_image(arr, ksize, treshold1, treshold2, size1, size2):    
     gray = cv2.cvtColor(arr, cv2.COLOR_BGR2GRAY)
     blur = cv2.medianBlur(gray, ksize)
 
@@ -31,7 +38,7 @@ def process_image(arr, ksize=9, treshold1=50, treshold2=5, size1=100, size2=250)
         if ((len(approx) > 8) & (50000 > area > 10000)):
             contour_list.append(contour)
 
-    cv2.drawContours(image, contour_list, -1, (255,0,0), 2)
+    cv2.drawContours(arr, contour_list, -1, (255,0,0), 2)
 
     contours = contour_list[0]
 
