@@ -59,6 +59,7 @@
     <Compile Include="PixelDrawer\PixelDrawer.xaml.cs">
       <DependentUpon>PixelDrawer.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Zoomborder\Zoomborder.cs" />
     <Page Include="PixelDrawer\PixelDrawer.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -102,5 +103,6 @@
       <Name>DDrop.BE</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

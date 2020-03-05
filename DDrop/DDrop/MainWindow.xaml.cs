@@ -705,9 +705,9 @@ namespace DDrop
                             {
                                 if (CurrentSeries.DropPhotosSeries[i].IsChecked)
                                 {
-                                    CurrentSeries.DropPhotosSeries[i] = pythonProvider.RunScript(CurrentSeries.DropPhotosSeries[i].Path, Properties.Settings.Default.SaveTo,
-                                    CurrentSeries.DropPhotosSeries[i], Properties.Settings.Default.ScriptToRun,
-                                                 Properties.Settings.Default.Interpreter);
+                                    //CurrentSeries.DropPhotosSeries[i] = pythonProvider.RunScript(CurrentSeries.DropPhotosSeries[i].Path, Properties.Settings.Default.SaveTo,
+                                    //CurrentSeries.DropPhotosSeries[i], Properties.Settings.Default.ScriptToRun,
+                                    //             Properties.Settings.Default.Interpreter);
                                     CurrentSeries.DropPhotosSeries[i].Drop = DropletSizeCalculator.PerformCalculation(
                                         Convert.ToInt32(PixelsInMillimeterTextBox.Text), CurrentSeries.DropPhotosSeries[i].XDiameterInPixels,
                                         CurrentSeries.DropPhotosSeries[i].YDiameterInPixels, CurrentSeries);
@@ -718,9 +718,9 @@ namespace DDrop
                         {
                             for (int i = 0; i < CurrentSeries.DropPhotosSeries.Count; ++i)
                             {
-                                CurrentSeries.DropPhotosSeries[i] = pythonProvider.RunScript(CurrentSeries.DropPhotosSeries[i].Path, Properties.Settings.Default.SaveTo,
-                                    CurrentSeries.DropPhotosSeries[i], Properties.Settings.Default.ScriptToRun,
-                                                                         Properties.Settings.Default.Interpreter);
+                                //CurrentSeries.DropPhotosSeries[i] = pythonProvider.RunScript(CurrentSeries.DropPhotosSeries[i].Path, Properties.Settings.Default.SaveTo,
+                                //    CurrentSeries.DropPhotosSeries[i], Properties.Settings.Default.ScriptToRun,
+                                //                                         Properties.Settings.Default.Interpreter);
                                 CurrentSeries.DropPhotosSeries[i].Drop = DropletSizeCalculator.PerformCalculation(
                                     Convert.ToInt32(PixelsInMillimeterTextBox.Text), CurrentSeries.DropPhotosSeries[i].XDiameterInPixels,
                                     CurrentSeries.DropPhotosSeries[i].YDiameterInPixels, CurrentSeries);
