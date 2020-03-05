@@ -8,6 +8,7 @@
         xmlns:utilityVisualHelper="clr-namespace:DDrop.Utility.DataGrid;assembly=DDrop.Utility"
         xmlns:uc="clr-namespace:DDrop.Controls;assembly=DDrop.Controls"
         xmlns:pixelDrawer="clr-namespace:DDrop.Controls.PixelDrawer;assembly=DDrop.Controls"
+        xmlns:zoomborder="clr-namespace:DDrop.Controls.Zoomborder;assembly=DDrop.Controls"
         mc:Ignorable="d"
         Title="DDrop" MinHeight="768" MinWidth="1152" Height="768" Width="1152" Icon="Resources/Icons/MainIcon.png" WindowState="Maximized" x:Name="AppMainWindow" Closing="AppMainWindow_Closing" WindowStartupLocation="CenterScreen">
     <Grid>
@@ -102,9 +103,9 @@
                                   Grid.Row="0"
                                   Grid.RowSpan="3" ResizeBehavior="PreviousAndNext"
                                   Width="5"/>
-                    <utility:ZoomBorder Grid.Row="0"  Grid.Column="2" HorizontalAlignment="Stretch" x:Name="CgsImagePreviewViewer" ClipToBounds="True" Background="Gray" Margin="10" Grid.RowSpan="3">
+                    <zoomborder:ZoomBorder Grid.Row="0"  Grid.Column="2" HorizontalAlignment="Stretch" x:Name="CgsImagePreviewViewer" ClipToBounds="True" Background="Gray" Margin="10" Grid.RowSpan="3">
                         <Image x:Name="ImgPreview" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                    </utility:ZoomBorder>
+                    </zoomborder:ZoomBorder>
                 </Grid>
             </TabItem>
             <TabItem Name="SingleSeries" IsEnabled = "False" Header="Серия">
@@ -186,18 +187,18 @@
                                   VerticalAlignment="Center" 
                                   Grid.Row="1" ResizeBehavior="PreviousAndNext"
                                   Height="5"/>
-                                <utility:ZoomBorder Grid.Row="2" HorizontalAlignment="Stretch" x:Name="CgsImageViewer" ClipToBounds="True" Background="Gray" Margin="10,10,13,10">
+                                <zoomborder:ZoomBorder Grid.Row="2" HorizontalAlignment="Stretch" x:Name="CgsImageViewer" ClipToBounds="True" Background="Gray" Margin="10,10,13,10">
                                     <Image x:Name="ImgCurrent" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                                </utility:ZoomBorder>
+                                </zoomborder:ZoomBorder>
                             </Grid>
                         </TabItem>
                         <TabItem Header="Референс">
                             <Grid Background="#FFE5E5E5">
                                 <Grid>
                                     <Border Name="Border" BorderThickness="1" BorderBrush="#34558b" Margin="10,44,10,10">
-                                        <utility:ZoomBorder x:Name="border" ClipToBounds="True" Background="Gray">
+                                        <zoomborder:ZoomBorder x:Name="border" ClipToBounds="True" Background="Gray">
                                             <pixelDrawer:PixelDrawer CurrentSeries="{Binding ElementName=AppMainWindow, Path=CurrentSeries}" ImageSource="{Binding ReferenceImage, ElementName=AppMainWindow}" x:Name="MainWindowPixelDrawer"/>
-                                        </utility:ZoomBorder>
+                                        </zoomborder:ZoomBorder>
                                     </Border>
                                 </Grid>
                                 <Button Click="ChooseReference_OnClick" Content="Выбрать референс" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="109"/>

@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:utility="clr-namespace:DDrop.Utility.ImageOperations;assembly=DDrop.Utility"
         xmlns:pixelDrawer="clr-namespace:DDrop.Controls.PixelDrawer;assembly=DDrop.Controls"
+        xmlns:zoomborder="clr-namespace:DDrop.Controls.Zoomborder;assembly=DDrop.Controls"
         mc:Ignorable="d"
         Title="Ручное редактирование" Height="502" Width="970" WindowState="Maximized" Icon="Resources/Icons/MainIcon.png" Closing="Window_Closing" x:Name="AppEditWindow" WindowStartupLocation="CenterScreen">
     <Grid>
@@ -49,9 +50,9 @@
             </ContentControl>
         </ToggleButton>
         <Border Name="Border" BorderThickness="1" BorderBrush="#34558b" Margin="10,192,10,10">
-            <utility:ZoomBorder x:Name="ZoomBorder" ClipToBounds="True" Background="Gray" Margin="0,-1,0,0">
+            <zoomborder:ZoomBorder x:Name="ZoomBorder" ClipToBounds="True" Background="Gray" Margin="0,-1,0,0">
                 <pixelDrawer:PixelDrawer PixelsInMillimeterHorizontal="{Binding CurrentDropPhoto.XDiameterInPixels, ElementName=AppEditWindow}" PixelsInMillimeterVertical="{Binding CurrentDropPhoto.YDiameterInPixels, ElementName=AppEditWindow}" CurrentDropPhoto="{Binding CurrentDropPhoto, ElementName=AppEditWindow}" ImageSource="{Binding ImageForEdit, ElementName=AppEditWindow}" x:Name="EditWindowPixelDrawer"/>
-            </utility:ZoomBorder>
+            </zoomborder:ZoomBorder>
         </Border>
     </Grid>
 </Window>

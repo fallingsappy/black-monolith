@@ -64,3 +64,15 @@ E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BE\bin\Debug\EntityFramew
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BE\obj\Debug\DDrop.BE.csproj.CopyComplete
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BE\obj\Debug\DDrop.BE.dll
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BE\obj\Debug\DDrop.BE.pdb
+D:\fallingsappyGit\DDrop\DDrop.BE\bin\Debug\DDrop.BE.dll.config
+D:\fallingsappyGit\DDrop\DDrop.BE\bin\Debug\DDrop.BE.dll
+D:\fallingsappyGit\DDrop\DDrop.BE\bin\Debug\DDrop.BE.pdb
+D:\fallingsappyGit\DDrop\DDrop.BE\bin\Debug\EntityFramework.dll
+D:\fallingsappyGit\DDrop\DDrop.BE\bin\Debug\EntityFramework.SqlServer.dll
+D:\fallingsappyGit\DDrop\DDrop.BE\bin\Debug\EntityFramework.xml
+D:\fallingsappyGit\DDrop\DDrop.BE\bin\Debug\EntityFramework.SqlServer.xml
+D:\fallingsappyGit\DDrop\DDrop.BE\obj\Debug\DDrop.BE.csprojAssemblyReference.cache
+D:\fallingsappyGit\DDrop\DDrop.BE\obj\Debug\DDrop.BE.csproj.CoreCompileInputs.cache
+D:\fallingsappyGit\DDrop\DDrop.BE\obj\Debug\DDrop.BE.csproj.CopyComplete
+D:\fallingsappyGit\DDrop\DDrop.BE\obj\Debug\DDrop.BE.dll
+D:\fallingsappyGit\DDrop\DDrop.BE\obj\Debug\DDrop.BE.pdb

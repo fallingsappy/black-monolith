@@ -81,3 +81,15 @@ E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Utility\obj\Debug\DDrop.U
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.csproj.CopyComplete
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.dll
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.pdb
+D:\fallingsappyGit\DDrop\DDrop.Utility\bin\Debug\DDrop.Utility.dll
+D:\fallingsappyGit\DDrop\DDrop.Utility\bin\Debug\DDrop.Utility.pdb
+D:\fallingsappyGit\DDrop\DDrop.Utility\bin\Debug\DDrop.BE.dll
+D:\fallingsappyGit\DDrop\DDrop.Utility\bin\Debug\EPPlus.dll
+D:\fallingsappyGit\DDrop\DDrop.Utility\bin\Debug\DDrop.BE.pdb
+D:\fallingsappyGit\DDrop\DDrop.Utility\bin\Debug\DDrop.BE.dll.config
+D:\fallingsappyGit\DDrop\DDrop.Utility\bin\Debug\EPPlus.xml
+D:\fallingsappyGit\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.csprojAssemblyReference.cache
+D:\fallingsappyGit\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.csproj.CoreCompileInputs.cache
+D:\fallingsappyGit\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.csproj.CopyComplete
+D:\fallingsappyGit\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.dll
+D:\fallingsappyGit\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.pdb
