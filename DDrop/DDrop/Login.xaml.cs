@@ -13,10 +13,10 @@ namespace DDrop
     /// </summary>
     public partial class Login : Window
     {
-        public static readonly DependencyProperty UserLoginProperty = DependencyProperty.Register("UserLogin", typeof(User), typeof(Login));
-        public User UserLogin
+        public static readonly DependencyProperty UserLoginProperty = DependencyProperty.Register("UserLogin", typeof(UserViewModel), typeof(Login));
+        public UserViewModel UserLogin
         {
-            get { return (User)GetValue(UserLoginProperty); }
+            get { return (UserViewModel)GetValue(UserLoginProperty); }
             set
             {
                 SetValue(UserLoginProperty, value);
@@ -46,7 +46,7 @@ namespace DDrop
             {
                 //TODO запрос в БД 
 
-                UserLogin = new User()
+                UserLogin = new UserViewModel()
                 {
                     Email = TextBoxEmail.Text,
                     //Avatar = 
@@ -102,7 +102,7 @@ namespace DDrop
 
         private void LoginOfflineButton_Click(object sender, RoutedEventArgs e)
         {
-            UserLogin = new User()
+            UserLogin = new UserViewModel()
             {
                 Email = "anonymousUser@anonymousUser.com",
                 UserPhoto = ImageInterpreter.ImageToByteArray(Properties.Resources.cool_profile_picture_300x219_vectorized__1_),

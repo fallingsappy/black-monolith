@@ -31,11 +31,17 @@
                                 <ContentControl Content="{StaticResource AddIcon}" Height="22" Width="23"/>
                             </Button>
                             <TextBox Grid.Column="0" Grid.Row="0" Name="OneLineSetterValue" Height="19" VerticalAlignment="Top" Margin="33,4,251,0" />
-                            <Button Grid.Column="0" Grid.Row="0" Name="ExportSeriesButton" BorderBrush="{x:Null}" Background="{x:Null}" Click="ExportSeriesButton_Click" Margin="0,0,43,2" HorizontalAlignment="Right" Width="28">
+                            <Button ToolTip="Создать Excel отчет" Grid.Column="0" Grid.Row="0" Name="ExportSeriesButton" BorderBrush="{x:Null}" Background="{x:Null}" Click="ExportSeriesButton_Click" Margin="0,0,43,2" HorizontalAlignment="Right" Width="28">
                                 <ContentControl Content="{StaticResource FileExport}" Height="22" Width="23"/>
                             </Button>
                             <Button Grid.Column="0" Grid.Row="0" x:Name="DeleteSeriesButton" BorderBrush="{x:Null}" Background="{x:Null}" Click="DeleteSeriesButton_Click" Margin="0,0,10,2" HorizontalAlignment="Right" Width="28">
                                 <ContentControl Content="{StaticResource DeleteIcon}" Height="22" Width="23"/>
+                            </Button>
+                            <Button ToolTip="Загрузить серии с компьютера" Grid.Column="0" Grid.Row="0" x:Name="ImportLocalSeries" BorderBrush="{x:Null}" Background="{x:Null}" Click="ImportLocalSeries_ClickAsync" Margin="0,0,76,2" HorizontalAlignment="Right" Width="28" RenderTransformOrigin="-1.25,0.615">
+                                <ContentControl Content="{StaticResource ImportLocalSeries}" Height="22" Width="23"/>
+                            </Button>
+                            <Button ToolTip="Выгрузить серии на компьютер" Grid.Column="0" Grid.Row="0" x:Name="ExportSeriesLocal" BorderBrush="{x:Null}" Background="{x:Null}" Click="ExportSeriesLocal_ClickAsync" Margin="0,0,109,2" HorizontalAlignment="Right" Width="28" RenderTransformOrigin="-1.25,0.615">
+                                <ContentControl Content="{StaticResource ExoportLocalSeries}" Height="22" Width="23"/>
                             </Button>
                         </Grid>
                     </Border>

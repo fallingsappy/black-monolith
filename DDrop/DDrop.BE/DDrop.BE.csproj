@@ -54,13 +54,18 @@
   <ItemGroup>
     <Compile Include="Enums\Image\ImageFormat.cs" />
     <Compile Include="Enums\Options\OptionsEnum.cs" />
-    <Compile Include="Models\Drop.cs" />
-    <Compile Include="Models\DropPhoto.cs" />
-    <Compile Include="Models\ReferencePhoto.cs" />
-    <Compile Include="Models\Series.cs" />
+    <Compile Include="Models\ViewModels\DropViewModel.cs" />
+    <Compile Include="Models\ViewModels\DropPhotoViewModel.cs" />
+    <Compile Include="Models\ViewModels\ReferencePhotoViewModel.cs" />
+    <Compile Include="Models\Entities\Drop.cs" />
+    <Compile Include="Models\Entities\DropPhoto.cs" />
+    <Compile Include="Models\Entities\ReferencePhoto.cs" />
+    <Compile Include="Models\Entities\Series.cs" />
+    <Compile Include="Models\Entities\SimpleLine.cs" />
+    <Compile Include="Models\Entities\User.cs" />
+    <Compile Include="Models\ViewModels\SeriesViewModel.cs" />
     <Compile Include="Models\SeriesToExcel.cs" />
-    <Compile Include="Models\SimpleLine.cs" />
-    <Compile Include="Models\User.cs" />
+    <Compile Include="Models\ViewModels\UserViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

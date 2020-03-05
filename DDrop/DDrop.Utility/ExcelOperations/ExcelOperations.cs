@@ -10,7 +10,7 @@ namespace DDrop.Utility.ExcelOperations
 {
     public class ExcelOperations
     {
-        public static void CreateSingleSeriesExcelFile(User User, string fileName)
+        public static void CreateSingleSeriesExcelFile(UserViewModel User, string fileName)
         {
             using (ExcelPackage excelPackage = new ExcelPackage())
             {
@@ -72,7 +72,7 @@ namespace DDrop.Utility.ExcelOperations
                         ObservableCollection<SeriesToExcel> singleSeriesToExcelOutput = new ObservableCollection<SeriesToExcel>();
                         for (int i = 0; i < currentSeries.DropPhotosSeries.Count; i++)
                         {
-                            DropPhoto dropPhoto = currentSeries.DropPhotosSeries[i];
+                            DropPhotoViewModel dropPhoto = currentSeries.DropPhotosSeries[i];
                             singleSeriesToExcelOutput.Add(new SeriesToExcel
                             {
                                 Time = i * currentSeries.IntervalBetweenPhotos,

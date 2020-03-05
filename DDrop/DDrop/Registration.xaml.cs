@@ -13,14 +13,14 @@ namespace DDrop
     /// </summary>
     public partial class Registration
     {
-        public static readonly DependencyProperty UserLoginProperty = DependencyProperty.Register("UserLogin", typeof(User), typeof(Registration));
+        public static readonly DependencyProperty UserLoginProperty = DependencyProperty.Register("UserLogin", typeof(UserViewModel), typeof(Registration));
 
         public bool RegistrationSucceeded = false;
         public byte[] UserPhoto { get; set; }
 
-        public User UserLogin
+        public UserViewModel UserLogin
         {
-            get { return (User)GetValue(UserLoginProperty); }
+            get { return (UserViewModel)GetValue(UserLoginProperty); }
             set
             {
                 SetValue(UserLoginProperty, value);
@@ -73,10 +73,10 @@ namespace DDrop
 
         private void Submit_Click(object sender, RoutedEventArgs e)
         {
-            UserLogin = new User()
+            UserLogin = new UserViewModel()
             {
                 Email = TextBoxEmail.Text,
-                UserSeries = new ObservableCollection<Series>(),
+                UserSeries = new ObservableCollection<SeriesViewModel>(),
                 FirstName = TextBoxFirstName.Text,
                 LastName = TextBoxLastName.Text,
                 IsLoggedIn = true,

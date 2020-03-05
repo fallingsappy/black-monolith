@@ -193,7 +193,6 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="Resources\PythonScripts\GetContour.py" />
     <None Include="Resources\Texts\InformationAboutApp\About\About.rtf" />
     <None Include="Resources\Texts\InformationAboutApp\Development\Developers\Developers.rtf" />
     <None Include="Resources\Texts\InformationAboutApp\Development\Testers\Testers.rtf" />
@@ -259,9 +258,8 @@
   <ItemGroup>
     <Resource Include="Resources\Cursors\Aero_Normal-Transparent.cur" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <Content Include="Resources\PythonScripts\GetContour.py" />
+    <Folder Include="Resources\PythonScripts\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

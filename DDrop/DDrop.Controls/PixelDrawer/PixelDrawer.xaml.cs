@@ -1,4 +1,5 @@
 ﻿using DDrop.BE.Models;
+using DDrop.BE.Models.Entities;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -20,21 +21,21 @@ namespace DDrop.Controls.PixelDrawer
         public static readonly DependencyProperty PixelsInMillimeterVerticalProperty = DependencyProperty.Register("PixelsInMillimeterVertical", typeof(string), typeof(PixelDrawer));
         public static readonly DependencyProperty PixelsInMillimeterHorizontalProperty = DependencyProperty.Register("PixelsInMillimeterHorizontal", typeof(string), typeof(PixelDrawer));
         public static readonly DependencyProperty ImageSourceProperty = DependencyProperty.Register("ImageSource", typeof(ImageSource), typeof(PixelDrawer));
-        public static readonly DependencyProperty CurrentSeriesProperty = DependencyProperty.Register("CurrentSeries", typeof(Series), typeof(PixelDrawer));
-        public static readonly DependencyProperty CurrentDropPhotoProperty = DependencyProperty.Register("CurrentDropPhoto", typeof(DropPhoto), typeof(PixelDrawer));
+        public static readonly DependencyProperty CurrentSeriesProperty = DependencyProperty.Register("CurrentSeries", typeof(SeriesViewModel), typeof(PixelDrawer));
+        public static readonly DependencyProperty CurrentDropPhotoProperty = DependencyProperty.Register("CurrentDropPhoto", typeof(DropPhotoViewModel), typeof(PixelDrawer));
 
-        public DropPhoto CurrentDropPhoto
+        public DropPhotoViewModel CurrentDropPhoto
         {
-            get { return (DropPhoto)GetValue(CurrentDropPhotoProperty); }
+            get { return (DropPhotoViewModel)GetValue(CurrentDropPhotoProperty); }
             set
             {
                 SetValue(CurrentDropPhotoProperty, value);
             }
         }
 
-        public Series CurrentSeries
+        public SeriesViewModel CurrentSeries
         {
-            get { return (Series)GetValue(CurrentSeriesProperty); }
+            get { return (SeriesViewModel)GetValue(CurrentSeriesProperty); }
 
             set
             {

@@ -10,10 +10,10 @@ namespace DDrop.DAL
 
         }
 
-        public DbSet<User> Users { get; set; }
-        public DbSet<Series> Series { get; set; }
-        public DbSet<DropPhoto> DropPhotos { get; set; }
-        public DbSet<Drop> Drops { get; set; }
-        public DbSet<ReferencePhoto> ReferencePhotos { get; set; }
+        public DbSet<UserViewModel> Users { get; set; }
+        public DbSet<SeriesViewModel> Series { get; set; }
+        public DbSet<DropPhotoViewModel> DropPhotos { get; set; }
+        public DbSet<DropViewModel> Drops { get; set; }
+        public DbSet<ReferencePhotoViewModel> ReferencePhotos { get; set; }
     }
 }

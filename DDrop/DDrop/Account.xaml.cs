@@ -10,15 +10,15 @@ namespace DDrop
     /// </summary>
     public partial class Account : Window
     {
-        public static readonly DependencyProperty UserProperty = DependencyProperty.Register("User", typeof(User), typeof(Account));
+        public static readonly DependencyProperty UserProperty = DependencyProperty.Register("User", typeof(UserViewModel), typeof(Account));
 
-        public User User
+        public UserViewModel User
         {
-            get { return (User)GetValue(UserProperty); }
+            get { return (UserViewModel)GetValue(UserProperty); }
             set { SetValue(UserProperty, value); }
         }
 
-        public Account(User user)
+        public Account(UserViewModel user)
         {
             InitializeComponent();
 

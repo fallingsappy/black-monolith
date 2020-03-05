@@ -15,7 +15,7 @@ namespace DDrop.Controls
     public partial class ScatterPlot : UserControl, INotifyPropertyChanged
     {
         public static readonly DependencyProperty UserProperty =
-        DependencyProperty.Register("User", typeof(User), typeof(ScatterPlot));
+        DependencyProperty.Register("User", typeof(UserViewModel), typeof(ScatterPlot));
 
         public static readonly DependencyProperty ParticularSeriesIndexProperty =
         DependencyProperty.Register("ParticularSeriesIndex", typeof(int?), typeof(ScatterPlot));
@@ -26,9 +26,9 @@ namespace DDrop.Controls
             set { SetValue(ParticularSeriesIndexProperty, value); OnPropertyChanged(new PropertyChangedEventArgs("ParticularSeriesIndex")); }
         }
 
-        public User User
+        public UserViewModel User
         {
-            get { return (User)GetValue(UserProperty); }
+            get { return (UserViewModel)GetValue(UserProperty); }
             set { SetValue(UserProperty, value); OnPropertyChanged(new PropertyChangedEventArgs("User")); }
         }
 
