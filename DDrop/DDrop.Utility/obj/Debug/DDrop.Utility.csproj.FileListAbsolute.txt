@@ -70,18 +70,6 @@ C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.Utility\ob
 C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.csproj.CopyComplete
 C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.dll
 C:\Users\FallingsappyPC\Desktop\Новая папка (4)\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.pdb
-D:\fallingsappyGit\DDrop\DDrop.Utility\bin\Debug\DDrop.Utility.dll
-D:\fallingsappyGit\DDrop\DDrop.Utility\bin\Debug\DDrop.Utility.pdb
-D:\fallingsappyGit\DDrop\DDrop.Utility\bin\Debug\DDrop.BE.dll
-D:\fallingsappyGit\DDrop\DDrop.Utility\bin\Debug\EPPlus.dll
-D:\fallingsappyGit\DDrop\DDrop.Utility\bin\Debug\DDrop.BE.pdb
-D:\fallingsappyGit\DDrop\DDrop.Utility\bin\Debug\DDrop.BE.dll.config
-D:\fallingsappyGit\DDrop\DDrop.Utility\bin\Debug\EPPlus.xml
-D:\fallingsappyGit\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.csprojAssemblyReference.cache
-D:\fallingsappyGit\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.csproj.CoreCompileInputs.cache
-D:\fallingsappyGit\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.csproj.CopyComplete
-D:\fallingsappyGit\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.dll
-D:\fallingsappyGit\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.pdb
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.csprojAssemblyReference.cache
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.csproj.CoreCompileInputs.cache
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Utility\bin\Debug\DDrop.Utility.dll.config
@@ -113,3 +101,34 @@ E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Utility\bin\Debug\System.
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.csproj.CopyComplete
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.dll
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.pdb
+D:\fallingsappyGit\DDrop\DDrop.Utility\bin\Debug\DDrop.Utility.dll.config
+D:\fallingsappyGit\DDrop\DDrop.Utility\bin\Debug\DDrop.Utility.dll
+D:\fallingsappyGit\DDrop\DDrop.Utility\bin\Debug\DDrop.Utility.pdb
+D:\fallingsappyGit\DDrop\DDrop.Utility\bin\Debug\DDrop.BE.dll
+D:\fallingsappyGit\DDrop\DDrop.Utility\bin\Debug\EPPlus.dll
+D:\fallingsappyGit\DDrop\DDrop.Utility\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll
+D:\fallingsappyGit\DDrop\DDrop.Utility\bin\Debug\System.Buffers.dll
+D:\fallingsappyGit\DDrop\DDrop.Utility\bin\Debug\System.Memory.dll
+D:\fallingsappyGit\DDrop\DDrop.Utility\bin\Debug\System.Numerics.Vectors.dll
+D:\fallingsappyGit\DDrop\DDrop.Utility\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+D:\fallingsappyGit\DDrop\DDrop.Utility\bin\Debug\System.Text.Encodings.Web.dll
+D:\fallingsappyGit\DDrop\DDrop.Utility\bin\Debug\System.Text.Json.dll
+D:\fallingsappyGit\DDrop\DDrop.Utility\bin\Debug\System.Threading.Tasks.Extensions.dll
+D:\fallingsappyGit\DDrop\DDrop.Utility\bin\Debug\System.ValueTuple.dll
+D:\fallingsappyGit\DDrop\DDrop.Utility\bin\Debug\DDrop.BE.pdb
+D:\fallingsappyGit\DDrop\DDrop.Utility\bin\Debug\DDrop.BE.dll.config
+D:\fallingsappyGit\DDrop\DDrop.Utility\bin\Debug\EPPlus.xml
+D:\fallingsappyGit\DDrop\DDrop.Utility\bin\Debug\Microsoft.Bcl.AsyncInterfaces.xml
+D:\fallingsappyGit\DDrop\DDrop.Utility\bin\Debug\System.Buffers.xml
+D:\fallingsappyGit\DDrop\DDrop.Utility\bin\Debug\System.Memory.xml
+D:\fallingsappyGit\DDrop\DDrop.Utility\bin\Debug\System.Numerics.Vectors.xml
+D:\fallingsappyGit\DDrop\DDrop.Utility\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+D:\fallingsappyGit\DDrop\DDrop.Utility\bin\Debug\System.Text.Encodings.Web.xml
+D:\fallingsappyGit\DDrop\DDrop.Utility\bin\Debug\System.Text.Json.xml
+D:\fallingsappyGit\DDrop\DDrop.Utility\bin\Debug\System.Threading.Tasks.Extensions.xml
+D:\fallingsappyGit\DDrop\DDrop.Utility\bin\Debug\System.ValueTuple.xml
+D:\fallingsappyGit\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.csprojAssemblyReference.cache
+D:\fallingsappyGit\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.csproj.CoreCompileInputs.cache
+D:\fallingsappyGit\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.csproj.CopyComplete
+D:\fallingsappyGit\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.dll
+D:\fallingsappyGit\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.pdb
