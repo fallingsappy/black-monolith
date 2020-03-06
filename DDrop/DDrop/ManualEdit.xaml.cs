@@ -42,7 +42,7 @@ namespace DDrop
         {
             InitializeComponent();
             EditWindowPixelDrawer.TwoLineMode = true;
-            PhotoForEdit.ItemsSource = new ObservableCollection<DropPhotoViewModel>() { dropPhoto };
+            PhotoForEdit.ItemsSource = new ObservableCollection<DropPhotoViewModel> { dropPhoto };
             ImageForEdit = ImageInterpreter.LoadImage(dropPhoto.Content);
             _initialXDiameterInPixels = dropPhoto.XDiameterInPixels;
             _initialYDiameterInPixels = dropPhoto.YDiameterInPixels;

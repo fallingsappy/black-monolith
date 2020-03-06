@@ -678,3 +678,5 @@ D:\fallingsappyGit\DDrop\DDrop\obj\Debug\DDrop.csproj.CoreCompileInputs.cache
 D:\fallingsappyGit\DDrop\DDrop\obj\Debug\DDrop.csproj.CopyComplete
 D:\fallingsappyGit\DDrop\DDrop\obj\Debug\DDrop.exe
 D:\fallingsappyGit\DDrop\DDrop\obj\Debug\DDrop.pdb
+D:\fallingsappyGit\DDrop\DDrop\obj\Debug\AddSeries.g.cs
+D:\fallingsappyGit\DDrop\DDrop\obj\Debug\AddSeries.baml
