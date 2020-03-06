@@ -494,7 +494,7 @@ namespace DDrop
 
                 for (int i = 0; i < series.Count; i++)
                 {
-                    SeriesViewModel _addSingleSeriesViewModel = new SeriesViewModel(User);
+                    SeriesViewModel addSingleSeriesViewModel = new SeriesViewModel(User);
 
                     ObservableCollection<DropPhotoViewModel> dropPhotosSeries = new ObservableCollection<DropPhotoViewModel>();
 
@@ -506,30 +506,37 @@ namespace DDrop
                             Content = dropPhoto.Content,
                             DropPhotoId = dropPhoto.DropPhotoId,
                             SimpleHorizontalLine = dropPhoto.SimpleHorizontalLine,
-                            //HorizontalLine = new Line
-                            //{
-                            //    X1 = dropPhoto.SimpleHorizontalLine.X1,
-                            //    X2 = dropPhoto.SimpleHorizontalLine.X2,
-                            //    Y1 = dropPhoto.SimpleHorizontalLine.Y1,
-                            //    Y2 = dropPhoto.SimpleHorizontalLine.Y2,
-                            //    Stroke = Brushes.DeepPink
-                            //},
                             SimpleVerticalLine = dropPhoto.SimpleVerticalLine,
-                            //VerticalLine = new Line
-                            //{
-                            //    X1 = dropPhoto.SimpleVerticalLine.X1,
-                            //    X2 = dropPhoto.SimpleVerticalLine.X2,
-                            //    Y1 = dropPhoto.SimpleVerticalLine.Y1,
-                            //    Y2 = dropPhoto.SimpleVerticalLine.Y2,
-                            //    Stroke = Brushes.Green
-                            //},
                             Time = dropPhoto.Time,
                             XDiameterInPixels = dropPhoto.XDiameterInPixels,
                             YDiameterInPixels = dropPhoto.YDiameterInPixels,
                             ZDiameterInPixels = dropPhoto.ZDiameterInPixels
                         };
 
-                        var userDrop = new DropViewModel(_addSingleSeriesViewModel, userDropPhoto)
+                        if (dropPhoto.SimpleHorizontalLine != null)
+                        {
+                            userDropPhoto.HorizontalLine = new Line
+                            {
+                                X1 = dropPhoto.SimpleHorizontalLine.X1,
+                                X2 = dropPhoto.SimpleHorizontalLine.X2,
+                                Y1 = dropPhoto.SimpleHorizontalLine.Y1,
+                                Y2 = dropPhoto.SimpleHorizontalLine.Y2,
+                                Stroke = Brushes.DeepPink
+                            };
+                        }
+
+                        if (dropPhoto.SimpleVerticalLine != null)
+                        {
+                            userDropPhoto.VerticalLine = new Line
+                            {
+                                X1 = dropPhoto.SimpleVerticalLine.X1,
+                                X2 = dropPhoto.SimpleVerticalLine.X2,
+                                Y1 = dropPhoto.SimpleVerticalLine.Y1,
+                                Y2 = dropPhoto.SimpleVerticalLine.Y2,
+                                Stroke = Brushes.Green
+                            };
+                        }
+                        var userDrop = new DropViewModel(addSingleSeriesViewModel, userDropPhoto)
                         {
                             DropId = dropPhoto.Drop.DropId,
                             RadiusInMeters = dropPhoto.Drop.RadiusInMeters,
@@ -542,31 +549,33 @@ namespace DDrop
                         userDropPhoto.Drop = userDrop;
 
                         dropPhotosSeries.Add(userDropPhoto);
-
                     }
 
-                    _addSingleSeriesViewModel.ReferencePhotoForSeries = new ReferencePhotoViewModel
+                    addSingleSeriesViewModel.ReferencePhotoForSeries = new ReferencePhotoViewModel
                     {
                         Content = series[i].ReferencePhotoForSeries.Content,
                         Name = series[i].ReferencePhotoForSeries.Name,
                         PixelsInMillimeter = series[i].ReferencePhotoForSeries.PixelsInMillimeter,
                         ReferencePhotoId = series[i].ReferencePhotoForSeries.ReferencePhotoId,
                         SimpleLine = series[i].ReferencePhotoForSeries.SimpleLine,
-                        //Line = new Line
-                        //{
-                        //    X1 = series[i].ReferencePhotoForSeries.SimpleLine.X1,
-                        //    X2 = series[i].ReferencePhotoForSeries.SimpleLine.X2,
-                        //    Y1 = series[i].ReferencePhotoForSeries.SimpleLine.Y1,
-                        //    Y2 = series[i].ReferencePhotoForSeries.SimpleLine.Y2,
-                        //    Stroke = Brushes.DeepPink
-                        //}
                     };
-                    _addSingleSeriesViewModel.Title = series[i].Title;
-                    _addSingleSeriesViewModel.DropPhotosSeries = dropPhotosSeries;
-                    _addSingleSeriesViewModel.IntervalBetweenPhotos = series[i].IntervalBetweenPhotos;
-                    _addSingleSeriesViewModel.SeriesId = series[i].SeriesId;
+                    if (series[i].ReferencePhotoForSeries.SimpleLine != null)
+                    {
+                        addSingleSeriesViewModel.ReferencePhotoForSeries.Line = new Line
+                        {
+                            X1 = series[i].ReferencePhotoForSeries.SimpleLine.X1,
+                            X2 = series[i].ReferencePhotoForSeries.SimpleLine.X2,
+                            Y1 = series[i].ReferencePhotoForSeries.SimpleLine.Y1,
+                            Y2 = series[i].ReferencePhotoForSeries.SimpleLine.Y2,
+                            Stroke = Brushes.DeepPink
+                        };
+                    }
+                    addSingleSeriesViewModel.Title = series[i].Title;
+                    addSingleSeriesViewModel.DropPhotosSeries = dropPhotosSeries;
+                    addSingleSeriesViewModel.IntervalBetweenPhotos = series[i].IntervalBetweenPhotos;
+                    addSingleSeriesViewModel.SeriesId = series[i].SeriesId;
 
-                    _addSeriesViewModel.Add(_addSingleSeriesViewModel);
+                    _addSeriesViewModel.Add(addSingleSeriesViewModel);
                 }
 
                 AddSeries addSeries = new AddSeries(_addSeriesViewModel);
