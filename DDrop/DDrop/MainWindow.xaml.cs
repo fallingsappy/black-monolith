@@ -1012,7 +1012,8 @@ namespace DDrop
                     User.UserSeries.Add(seriesViewModel);
                 }
 
-                
+                if (SeriesDataGrid.ItemsSource == null)
+                    SeriesDataGrid.ItemsSource = User.UserSeries;
 
                 //for (int i = 0; i < series.Count; i++)
                 //{
