@@ -116,7 +116,7 @@ namespace DDrop.BE.Models
             }
             set
             {
-                _simpleHorizontalLine = value;
+                _simpleVerticalLine = value;
                 OnPropertyChanged(new PropertyChangedEventArgs("SimpleVerticalLine"));
             }
         }
