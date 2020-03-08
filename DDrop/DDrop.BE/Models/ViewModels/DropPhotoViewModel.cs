@@ -149,20 +149,6 @@ namespace DDrop.BE.Models
             }
         }
 
-        private int _time;
-        public int Time
-        {
-            get
-            {
-                return _time;
-            }
-            set
-            {
-                _time = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("Time"));
-            }
-        }
-
         private DropViewModel _drop;
         public DropViewModel Drop
         {
@@ -174,6 +160,20 @@ namespace DDrop.BE.Models
             {
                 _drop = value;
                 OnPropertyChanged(new PropertyChangedEventArgs("Drop"));
+            }
+        }
+
+        private string _addedDate;
+        public string AddedDate
+        {
+            get
+            {
+                return _addedDate;
+            }
+            set
+            {
+                _addedDate = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("AddedDate"));
             }
         }
 

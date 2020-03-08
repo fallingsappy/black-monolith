@@ -81,7 +81,7 @@ namespace DDrop
                 LastName = TextBoxLastName.Text,
                 IsLoggedIn = true,
                 Password = PasswordBox1.Password,
-                UserId = new Guid(),
+                UserId = Guid.NewGuid(),
                 UserPhoto = UserPhoto,
             };
             RegistrationSucceeded = true;

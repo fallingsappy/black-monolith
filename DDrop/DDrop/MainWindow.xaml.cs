@@ -1,6 +1,7 @@
 ﻿using DDrop.BE.Models;
 using DDrop.BE.Models.Entities;
 using DDrop.BL.Calculation.DropletSizeCalculator;
+using DDrop.BL.Series;
 using DDrop.Utility.ExcelOperations;
 using DDrop.Utility.ImageOperations;
 using DDrop.Utility.PythonOperations;
@@ -21,6 +22,7 @@ using ToastNotifications;
 using ToastNotifications.Lifetime;
 using ToastNotifications.Messages;
 using ToastNotifications.Position;
+using pbu = RFM.RFM_WPFProgressBarUpdate;
 
 namespace DDrop
 {
@@ -34,8 +36,7 @@ namespace DDrop
         private bool? _allSelectedSeries = false;
         private bool _allSelectedPhotosChanging;
         private bool? _allSelectedPhotos = false;
-        private ObservableCollection<SeriesViewModel> _addSeriesViewModel;
-
+        private ISeriesBL _seriesBL;
         PythonProvider pythonProvider = new PythonProvider();
 
         public static readonly DependencyProperty CurrentSeriesProperty = DependencyProperty.Register("CurrentSeries", typeof(SeriesViewModel), typeof(MainWindow));
@@ -111,9 +112,10 @@ namespace DDrop
 
         #endregion
 
-        public MainWindow()
+        public MainWindow(ISeriesBL seriesBL)
         {
             InitializeComponent();
+            _seriesBL = seriesBL;
             AppMainWindow.Show();
             Login login = new Login();
             login.Owner = AppMainWindow;
@@ -231,8 +233,10 @@ namespace DDrop
 
                 SeriesViewModel seriesToAdd = new SeriesViewModel(User)
                 {
+                    SeriesId = Guid.NewGuid(),
                     Title = seriesTitle,
-                    ReferencePhotoForSeries = new ReferencePhotoViewModel()
+                    ReferencePhotoForSeries = new ReferencePhotoViewModel(),
+                    AddedDate = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")
                 };
 
                 seriesToAdd.PropertyChanged += EntryOnPropertyChanged;
@@ -387,7 +391,6 @@ namespace DDrop
             }
         }
 
-
         private void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var tc = sender as TabControl;
@@ -423,54 +426,10 @@ namespace DDrop
 
             if (saveFileDialog.ShowDialog() == true)
             {
-                List<Series> series = new List<Series>();
-                foreach (var userSeries in User.UserSeries)
-                {
-                    List<DropPhoto> dropPhotosSeries = new List<DropPhoto>();
-
-                    foreach (var dropPhoto in userSeries.DropPhotosSeries)
-                    {
-                        dropPhotosSeries.Add(new DropPhoto()
-                        {
-                            Name = dropPhoto.Name,
-                            Content = dropPhoto.Content,
-                            Drop = new Drop
-                            {
-                                DropId = dropPhoto.Drop.DropId,
-                                RadiusInMeters = dropPhoto.Drop.RadiusInMeters,
-                                VolumeInCubicalMeters = dropPhoto.Drop.VolumeInCubicalMeters,
-                                XDiameterInMeters = dropPhoto.Drop.XDiameterInMeters,
-                                YDiameterInMeters = dropPhoto.Drop.YDiameterInMeters,
-                                ZDiameterInMeters = dropPhoto.Drop.ZDiameterInMeters
-                            },
-                            DropPhotoId = dropPhoto.DropPhotoId,
-                            SimpleHorizontalLine = dropPhoto.SimpleHorizontalLine,
-                            SimpleVerticalLine = dropPhoto.SimpleVerticalLine,
-                            Time = dropPhoto.Time,
-                            XDiameterInPixels = dropPhoto.XDiameterInPixels,
-                            YDiameterInPixels = dropPhoto.YDiameterInPixels,
-                            ZDiameterInPixels = dropPhoto.ZDiameterInPixels
-                        });
-                    }
-
-                    series.Add(new Series
-                    {
-                        DropPhotosSeries = dropPhotosSeries,
-                        IntervalBetweenPhotos = userSeries.IntervalBetweenPhotos,
-                        ReferencePhotoForSeries = new ReferencePhoto
-                        {
-                            Content = userSeries.ReferencePhotoForSeries.Content,
-                            Name = userSeries.ReferencePhotoForSeries.Name,
-                            PixelsInMillimeter = userSeries.ReferencePhotoForSeries.PixelsInMillimeter,
-                            ReferencePhotoId = userSeries.ReferencePhotoForSeries.ReferencePhotoId,
-                            SimpleLine = userSeries.ReferencePhotoForSeries.SimpleLine
-                        },
-                        SeriesId = userSeries.SeriesId,
-                        Title = userSeries.Title
-                    });
-                }
-
-                await Task.Run(() => LocalSeriesProvider.SerializeAsync(series, saveFileDialog.FileName));
+                ProgressBar.IsIndeterminate = true;                
+                await _seriesBL.ExportSeriesLocalAsync(saveFileDialog.FileName, User);
+                ProgressBar.IsIndeterminate = false;
+                notifier.ShowSuccess($"{saveFileDialog.SafeFileName} сохранен на диске.");
             }
         }
 
@@ -485,124 +444,45 @@ namespace DDrop
                 CheckPathExists = true
             };
 
+            ObservableCollection<SeriesViewModel> addSeriesViewModel = new ObservableCollection<SeriesViewModel>();
+
             if (openFileDialog.ShowDialog() == true)
             {
-                List<Series> series = new List<Series>();
-
-                series = await Task.Run(() => LocalSeriesProvider.DeserializeAsync<List<Series>>(openFileDialog.FileName));
-                _addSeriesViewModel = new ObservableCollection<SeriesViewModel>();
-
-                for (int i = 0; i < series.Count; i++)
-                {
-                    SeriesViewModel addSingleSeriesViewModel = new SeriesViewModel(User);
-
-                    ObservableCollection<DropPhotoViewModel> dropPhotosSeries = new ObservableCollection<DropPhotoViewModel>();
-
-                    foreach (var dropPhoto in series[i].DropPhotosSeries)
-                    {
-                        var userDropPhoto = new DropPhotoViewModel()
-                        {
-                            Name = dropPhoto.Name,
-                            Content = dropPhoto.Content,
-                            DropPhotoId = dropPhoto.DropPhotoId,
-                            SimpleHorizontalLine = dropPhoto.SimpleHorizontalLine,
-                            SimpleVerticalLine = dropPhoto.SimpleVerticalLine,
-                            Time = dropPhoto.Time,
-                            XDiameterInPixels = dropPhoto.XDiameterInPixels,
-                            YDiameterInPixels = dropPhoto.YDiameterInPixels,
-                            ZDiameterInPixels = dropPhoto.ZDiameterInPixels
-                        };
-
-                        if (dropPhoto.SimpleHorizontalLine != null)
-                        {
-                            userDropPhoto.HorizontalLine = new Line
-                            {
-                                X1 = dropPhoto.SimpleHorizontalLine.X1,
-                                X2 = dropPhoto.SimpleHorizontalLine.X2,
-                                Y1 = dropPhoto.SimpleHorizontalLine.Y1,
-                                Y2 = dropPhoto.SimpleHorizontalLine.Y2,
-                                Stroke = Brushes.DeepPink
-                            };
-                        }
-
-                        if (dropPhoto.SimpleVerticalLine != null)
-                        {
-                            userDropPhoto.VerticalLine = new Line
-                            {
-                                X1 = dropPhoto.SimpleVerticalLine.X1,
-                                X2 = dropPhoto.SimpleVerticalLine.X2,
-                                Y1 = dropPhoto.SimpleVerticalLine.Y1,
-                                Y2 = dropPhoto.SimpleVerticalLine.Y2,
-                                Stroke = Brushes.Green
-                            };
-                        }
-                        var userDrop = new DropViewModel(addSingleSeriesViewModel, userDropPhoto)
-                        {
-                            DropId = dropPhoto.Drop.DropId,
-                            RadiusInMeters = dropPhoto.Drop.RadiusInMeters,
-                            VolumeInCubicalMeters = dropPhoto.Drop.VolumeInCubicalMeters,
-                            XDiameterInMeters = dropPhoto.Drop.XDiameterInMeters,
-                            YDiameterInMeters = dropPhoto.Drop.YDiameterInMeters,
-                            ZDiameterInMeters = dropPhoto.Drop.ZDiameterInMeters
-                        };
-
-                        userDropPhoto.Drop = userDrop;
-
-                        dropPhotosSeries.Add(userDropPhoto);
-                    }
-
-                    addSingleSeriesViewModel.ReferencePhotoForSeries = new ReferencePhotoViewModel
-                    {
-                        Content = series[i].ReferencePhotoForSeries.Content,
-                        Name = series[i].ReferencePhotoForSeries.Name,
-                        PixelsInMillimeter = series[i].ReferencePhotoForSeries.PixelsInMillimeter,
-                        ReferencePhotoId = series[i].ReferencePhotoForSeries.ReferencePhotoId,
-                        SimpleLine = series[i].ReferencePhotoForSeries.SimpleLine,
-                    };
-                    if (series[i].ReferencePhotoForSeries.SimpleLine != null)
-                    {
-                        addSingleSeriesViewModel.ReferencePhotoForSeries.Line = new Line
-                        {
-                            X1 = series[i].ReferencePhotoForSeries.SimpleLine.X1,
-                            X2 = series[i].ReferencePhotoForSeries.SimpleLine.X2,
-                            Y1 = series[i].ReferencePhotoForSeries.SimpleLine.Y1,
-                            Y2 = series[i].ReferencePhotoForSeries.SimpleLine.Y2,
-                            Stroke = Brushes.DeepPink
-                        };
-                    }
-                    addSingleSeriesViewModel.Title = series[i].Title;
-                    addSingleSeriesViewModel.DropPhotosSeries = dropPhotosSeries;
-                    addSingleSeriesViewModel.IntervalBetweenPhotos = series[i].IntervalBetweenPhotos;
-                    addSingleSeriesViewModel.SeriesId = series[i].SeriesId;
-
-                    _addSeriesViewModel.Add(addSingleSeriesViewModel);
-                }
-
-                AddSeries addSeries = new AddSeries(_addSeriesViewModel);
+                ProgressBar.IsIndeterminate = true;
+                addSeriesViewModel = await _seriesBL.ImportLocalSeriesAsync(openFileDialog.FileName, User);
+                ProgressBar.IsIndeterminate = false;
+            
+                AddSeries addSeries = new AddSeries(addSeriesViewModel);
                 addSeries.ShowDialog();
 
-                bool isAnyChecked = _addSeriesViewModel.Any(x => x.IsChecked);
-
-                foreach (var seriesViewModel in _addSeriesViewModel)
+                if (addSeriesViewModel.Count != 0)
                 {
-                    if (isAnyChecked)
+                    bool isAnyChecked = addSeriesViewModel.Any(x => x.IsCheckedForAdd);
+
+                    foreach (var seriesViewModel in addSeriesViewModel)
                     {
-                        if (seriesViewModel.IsChecked)
+                        if (isAnyChecked)
+                        {
+                            if (seriesViewModel.IsCheckedForAdd)
+                            {
+                                User.UserSeries.Add(seriesViewModel);
+                                notifier.ShowSuccess($"Серия {seriesViewModel.Title} добавлена.");
+                            }
+                        }
+                        else
                         {
                             User.UserSeries.Add(seriesViewModel);
                             notifier.ShowSuccess($"Серия {seriesViewModel.Title} добавлена.");
-                        }                           
+                        }
                     }
-                    else
-                    {
-                        User.UserSeries.Add(seriesViewModel);
-                        notifier.ShowSuccess($"Серия {seriesViewModel.Title} добавлена.");
-                    }
-                }
 
-                if (SeriesDataGrid.ItemsSource == null)
-                    SeriesDataGrid.ItemsSource = User.UserSeries;
+                
+                    notifier.ShowSuccess($"Все серии успешно добавлены.");
+                }
             }
+            if (SeriesDataGrid.ItemsSource == null)
+                SeriesDataGrid.ItemsSource = User.UserSeries;
+            
         }
 
         #endregion
@@ -694,8 +574,10 @@ namespace DDrop
 
             if (openFileDialog.ShowDialog() == true)
             {
+                var pbuHandle1 = pbu.New(ProgressBar, 0, openFileDialog.FileNames.Length - 1, 0);
                 for (int i = 0; i < openFileDialog.FileNames.Length; ++i)
                 {
+                    pbu.CurValue[pbuHandle1] += 1;
                     if (CurrentSeries.DropPhotosSeries == null)
                     {
                         CurrentSeries.DropPhotosSeries = new ObservableCollection<DropPhotoViewModel>();
@@ -704,9 +586,11 @@ namespace DDrop
 
                     var imageForAdding = new DropPhotoViewModel
                     {
+                        DropPhotoId = Guid.NewGuid(),
                         Name = openFileDialog.SafeFileNames[i],
                         Path = openFileDialog.FileNames[i],
-                        Content = File.ReadAllBytes(openFileDialog.FileNames[i])
+                        Content = File.ReadAllBytes(openFileDialog.FileNames[i]),
+                        AddedDate = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")
                     };
                     
 
@@ -721,19 +605,20 @@ namespace DDrop
                     }
                     if (ImageValidator.ValidateImage(imageForAdding.Content))
                     {
-                        if (unique)
-                        {
-                            imageForAdding.PropertyChanged += PhotosOnPropertyChanged;
-                            CurrentSeries.DropPhotosSeries.Add(imageForAdding);
-                            CurrentSeries.DropPhotosSeries[CurrentSeries.DropPhotosSeries.Count - 1].Drop = new DropViewModel(CurrentSeries, CurrentSeries.DropPhotosSeries[CurrentSeries.DropPhotosSeries.Count - 1]);
-                            notifier.ShowSuccess($"Снимок {imageForAdding.Name} добавлен.");
-                        }
+                        imageForAdding.PropertyChanged += PhotosOnPropertyChanged;
+                        CurrentSeries.DropPhotosSeries.Add(imageForAdding);
+                        CurrentSeries.DropPhotosSeries[CurrentSeries.DropPhotosSeries.Count - 1].Drop = new DropViewModel(CurrentSeries, CurrentSeries.DropPhotosSeries[CurrentSeries.DropPhotosSeries.Count - 1]);
+                        notifier.ShowSuccess($"Снимок {imageForAdding.Name} добавлен.");                        
                     }
                     else
                     {
                         notifier.ShowError($"Файл {imageForAdding.Name} имеет неизвестный формат.");
                     }
                 }
+
+                notifier.ShowSuccess($"Новые снимки успешно добавлены.");
+                pbu.ResetValue(pbuHandle1);
+                pbu.Remove(pbuHandle1);
             }
         }
 
@@ -868,7 +753,8 @@ namespace DDrop
                         CurrentSeries.ReferencePhotoForSeries.Line = null;
                         CurrentSeries.ReferencePhotoForSeries.PixelsInMillimeter = 0;
                     }
-                    CurrentSeries.ReferencePhotoForSeries.Name = openFileDialog.Title;
+                    CurrentSeries.ReferencePhotoForSeries.Name = openFileDialog.SafeFileNames[0];
+                    CurrentSeries.ReferencePhotoForSeries.ReferencePhotoId = Guid.NewGuid();
                     CurrentSeries.ReferencePhotoForSeries.Line = new Line();
                     CurrentSeries.ReferencePhotoForSeries.Content = ImageInterpreter.FileToByteArray(openFileDialog.FileName);
                     ReferenceImage = ImageInterpreter.LoadImage(CurrentSeries.ReferencePhotoForSeries.Content);
@@ -947,9 +833,9 @@ namespace DDrop
                                 //CurrentSeries.DropPhotosSeries[i] = pythonProvider.RunScript(CurrentSeries.DropPhotosSeries[i].Path, Properties.Settings.Default.SaveTo,
                                 //    CurrentSeries.DropPhotosSeries[i], Properties.Settings.Default.ScriptToRun,
                                 //                                         Properties.Settings.Default.Interpreter);
-                                DropletSizeCalculator.PerformCalculation(
-                                    Convert.ToInt32(PixelsInMillimeterTextBox.Text), CurrentSeries.DropPhotosSeries[i].XDiameterInPixels,
-                                    CurrentSeries.DropPhotosSeries[i].YDiameterInPixels, CurrentSeries, CurrentDropPhoto);
+                                //DropletSizeCalculator.PerformCalculation(
+                                //    Convert.ToInt32(PixelsInMillimeterTextBox.Text), CurrentSeries.DropPhotosSeries[i].XDiameterInPixels,
+                                //    CurrentSeries.DropPhotosSeries[i].YDiameterInPixels, CurrentSeries, CurrentDropPhoto);
                             }
                         }
 

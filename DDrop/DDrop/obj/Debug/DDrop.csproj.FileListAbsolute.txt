@@ -680,3 +680,12 @@ D:\fallingsappyGit\DDrop\DDrop\obj\Debug\DDrop.exe
 D:\fallingsappyGit\DDrop\DDrop\obj\Debug\DDrop.pdb
 D:\fallingsappyGit\DDrop\DDrop\obj\Debug\AddSeries.g.cs
 D:\fallingsappyGit\DDrop\DDrop\obj\Debug\AddSeries.baml
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\AddSeries.g.cs
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\AddSeries.baml
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\DDrop_Content.g.cs
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\bin\Debug\RFM_WPFProgressBarUpdate.exe
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\bin\Debug\RFM_WPFProgressBarUpdate.pdb
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\bin\Debug\Unity.Abstractions.dll
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\bin\Debug\Unity.Container.dll
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\bin\Debug\Unity.Abstractions.pdb
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\bin\Debug\Unity.Container.pdb

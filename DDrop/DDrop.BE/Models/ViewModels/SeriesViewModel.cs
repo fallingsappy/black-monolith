@@ -107,6 +107,20 @@ namespace DDrop.BE.Models
             }
         }
 
+        private bool _isCheckedForAdd;
+        public bool IsCheckedForAdd
+        {
+            get
+            {
+                return _isCheckedForAdd;
+            }
+            set
+            {
+                _isCheckedForAdd = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("IsCheckedForAdd"));
+            }
+        }
+
         private bool _canDrawPlot;
         public bool CanDrawPlot
         {
@@ -125,6 +139,20 @@ namespace DDrop.BE.Models
             {
                 _canDrawPlot = value;
                 OnPropertyChanged(new PropertyChangedEventArgs("CanDrawPlot"));
+            }
+        }
+
+        private string _addedDate;
+        public string AddedDate
+        {
+            get
+            {
+                return _addedDate;
+            }
+            set
+            {
+                _addedDate = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("AddedDate"));
             }
         }
 

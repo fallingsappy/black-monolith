@@ -58,6 +58,7 @@
                                 <DataGridTextColumn IsReadOnly="False" Header="Название" Binding="{Binding Title}"/>
                                 <DataGridTextColumn IsReadOnly="True" Header="Количество фотографий" Binding="{Binding DropPhotosSeries.Count}"/>
                                 <DataGridTextColumn IsReadOnly="True" Header="Интервал между снимками" Binding="{Binding IntervalBetweenPhotos}"/>
+                                <DataGridTextColumn IsReadOnly="True" Header="Время добавления" Binding="{Binding AddedDate}"/>
                                 <DataGridTemplateColumn IsReadOnly="True" CanUserResize="False">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
@@ -92,7 +93,7 @@
                                   Grid.Column="0"
                                   Grid.Row="1" ResizeBehavior="PreviousAndNext"
                                   Height="5"/>
-                    <DataGrid IsReadOnly="True" Grid.Column="0" Grid.Row="2" Margin="10,11,10,10"  ItemsSource="{Binding User.UserSeries.PhotoSeries}" Name="SeriesPreviewDataGrid" SelectionChanged="SeriesPreviewDataGrid_SelectionChanged">
+                    <DataGrid AutoGenerateColumns="False" IsReadOnly="True" Grid.Column="0" Grid.Row="2" Margin="10,11,10,10"  ItemsSource="{Binding User.UserSeries.PhotoSeries}" Name="SeriesPreviewDataGrid" SelectionChanged="SeriesPreviewDataGrid_SelectionChanged">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Имя файла" Binding="{Binding Name}"/>
                             <DataGridTextColumn Header="Горизонтальный диаметр, px" Binding="{Binding XDiameterInPixels}"/>
@@ -101,6 +102,7 @@
                             <DataGridTextColumn Header="Вертикальный диаметр, м" Binding="{Binding Drop.YDiameterInMeters}"/>
                             <DataGridTextColumn Header="Радиус, м" Binding="{Binding Drop.RadiusInMeters}"/>
                             <DataGridTextColumn Header="Объем, кубические метры" Binding="{Binding Drop.VolumeInCubicalMeters}"/>
+                            <DataGridTextColumn Header="Время добавления" Binding="{Binding AddedDate}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                     <GridSplitter HorizontalAlignment="Center" 
@@ -152,6 +154,7 @@
                                         <DataGridTextColumn IsReadOnly="True" Header="Вертикальный диаметр, м" Binding="{Binding Drop.YDiameterInMeters}"/>
                                         <DataGridTextColumn IsReadOnly="True" Header="Радиус, м" Binding="{Binding Drop.RadiusInMeters}"/>
                                         <DataGridTextColumn IsReadOnly="True" Header="Объем, кубические метры" Binding="{Binding Drop.VolumeInCubicalMeters}"/>
+                                        <DataGridTextColumn IsReadOnly="True" Header="Время добавления" Binding="{Binding AddedDate}"/>
                                         <DataGridTemplateColumn IsReadOnly="True" CanUserResize="False">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
@@ -297,7 +300,7 @@
             </MenuItem>
         </Menu>
         <Grid Margin="10,0,10,10" Background="#FFF0F0F0" Height="32" VerticalAlignment="Bottom">
-            <ProgressBar Height="12" Margin="0,0,10,10" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="100"/>
+            <ProgressBar x:Name="ProgressBar" Margin="10,10,0,10" HorizontalAlignment="Left" Width="100"/>
         </Grid>
     </Grid>
 </Window>

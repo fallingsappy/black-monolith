@@ -65,7 +65,6 @@ E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BE\obj\Debug\DDrop.BE.csp
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BE\obj\Debug\DDrop.BE.csproj.CopyComplete
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BE\obj\Debug\DDrop.BE.dll
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BE\obj\Debug\DDrop.BE.pdb
-E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BE\obj\Debug\DDrop.BE.csprojAssemblyReference.cache
 D:\fallingsappyGit\DDrop\DDrop.BE\bin\Debug\DDrop.BE.dll.config
 D:\fallingsappyGit\DDrop\DDrop.BE\bin\Debug\DDrop.BE.dll
 D:\fallingsappyGit\DDrop\DDrop.BE\bin\Debug\DDrop.BE.pdb
@@ -77,3 +76,4 @@ D:\fallingsappyGit\DDrop\DDrop.BE\obj\Debug\DDrop.BE.csproj.CoreCompileInputs.ca
 D:\fallingsappyGit\DDrop\DDrop.BE\obj\Debug\DDrop.BE.csproj.CopyComplete
 D:\fallingsappyGit\DDrop\DDrop.BE\obj\Debug\DDrop.BE.dll
 D:\fallingsappyGit\DDrop\DDrop.BE\obj\Debug\DDrop.BE.pdb
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BE\obj\Debug\DDrop.BE.csprojAssemblyReference.cache

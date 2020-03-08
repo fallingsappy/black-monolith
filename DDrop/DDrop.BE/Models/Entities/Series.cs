@@ -10,5 +10,6 @@ namespace DDrop.BE.Models.Entities
         public List<DropPhoto> DropPhotosSeries { get; set; }
         public ReferencePhoto ReferencePhotoForSeries { get; set; }
         public double IntervalBetweenPhotos { get; set; }
+        public string AddedDate { get; set; }
     }
 }

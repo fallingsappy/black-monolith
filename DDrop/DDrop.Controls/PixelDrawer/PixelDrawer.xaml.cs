@@ -190,6 +190,11 @@ namespace DDrop.Controls.PixelDrawer
                             Y2 = _selectedLine.Y2
                         };
 
+                        if (CurrentDropPhoto.SimpleHorizontalLine.SimpleLineId == Guid.Empty)
+                        {
+                            CurrentDropPhoto.SimpleHorizontalLine.SimpleLineId = Guid.NewGuid();
+                        }
+
                         PixelsInMillimeterHorizontal = GetPointsOnLine(point11, point22).Count.ToString();
                     }
                     else if (Math.Abs(_selectedLine.X1 - _selectedLine.X2) < Math.Abs(_selectedLine.Y1 - _selectedLine.Y2) && !_drawingHorizontalLine || _drawingVerticalLine)
@@ -213,6 +218,11 @@ namespace DDrop.Controls.PixelDrawer
                             Y2 = _selectedLine.Y2
                         };
 
+                        if (CurrentDropPhoto.SimpleVerticalLine.SimpleLineId == Guid.Empty)
+                        {
+                            CurrentDropPhoto.SimpleVerticalLine.SimpleLineId = Guid.NewGuid();
+                        }
+
                         PixelsInMillimeterVertical = GetPointsOnLine(point11, point22).Count.ToString();
                     }
                 }
@@ -230,6 +240,11 @@ namespace DDrop.Controls.PixelDrawer
                         Y1 = _selectedLine.Y1,
                         Y2 = _selectedLine.Y2
                     };
+
+                    if (CurrentSeries.ReferencePhotoForSeries.SimpleLine.SimpleLineId == Guid.Empty)
+                    {
+                        CurrentSeries.ReferencePhotoForSeries.SimpleLine.SimpleLineId = Guid.NewGuid();
+                    }
 
                     CurrentSeries.ReferencePhotoForSeries.PixelsInMillimeter = GetPointsOnLine(point11, point22).Count;
                 }

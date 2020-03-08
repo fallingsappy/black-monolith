@@ -29,7 +29,7 @@
             <Border Grid.Column="0" Grid.Row="0" BorderThickness="1" BorderBrush="#34558b" Margin="10,45,10,10">
                 <DataGrid CanUserAddRows="false" IsReadOnly="False" AutoGenerateColumns="False" SelectionMode="Single" Margin="0" BorderThickness="0" ClipToBounds="True" ItemsSource="{Binding SeriesForAdd, ElementName=AppAddSeriesWindow}" SelectionChanged="AddSeriesDataGrid_OnSelectionChanged" Name="AddSeriesDataGrid">
                     <DataGrid.Columns>
-                        <DataGridCheckBoxColumn IsReadOnly="False" Binding="{Binding IsChecked, UpdateSourceTrigger=PropertyChanged}" CanUserResize="False">
+                        <DataGridCheckBoxColumn IsReadOnly="False" Binding="{Binding IsCheckedForAdd, UpdateSourceTrigger=PropertyChanged}" CanUserResize="False">
                             <DataGridCheckBoxColumn.HeaderTemplate>
                                 <DataTemplate>
                                     <CheckBox IsChecked="{Binding ElementName=AppAddSeriesWindow, Path=AllSelectedSeries}" x:Name="ChooseAllSeries" Height="15" />

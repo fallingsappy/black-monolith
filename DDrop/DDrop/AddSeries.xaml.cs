@@ -27,6 +27,7 @@ namespace DDrop
     {
         private bool _allSelectedSeriesChanging;
         private bool? _allSelectedSeries = false;
+        private bool triggerOnClose = true;
         public static readonly DependencyProperty SeriesForAddProperty = DependencyProperty.Register("SeriesForAdd", typeof(ObservableCollection<SeriesViewModel>), typeof(AddSeries));
         public static readonly DependencyProperty CurrentSeriesProperty = DependencyProperty.Register("CurrentSeries", typeof(SeriesViewModel), typeof(AddSeries));
         public ObservableCollection<SeriesViewModel> SeriesForAdd
@@ -60,12 +61,12 @@ namespace DDrop
                     if (AllSelectedSeries == true)
                     {
                         foreach (var userSeries in SeriesForAdd)
-                            userSeries.IsChecked = true;
+                            userSeries.IsCheckedForAdd = true;
                     }
                     else if (AllSelectedSeries == false)
                     {
                         foreach (var userSeries in SeriesForAdd)
-                            userSeries.IsChecked = false;
+                            userSeries.IsCheckedForAdd = false;
                     }
                 }
                 finally
@@ -87,9 +88,9 @@ namespace DDrop
             {
                 _allSelectedSeriesChanging = true;
 
-                if (SeriesForAdd.All(e => e.IsChecked))
+                if (SeriesForAdd.All(e => e.IsCheckedForAdd))
                     AllSelectedSeries = true;
-                else if (SeriesForAdd.All(e => !e.IsChecked))
+                else if (SeriesForAdd.All(e => !e.IsCheckedForAdd))
                     AllSelectedSeries = false;
                 else
                     AllSelectedSeries = null;
@@ -115,7 +116,7 @@ namespace DDrop
 
         private void EntryOnPropertyChanged(object sender, PropertyChangedEventArgs args)
         {
-            if (args.PropertyName == nameof(SeriesViewModel.IsChecked))
+            if (args.PropertyName == nameof(SeriesViewModel.IsCheckedForAdd))
                 RecheckAllSelected();
         }
 
@@ -154,23 +155,34 @@ namespace DDrop
 
         private void AddSeriesButton_OnClickies_OnClick(object sender, RoutedEventArgs e)
         {
-            bool isAnyChecked = SeriesForAdd.Any(x => x.IsChecked);
+            bool isAnyChecked = SeriesForAdd.Any(x => x.IsCheckedForAdd);
 
             if (isAnyChecked)
             {
                 MessageBoxResult messageBoxResult = MessageBox.Show("Добавить выбранные серии?", "Подтверждение добавления", MessageBoxButton.YesNo);
                 if (messageBoxResult == MessageBoxResult.Yes)
+                {
+                    triggerOnClose = false;
                     Close();
+                }                   
                 else
+                {
+                    triggerOnClose = false;
                     SeriesForAdd.Clear();
+                    Close();
+                }
             }
             else
             {
                 MessageBoxResult messageBoxResult = MessageBox.Show("Добавить серии?", "Подтверждение добавления", MessageBoxButton.YesNo);
                 if (messageBoxResult == MessageBoxResult.Yes)
+                {
+                    triggerOnClose = false;
                     Close();
+                }
                 else
                 {
+                    triggerOnClose = false;
                     SeriesForAdd.Clear();
                     Close();
                 }                    
@@ -179,19 +191,22 @@ namespace DDrop
 
         private void AddSeries_OnClosing(object sender, CancelEventArgs e)
         {
-            bool isAnyChecked = SeriesForAdd.Any(x => x.IsChecked);
+            if (triggerOnClose)
+            {
+                bool isAnyChecked = SeriesForAdd.Any(x => x.IsCheckedForAdd);
 
-            if (isAnyChecked)
-            {
-                MessageBoxResult messageBoxResult = MessageBox.Show("Добавить выбранные серии?", "Подтверждение добавления", MessageBoxButton.YesNo);
-                if (messageBoxResult == MessageBoxResult.No)
-                    SeriesForAdd.Clear();   
-            }
-            else
-            {
-                MessageBoxResult messageBoxResult = MessageBox.Show("Добавить серии?", "Подтверждение добавления", MessageBoxButton.YesNo);
-                if (messageBoxResult == MessageBoxResult.No)
-                    SeriesForAdd.Clear();
+                if (isAnyChecked)
+                {
+                    MessageBoxResult messageBoxResult = MessageBox.Show("Добавить выбранные серии?", "Подтверждение добавления", MessageBoxButton.YesNo);
+                    if (messageBoxResult == MessageBoxResult.No)
+                        SeriesForAdd.Clear();
+                }
+                else
+                {
+                    MessageBoxResult messageBoxResult = MessageBox.Show("Добавить серии?", "Подтверждение добавления", MessageBoxButton.YesNo);
+                    if (messageBoxResult == MessageBoxResult.No)
+                        SeriesForAdd.Clear();
+                }
             }
         }
     }

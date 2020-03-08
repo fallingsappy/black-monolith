@@ -12,7 +12,7 @@ namespace DDrop.BE.Models.Entities
         public SimpleLine SimpleHorizontalLine { get; set; }
         public SimpleLine SimpleVerticalLine { get; set; }
         public byte[] Content { get; set; }
-        public int Time { get; set; }
         public Drop Drop { get; set; }
+        public string AddedDate { get; set; }
     }
 }
