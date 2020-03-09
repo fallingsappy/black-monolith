@@ -18,6 +18,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using DDrop.DAL;
 using ToastNotifications;
 using ToastNotifications.Lifetime;
 using ToastNotifications.Messages;
@@ -38,6 +39,7 @@ namespace DDrop
         private bool? _allSelectedPhotos = false;
         private ISeriesBL _seriesBL;
         PythonProvider pythonProvider = new PythonProvider();
+        DDropContext _dDropContext = new DDropContext();
 
         public static readonly DependencyProperty CurrentSeriesProperty = DependencyProperty.Register("CurrentSeries", typeof(SeriesViewModel), typeof(MainWindow));
         public static readonly DependencyProperty CurrentDropPhotoProperty = DependencyProperty.Register("CurrentDropPhoto", typeof(DropPhotoViewModel), typeof(MainWindow));
@@ -117,10 +119,15 @@ namespace DDrop
             InitializeComponent();
             _seriesBL = seriesBL;
             AppMainWindow.Show();
-            Login login = new Login();
+            Login login = new Login(_dDropContext, notifier, _seriesBL);
             login.Owner = AppMainWindow;
             login.ShowDialog();
-            User = login.UserLogin;
+
+            if (login.LoginSucceeded)
+            {
+                User = login.UserLogin;
+                
+            }
 
             if (User == null)
             {
@@ -564,7 +571,6 @@ namespace DDrop
         private void MenuItemChoosePhotos_OnClick(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            bool unique = true;
 
             openFileDialog.Filter = "Jpeg files (*.jpg)|*.jpg|All files (*.*)|*.*";
             openFileDialog.Multiselect = true;
@@ -593,16 +599,6 @@ namespace DDrop
                         AddedDate = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")
                     };
                     
-
-                    foreach (var dropImage in CurrentSeries.DropPhotosSeries)
-                    {
-                        if (dropImage.Path == imageForAdding.Path)
-                        {
-                            unique = false;
-                            notifier.ShowWarning($"Фотография {imageForAdding.Name} уже добавлена.");
-                            break;
-                        }
-                    }
                     if (ImageValidator.ValidateImage(imageForAdding.Content))
                     {
                         imageForAdding.PropertyChanged += PhotosOnPropertyChanged;
@@ -871,10 +867,23 @@ namespace DDrop
 
         private void LoginMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            Login login = new Login();
+            Login login = new Login(_dDropContext, notifier, _seriesBL);
             login.Owner = this;
             login.ShowDialog();
-            login.UserLogin = User;
+            if (login.LoginSucceeded)
+            {
+                User = login.UserLogin;
+
+            }
+            else
+            {
+                ShowDialog();
+            }
+            if (User == null)
+            {
+                Close();
+            }
+
             if (User.IsLoggedIn)
             {
                 AccountMenuItem.Visibility = Visibility.Visible;
@@ -885,7 +894,7 @@ namespace DDrop
 
         private void AccountMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            Account accountMenu = new Account(User);
+            Account accountMenu = new Account(User, notifier, _dDropContext);
             accountMenu.ShowDialog();
         }
 
@@ -894,18 +903,33 @@ namespace DDrop
             MessageBoxResult messageBoxResult = MessageBox.Show($"Выйти из учетной записи {User.Email}?", "Подтверждение выхода", MessageBoxButton.YesNo);
             if (messageBoxResult == MessageBoxResult.Yes)
             {
-                User.UserSeries.Clear(); 
-                User = null;
-                CurrentSeries.DropPhotosSeries.Clear();
-                CurrentSeries = null;
+                if (User.UserSeries != null)
+                {
+                    User.UserSeries.Clear();
+                    User = null;
+                }
+
+                if (CurrentSeries?.DropPhotosSeries != null)
+                {
+                    CurrentSeries.DropPhotosSeries.Clear();
+                    CurrentSeries = null;
+                }
 
                 AccountMenuItem.Visibility = Visibility.Collapsed;
                 LogOutMenuItem.Visibility = Visibility.Collapsed;
                 LogInMenuItem.Visibility = Visibility.Visible;
-                Login login = new Login();
+                Login login = new Login(_dDropContext, notifier, _seriesBL);
                 login.Owner = this;
                 login.ShowDialog();
-                User = login.UserLogin;
+                if (login.LoginSucceeded)
+                {
+                    User = login.UserLogin;
+                }
+                else
+                {
+                    ShowDialog();
+                }
+
 
                 if (User == null)
                 {

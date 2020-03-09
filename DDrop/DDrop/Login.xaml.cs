@@ -2,9 +2,14 @@
 using DDrop.Utility.Cryptography;
 using DDrop.Utility.ImageOperations;
 using System;
+using System.Data.Entity;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
+using DDrop.BL.Series;
+using DDrop.DAL;
+using ToastNotifications;
+using ToastNotifications.Messages;
 
 namespace DDrop
 {
@@ -14,6 +19,10 @@ namespace DDrop
     public partial class Login : Window
     {
         public static readonly DependencyProperty UserLoginProperty = DependencyProperty.Register("UserLogin", typeof(UserViewModel), typeof(Login));
+        private DDropContext _dDropContext;
+        private Notifier _notifier;
+        private ISeriesBL _seriesBL;
+        public bool LoginSucceeded;
         public UserViewModel UserLogin
         {
             get { return (UserViewModel)GetValue(UserLoginProperty); }
@@ -23,14 +32,18 @@ namespace DDrop
             }
         }
 
-        public Login()
+        public Login(DDropContext dDropContext, Notifier notifier, ISeriesBL seriesBl)
         {
+            _seriesBL = seriesBl;
+            _dDropContext = dDropContext;
+            _notifier = notifier;
             InitializeComponent();
             DataContext = this;
         }
 
-        private void LoginButton_Click(object sender, RoutedEventArgs e)
+        private async void LoginButton_Click(object sender, RoutedEventArgs e)
         {
+            ErrorMessage.Text = "";
             if (TextBoxEmail.Text.Length == 0)
             {
                 ErrorMessage.Text = "Введите электронную почту.";
@@ -44,28 +57,44 @@ namespace DDrop
             }
             else
             {
-                //TODO запрос в БД 
+                var email = TextBoxEmail.Text;
+                var password = LoginPasswordBox.Password;
 
-                UserLogin = new UserViewModel()
+                using (_dDropContext = new DDropContext())
                 {
-                    Email = TextBoxEmail.Text,
-                    //Avatar = 
-                    //UserSeries = new ObservableCollection<Series>(),
-                    //FirstName =
-                    //LastName = 
-                    IsLoggedIn = true,
-                    //Password = 
-                    //UserId =
-                };
+                    var user = await _dDropContext.Users.FirstOrDefaultAsync(x => x.Email == email && x.Password == password);
+                    if (user != null)
+                    {
+                        UserLogin = new UserViewModel()
+                        {
+                            Email = user.Email,
+                            Password = user.Password,
+                            UserPhoto = user.UserPhoto,
+                            UserId = user.UserId,
+                            FirstName = user.FirstName,
+                            LastName = user.LastName,
+                            IsLoggedIn = true,
+                        };
 
-                Close();
+                        if (user.UserSeries != null)
+                            UserLogin.UserSeries = _seriesBL.ConvertSeriesToSeriesViewModel(user.UserSeries, UserLogin);
+                        LoginSucceeded = true;
+                        _notifier.ShowSuccess($"Пользователь {user.Email} авторизован.");
+                        Close();
+                    }
+                    else
+                    {
+                        ErrorMessage.Text = "Неверный логин или пароль.";
+                        LoginSucceeded = false;
+                    }
+                }
             }
         }
 
         private void RegistrationButton_Click(object sender, RoutedEventArgs e)
         {
             Visibility = Visibility.Collapsed;
-            Registration registrationWindow = new Registration();
+            Registration registrationWindow = new Registration(_dDropContext, _notifier);
             registrationWindow.Owner = this;
             registrationWindow.ShowDialog();
             Visibility = Visibility.Visible;
@@ -108,7 +137,7 @@ namespace DDrop
                 UserPhoto = ImageInterpreter.ImageToByteArray(Properties.Resources.cool_profile_picture_300x219_vectorized__1_),
                 FirstName = "Неизвестно",
                 LastName = "Неизвестно",
-                IsLoggedIn = true,
+                IsLoggedIn = false,
                 Password = PasswordEncoding.EncodePassword("1q2w3e4r5t6y"),
                 UserId = Guid.NewGuid()
             };

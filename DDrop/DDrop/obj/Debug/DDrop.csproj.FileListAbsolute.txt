@@ -587,7 +587,6 @@ E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\MainWindow.baml
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\DDrop.g.resources
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\DDrop.Properties.Resources.resources
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\DDrop.csproj.GenerateResource.cache
-E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\DDrop.csproj.CoreCompileInputs.cache
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\DDrop.csproj.CopyComplete
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\DDrop.exe
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\DDrop.pdb
@@ -684,8 +683,12 @@ E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\AddSeries.g.cs
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\AddSeries.baml
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\DDrop_Content.g.cs
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\bin\Debug\RFM_WPFProgressBarUpdate.exe
-E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\bin\Debug\RFM_WPFProgressBarUpdate.pdb
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\bin\Debug\Unity.Abstractions.dll
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\bin\Debug\Unity.Container.dll
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\bin\Debug\Unity.Abstractions.pdb
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\bin\Debug\Unity.Container.pdb
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\bin\Debug\ControlzEx.dll
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\bin\Debug\ControlzEx.pdb
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\CropPhoto.g.cs
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\CropPhoto.baml
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\DDrop.csproj.CoreCompileInputs.cache

@@ -51,10 +51,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DDropContextcs.cs" />
-    <Compile Include="Migrations\202002112058211_InitialCreate.cs" />
-    <Compile Include="Migrations\202002112058211_InitialCreate.designer.cs">
-      <DependentUpon>202002112058211_InitialCreate.cs</DependentUpon>
+    <Compile Include="DDropContext.cs" />
+    <Compile Include="Migrations\202003081207095_Initial.cs" />
+    <Compile Include="Migrations\202003081207095_Initial.designer.cs">
+      <DependentUpon>202003081207095_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -70,8 +70,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202002112058211_InitialCreate.resx">
-      <DependentUpon>202002112058211_InitialCreate.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202003081207095_Initial.resx">
+      <DependentUpon>202003081207095_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -4,17 +4,17 @@
 library
 C#
 .cs
-D:\fallingsappyGit\DDrop\DDrop.Controls\obj\Debug\
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Controls\obj\Debug\
 DDrop.Controls
 none
 false
 DEBUG;TRACE
 
-21096482781
+31013185940
 
-10-1796180710
-171713114158
-PixelDrawer\PixelDrawer.xaml;ScatterPlot\ScatterPlot.xaml;
+16-49124461
+17-491875808
+PhotoCropper\CropControl.xaml;PixelDrawer\PixelDrawer.xaml;ScatterPlot\ScatterPlot.xaml;
 
 True
 

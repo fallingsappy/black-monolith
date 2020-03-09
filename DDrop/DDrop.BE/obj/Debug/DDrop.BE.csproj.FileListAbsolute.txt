@@ -61,7 +61,6 @@ E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BE\bin\Debug\EntityFramew
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BE\bin\Debug\EntityFramework.SqlServer.dll
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BE\bin\Debug\EntityFramework.xml
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BE\bin\Debug\EntityFramework.SqlServer.xml
-E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BE\obj\Debug\DDrop.BE.csproj.CoreCompileInputs.cache
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BE\obj\Debug\DDrop.BE.csproj.CopyComplete
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BE\obj\Debug\DDrop.BE.dll
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BE\obj\Debug\DDrop.BE.pdb
@@ -76,4 +75,3 @@ D:\fallingsappyGit\DDrop\DDrop.BE\obj\Debug\DDrop.BE.csproj.CoreCompileInputs.ca
 D:\fallingsappyGit\DDrop\DDrop.BE\obj\Debug\DDrop.BE.csproj.CopyComplete
 D:\fallingsappyGit\DDrop\DDrop.BE\obj\Debug\DDrop.BE.dll
 D:\fallingsappyGit\DDrop\DDrop.BE\obj\Debug\DDrop.BE.pdb
-E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BE\obj\Debug\DDrop.BE.csprojAssemblyReference.cache

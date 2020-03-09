@@ -22,6 +22,13 @@ namespace DDrop.BL.Series
 
             series = await Task.Run(() => LocalSeriesProvider.DeserializeAsync<List<BE.Models.Entities.Series>>(fileName));
             _addSeriesViewModel = new ObservableCollection<SeriesViewModel>();
+            _addSeriesViewModel = ConvertSeriesToSeriesViewModel(series, user);
+
+            return _addSeriesViewModel;
+        }
+
+        public ObservableCollection<SeriesViewModel> ConvertSeriesToSeriesViewModel(List<BE.Models.Entities.Series> series, UserViewModel user)
+        {
             for (int i = 0; i < series.Count; i++)
             {
                 SeriesViewModel addSingleSeriesViewModel = new SeriesViewModel(user);

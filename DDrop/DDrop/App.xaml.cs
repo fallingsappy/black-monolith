@@ -17,7 +17,7 @@ namespace DDrop
             container.RegisterType<ISeriesBL, SeriesBL>();
 
             var window = container.Resolve<MainWindow>();
-            window.Show();
+            //window.Show();
         }
     }
 }

@@ -56,10 +56,25 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PhotoCropper\CropControl.xaml.cs">
+      <DependentUpon>CropControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PhotoCropper\CroppingAdorner.cs" />
+    <Compile Include="PhotoCropper\Managers\DisplayTextManager.cs" />
+    <Compile Include="PhotoCropper\Managers\OverlayManager.cs" />
+    <Compile Include="PhotoCropper\Managers\RectangleManager.cs" />
+    <Compile Include="PhotoCropper\Managers\ThumbManager.cs" />
+    <Compile Include="PhotoCropper\Thumbs\ThumbCrop.cs" />
+    <Compile Include="PhotoCropper\Thumbs\ThumbFactory.cs" />
+    <Compile Include="PhotoCropper\Utils\DoubleClickEventArgs.cs" />
     <Compile Include="PixelDrawer\PixelDrawer.xaml.cs">
       <DependentUpon>PixelDrawer.xaml</DependentUpon>
     </Compile>
     <Compile Include="Zoomborder\Zoomborder.cs" />
+    <Page Include="PhotoCropper\CropControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="PixelDrawer\PixelDrawer.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -103,8 +118,6 @@
       <Name>DDrop.BE</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="PhotoCropper\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -11,6 +11,9 @@ namespace DDrop.BL.Series
     public interface ISeriesBL
     {
         Task<ObservableCollection<SeriesViewModel>> ImportLocalSeriesAsync(string fileName, UserViewModel User);
+
+        ObservableCollection<SeriesViewModel> ConvertSeriesToSeriesViewModel(List<BE.Models.Entities.Series> series,
+            UserViewModel user);
         Task ExportSeriesLocalAsync(string fileName, UserViewModel user);
     }
 }

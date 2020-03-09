@@ -3,3 +3,4 @@
 ################################################################################
 
 /DDrop/DDrop/Resources/LocalDb/DDropDataBase.mdf
+/DDrop/DDrop/Resources/LocalDb/DDropDataBase_log.ldf
