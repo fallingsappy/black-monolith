@@ -49,6 +49,8 @@
   <ItemGroup>
     <Compile Include="Calculation\CalculationBL.cs" />
     <Compile Include="Calculation\DropletSizeCalculator\DropletSizeCalculator.cs" />
+    <Compile Include="DropPhoto\DropPhotoBL.cs" />
+    <Compile Include="DropPhoto\IDropPhotoBL.cs" />
     <Compile Include="ImageProcessing\CSharp\DropletImageProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Series\ISeriesBL.cs" />

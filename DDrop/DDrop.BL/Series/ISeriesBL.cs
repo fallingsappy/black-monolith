@@ -15,5 +15,7 @@ namespace DDrop.BL.Series
         ObservableCollection<SeriesViewModel> ConvertSeriesToSeriesViewModel(List<BE.Models.Entities.Series> series,
             UserViewModel user);
         Task ExportSeriesLocalAsync(string fileName, UserViewModel user);
+        List<BE.Models.Entities.Series> SeriesViewModelToSeries(UserViewModel user);
+        BE.Models.Entities.Series SingleSeriesViewModelToSingleSeries(SeriesViewModel userSeries);
     }
 }

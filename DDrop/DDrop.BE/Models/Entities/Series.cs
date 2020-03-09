@@ -7,8 +7,8 @@ namespace DDrop.BE.Models.Entities
     {
         public Guid SeriesId { get; set; }
         public string Title { get; set; }
-        public List<DropPhoto> DropPhotosSeries { get; set; }
-        public ReferencePhoto ReferencePhotoForSeries { get; set; }
+        public virtual List<DropPhoto> DropPhotosSeries { get; set; }
+        public virtual ReferencePhoto ReferencePhotoForSeries { get; set; }
         public double IntervalBetweenPhotos { get; set; }
         public string AddedDate { get; set; }
     }

@@ -76,8 +76,8 @@ namespace DDrop
                             IsLoggedIn = true,
                         };
 
-                        if (user.UserSeries != null)
-                            UserLogin.UserSeries = _seriesBL.ConvertSeriesToSeriesViewModel(user.UserSeries, UserLogin);
+                        //if (user.UserSeries != null)
+                        //    UserLogin.UserSeries = _seriesBL.ConvertSeriesToSeriesViewModel(user.UserSeries, UserLogin);
                         LoginSucceeded = true;
                         _notifier.ShowSuccess($"Пользователь {user.Email} авторизован.");
                         Close();

@@ -118,3 +118,4 @@ D:\fallingsappyGit\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.dll
 D:\fallingsappyGit\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.pdb
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.Migrations.Initial.resources
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.csproj.GenerateResource.cache
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.csproj.CoreCompileInputs.cache

@@ -693,3 +693,4 @@ E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\CropPhoto.g.cs
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\CropPhoto.baml
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\DDrop.csproj.CoreCompileInputs.cache
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\bin\Debug\EasyEncryption.dll
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\bin\Debug\RFM_WPFProgressBarUpdate.pdb

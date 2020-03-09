@@ -82,9 +82,9 @@
     <Reference Include="Python.Runtime.NETStandard, Version=3.7.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Python.Runtime.NETStandard.3.7.0\lib\netstandard2.0\Python.Runtime.NETStandard.dll</HintPath>
     </Reference>
-    <Reference Include="RFM_WPFProgressBarUpdate, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
+    <Reference Include="RFM_WPFProgressBarUpdate, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Users\FallingsappyPC\Downloads\RFM_WPFProgressBarUpdate\RFM_WPFProgressBarUpdate\RFM_WPFProgressBarUpdate\bin\x64\Release\RFM_WPFProgressBarUpdate.exe</HintPath>
+      <HintPath>C:\Users\FallingsappyPC\Downloads\RFM_WPFProgressBarUpdate-noexe\RFM_WPFProgressBarUpdate\RFM_WPFProgressBarUpdate\bin\Debug\RFM_WPFProgressBarUpdate.exe</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />

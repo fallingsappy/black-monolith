@@ -14,89 +14,93 @@ namespace DDrop.BL.Series
 {
     public class SeriesBL : ISeriesBL
     {
-        private ObservableCollection<SeriesViewModel> _addSeriesViewModel;
-
         public async Task<ObservableCollection<SeriesViewModel>> ImportLocalSeriesAsync(string fileName, UserViewModel user)
         {
             List<BE.Models.Entities.Series> series = new List<BE.Models.Entities.Series>();
 
             series = await Task.Run(() => LocalSeriesProvider.DeserializeAsync<List<BE.Models.Entities.Series>>(fileName));
-            _addSeriesViewModel = new ObservableCollection<SeriesViewModel>();
-            _addSeriesViewModel = ConvertSeriesToSeriesViewModel(series, user);
 
-            return _addSeriesViewModel;
+            return ConvertSeriesToSeriesViewModel(series, user);
         }
 
         public ObservableCollection<SeriesViewModel> ConvertSeriesToSeriesViewModel(List<BE.Models.Entities.Series> series, UserViewModel user)
         {
+            ObservableCollection<SeriesViewModel> addSeriesViewModel = new ObservableCollection<SeriesViewModel>();
             for (int i = 0; i < series.Count; i++)
             {
                 SeriesViewModel addSingleSeriesViewModel = new SeriesViewModel(user);
-
                 ObservableCollection<DropPhotoViewModel> dropPhotosSeries = new ObservableCollection<DropPhotoViewModel>();
 
-                foreach (var dropPhoto in series[i].DropPhotosSeries)
+                if (series[i].DropPhotosSeries != null)
                 {
-                    var userDropPhoto = new DropPhotoViewModel()
+                    foreach (var dropPhoto in series[i].DropPhotosSeries)
                     {
-                        Name = dropPhoto.Name,
-                        Content = dropPhoto.Content,
-                        DropPhotoId = dropPhoto.DropPhotoId,
-                        SimpleHorizontalLine = dropPhoto.SimpleHorizontalLine,
-                        SimpleVerticalLine = dropPhoto.SimpleVerticalLine,
-                        XDiameterInPixels = dropPhoto.XDiameterInPixels,
-                        YDiameterInPixels = dropPhoto.YDiameterInPixels,
-                        ZDiameterInPixels = dropPhoto.ZDiameterInPixels,
-                        AddedDate = dropPhoto.AddedDate
-                    };
-
-                    if (dropPhoto.SimpleHorizontalLine != null)
-                    {
-                        userDropPhoto.HorizontalLine = new Line
+                        var userDropPhoto = new DropPhotoViewModel()
                         {
-                            X1 = dropPhoto.SimpleHorizontalLine.X1,
-                            X2 = dropPhoto.SimpleHorizontalLine.X2,
-                            Y1 = dropPhoto.SimpleHorizontalLine.Y1,
-                            Y2 = dropPhoto.SimpleHorizontalLine.Y2,
-                            Stroke = Brushes.DeepPink
+                            Name = dropPhoto.Name,
+                            Content = dropPhoto.Content,
+                            DropPhotoId = dropPhoto.DropPhotoId,
+                            SimpleHorizontalLine = dropPhoto.SimpleHorizontalLine,
+                            SimpleVerticalLine = dropPhoto.SimpleVerticalLine,
+                            XDiameterInPixels = dropPhoto.XDiameterInPixels,
+                            YDiameterInPixels = dropPhoto.YDiameterInPixels,
+                            ZDiameterInPixels = dropPhoto.ZDiameterInPixels,
+                            AddedDate = dropPhoto.AddedDate
                         };
-                    }
 
-                    if (dropPhoto.SimpleVerticalLine != null)
-                    {
-                        userDropPhoto.VerticalLine = new Line
+                        if (dropPhoto.SimpleHorizontalLine != null)
                         {
-                            X1 = dropPhoto.SimpleVerticalLine.X1,
-                            X2 = dropPhoto.SimpleVerticalLine.X2,
-                            Y1 = dropPhoto.SimpleVerticalLine.Y1,
-                            Y2 = dropPhoto.SimpleVerticalLine.Y2,
-                            Stroke = Brushes.Green
+                            userDropPhoto.HorizontalLine = new Line
+                            {
+                                X1 = dropPhoto.SimpleHorizontalLine.X1,
+                                X2 = dropPhoto.SimpleHorizontalLine.X2,
+                                Y1 = dropPhoto.SimpleHorizontalLine.Y1,
+                                Y2 = dropPhoto.SimpleHorizontalLine.Y2,
+                                Stroke = Brushes.DeepPink
+                            };
+                        }
+
+                        if (dropPhoto.SimpleVerticalLine != null)
+                        {
+                            userDropPhoto.VerticalLine = new Line
+                            {
+                                X1 = dropPhoto.SimpleVerticalLine.X1,
+                                X2 = dropPhoto.SimpleVerticalLine.X2,
+                                Y1 = dropPhoto.SimpleVerticalLine.Y1,
+                                Y2 = dropPhoto.SimpleVerticalLine.Y2,
+                                Stroke = Brushes.Green
+                            };
+                        }
+                        var userDrop = new DropViewModel(addSingleSeriesViewModel, userDropPhoto)
+                        {
+                            DropId = dropPhoto.Drop.DropId,
+                            RadiusInMeters = dropPhoto.Drop.RadiusInMeters,
+                            VolumeInCubicalMeters = dropPhoto.Drop.VolumeInCubicalMeters,
+                            XDiameterInMeters = dropPhoto.Drop.XDiameterInMeters,
+                            YDiameterInMeters = dropPhoto.Drop.YDiameterInMeters,
+                            ZDiameterInMeters = dropPhoto.Drop.ZDiameterInMeters
                         };
+
+                        userDropPhoto.Drop = userDrop;
+
+                        dropPhotosSeries.Add(userDropPhoto);
                     }
-                    var userDrop = new DropViewModel(addSingleSeriesViewModel, userDropPhoto)
-                    {
-                        DropId = dropPhoto.Drop.DropId,
-                        RadiusInMeters = dropPhoto.Drop.RadiusInMeters,
-                        VolumeInCubicalMeters = dropPhoto.Drop.VolumeInCubicalMeters,
-                        XDiameterInMeters = dropPhoto.Drop.XDiameterInMeters,
-                        YDiameterInMeters = dropPhoto.Drop.YDiameterInMeters,
-                        ZDiameterInMeters = dropPhoto.Drop.ZDiameterInMeters
-                    };
-
-                    userDropPhoto.Drop = userDrop;
-
-                    dropPhotosSeries.Add(userDropPhoto);
                 }
 
-                addSingleSeriesViewModel.ReferencePhotoForSeries = new ReferencePhotoViewModel
+
+                if (series[i].ReferencePhotoForSeries != null)
                 {
-                    Content = series[i].ReferencePhotoForSeries.Content,
-                    Name = series[i].ReferencePhotoForSeries.Name,
-                    PixelsInMillimeter = series[i].ReferencePhotoForSeries.PixelsInMillimeter,
-                    ReferencePhotoId = series[i].ReferencePhotoForSeries.ReferencePhotoId,
-                    SimpleLine = series[i].ReferencePhotoForSeries.SimpleLine,
-                };
-                if (series[i].ReferencePhotoForSeries.SimpleLine != null)
+                    addSingleSeriesViewModel.ReferencePhotoForSeries = new ReferencePhotoViewModel
+                    {
+                        Content = series[i].ReferencePhotoForSeries.Content,
+                        Name = series[i].ReferencePhotoForSeries.Name,
+                        PixelsInMillimeter = series[i].ReferencePhotoForSeries.PixelsInMillimeter,
+                        ReferencePhotoId = series[i].ReferencePhotoForSeries.ReferencePhotoId,
+                        SimpleLine = series[i].ReferencePhotoForSeries.SimpleLine,
+                    };
+                }
+
+                if (series[i].ReferencePhotoForSeries?.SimpleLine != null)
                 {
                     addSingleSeriesViewModel.ReferencePhotoForSeries.Line = new Line
                     {
@@ -113,63 +117,81 @@ namespace DDrop.BL.Series
                 addSingleSeriesViewModel.IntervalBetweenPhotos = series[i].IntervalBetweenPhotos;
                 addSingleSeriesViewModel.SeriesId = series[i].SeriesId;
 
-                _addSeriesViewModel.Add(addSingleSeriesViewModel);
+                addSeriesViewModel.Add(addSingleSeriesViewModel);
             }
 
-            return _addSeriesViewModel;
+            return addSeriesViewModel;
         }
 
         public async Task ExportSeriesLocalAsync(string fileName, UserViewModel user)
         {
+            var series = SeriesViewModelToSeries(user);
+
+            await Task.Run(() => LocalSeriesProvider.SerializeAsync(series, fileName));
+        }
+
+        public List<BE.Models.Entities.Series> SeriesViewModelToSeries(UserViewModel user)
+        {
             List<BE.Models.Entities.Series> series = new List<BE.Models.Entities.Series>();
             foreach (var userSeries in user.UserSeries)
             {
-                List<DropPhoto> dropPhotosSeries = new List<DropPhoto>();
+                series.Add(SingleSeriesViewModelToSingleSeries(userSeries));
+            }
 
-                foreach (var dropPhoto in userSeries.DropPhotosSeries)
-                {
-                    dropPhotosSeries.Add(new DropPhoto()
-                    {
-                        Name = dropPhoto.Name,
-                        Content = dropPhoto.Content,
-                        Drop = new Drop
-                        {
-                            DropId = dropPhoto.Drop.DropId,
-                            RadiusInMeters = dropPhoto.Drop.RadiusInMeters,
-                            VolumeInCubicalMeters = dropPhoto.Drop.VolumeInCubicalMeters,
-                            XDiameterInMeters = dropPhoto.Drop.XDiameterInMeters,
-                            YDiameterInMeters = dropPhoto.Drop.YDiameterInMeters,
-                            ZDiameterInMeters = dropPhoto.Drop.ZDiameterInMeters
-                        },
-                        AddedDate = dropPhoto.AddedDate,
-                        DropPhotoId = dropPhoto.DropPhotoId,
-                        SimpleHorizontalLine = dropPhoto.SimpleHorizontalLine,
-                        SimpleVerticalLine = dropPhoto.SimpleVerticalLine,
-                        XDiameterInPixels = dropPhoto.XDiameterInPixels,
-                        YDiameterInPixels = dropPhoto.YDiameterInPixels,
-                        ZDiameterInPixels = dropPhoto.ZDiameterInPixels
-                    });
-                }
+            return series;
+        }
 
-                series.Add(new BE.Models.Entities.Series
+        public BE.Models.Entities.Series SingleSeriesViewModelToSingleSeries(SeriesViewModel userSeries)
+        {
+            BE.Models.Entities.Series SingleSeries = new BE.Models.Entities.Series();
+            List<BE.Models.Entities.DropPhoto> dropPhotosSeries = new List<BE.Models.Entities.DropPhoto>();
+
+            foreach (var dropPhoto in userSeries.DropPhotosSeries)
+            {
+                dropPhotosSeries.Add(new BE.Models.Entities.DropPhoto()
                 {
-                    DropPhotosSeries = dropPhotosSeries,
-                    IntervalBetweenPhotos = userSeries.IntervalBetweenPhotos,
-                    ReferencePhotoForSeries = new ReferencePhoto
+                    Name = dropPhoto.Name,
+                    Content = dropPhoto.Content,
+                    Drop = new Drop
                     {
-                        Content = userSeries.ReferencePhotoForSeries.Content,
-                        Name = userSeries.ReferencePhotoForSeries.Name,
-                        PixelsInMillimeter = userSeries.ReferencePhotoForSeries.PixelsInMillimeter,
-                        ReferencePhotoId = userSeries.ReferencePhotoForSeries.ReferencePhotoId,
-                        SimpleLine = userSeries.ReferencePhotoForSeries.SimpleLine
+                        DropId = dropPhoto.Drop.DropId,
+                        RadiusInMeters = dropPhoto.Drop.RadiusInMeters,
+                        VolumeInCubicalMeters = dropPhoto.Drop.VolumeInCubicalMeters,
+                        XDiameterInMeters = dropPhoto.Drop.XDiameterInMeters,
+                        YDiameterInMeters = dropPhoto.Drop.YDiameterInMeters,
+                        ZDiameterInMeters = dropPhoto.Drop.ZDiameterInMeters
                     },
-                    AddedDate = userSeries.AddedDate,
-                    SeriesId = userSeries.SeriesId,
-                    Title = userSeries.Title
+                    AddedDate = dropPhoto.AddedDate,
+                    DropPhotoId = dropPhoto.DropPhotoId,
+                    SimpleHorizontalLine = dropPhoto.SimpleHorizontalLine,
+                    SimpleVerticalLine = dropPhoto.SimpleVerticalLine,
+                    XDiameterInPixels = dropPhoto.XDiameterInPixels,
+                    YDiameterInPixels = dropPhoto.YDiameterInPixels,
+                    ZDiameterInPixels = dropPhoto.ZDiameterInPixels
                 });
             }
 
-            await Task.Run(() => LocalSeriesProvider.SerializeAsync(series, fileName));
+            if(userSeries.ReferencePhotoForSeries != null)
+            {
+                var referencePhoto = new ReferencePhoto
+                {
+                    Content = userSeries.ReferencePhotoForSeries.Content,
+                    Name = userSeries.ReferencePhotoForSeries.Name,
+                    PixelsInMillimeter = userSeries.ReferencePhotoForSeries.PixelsInMillimeter,
+                    ReferencePhotoId = userSeries.ReferencePhotoForSeries.ReferencePhotoId,
+                    SimpleLine = userSeries.ReferencePhotoForSeries.SimpleLine
+                };
+
+                SingleSeries.ReferencePhotoForSeries = referencePhoto;
+            }
+
+            SingleSeries.DropPhotosSeries = dropPhotosSeries;
+            SingleSeries.IntervalBetweenPhotos = userSeries.IntervalBetweenPhotos;
+            SingleSeries.AddedDate = userSeries.AddedDate;
+            SingleSeries.SeriesId = userSeries.SeriesId;
+            SingleSeries.Title = userSeries.Title;
+
+            return SingleSeries;
         }
     }
 }

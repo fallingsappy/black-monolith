@@ -163,7 +163,8 @@ namespace DDrop
                             FirstName = UserLogin.FirstName,
                             LastName = UserLogin.LastName,
                             Password = PasswordOperations.HashPassword(PasswordBox1.Password),
-                            UserPhoto = UserLogin.UserPhoto
+                            UserPhoto = UserLogin.UserPhoto,
+                            UserSeries = new System.Collections.Generic.List<Series>()
                         });
                         await Task.Run(() => _dDropContext.SaveChangesAsync());
                         _notifier.ShowSuccess($"Пользователь {UserLogin.Email} успешно зарегистрирован.");

@@ -114,7 +114,7 @@ namespace DDrop.BE.Models
             {
                 List<SeriesViewModel> checkedSeries = _userSeries?.Where(x => x.IsChecked).ToList();
 
-                if (checkedSeries.Count != 0)
+                if (checkedSeries?.Count != 0)
                 {
                     bool isAnyCheckedCantDrawPlot = checkedSeries?.Where(x => x.CanDrawPlot != true).ToList().Count > 0;
 

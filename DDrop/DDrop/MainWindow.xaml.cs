@@ -24,6 +24,8 @@ using ToastNotifications.Lifetime;
 using ToastNotifications.Messages;
 using ToastNotifications.Position;
 using pbu = RFM.RFM_WPFProgressBarUpdate;
+using DDrop.BL.DropPhoto;
+using System.Data.Entity;
 
 namespace DDrop
 {
@@ -38,6 +40,7 @@ namespace DDrop
         private bool _allSelectedPhotosChanging;
         private bool? _allSelectedPhotos = false;
         private readonly ISeriesBL _seriesBL;
+        private readonly IDropPhotoBL _dropPhotoBL;
         readonly PythonProvider pythonProvider = new PythonProvider();
         readonly DDropContext _dDropContext = new DDropContext();
 
@@ -114,10 +117,11 @@ namespace DDrop
 
         #endregion
 
-        public MainWindow(ISeriesBL seriesBL)
+        public MainWindow(ISeriesBL seriesBL, IDropPhotoBL dropPhotoBL)
         {
             InitializeComponent();
             _seriesBL = seriesBL;
+            _dropPhotoBL = dropPhotoBL;
             AppMainWindow.Show();
             Login login = new Login(_dDropContext, notifier, _seriesBL)
             {
@@ -128,7 +132,33 @@ namespace DDrop
             if (login.LoginSucceeded)
             {
                 User = login.UserLogin;
-                
+                User.UserSeries = _seriesBL.ConvertSeriesToSeriesViewModel(_dDropContext.Users.FirstOrDefault(x => x.UserId == User.UserId).UserSeries.Select(x => new Series
+                {
+                    Title = x.Title,
+                    SeriesId = x.SeriesId,
+                    AddedDate = x.AddedDate,
+                    IntervalBetweenPhotos = x.IntervalBetweenPhotos,
+                    ReferencePhotoForSeries = new ReferencePhoto
+                    {
+                        Name = x.ReferencePhotoForSeries.Name,
+                        PixelsInMillimeter = x.ReferencePhotoForSeries.PixelsInMillimeter,
+                        ReferencePhotoId = x.ReferencePhotoForSeries.ReferencePhotoId,
+                        SimpleLine = x.ReferencePhotoForSeries.SimpleLine
+                    } ?? null,
+                    DropPhotosSeries = x.DropPhotosSeries.Select(s => new DropPhoto
+                    {
+                        Name = s.Name,
+                        AddedDate = s.AddedDate,
+                        Drop = s.Drop,
+                        DropPhotoId = s.DropPhotoId,
+                        SimpleHorizontalLine = s.SimpleHorizontalLine,
+                        SimpleVerticalLine = s.SimpleVerticalLine,
+                        XDiameterInPixels = s.XDiameterInPixels,
+                        YDiameterInPixels = s.YDiameterInPixels,
+                        ZDiameterInPixels = s.ZDiameterInPixels
+                    }).ToList()
+                }).ToList(), User);
+                SeriesDataGrid.ItemsSource = User.UserSeries;
             }
 
             if (User == null)
@@ -222,11 +252,11 @@ namespace DDrop
             if (old.ReferencePhotoForSeries?.Line != null)
                 MainWindowPixelDrawer.CanDrawing.Children.Remove(old.ReferencePhotoForSeries.Line);
 
-            if (CurrentSeries.ReferencePhotoForSeries.Line != null)
+            if (CurrentSeries.ReferencePhotoForSeries?.Line != null)
                 MainWindowPixelDrawer.CanDrawing.Children.Add(CurrentSeries.ReferencePhotoForSeries.Line);
         }
 
-        private void AddNewSeries_OnClick(object sender, RoutedEventArgs e)
+        private async void AddNewSeries_OnClick(object sender, RoutedEventArgs e)
         {
             string seriesTitle;
 
@@ -243,17 +273,22 @@ namespace DDrop
                 SeriesViewModel seriesToAdd = new SeriesViewModel(User)
                 {
                     SeriesId = Guid.NewGuid(),
-                    Title = seriesTitle,
-                    ReferencePhotoForSeries = new ReferencePhotoViewModel(),
-                    AddedDate = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")
+                    Title = seriesTitle,                    
+                    AddedDate = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"),
+                    ReferencePhotoForSeries = new ReferencePhotoViewModel
+                    {
+                        ReferencePhotoId = Guid.NewGuid()
+                    }
                 };
 
                 seriesToAdd.PropertyChanged += EntryOnPropertyChanged;
 
                 User.UserSeries.Add(seriesToAdd);
+                _dDropContext.Users.FirstOrDefault(x => x.UserId == User.UserId).UserSeries.Add(_seriesBL.SingleSeriesViewModelToSingleSeries(seriesToAdd));
+                await _dDropContext.SaveChangesAsync();
                 SeriesDataGrid.ItemsSource = User.UserSeries;
                 OneLineSetterValue.Text = "";
-
+                await _dDropContext.SaveChangesAsync();
                 notifier.ShowSuccess($"Серия {seriesToAdd.Title} добавлена.");
             }
             else
@@ -570,7 +605,7 @@ namespace DDrop
                 RecheckAllSelectedPhotos();
         }
 
-        private void MenuItemChoosePhotos_OnClick(object sender, RoutedEventArgs e)
+        private async void MenuItemChoosePhotos_OnClick(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog
             {
@@ -606,7 +641,12 @@ namespace DDrop
                     {
                         imageForAdding.PropertyChanged += PhotosOnPropertyChanged;
                         CurrentSeries.DropPhotosSeries.Add(imageForAdding);
-                        CurrentSeries.DropPhotosSeries[CurrentSeries.DropPhotosSeries.Count - 1].Drop = new DropViewModel(CurrentSeries, CurrentSeries.DropPhotosSeries[CurrentSeries.DropPhotosSeries.Count - 1]);
+                        CurrentSeries.DropPhotosSeries[CurrentSeries.DropPhotosSeries.Count - 1].Drop = new DropViewModel(CurrentSeries, CurrentSeries.DropPhotosSeries[CurrentSeries.DropPhotosSeries.Count - 1])
+                        {
+                            DropId = Guid.NewGuid()
+                        };
+                        _dDropContext.Users.FirstOrDefault(x => x.UserId == User.UserId).UserSeries.FirstOrDefault(x => x.SeriesId == CurrentSeries.SeriesId).DropPhotosSeries.Add(_dropPhotoBL.DropPhotoViewModelToDropPhoto(imageForAdding));
+                        await _dDropContext.SaveChangesAsync();
                         notifier.ShowSuccess($"Снимок {imageForAdding.Name} добавлен.");                        
                     }
                     else

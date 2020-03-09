@@ -11,6 +11,6 @@ namespace DDrop.BE.Models.Entities
         public byte[] UserPhoto { get; set; }
         public string Password { get; set; }
         public string Email { get; set; }
-        public List<Series> UserSeries { get; set; }
+        public virtual List<Series> UserSeries { get; set; }
     }
 }

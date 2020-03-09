@@ -9,10 +9,10 @@ namespace DDrop.BE.Models.Entities
         public int XDiameterInPixels { get; set; }
         public int YDiameterInPixels { get; set; }
         public int ZDiameterInPixels { get; set; }
-        public SimpleLine SimpleHorizontalLine { get; set; }
-        public SimpleLine SimpleVerticalLine { get; set; }
+        public virtual SimpleLine SimpleHorizontalLine { get; set; }
+        public virtual SimpleLine SimpleVerticalLine { get; set; }
         public byte[] Content { get; set; }
-        public Drop Drop { get; set; }
+        public virtual Drop Drop { get; set; }
         public string AddedDate { get; set; }
     }
 }

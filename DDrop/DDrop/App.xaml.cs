@@ -1,4 +1,5 @@
-﻿using DDrop.BL.Series;
+﻿using DDrop.BL.DropPhoto;
+using DDrop.BL.Series;
 using System.Windows;
 using Unity;
 
@@ -15,6 +16,7 @@ namespace DDrop
 
             IUnityContainer container = new UnityContainer();
             container.RegisterType<ISeriesBL, SeriesBL>();
+            container.RegisterType<IDropPhotoBL, DropPhotoBL>();
 
             var window = container.Resolve<MainWindow>();
             //window.Show();
