@@ -20,8 +20,8 @@ namespace DDrop
     {
         public static readonly DependencyProperty UserLoginProperty = DependencyProperty.Register("UserLogin", typeof(UserViewModel), typeof(Login));
         private DDropContext _dDropContext;
-        private Notifier _notifier;
-        private ISeriesBL _seriesBL;
+        private readonly Notifier _notifier;
+        private readonly ISeriesBL _seriesBL;
         public bool LoginSucceeded;
         public UserViewModel UserLogin
         {
@@ -62,8 +62,8 @@ namespace DDrop
 
                 using (_dDropContext = new DDropContext())
                 {
-                    var user = await _dDropContext.Users.FirstOrDefaultAsync(x => x.Email == email && x.Password == password);
-                    if (user != null)
+                    var user = await _dDropContext.Users.FirstOrDefaultAsync(x => x.Email == email);
+                    if (user != null && PasswordOperations.PasswordsMatch(password, user.Password))
                     {
                         UserLogin = new UserViewModel()
                         {
@@ -94,18 +94,22 @@ namespace DDrop
         private void RegistrationButton_Click(object sender, RoutedEventArgs e)
         {
             Visibility = Visibility.Collapsed;
-            Registration registrationWindow = new Registration(_dDropContext, _notifier);
-            registrationWindow.Owner = this;
+            Registration registrationWindow = new Registration(_dDropContext, _notifier)
+            {
+                Owner = this
+            };
             registrationWindow.ShowDialog();
             Visibility = Visibility.Visible;
 
             if (registrationWindow.RegistrationSucceeded)
             {
                 UserLogin = registrationWindow.UserLogin;
+                LoginSucceeded = true;
                 Close();
             }
             else
             {
+                LoginSucceeded = false;
                 ShowDialog();
             }
         }
@@ -138,7 +142,7 @@ namespace DDrop
                 FirstName = "Неизвестно",
                 LastName = "Неизвестно",
                 IsLoggedIn = false,
-                Password = PasswordEncoding.EncodePassword("1q2w3e4r5t6y"),
+                Password = PasswordOperations.HashPassword("1q2w3e4r5t6y"),
                 UserId = Guid.NewGuid()
             };
             LoginSucceeded = true;

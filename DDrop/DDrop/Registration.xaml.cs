@@ -19,6 +19,7 @@ using DDrop.Controls.PhotoCropper;
 using DDrop.DAL;
 using ToastNotifications;
 using ToastNotifications.Messages;
+using DDrop.Utility.Cryptography;
 
 namespace DDrop
 {
@@ -29,7 +30,7 @@ namespace DDrop
     {
         public static readonly DependencyProperty UserLoginProperty = DependencyProperty.Register("UserLogin", typeof(UserViewModel), typeof(Registration));
         private DDropContext _dDropContext;
-        private Notifier _notifier;
+        private readonly Notifier _notifier;
 
         public bool RegistrationSucceeded;
         public byte[] UserPhoto { get; set; }
@@ -74,17 +75,20 @@ namespace DDrop
 
         private void ChooseProfilePicture_OnClick(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            
-            openFileDialog.Filter = "Jpeg files (*.jpg)|*.jpg|All files (*.*)|*.*";
-            openFileDialog.Multiselect = false;
-            openFileDialog.AddExtension = true;
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                Filter = "Jpeg files (*.jpg)|*.jpg|All files (*.*)|*.*",
+                Multiselect = false,
+                AddExtension = true
+            };
             if (openFileDialog.ShowDialog() == true)
             {
-                CropPhoto croppingWindow = new CropPhoto();
-                croppingWindow.Height = new BitmapImage(new Uri(openFileDialog.FileName)).Height;
-                croppingWindow.Width = new BitmapImage(new Uri(openFileDialog.FileName)).Width;
-                croppingWindow.Owner = this;
+                CropPhoto croppingWindow = new CropPhoto
+                {
+                    Height = new BitmapImage(new Uri(openFileDialog.FileName)).Height,
+                    Width = new BitmapImage(new Uri(openFileDialog.FileName)).Width,
+                    Owner = this
+                };
                 croppingWindow.CroppingControl.SourceImage.Source = new BitmapImage(new Uri(openFileDialog.FileName));
                 croppingWindow.CroppingControl.SourceImage.Height = new BitmapImage(new Uri(openFileDialog.FileName)).Height;
                 croppingWindow.CroppingControl.SourceImage.Width = new BitmapImage(new Uri(openFileDialog.FileName)).Width;
@@ -158,11 +162,11 @@ namespace DDrop
                             Email = UserLogin.Email.Trim(),
                             FirstName = UserLogin.FirstName,
                             LastName = UserLogin.LastName,
-                            Password = PasswordBox1.Password,
+                            Password = PasswordOperations.HashPassword(PasswordBox1.Password),
                             UserPhoto = UserLogin.UserPhoto
                         });
                         await Task.Run(() => _dDropContext.SaveChangesAsync());
-                        _notifier.ShowError($"Пользователь {UserLogin.Email} успешно зарегистрирован.");
+                        _notifier.ShowSuccess($"Пользователь {UserLogin.Email} успешно зарегистрирован.");
                         RegistrationSucceeded = true;
                         Close();
                     }

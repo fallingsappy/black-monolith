@@ -37,9 +37,9 @@ namespace DDrop
         private bool? _allSelectedSeries = false;
         private bool _allSelectedPhotosChanging;
         private bool? _allSelectedPhotos = false;
-        private ISeriesBL _seriesBL;
-        PythonProvider pythonProvider = new PythonProvider();
-        DDropContext _dDropContext = new DDropContext();
+        private readonly ISeriesBL _seriesBL;
+        readonly PythonProvider pythonProvider = new PythonProvider();
+        readonly DDropContext _dDropContext = new DDropContext();
 
         public static readonly DependencyProperty CurrentSeriesProperty = DependencyProperty.Register("CurrentSeries", typeof(SeriesViewModel), typeof(MainWindow));
         public static readonly DependencyProperty CurrentDropPhotoProperty = DependencyProperty.Register("CurrentDropPhoto", typeof(DropPhotoViewModel), typeof(MainWindow));
@@ -47,7 +47,7 @@ namespace DDrop
         public static readonly DependencyProperty UserProperty = DependencyProperty.Register("User", typeof(UserViewModel), typeof(MainWindow));
         public static readonly DependencyProperty ParticularSeriesIndexProperty = DependencyProperty.Register("ParticularSeriesIndex", typeof(int), typeof(MainWindow));
 
-        private Notifier notifier = new Notifier(cfg =>
+        private readonly Notifier notifier = new Notifier(cfg =>
         {
             cfg.PositionProvider = new WindowPositionProvider(
                 parentWindow: Application.Current.MainWindow,
@@ -119,8 +119,10 @@ namespace DDrop
             InitializeComponent();
             _seriesBL = seriesBL;
             AppMainWindow.Show();
-            Login login = new Login(_dDropContext, notifier, _seriesBL);
-            login.Owner = AppMainWindow;
+            Login login = new Login(_dDropContext, notifier, _seriesBL)
+            {
+                Owner = AppMainWindow
+            };
             login.ShowDialog();
 
             if (login.LoginSucceeded)
@@ -328,10 +330,12 @@ namespace DDrop
             {
                 if (User.IsAnySelectedSeriesCanDrawPlot)
                 {
-                    SaveFileDialog saveFileDialog = new SaveFileDialog();
-                    saveFileDialog.Filter = "Excel files (*.xlsx)|*.xlsx|All files (*.*)|*.*";
-                    saveFileDialog.AddExtension = true;
-                    saveFileDialog.CheckPathExists = true;
+                    SaveFileDialog saveFileDialog = new SaveFileDialog
+                    {
+                        Filter = "Excel files (*.xlsx)|*.xlsx|All files (*.*)|*.*",
+                        AddExtension = true,
+                        CheckPathExists = true
+                    };
 
                     if (saveFileDialog.ShowDialog() == true)
                     {
@@ -400,9 +404,7 @@ namespace DDrop
 
         private void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var tc = sender as TabControl;
-
-            if (tc != null)
+            if (sender is TabControl tc)
             {
                 TabItem item = (TabItem)tc.SelectedItem;
 
@@ -570,13 +572,14 @@ namespace DDrop
 
         private void MenuItemChoosePhotos_OnClick(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-
-            openFileDialog.Filter = "Jpeg files (*.jpg)|*.jpg|All files (*.*)|*.*";
-            openFileDialog.Multiselect = true;
-            openFileDialog.AddExtension = true;
-            openFileDialog.CheckFileExists = true;
-            openFileDialog.CheckPathExists = true;
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                Filter = "Jpeg files (*.jpg)|*.jpg|All files (*.*)|*.*",
+                Multiselect = true,
+                AddExtension = true,
+                CheckFileExists = true,
+                CheckPathExists = true
+            };
 
             if (openFileDialog.ShowDialog() == true)
             {
@@ -729,12 +732,13 @@ namespace DDrop
 
         private void ChooseReference_OnClick(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-
-            openFileDialog.Filter = "Jpeg files (*.jpg)|*.jpg|All files (*.*)|*.*";
-            openFileDialog.Multiselect = false;
-            openFileDialog.AddExtension = true;
-            openFileDialog.CheckFileExists = true;
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                Filter = "Jpeg files (*.jpg)|*.jpg|All files (*.*)|*.*",
+                Multiselect = false,
+                AddExtension = true,
+                CheckFileExists = true
+            };
 
             if (openFileDialog.ShowDialog() == true)
             {
@@ -867,8 +871,10 @@ namespace DDrop
 
         private void LoginMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            Login login = new Login(_dDropContext, notifier, _seriesBL);
-            login.Owner = this;
+            Login login = new Login(_dDropContext, notifier, _seriesBL)
+            {
+                Owner = this
+            };
             login.ShowDialog();
             if (login.LoginSucceeded)
             {
@@ -918,8 +924,10 @@ namespace DDrop
                 AccountMenuItem.Visibility = Visibility.Collapsed;
                 LogOutMenuItem.Visibility = Visibility.Collapsed;
                 LogInMenuItem.Visibility = Visibility.Visible;
-                Login login = new Login(_dDropContext, notifier, _seriesBL);
-                login.Owner = this;
+                Login login = new Login(_dDropContext, notifier, _seriesBL)
+                {
+                    Owner = this
+                };
                 login.ShowDialog();
                 if (login.LoginSucceeded)
                 {

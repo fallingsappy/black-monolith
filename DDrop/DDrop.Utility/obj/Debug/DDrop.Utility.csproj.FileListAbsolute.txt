@@ -131,3 +131,5 @@ D:\fallingsappyGit\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.csproj.CoreCompil
 D:\fallingsappyGit\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.csproj.CopyComplete
 D:\fallingsappyGit\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.dll
 D:\fallingsappyGit\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.pdb
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Utility\bin\Debug\EasyEncryption.dll
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.csproj.CoreCompileInputs.cache

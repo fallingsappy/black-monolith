@@ -21,7 +21,7 @@ namespace DDrop
     public partial class Account : Window
     {
         public static readonly DependencyProperty UserProperty = DependencyProperty.Register("User", typeof(UserViewModel), typeof(Account));
-        private Notifier _notifier;
+        private readonly Notifier _notifier;
         private DDropContext _dDropContext;
         public UserViewModel User
         {
@@ -54,18 +54,21 @@ namespace DDrop
 
         private async void ChooseProfilePicture_OnClick(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-
-            openFileDialog.Filter = "Jpeg files (*.jpg)|*.jpg|All files (*.*)|*.*";
-            openFileDialog.Multiselect = false;
-            openFileDialog.AddExtension = true;
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                Filter = "Jpeg files (*.jpg)|*.jpg|All files (*.*)|*.*",
+                Multiselect = false,
+                AddExtension = true
+            };
             if (openFileDialog.ShowDialog() == true)
             {
                 Properties.Settings.Default.Reference = openFileDialog.FileName;
-                CropPhoto croppingWindow = new CropPhoto();
-                croppingWindow.Height = new BitmapImage(new Uri(openFileDialog.FileName)).Height;
-                croppingWindow.Width = new BitmapImage(new Uri(openFileDialog.FileName)).Width;
-                croppingWindow.Owner = this;
+                CropPhoto croppingWindow = new CropPhoto
+                {
+                    Height = new BitmapImage(new Uri(openFileDialog.FileName)).Height,
+                    Width = new BitmapImage(new Uri(openFileDialog.FileName)).Width,
+                    Owner = this
+                };
                 croppingWindow.CroppingControl.SourceImage.Source = new BitmapImage(new Uri(openFileDialog.FileName));
                 croppingWindow.CroppingControl.SourceImage.Height = new BitmapImage(new Uri(openFileDialog.FileName)).Height;
                 croppingWindow.CroppingControl.SourceImage.Width = new BitmapImage(new Uri(openFileDialog.FileName)).Width;
@@ -302,7 +305,7 @@ namespace DDrop
                             _notifier.ShowSuccess("Пароль успешно изменен.");
                             NewPasswordConfirm.Password = "";
                             NewPassword.Password = "";
-                            CurrentPassword = "";
+                            CurrentPassword.Password = "";
                         }
                         else
                         {
