@@ -141,6 +141,7 @@ namespace DDrop
                 Password = PasswordEncoding.EncodePassword("1q2w3e4r5t6y"),
                 UserId = Guid.NewGuid()
             };
+            LoginSucceeded = true;
 
             Close();
         }

@@ -32,6 +32,19 @@ namespace DDrop
         public Account(UserViewModel user, Notifier notifier, DDropContext dDropContext)
         {
             InitializeComponent();
+            if (!user.IsLoggedIn)
+            {
+                ChangeFirstNameButton.Visibility = Visibility.Hidden;
+                ChangeLastNameButton.Visibility = Visibility.Hidden;
+                ChangePasswordButton.Visibility = Visibility.Hidden;
+                ChooseProfilePicture.Visibility = Visibility.Hidden;
+                CurrentPasswordTextBlock.Visibility = Visibility.Hidden;
+                NewPasswordConfirmTextBlock.Visibility = Visibility.Hidden;
+                NewPasswordConfirmTextBlock.Visibility = Visibility.Hidden;
+                CurrentPassword.Visibility = Visibility.Hidden;
+                NewPassword.Visibility = Visibility.Hidden;
+                NewPasswordConfirm.Visibility = Visibility.Hidden;
+            }
             _dDropContext = dDropContext;
             _notifier = notifier;
             User = user;
@@ -286,6 +299,10 @@ namespace DDrop
                         {
                             user.Password = NewPassword.Password;
                             await _dDropContext.SaveChangesAsync();
+                            _notifier.ShowSuccess("Пароль успешно изменен.");
+                            NewPasswordConfirm.Password = "";
+                            NewPassword.Password = "";
+                            CurrentPassword = "";
                         }
                         else
                         {
