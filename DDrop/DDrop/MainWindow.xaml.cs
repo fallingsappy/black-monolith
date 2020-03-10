@@ -325,11 +325,13 @@ namespace DDrop
             }
         }
 
-        private void DeleteSingleSeriesButton_Click(object sender, RoutedEventArgs e)
+        private async void DeleteSingleSeriesButton_Click(object sender, RoutedEventArgs e)
         {
             MessageBoxResult messageBoxResult = MessageBox.Show($"Удалить серию {User.UserSeries[SeriesDataGrid.SelectedIndex].Title}?", "Подтверждение удаления", MessageBoxButton.YesNo);
             if (messageBoxResult == MessageBoxResult.Yes)
             {
+                _dDropContext.Users.FirstOrDefault(x => x.UserId == User.UserId).UserSeries.Remove(_seriesBL.SingleSeriesViewModelToSingleSeries(User.UserSeries[SeriesDataGrid.SelectedIndex]));
+                await _dDropContext.SaveChangesAsync();
                 notifier.ShowSuccess($"Серия {User.UserSeries[SeriesDataGrid.SelectedIndex].Title} была удалена.");
 
                 User.UserSeries.RemoveAt(SeriesDataGrid.SelectedIndex);
