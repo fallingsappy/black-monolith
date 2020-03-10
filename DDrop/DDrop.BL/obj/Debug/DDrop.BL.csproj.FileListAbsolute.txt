@@ -143,3 +143,4 @@ D:\fallingsappyGit\DDrop\DDrop.BL\obj\Debug\DDrop.BL.dll
 D:\fallingsappyGit\DDrop\DDrop.BL\obj\Debug\DDrop.BL.pdb
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\bin\Debug\EasyEncryption.dll
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\obj\Debug\DDrop.BL.csproj.CoreCompileInputs.cache
+D:\fallingsappyGit\DDrop\DDrop.BL\bin\Debug\EasyEncryption.dll

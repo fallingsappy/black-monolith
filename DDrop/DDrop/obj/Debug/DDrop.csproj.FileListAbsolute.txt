@@ -694,3 +694,14 @@ E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\CropPhoto.baml
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\DDrop.csproj.CoreCompileInputs.cache
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\bin\Debug\EasyEncryption.dll
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\bin\Debug\RFM_WPFProgressBarUpdate.pdb
+D:\fallingsappyGit\DDrop\DDrop\bin\Debug\ControlzEx.dll
+D:\fallingsappyGit\DDrop\DDrop\bin\Debug\Unity.Abstractions.dll
+D:\fallingsappyGit\DDrop\DDrop\bin\Debug\Unity.Container.dll
+D:\fallingsappyGit\DDrop\DDrop\bin\Debug\EasyEncryption.dll
+D:\fallingsappyGit\DDrop\DDrop\bin\Debug\ControlzEx.pdb
+D:\fallingsappyGit\DDrop\DDrop\bin\Debug\RFM_WPFProgressBarUpdate.pdb
+D:\fallingsappyGit\DDrop\DDrop\bin\Debug\Unity.Abstractions.pdb
+D:\fallingsappyGit\DDrop\DDrop\bin\Debug\Unity.Container.pdb
+D:\fallingsappyGit\DDrop\DDrop\obj\Debug\CropPhoto.g.cs
+D:\fallingsappyGit\DDrop\DDrop\obj\Debug\DDrop_Content.g.cs
+D:\fallingsappyGit\DDrop\DDrop\obj\Debug\CropPhoto.baml

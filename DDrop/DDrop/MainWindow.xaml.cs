@@ -42,7 +42,7 @@ namespace DDrop
         private readonly ISeriesBL _seriesBL;
         private readonly IDropPhotoBL _dropPhotoBL;
         readonly PythonProvider pythonProvider = new PythonProvider();
-        readonly DDropContext _dDropContext = new DDropContext();
+        DDropContext _dDropContext = new DDropContext();
 
         public static readonly DependencyProperty CurrentSeriesProperty = DependencyProperty.Register("CurrentSeries", typeof(SeriesViewModel), typeof(MainWindow));
         public static readonly DependencyProperty CurrentDropPhotoProperty = DependencyProperty.Register("CurrentDropPhoto", typeof(DropPhotoViewModel), typeof(MainWindow));
@@ -330,9 +330,43 @@ namespace DDrop
             MessageBoxResult messageBoxResult = MessageBox.Show($"Удалить серию {User.UserSeries[SeriesDataGrid.SelectedIndex].Title}?", "Подтверждение удаления", MessageBoxButton.YesNo);
             if (messageBoxResult == MessageBoxResult.Yes)
             {
-                _dDropContext.Users.FirstOrDefault(x => x.UserId == User.UserId).UserSeries.Remove(_seriesBL.SingleSeriesViewModelToSingleSeries(User.UserSeries[SeriesDataGrid.SelectedIndex]));
-                await _dDropContext.SaveChangesAsync();
                 notifier.ShowSuccess($"Серия {User.UserSeries[SeriesDataGrid.SelectedIndex].Title} была удалена.");
+
+                using (_dDropContext = new DDropContext())
+                {
+                    var id = User.UserSeries[SeriesDataGrid.SelectedIndex].SeriesId;
+                    var series = await _dDropContext.Series
+                        .Include(x => x.DropPhotosSeries)
+                        .Include(x => x.ReferencePhotoForSeries)
+                        .FirstOrDefaultAsync(x => x.SeriesId == id);
+                    if (series != null)
+                    {
+                        if (series.DropPhotosSeries != null)
+                        {
+                            foreach (var item in series.DropPhotosSeries)
+                            {
+                                _dDropContext.Drops.Remove(item.Drop);
+                                if (item.SimpleVerticalLine != null)
+                                {
+                                    _dDropContext.SimpleLines.Remove(item?.SimpleVerticalLine);
+                                }
+
+                                if (item.SimpleHorizontalLine != null)
+                                {
+                                    _dDropContext.SimpleLines.Remove(item?.SimpleHorizontalLine);
+                                }                                                              
+                            }
+
+                            //_dDropContext.Series.Remove(series.DropPhotosSeries)
+                        }
+
+                        _dDropContext.SimpleLines.Remove(series?.ReferencePhotoForSeries.SimpleLine);
+                        _dDropContext.ReferencePhotos.Remove(series?.ReferencePhotoForSeries);                        
+                    }
+
+                    _dDropContext.Series.Remove(_seriesBL.SingleSeriesViewModelToSingleSeries(User.UserSeries[SeriesDataGrid.SelectedIndex]));
+                    await _dDropContext.SaveChangesAsync();
+                }
 
                 User.UserSeries.RemoveAt(SeriesDataGrid.SelectedIndex);
                 Photos.ItemsSource = null;
@@ -759,12 +793,15 @@ namespace DDrop
         {
             var intervalBetweenPhotosTextBox = sender as TextBox;
 
-            if (int.TryParse(intervalBetweenPhotosTextBox.Text, out int intervalBetweenPhotos))
-                CurrentSeries.IntervalBetweenPhotos = intervalBetweenPhotos;
-            else
+            if (CurrentSeries != null)
             {
-                CurrentSeries.IntervalBetweenPhotos = 0;
-                notifier.ShowInformation("Некорректное значение для интервала между снимками. Укажите интервал между снимками в секундах.");
+                if (int.TryParse(intervalBetweenPhotosTextBox?.Text, out int intervalBetweenPhotos))
+                    CurrentSeries.IntervalBetweenPhotos = intervalBetweenPhotos;
+                else
+                {
+                    CurrentSeries.IntervalBetweenPhotos = 0;
+                    notifier.ShowInformation("Некорректное значение для интервала между снимками. Укажите интервал между снимками в секундах.");
+                }
             }
         }
 
