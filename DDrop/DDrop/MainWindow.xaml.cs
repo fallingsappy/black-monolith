@@ -357,14 +357,17 @@ namespace DDrop
                                 }                                                              
                             }
 
-                            //_dDropContext.Series.Remove(series.DropPhotosSeries)
                         }
 
-                        _dDropContext.SimpleLines.Remove(series?.ReferencePhotoForSeries.SimpleLine);
+                        if (series.ReferencePhotoForSeries.SimpleLine != null)
+                        {
+                            _dDropContext.SimpleLines.Remove(series.ReferencePhotoForSeries.SimpleLine);
+                        }
+                        
                         _dDropContext.ReferencePhotos.Remove(series?.ReferencePhotoForSeries);                        
                     }
 
-                    _dDropContext.Series.Remove(_seriesBL.SingleSeriesViewModelToSingleSeries(User.UserSeries[SeriesDataGrid.SelectedIndex]));
+                    _dDropContext.Users.FirstOrDefault(x => x.UserId == User.UserId).UserSeries.Remove(_seriesBL.SingleSeriesViewModelToSingleSeries(User.UserSeries[SeriesDataGrid.SelectedIndex]));
                     await _dDropContext.SaveChangesAsync();
                 }
 
