@@ -266,6 +266,10 @@
       <Project>{194bffcc-08d1-4fce-957e-2a0723df61f9}</Project>
       <Name>DDrop.DAL</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DDrop.Db\DDrop.Db.csproj">
+      <Project>{8CE97B04-F51F-4350-A8CA-A82E40845793}</Project>
+      <Name>DDrop.Db</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DDrop.Utility\DDrop.Utility.csproj">
       <Project>{85478e42-c1ea-4839-87e1-7caab53cf4c8}</Project>
       <Name>DDrop.Utility</Name>

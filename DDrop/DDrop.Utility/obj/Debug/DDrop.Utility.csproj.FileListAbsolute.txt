@@ -133,3 +133,8 @@ D:\fallingsappyGit\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.dll
 D:\fallingsappyGit\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.pdb
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Utility\bin\Debug\EasyEncryption.dll
 D:\fallingsappyGit\DDrop\DDrop.Utility\bin\Debug\EasyEncryption.dll
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Utility\bin\Debug\DDrop.Db.dll
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Utility\bin\Debug\EntityFramework.dll
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Utility\bin\Debug\DDrop.Db.pdb
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Utility\bin\Debug\DDrop.Db.dll.config
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Utility\bin\Debug\EntityFramework.xml

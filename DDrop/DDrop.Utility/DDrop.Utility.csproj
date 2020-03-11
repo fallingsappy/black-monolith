@@ -88,6 +88,8 @@
     <Compile Include="ExcelOperations\ExcelOperations.cs" />
     <Compile Include="ImageOperations\ImageInterpreter.cs" />
     <Compile Include="ImageOperations\ImageValidator.cs" />
+    <Compile Include="Mappers\DDropDbEntitiesMapper.cs" />
+    <Compile Include="Mappers\DDropSerializableEntitiesMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PythonOperations\NamedPipe.cs" />
     <Compile Include="PythonOperations\PythonProvider.cs" />
@@ -98,13 +100,15 @@
       <Project>{19d17b23-5ba3-4387-b0fa-f2c66c7ec5bc}</Project>
       <Name>DDrop.BE</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DDrop.Db\DDrop.Db.csproj">
+      <Project>{8ce97b04-f51f-4350-a8ca-a82e40845793}</Project>
+      <Name>DDrop.Db</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Mappers\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

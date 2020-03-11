@@ -110,8 +110,6 @@ D:\fallingsappyGit\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.csproj.CoreCompileInputs.
 D:\fallingsappyGit\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.csproj.CopyComplete
 D:\fallingsappyGit\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.dll
 D:\fallingsappyGit\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.pdb
-E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.Migrations.InitialCreate.resources
-E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.csproj.GenerateResource.cache
 D:\fallingsappyGit\DDrop\DDrop.DAL\bin\Debug\DDrop.Db.dll
 D:\fallingsappyGit\DDrop\DDrop.DAL\bin\Debug\EntityFramework.dll
 D:\fallingsappyGit\DDrop\DDrop.DAL\bin\Debug\EntityFramework.SqlServer.dll
@@ -119,3 +117,6 @@ D:\fallingsappyGit\DDrop\DDrop.DAL\bin\Debug\DDrop.Db.pdb
 D:\fallingsappyGit\DDrop\DDrop.DAL\bin\Debug\DDrop.Db.dll.config
 D:\fallingsappyGit\DDrop\DDrop.DAL\bin\Debug\EntityFramework.xml
 D:\fallingsappyGit\DDrop\DDrop.DAL\bin\Debug\EntityFramework.SqlServer.xml
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.DAL\bin\Debug\DDrop.Db.dll
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.DAL\bin\Debug\DDrop.Db.pdb
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.DAL\bin\Debug\DDrop.Db.dll.config

@@ -1,29 +1,26 @@
 ﻿using DDrop.BE.Models;
-using DDrop.BE.Models.Entities;
 using DDrop.Utility.SeriesLocalStorageOperations;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using DDrop.BE.Models.Serializable;
 
 namespace DDrop.BL.Series
 {
     public class SeriesBL : ISeriesBL
     {
-        public async Task<ObservableCollection<BE.Models.Series>> ImportLocalSeriesAsync(string fileName, BE.Models.User user)
+        public async Task<ObservableCollection<BE.Models.Series>> ImportLocalSeriesAsync(string fileName, User user)
         {
-            List<BE.Models.Entities.Series> series = new List<BE.Models.Entities.Series>();
+            List<SerializableSeries> series = new List<SerializableSeries>();
 
-            series = await Task.Run(() => LocalSeriesProvider.DeserializeAsync<List<BE.Models.Entities.Series>>(fileName));
+            series = await Task.Run(() => LocalSeriesProvider.DeserializeAsync<List<SerializableSeries>>(fileName));
 
             return ConvertSeriesToSeriesViewModel(series, user);
         }
 
-        public ObservableCollection<BE.Models.Series> ConvertSeriesToSeriesViewModel(List<BE.Models.Entities.Series> series, BE.Models.User user)
+        public ObservableCollection<BE.Models.Series> ConvertSeriesToSeriesViewModel(List<SerializableSeries> series, User user)
         {
             ObservableCollection<BE.Models.Series> addSeriesViewModel = new ObservableCollection<BE.Models.Series>();
             for (int i = 0; i < series.Count; i++)
@@ -71,7 +68,7 @@ namespace DDrop.BL.Series
                                 Stroke = Brushes.Green
                             };
                         }
-                        var userDrop = new BE.Models.Drop(addSingleSeriesViewModel, userDropPhoto)
+                        var userDrop = new Drop(addSingleSeriesViewModel, userDropPhoto)
                         {
                             DropId = dropPhoto.Drop.DropId,
                             RadiusInMeters = dropPhoto.Drop.RadiusInMeters,
@@ -123,16 +120,16 @@ namespace DDrop.BL.Series
             return addSeriesViewModel;
         }
 
-        public async Task ExportSeriesLocalAsync(string fileName, BE.Models.User user)
+        public async Task ExportSeriesLocalAsync(string fileName, User user)
         {
             var series = SeriesViewModelToSeries(user);
 
             await Task.Run(() => LocalSeriesProvider.SerializeAsync(series, fileName));
         }
 
-        public List<BE.Models.Entities.Series> SeriesViewModelToSeries(BE.Models.User user)
+        public List<SerializableSeries> SeriesViewModelToSeries(User user)
         {
-            List<BE.Models.Entities.Series> series = new List<BE.Models.Entities.Series>();
+            List<SerializableSeries> series = new List<SerializableSeries>();
             foreach (var userSeries in user.UserSeries)
             {
                 series.Add(SingleSeriesViewModelToSingleSeries(userSeries));
@@ -141,18 +138,18 @@ namespace DDrop.BL.Series
             return series;
         }
 
-        public BE.Models.Entities.Series SingleSeriesViewModelToSingleSeries(BE.Models.Series userSeries)
+        public SerializableSeries SingleSeriesViewModelToSingleSeries(BE.Models.Series userSeries)
         {
-            BE.Models.Entities.Series SingleSeries = new BE.Models.Entities.Series();
-            List<BE.Models.Entities.DropPhoto> dropPhotosSeries = new List<BE.Models.Entities.DropPhoto>();
+            SerializableSeries SingleSeries = new SerializableSeries();
+            List<SerializableDropPhoto> dropPhotosSeries = new List<SerializableDropPhoto>();
 
             foreach (var dropPhoto in userSeries.DropPhotosSeries)
             {
-                dropPhotosSeries.Add(new BE.Models.Entities.DropPhoto()
+                dropPhotosSeries.Add(new SerializableDropPhoto()
                 {
                     Name = dropPhoto.Name,
                     Content = dropPhoto.Content,
-                    Drop = new BE.Models.Entities.Drop
+                    Drop = new SerializableDrop
                     {
                         DropId = dropPhoto.Drop.DropId,
                         RadiusInMeters = dropPhoto.Drop.RadiusInMeters,
@@ -173,7 +170,7 @@ namespace DDrop.BL.Series
 
             if(userSeries.ReferencePhotoForSeries != null)
             {
-                var referencePhoto = new BE.Models.Entities.ReferencePhoto
+                var referencePhoto = new SerializableReferencePhoto
                 {
                     Content = userSeries.ReferencePhotoForSeries.Content,
                     Name = userSeries.ReferencePhotoForSeries.Name,

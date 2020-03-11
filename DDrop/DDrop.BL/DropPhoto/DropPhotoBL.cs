@@ -4,18 +4,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DDrop.BE.Models.Serializable;
 
 namespace DDrop.BL.DropPhoto
 {
     public class DropPhotoBL : IDropPhotoBL
     {
-        public BE.Models.Entities.DropPhoto DropPhotoViewModelToDropPhoto(BE.Models.DropPhoto dropPhotoViewModel)
+        public SerializableDropPhoto DropPhotoViewModelToDropPhoto(BE.Models.DropPhoto dropPhotoViewModel)
         {
-            return new BE.Models.Entities.DropPhoto
+            return new SerializableDropPhoto
             {
                 AddedDate = dropPhotoViewModel.AddedDate,
                 Content = dropPhotoViewModel.Content,
-                Drop = new BE.Models.Entities.Drop
+                Drop = new SerializableDrop
                 {
                     DropId = dropPhotoViewModel.Drop.DropId,
                     RadiusInMeters = dropPhotoViewModel.Drop.RadiusInMeters,

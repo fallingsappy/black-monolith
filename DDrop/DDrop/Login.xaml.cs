@@ -58,11 +58,10 @@ namespace DDrop
                 var email = TextBoxEmail.Text;
                 var password = LoginPasswordBox.Password;
 
-                using (_dDropContext = new DDropContext())
-                {
-                    var user = await _dDropContext.Users.FirstOrDefaultAsync(x => x.Email == email);
+                    var user = await _dDropRepository.GetUserByLogin(email);
                     if (user != null && PasswordOperations.PasswordsMatch(password, user.Password))
                     {
+                        
                         UserLogin = new User()
                         {
                             Email = user.Email,
@@ -83,7 +82,7 @@ namespace DDrop
                         ErrorMessage.Text = "Неверный логин или пароль.";
                         LoginSucceeded = false;
                     }
-                }
+                
             }
         }
 

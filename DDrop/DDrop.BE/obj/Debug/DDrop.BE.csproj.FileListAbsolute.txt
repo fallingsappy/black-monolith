@@ -76,3 +76,4 @@ D:\fallingsappyGit\DDrop\DDrop.BE\obj\Debug\DDrop.BE.csproj.CopyComplete
 D:\fallingsappyGit\DDrop\DDrop.BE\obj\Debug\DDrop.BE.dll
 D:\fallingsappyGit\DDrop\DDrop.BE\obj\Debug\DDrop.BE.pdb
 D:\fallingsappyGit\DDrop\DDrop.BE\obj\Debug\DDrop.BE.csprojAssemblyReference.cache
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BE\obj\Debug\DDrop.BE.csprojAssemblyReference.cache

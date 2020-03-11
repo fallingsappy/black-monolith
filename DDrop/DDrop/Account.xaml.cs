@@ -10,6 +10,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using DDrop.DAL;
+using DDrop.Utility.Mappers;
 using ToastNotifications;
 using ToastNotifications.Messages;
 
@@ -84,25 +85,18 @@ namespace DDrop
                     {
                         if (croppingWindow.UserPhotoForCropp != null)
                         {
-                            using(_dDropContext = new DDropContext())
+                            try
                             {
-                                var user = await _dDropContext.Users.FirstOrDefaultAsync(x => x.UserId == User.UserId);
-                                if (user != null)
-                                {
-                                    user.UserPhoto = croppingWindow.UserPhotoForCropp;
-                                    User.UserPhoto = croppingWindow.UserPhotoForCropp;
-
-                                    await _dDropContext.SaveChangesAsync();
-                                    _notifier.ShowSuccess("Фотография обновлена.");
-                                }
-                                else
-                                {
-                                    _notifier.ShowError("Не удалось сохранить изменения. Проверьте интернет соединение.");
-                                }
-                            }                            
+                                await _dDropRepository.UpdateUserAsync(DDropDbEntitiesMapper.UserToDbUser(User));
+                                ProfilePicture.Source = ImageInterpreter.LoadImage(User.UserPhoto);
+                                _notifier.ShowSuccess("Фотография обновлена.");
+                            }
+                            catch
+                            {
+                                _notifier.ShowError("Не удалось сохранить изменения. Проверьте интернет соединение.");
+                            }
                         }                            
                     }
-                    ProfilePicture.Source = ImageInterpreter.LoadImage(User.UserPhoto);
                 }
             }
         }
@@ -117,15 +111,14 @@ namespace DDrop
 
         private async void SaveChangeFirstNameButton_Click(object sender, RoutedEventArgs e)
         {
-            using (_dDropContext = new DDropContext())
+            try
             {
-                var newFirstName = TextBlockFirstnameValue.Text;
-                var user = await _dDropContext.Users.FirstOrDefaultAsync(x => x.UserId == User.UserId);
-                if (user != null)
-                {
-                    user.FirstName = newFirstName;
-                    await _dDropContext.SaveChangesAsync();
-                }
+                await _dDropRepository.UpdateUserAsync(DDropDbEntitiesMapper.UserToDbUser(User));
+                User.FirstName = TextBlockFirstnameValue.Text;
+            }
+            catch
+            {
+                _notifier.ShowError("Не удалось сохранить изменения. Проверьте интернет соединение.");
             }
 
             TextBlockFirstnameValue.IsEnabled = false;
@@ -143,15 +136,14 @@ namespace DDrop
 
         private async void SaveChangeLastNameButton_Click(object sender, RoutedEventArgs e)
         {
-            using (_dDropContext = new DDropContext())
+            try
             {
-                var newLastName = TextBlockLastNameValue.Text;
-                var user = await _dDropContext.Users.FirstOrDefaultAsync(x => x.UserId == User.UserId);
-                if (user != null)
-                {
-                    user.LastName = newLastName;
-                    await _dDropContext.SaveChangesAsync();
-                }
+                await _dDropRepository.UpdateUserAsync(DDropDbEntitiesMapper.UserToDbUser(User));
+                User.LastName = TextBlockLastNameValue.Text;
+            }
+            catch
+            {
+                _notifier.ShowError("Не удалось сохранить изменения. Проверьте интернет соединение.");
             }
 
             TextBlockLastNameValue.IsEnabled = false;
@@ -289,38 +281,33 @@ namespace DDrop
 
         private async void ChangePasswordButton_OnClick(object sender, RoutedEventArgs e)
         {
-            using (_dDropContext = new DDropContext())
+            if (User.Password == CurrentPassword.Password)
             {
-                var user = await _dDropContext.Users.FirstOrDefaultAsync(x => x.UserId == User.UserId);
-
-                if (user != null)
+                if (NewPassword.Password == NewPasswordConfirm.Password &&
+                    !string.IsNullOrWhiteSpace(NewPassword.Password))
                 {
-                    if (user.Password == CurrentPassword.Password)
+                    try
                     {
-                        if (NewPassword.Password == NewPasswordConfirm.Password &&
-                            !string.IsNullOrWhiteSpace(NewPassword.Password))
-                        {
-                            user.Password = NewPassword.Password;
-                            await _dDropContext.SaveChangesAsync();
-                            _notifier.ShowSuccess("Пароль успешно изменен.");
-                            NewPasswordConfirm.Password = "";
-                            NewPassword.Password = "";
-                            CurrentPassword.Password = "";
-                        }
-                        else
-                        {
-                            _notifier.ShowError("Новый пароль и его подтверждение не совпадают.");
-                        }
+                        await _dDropRepository.UpdateUserAsync(DDropDbEntitiesMapper.UserToDbUser(User));
+                        User.Password = NewPassword.Password;
+                        _notifier.ShowSuccess("Пароль успешно изменен.");
+                        NewPasswordConfirm.Password = "";
+                        NewPassword.Password = "";
+                        CurrentPassword.Password = "";
                     }
-                    else
+                    catch
                     {
-                        _notifier.ShowError("Неверный старый пароль.");
+                        _notifier.ShowError("Не удалось сохранить изменения. Проверьте интернет соединение.");
                     }
                 }
                 else
                 {
-                    _notifier.ShowError("Не удалось сохранить изменения. Проверьте интернет соединение.");
+                    _notifier.ShowError("Новый пароль и его подтверждение не совпадают.");
                 }
+            }
+            else
+            {
+                _notifier.ShowError("Неверный старый пароль.");
             }
         }
     }

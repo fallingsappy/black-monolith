@@ -46,6 +46,21 @@ namespace DDrop.DAL
             }
         }
 
+        public async Task<DbUser> GetUserByLogin(string email)
+        {
+            using (var context = new DDropContext())
+            {
+                try
+                {
+                    return await context.Users.FirstOrDefaultAsync(x => x.Email == email);
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(e.Message);
+                }
+            }
+        }
+
         #endregion
 
         public async Task CreateSeries(DbSeries series)

@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DDrop.BE.Models.Serializable;
 
 namespace DDrop.BL.Series
 {
@@ -12,10 +13,10 @@ namespace DDrop.BL.Series
     {
         Task<ObservableCollection<BE.Models.Series>> ImportLocalSeriesAsync(string fileName, User User);
 
-        ObservableCollection<BE.Models.Series> ConvertSeriesToSeriesViewModel(List<BE.Models.Entities.Series> series,
+        ObservableCollection<BE.Models.Series> ConvertSeriesToSeriesViewModel(List<SerializableSeries> series,
             User user);
         Task ExportSeriesLocalAsync(string fileName, User user);
-        List<BE.Models.Entities.Series> SeriesViewModelToSeries(User user);
-        BE.Models.Entities.Series SingleSeriesViewModelToSingleSeries(BE.Models.Series userSeries);
+        List<SerializableSeries> SeriesViewModelToSeries(User user);
+        SerializableSeries SingleSeriesViewModelToSingleSeries(BE.Models.Series userSeries);
     }
 }
