@@ -51,10 +51,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DbEntities\DbDrop.cs" />
+    <Compile Include="DbEntities\DbDropPhoto.cs" />
+    <Compile Include="DbEntities\DbReferencePhoto.cs" />
+    <Compile Include="DbEntities\DbSeries.cs" />
+    <Compile Include="DbEntities\DbSimpleLine.cs" />
+    <Compile Include="DbEntities\DbUser.cs" />
     <Compile Include="DDropContext.cs" />
-    <Compile Include="Migrations\202003081207095_Initial.cs" />
-    <Compile Include="Migrations\202003081207095_Initial.designer.cs">
-      <DependentUpon>202003081207095_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\202003102202099_InitialCreate.cs" />
+    <Compile Include="Migrations\202003102202099_InitialCreate.designer.cs">
+      <DependentUpon>202003102202099_InitialCreate.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -70,8 +76,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202003081207095_Initial.resx">
-      <DependentUpon>202003081207095_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202003102202099_InitialCreate.resx">
+      <DependentUpon>202003102202099_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

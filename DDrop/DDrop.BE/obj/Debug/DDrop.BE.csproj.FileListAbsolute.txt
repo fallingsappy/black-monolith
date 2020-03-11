@@ -75,4 +75,3 @@ D:\fallingsappyGit\DDrop\DDrop.BE\obj\Debug\DDrop.BE.csproj.CoreCompileInputs.ca
 D:\fallingsappyGit\DDrop\DDrop.BE\obj\Debug\DDrop.BE.csproj.CopyComplete
 D:\fallingsappyGit\DDrop\DDrop.BE\obj\Debug\DDrop.BE.dll
 D:\fallingsappyGit\DDrop\DDrop.BE\obj\Debug\DDrop.BE.pdb
-E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BE\obj\Debug\DDrop.BE.csproj.CoreCompileInputs.cache

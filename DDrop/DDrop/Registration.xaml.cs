@@ -20,6 +20,7 @@ using DDrop.DAL;
 using ToastNotifications;
 using ToastNotifications.Messages;
 using DDrop.Utility.Cryptography;
+using DDrop.DAL.DbEntities;
 
 namespace DDrop
 {
@@ -156,7 +157,7 @@ namespace DDrop
                             UserId = Guid.NewGuid(),
                             UserPhoto = UserPhoto,
                         };
-                        _dDropContext.Users.Add(new User()
+                        _dDropContext.Users.Add(new DbUser()
                         {
                             UserId = UserLogin.UserId,
                             Email = UserLogin.Email.Trim(),
@@ -164,7 +165,7 @@ namespace DDrop
                             LastName = UserLogin.LastName,
                             Password = PasswordOperations.HashPassword(PasswordBox1.Password),
                             UserPhoto = UserLogin.UserPhoto,
-                            UserSeries = new System.Collections.Generic.List<Series>()
+                            UserSeries = new System.Collections.Generic.List<DbSeries>()
                         });
                         await Task.Run(() => _dDropContext.SaveChangesAsync());
                         _notifier.ShowSuccess($"Пользователь {UserLogin.Email} успешно зарегистрирован.");

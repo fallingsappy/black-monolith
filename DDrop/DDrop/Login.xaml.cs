@@ -21,7 +21,6 @@ namespace DDrop
         public static readonly DependencyProperty UserLoginProperty = DependencyProperty.Register("UserLogin", typeof(UserViewModel), typeof(Login));
         private DDropContext _dDropContext;
         private readonly Notifier _notifier;
-        private readonly ISeriesBL _seriesBL;
         public bool LoginSucceeded;
         public UserViewModel UserLogin
         {
@@ -32,9 +31,8 @@ namespace DDrop
             }
         }
 
-        public Login(DDropContext dDropContext, Notifier notifier, ISeriesBL seriesBl)
+        public Login(DDropContext dDropContext, Notifier notifier)
         {
-            _seriesBL = seriesBl;
             _dDropContext = dDropContext;
             _notifier = notifier;
             InitializeComponent();
@@ -76,8 +74,6 @@ namespace DDrop
                             IsLoggedIn = true,
                         };
 
-                        //if (user.UserSeries != null)
-                        //    UserLogin.UserSeries = _seriesBL.ConvertSeriesToSeriesViewModel(user.UserSeries, UserLogin);
                         LoginSucceeded = true;
                         _notifier.ShowSuccess($"Пользователь {user.Email} авторизован.");
                         Close();

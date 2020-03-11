@@ -26,6 +26,7 @@ using ToastNotifications.Position;
 using pbu = RFM.RFM_WPFProgressBarUpdate;
 using DDrop.BL.DropPhoto;
 using System.Data.Entity;
+using DDrop.DAL.DbEntities;
 
 namespace DDrop
 {
@@ -123,7 +124,7 @@ namespace DDrop
             _seriesBL = seriesBL;
             _dropPhotoBL = dropPhotoBL;
             AppMainWindow.Show();
-            Login login = new Login(_dDropContext, notifier, _seriesBL)
+            Login login = new Login(_dDropContext, notifier)
             {
                 Owner = AppMainWindow
             };
@@ -143,16 +144,16 @@ namespace DDrop
                         Name = x.ReferencePhotoForSeries.Name,
                         PixelsInMillimeter = x.ReferencePhotoForSeries.PixelsInMillimeter,
                         ReferencePhotoId = x.ReferencePhotoForSeries.ReferencePhotoId,
-                        SimpleLine = x.ReferencePhotoForSeries.SimpleLine
+                        //SimpleLine = x.ReferencePhotoForSeries.SimpleLine
                     } ?? null,
                     DropPhotosSeries = x.DropPhotosSeries.Select(s => new DropPhoto
                     {
                         Name = s.Name,
                         AddedDate = s.AddedDate,
-                        Drop = s.Drop,
+                        //Drop = s.Drop,
                         DropPhotoId = s.DropPhotoId,
-                        SimpleHorizontalLine = s.SimpleHorizontalLine,
-                        SimpleVerticalLine = s.SimpleVerticalLine,
+                        //SimpleHorizontalLine = s.SimpleHorizontalLine,
+                        //SimpleVerticalLine = s.SimpleVerticalLine,
                         XDiameterInPixels = s.XDiameterInPixels,
                         YDiameterInPixels = s.YDiameterInPixels,
                         ZDiameterInPixels = s.ZDiameterInPixels
@@ -284,7 +285,7 @@ namespace DDrop
                 seriesToAdd.PropertyChanged += EntryOnPropertyChanged;
 
                 User.UserSeries.Add(seriesToAdd);
-                _dDropContext.Users.FirstOrDefault(x => x.UserId == User.UserId).UserSeries.Add(_seriesBL.SingleSeriesViewModelToSingleSeries(seriesToAdd));
+                //_dDropContext.Users.FirstOrDefault(x => x.UserId == User.UserId).UserSeries.Add(_seriesBL.SingleSeriesViewModelToSingleSeries(seriesToAdd));
                 await _dDropContext.SaveChangesAsync();
                 SeriesDataGrid.ItemsSource = User.UserSeries;
                 OneLineSetterValue.Text = "";
@@ -367,7 +368,7 @@ namespace DDrop
                         _dDropContext.ReferencePhotos.Remove(series?.ReferencePhotoForSeries);                        
                     }
 
-                    _dDropContext.Users.FirstOrDefault(x => x.UserId == User.UserId).UserSeries.Remove(_seriesBL.SingleSeriesViewModelToSingleSeries(User.UserSeries[SeriesDataGrid.SelectedIndex]));
+                    //_dDropContext.Users.FirstOrDefault(x => x.UserId == User.UserId).UserSeries.Remove(_seriesBL.SingleSeriesViewModelToSingleSeries(User.UserSeries[SeriesDataGrid.SelectedIndex]));
                     await _dDropContext.SaveChangesAsync();
                 }
 
@@ -684,7 +685,7 @@ namespace DDrop
                         {
                             DropId = Guid.NewGuid()
                         };
-                        _dDropContext.Users.FirstOrDefault(x => x.UserId == User.UserId).UserSeries.FirstOrDefault(x => x.SeriesId == CurrentSeries.SeriesId).DropPhotosSeries.Add(_dropPhotoBL.DropPhotoViewModelToDropPhoto(imageForAdding));
+                        //_dDropContext.Users.FirstOrDefault(x => x.UserId == User.UserId).UserSeries.FirstOrDefault(x => x.SeriesId == CurrentSeries.SeriesId).DropPhotosSeries.Add(_dropPhotoBL.DropPhotoViewModelToDropPhoto(imageForAdding));
                         await _dDropContext.SaveChangesAsync();
                         notifier.ShowSuccess($"Снимок {imageForAdding.Name} добавлен.");                        
                     }
@@ -953,7 +954,7 @@ namespace DDrop
 
         private void LoginMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            Login login = new Login(_dDropContext, notifier, _seriesBL)
+            Login login = new Login(_dDropContext, notifier)
             {
                 Owner = this
             };
@@ -1006,7 +1007,7 @@ namespace DDrop
                 AccountMenuItem.Visibility = Visibility.Collapsed;
                 LogOutMenuItem.Visibility = Visibility.Collapsed;
                 LogInMenuItem.Visibility = Visibility.Visible;
-                Login login = new Login(_dDropContext, notifier, _seriesBL)
+                Login login = new Login(_dDropContext, notifier)
                 {
                     Owner = this
                 };
