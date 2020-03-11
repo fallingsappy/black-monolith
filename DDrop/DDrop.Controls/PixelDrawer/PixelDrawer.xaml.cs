@@ -1,5 +1,4 @@
 ﻿using DDrop.BE.Models;
-using DDrop.BE.Models.Entities;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -21,21 +20,21 @@ namespace DDrop.Controls.PixelDrawer
         public static readonly DependencyProperty PixelsInMillimeterVerticalProperty = DependencyProperty.Register("PixelsInMillimeterVertical", typeof(string), typeof(PixelDrawer));
         public static readonly DependencyProperty PixelsInMillimeterHorizontalProperty = DependencyProperty.Register("PixelsInMillimeterHorizontal", typeof(string), typeof(PixelDrawer));
         public static readonly DependencyProperty ImageSourceProperty = DependencyProperty.Register("ImageSource", typeof(ImageSource), typeof(PixelDrawer));
-        public static readonly DependencyProperty CurrentSeriesProperty = DependencyProperty.Register("CurrentSeries", typeof(SeriesViewModel), typeof(PixelDrawer));
-        public static readonly DependencyProperty CurrentDropPhotoProperty = DependencyProperty.Register("CurrentDropPhoto", typeof(DropPhotoViewModel), typeof(PixelDrawer));
+        public static readonly DependencyProperty CurrentSeriesProperty = DependencyProperty.Register("CurrentSeries", typeof(BE.Models.Series), typeof(PixelDrawer));
+        public static readonly DependencyProperty CurrentDropPhotoProperty = DependencyProperty.Register("CurrentDropPhoto", typeof(BE.Models.DropPhoto), typeof(PixelDrawer));
 
-        public DropPhotoViewModel CurrentDropPhoto
+        public DropPhoto CurrentDropPhoto
         {
-            get { return (DropPhotoViewModel)GetValue(CurrentDropPhotoProperty); }
+            get { return (BE.Models.DropPhoto)GetValue(CurrentDropPhotoProperty); }
             set
             {
                 SetValue(CurrentDropPhotoProperty, value);
             }
         }
 
-        public SeriesViewModel CurrentSeries
+        public Series CurrentSeries
         {
-            get { return (SeriesViewModel)GetValue(CurrentSeriesProperty); }
+            get { return (BE.Models.Series)GetValue(CurrentSeriesProperty); }
 
             set
             {

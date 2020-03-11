@@ -9,7 +9,7 @@ namespace DDrop.BL.DropPhoto
 {
     public class DropPhotoBL : IDropPhotoBL
     {
-        public BE.Models.Entities.DropPhoto DropPhotoViewModelToDropPhoto(DropPhotoViewModel dropPhotoViewModel)
+        public BE.Models.Entities.DropPhoto DropPhotoViewModelToDropPhoto(BE.Models.DropPhoto dropPhotoViewModel)
         {
             return new BE.Models.Entities.DropPhoto
             {

@@ -1,32 +1,26 @@
 ﻿using DDrop.BE.Models;
-using DDrop.BE.Models.Entities;
 using DDrop.BL.Calculation.DropletSizeCalculator;
 using DDrop.BL.Series;
 using DDrop.Utility.ExcelOperations;
 using DDrop.Utility.ImageOperations;
 using DDrop.Utility.PythonOperations;
-using DDrop.Utility.SeriesLocalStorageOperations;
 using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using DDrop.DAL;
 using ToastNotifications;
 using ToastNotifications.Lifetime;
 using ToastNotifications.Messages;
 using ToastNotifications.Position;
 using pbu = RFM.RFM_WPFProgressBarUpdate;
 using DDrop.BL.DropPhoto;
-using System.Data.Entity;
-using DDrop.DAL.DbEntities;
+using DDrop.DAL;
 
 namespace DDrop
 {
@@ -42,13 +36,13 @@ namespace DDrop
         private bool? _allSelectedPhotos = false;
         private readonly ISeriesBL _seriesBL;
         private readonly IDropPhotoBL _dropPhotoBL;
+        private readonly IDDropRepository _dDropRepository;
         readonly PythonProvider pythonProvider = new PythonProvider();
-        DDropContext _dDropContext = new DDropContext();
 
-        public static readonly DependencyProperty CurrentSeriesProperty = DependencyProperty.Register("CurrentSeries", typeof(SeriesViewModel), typeof(MainWindow));
-        public static readonly DependencyProperty CurrentDropPhotoProperty = DependencyProperty.Register("CurrentDropPhoto", typeof(DropPhotoViewModel), typeof(MainWindow));
+        public static readonly DependencyProperty CurrentSeriesProperty = DependencyProperty.Register("CurrentSeries", typeof(BE.Models.Series), typeof(MainWindow));
+        public static readonly DependencyProperty CurrentDropPhotoProperty = DependencyProperty.Register("CurrentDropPhoto", typeof(BE.Models.DropPhoto), typeof(MainWindow));
         public static readonly DependencyProperty ReferenceImageProperty = DependencyProperty.Register("ReferenceImage", typeof(ImageSource), typeof(MainWindow));
-        public static readonly DependencyProperty UserProperty = DependencyProperty.Register("User", typeof(UserViewModel), typeof(MainWindow));
+        public static readonly DependencyProperty UserProperty = DependencyProperty.Register("User", typeof(BE.Models.User), typeof(MainWindow));
         public static readonly DependencyProperty ParticularSeriesIndexProperty = DependencyProperty.Register("ParticularSeriesIndex", typeof(int), typeof(MainWindow));
 
         private readonly Notifier notifier = new Notifier(cfg =>
@@ -70,18 +64,18 @@ namespace DDrop
 
         #region Properties
 
-        public DropPhotoViewModel CurrentDropPhoto
+        public DropPhoto CurrentDropPhoto
         {
-            get { return (DropPhotoViewModel)GetValue(CurrentDropPhotoProperty); }
+            get { return (BE.Models.DropPhoto)GetValue(CurrentDropPhotoProperty); }
             set
             {
                 SetValue(CurrentDropPhotoProperty, value);
             }
         }
 
-        public SeriesViewModel CurrentSeries
+        public Series CurrentSeries
         {
-            get { return (SeriesViewModel)GetValue(CurrentSeriesProperty); }
+            get { return (BE.Models.Series)GetValue(CurrentSeriesProperty); }
             set
             {
                 SetValue(CurrentSeriesProperty, value);
@@ -97,9 +91,9 @@ namespace DDrop
             }
         }
 
-        public UserViewModel User
+        public User User
         {
-            get { return (UserViewModel)GetValue(UserProperty); }
+            get { return (BE.Models.User)GetValue(UserProperty); }
             set { SetValue(UserProperty, value); }
         }
 
@@ -118,13 +112,14 @@ namespace DDrop
 
         #endregion
 
-        public MainWindow(ISeriesBL seriesBL, IDropPhotoBL dropPhotoBL)
+        public MainWindow(ISeriesBL seriesBL, IDropPhotoBL dropPhotoBL, IDDropRepository dDropRepository)
         {
             InitializeComponent();
             _seriesBL = seriesBL;
             _dropPhotoBL = dropPhotoBL;
+            _dDropRepository = dDropRepository;
             AppMainWindow.Show();
-            Login login = new Login(_dDropContext, notifier)
+            Login login = new Login(_dDropRepository, notifier)
             {
                 Owner = AppMainWindow
             };
@@ -133,20 +128,20 @@ namespace DDrop
             if (login.LoginSucceeded)
             {
                 User = login.UserLogin;
-                User.UserSeries = _seriesBL.ConvertSeriesToSeriesViewModel(_dDropContext.Users.FirstOrDefault(x => x.UserId == User.UserId).UserSeries.Select(x => new Series
+                User.UserSeries = _seriesBL.ConvertSeriesToSeriesViewModel(_dDropContext.Users.FirstOrDefault((object x) => x.UserId == User.UserId).UserSeries.Select((object x) => new BE.Models.Entities.Series
                 {
                     Title = x.Title,
                     SeriesId = x.SeriesId,
                     AddedDate = x.AddedDate,
                     IntervalBetweenPhotos = x.IntervalBetweenPhotos,
-                    ReferencePhotoForSeries = new ReferencePhoto
+                    ReferencePhotoForSeries = new BE.Models.Entities.ReferencePhoto
                     {
                         Name = x.ReferencePhotoForSeries.Name,
                         PixelsInMillimeter = x.ReferencePhotoForSeries.PixelsInMillimeter,
                         ReferencePhotoId = x.ReferencePhotoForSeries.ReferencePhotoId,
                         //SimpleLine = x.ReferencePhotoForSeries.SimpleLine
                     } ?? null,
-                    DropPhotosSeries = x.DropPhotosSeries.Select(s => new DropPhoto
+                    DropPhotosSeries = x.DropPhotosSeries.Select((object s) => new BE.Models.Entities.DropPhoto
                     {
                         Name = s.Name,
                         AddedDate = s.AddedDate,
@@ -244,11 +239,11 @@ namespace DDrop
 
         private void EntryOnPropertyChanged(object sender, PropertyChangedEventArgs args)
         {
-            if (args.PropertyName == nameof(SeriesViewModel.IsChecked))
+            if (args.PropertyName == nameof(Series.IsChecked))
                 RecheckAllSelected();
         }
 
-        private void SeriesDrawerSwap(SeriesViewModel old)
+        private void SeriesDrawerSwap(BE.Models.Series old)
         {
             if (old.ReferencePhotoForSeries?.Line != null)
                 MainWindowPixelDrawer.CanDrawing.Children.Remove(old.ReferencePhotoForSeries.Line);
@@ -263,7 +258,7 @@ namespace DDrop
 
             if (User.UserSeries == null)
             {
-                User.UserSeries = new ObservableCollection<SeriesViewModel>();
+                User.UserSeries = new ObservableCollection<BE.Models.Series>();
                 SeriesDataGrid.ItemsSource = User.UserSeries;
             }
 
@@ -271,12 +266,12 @@ namespace DDrop
             {
                 seriesTitle = OneLineSetterValue.Text;
 
-                SeriesViewModel seriesToAdd = new SeriesViewModel(User)
+                BE.Models.Series seriesToAdd = new BE.Models.Series(User)
                 {
                     SeriesId = Guid.NewGuid(),
                     Title = seriesTitle,                    
                     AddedDate = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"),
-                    ReferencePhotoForSeries = new ReferencePhotoViewModel
+                    ReferencePhotoForSeries = new BE.Models.ReferencePhoto
                     {
                         ReferencePhotoId = Guid.NewGuid()
                     }
@@ -302,10 +297,10 @@ namespace DDrop
         {
             if (User.UserSeries.Count > 0 && SeriesDataGrid.SelectedItem != null)
             {
-                SeriesViewModel old = new SeriesViewModel(User);
+                BE.Models.Series old = new BE.Models.Series(User);
 
                 if (e.RemovedItems.Count > 0)
-                    old = e.RemovedItems[0] as SeriesViewModel;
+                    old = e.RemovedItems[0] as BE.Models.Series;
                 CurrentSeries = User.UserSeries[SeriesDataGrid.SelectedIndex];
 
                 SeriesDrawerSwap(old);
@@ -380,7 +375,7 @@ namespace DDrop
         }
         private void SeriesPreviewDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            DropPhotoViewModel selectedFile = (DropPhotoViewModel)SeriesPreviewDataGrid.SelectedItem;
+            BE.Models.DropPhoto selectedFile = (BE.Models.DropPhoto)SeriesPreviewDataGrid.SelectedItem;
             if (selectedFile != null)
             {
                 ImgPreview.Source = ImageInterpreter.LoadImage(selectedFile.Content);
@@ -511,7 +506,7 @@ namespace DDrop
             if (saveFileDialog.ShowDialog() == true)
             {
                 ProgressBar.IsIndeterminate = true;                
-                await _seriesBL.ExportSeriesLocalAsync(saveFileDialog.FileName, User);
+                await _seriesBL.ExportSeriesLocalAsync(saveFileDialog.FileName, (BE.Models.User)User);
                 ProgressBar.IsIndeterminate = false;
                 notifier.ShowSuccess($"{saveFileDialog.SafeFileName} сохранен на диске.");
             }
@@ -528,12 +523,12 @@ namespace DDrop
                 CheckPathExists = true
             };
 
-            ObservableCollection<SeriesViewModel> addSeriesViewModel = new ObservableCollection<SeriesViewModel>();
+            ObservableCollection<BE.Models.Series> addSeriesViewModel = new ObservableCollection<BE.Models.Series>();
 
             if (openFileDialog.ShowDialog() == true)
             {
                 ProgressBar.IsIndeterminate = true;
-                addSeriesViewModel = await _seriesBL.ImportLocalSeriesAsync(openFileDialog.FileName, User);
+                addSeriesViewModel = await _seriesBL.ImportLocalSeriesAsync(openFileDialog.FileName, (BE.Models.User)User);
                 ProgressBar.IsIndeterminate = false;
             
                 AddSeries addSeries = new AddSeries(addSeriesViewModel);
@@ -641,7 +636,7 @@ namespace DDrop
 
         private void PhotosOnPropertyChanged(object sender, PropertyChangedEventArgs args)
         {
-            if (args.PropertyName == nameof(DropPhotoViewModel.IsChecked))
+            if (args.PropertyName == nameof(DropPhoto.IsChecked))
                 RecheckAllSelectedPhotos();
         }
 
@@ -664,11 +659,11 @@ namespace DDrop
                     pbu.CurValue[pbuHandle1] += 1;
                     if (CurrentSeries.DropPhotosSeries == null)
                     {
-                        CurrentSeries.DropPhotosSeries = new ObservableCollection<DropPhotoViewModel>();
+                        CurrentSeries.DropPhotosSeries = new ObservableCollection<BE.Models.DropPhoto>();
                         Photos.ItemsSource = CurrentSeries.DropPhotosSeries;
                     }
 
-                    var imageForAdding = new DropPhotoViewModel
+                    var imageForAdding = new BE.Models.DropPhoto
                     {
                         DropPhotoId = Guid.NewGuid(),
                         Name = openFileDialog.SafeFileNames[i],
@@ -681,7 +676,7 @@ namespace DDrop
                     {
                         imageForAdding.PropertyChanged += PhotosOnPropertyChanged;
                         CurrentSeries.DropPhotosSeries.Add(imageForAdding);
-                        CurrentSeries.DropPhotosSeries[CurrentSeries.DropPhotosSeries.Count - 1].Drop = new DropViewModel(CurrentSeries, CurrentSeries.DropPhotosSeries[CurrentSeries.DropPhotosSeries.Count - 1])
+                        CurrentSeries.DropPhotosSeries[CurrentSeries.DropPhotosSeries.Count - 1].Drop = new BE.Models.Drop(CurrentSeries, CurrentSeries.DropPhotosSeries[CurrentSeries.DropPhotosSeries.Count - 1])
                         {
                             DropId = Guid.NewGuid()
                         };
@@ -703,7 +698,7 @@ namespace DDrop
 
         private void Photos_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            DropPhotoViewModel selectedFile = (DropPhotoViewModel)Photos.SelectedItem;
+            BE.Models.DropPhoto selectedFile = (BE.Models.DropPhoto)Photos.SelectedItem;
             if (selectedFile != null)
             {
                 ImgCurrent.Source = ImageInterpreter.LoadImage(selectedFile.Content);
@@ -983,7 +978,7 @@ namespace DDrop
 
         private void AccountMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            Account accountMenu = new Account(User, notifier, _dDropContext);
+            Account accountMenu = new Account(User, notifier, _dDropRepository);
             accountMenu.ShowDialog();
         }
 
@@ -1007,7 +1002,7 @@ namespace DDrop
                 AccountMenuItem.Visibility = Visibility.Collapsed;
                 LogOutMenuItem.Visibility = Visibility.Collapsed;
                 LogInMenuItem.Visibility = Visibility.Visible;
-                Login login = new Login(_dDropContext, notifier)
+                Login login = new Login(_dDropRepository, notifier)
                 {
                     Owner = this
                 };

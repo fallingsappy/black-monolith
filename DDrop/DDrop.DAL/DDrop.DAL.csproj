@@ -51,18 +51,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DbEntities\DbDrop.cs" />
-    <Compile Include="DbEntities\DbDropPhoto.cs" />
-    <Compile Include="DbEntities\DbReferencePhoto.cs" />
-    <Compile Include="DbEntities\DbSeries.cs" />
-    <Compile Include="DbEntities\DbSimpleLine.cs" />
-    <Compile Include="DbEntities\DbUser.cs" />
-    <Compile Include="DDropContext.cs" />
-    <Compile Include="Migrations\202003102202099_InitialCreate.cs" />
-    <Compile Include="Migrations\202003102202099_InitialCreate.designer.cs">
-      <DependentUpon>202003102202099_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="DDropRepository.cs" />
+    <Compile Include="IDDropRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -70,15 +60,14 @@
       <Project>{19d17b23-5ba3-4387-b0fa-f2c66c7ec5bc}</Project>
       <Name>DDrop.BE</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DDrop.Db\DDrop.Db.csproj">
+      <Project>{8CE97B04-F51F-4350-A8CA-A82E40845793}</Project>
+      <Name>DDrop.Db</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\202003102202099_InitialCreate.resx">
-      <DependentUpon>202003102202099_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

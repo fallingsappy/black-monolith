@@ -18,11 +18,11 @@ namespace DDrop
         private bool _saveRequired = false;
 
         public static readonly DependencyProperty ImageForEditProperty = DependencyProperty.Register("ImageForEdit", typeof(ImageSource), typeof(ManualEdit));
-        public static readonly DependencyProperty CurrentDropPhotoProperty = DependencyProperty.Register("CurrentDropPhoto", typeof(DropPhotoViewModel), typeof(ManualEdit));
+        public static readonly DependencyProperty CurrentDropPhotoProperty = DependencyProperty.Register("CurrentDropPhoto", typeof(DropPhoto), typeof(ManualEdit));
 
-        public DropPhotoViewModel CurrentDropPhoto
+        public DropPhoto CurrentDropPhoto
         {
-            get { return (DropPhotoViewModel)GetValue(CurrentDropPhotoProperty); }
+            get { return (DropPhoto)GetValue(CurrentDropPhotoProperty); }
             set
             {
                 SetValue(CurrentDropPhotoProperty, value);
@@ -38,11 +38,11 @@ namespace DDrop
             }
         }
 
-        public ManualEdit(DropPhotoViewModel dropPhoto)
+        public ManualEdit(DropPhoto dropPhoto)
         {
             InitializeComponent();
             EditWindowPixelDrawer.TwoLineMode = true;
-            PhotoForEdit.ItemsSource = new ObservableCollection<DropPhotoViewModel> { dropPhoto };
+            PhotoForEdit.ItemsSource = new ObservableCollection<DropPhoto> { dropPhoto };
             ImageForEdit = ImageInterpreter.LoadImage(dropPhoto.Content);
             _initialXDiameterInPixels = dropPhoto.XDiameterInPixels;
             _initialYDiameterInPixels = dropPhoto.YDiameterInPixels;

@@ -20,16 +20,16 @@ namespace DDrop
     /// </summary>
     public partial class Account : Window
     {
-        public static readonly DependencyProperty UserProperty = DependencyProperty.Register("User", typeof(UserViewModel), typeof(Account));
+        public static readonly DependencyProperty UserProperty = DependencyProperty.Register("User", typeof(User), typeof(Account));
         private readonly Notifier _notifier;
-        private DDropContext _dDropContext;
-        public UserViewModel User
+        private IDDropRepository _dDropRepository;
+        public User User
         {
-            get { return (UserViewModel)GetValue(UserProperty); }
+            get { return (User)GetValue(UserProperty); }
             set { SetValue(UserProperty, value); }
         }
 
-        public Account(UserViewModel user, Notifier notifier, DDropContext dDropContext)
+        public Account(User user, Notifier notifier, IDDropRepository dDropRepository)
         {
             InitializeComponent();
             if (!user.IsLoggedIn)
@@ -45,7 +45,7 @@ namespace DDrop
                 NewPassword.Visibility = Visibility.Hidden;
                 NewPasswordConfirm.Visibility = Visibility.Hidden;
             }
-            _dDropContext = dDropContext;
+            _dDropRepository = dDropRepository;
             _notifier = notifier;
             User = user;
 
@@ -74,7 +74,7 @@ namespace DDrop
                 croppingWindow.CroppingControl.SourceImage.Width = new BitmapImage(new Uri(openFileDialog.FileName)).Width;
 
                 if (SystemParameters.PrimaryScreenHeight < croppingWindow.CroppingControl.SourceImage.Height ||
-                    croppingWindow.CroppingControl.SourceImage.Width < croppingWindow.CroppingControl.SourceImage.Width)
+                    SystemParameters.PrimaryScreenWidth < croppingWindow.CroppingControl.SourceImage.Width)
                 {
                     _notifier.ShowInformation("Вертикальный или горизонтальный размер фотографии слишком велик.");
                 }

@@ -5,7 +5,7 @@ namespace DDrop.BL.Calculation.DropletSizeCalculator
 {
     public static class DropletSizeCalculator
     {
-        public static void PerformCalculation(int pixelsInMillimeter, int xDiameterInPixels, int yDiameterInPixels, SeriesViewModel CurrentSerries, DropPhotoViewModel dropPhoto, int zDiameterInPixels = 0, bool exactCalculationModel = false)
+        public static void PerformCalculation(int pixelsInMillimeter, int xDiameterInPixels, int yDiameterInPixels, BE.Models.Series CurrentSerries, BE.Models.DropPhoto dropPhoto, int zDiameterInPixels = 0, bool exactCalculationModel = false)
         {
             if (exactCalculationModel)
             {
@@ -17,7 +17,7 @@ namespace DDrop.BL.Calculation.DropletSizeCalculator
             }
         }
 
-        private static void PerformCalculation(int pixelsInMillimeter, int xDiameterInPixels, int yDiameterInPixels, SeriesViewModel CurrentSerries, DropPhotoViewModel dropPhoto)
+        private static void PerformCalculation(int pixelsInMillimeter, int xDiameterInPixels, int yDiameterInPixels, BE.Models.Series CurrentSerries, BE.Models.DropPhoto dropPhoto)
         {
             dropPhoto.Drop.XDiameterInMeters = xDiameterInPixels / (double)pixelsInMillimeter / 1000;
             dropPhoto.Drop.YDiameterInMeters = yDiameterInPixels / (double)pixelsInMillimeter / 1000;
@@ -25,7 +25,7 @@ namespace DDrop.BL.Calculation.DropletSizeCalculator
             dropPhoto.Drop.RadiusInMeters = Math.Pow(3 * dropPhoto.Drop.VolumeInCubicalMeters / (4 * Math.PI), 1f / 3f);
         }
 
-        private static void PerformExactCalculation(int pixelsInMillimeter, int xDiameterInPixels, int yDiameterInPixels, int zDiameterInPixels, SeriesViewModel CurrentSerries, DropPhotoViewModel dropPhoto)
+        private static void PerformExactCalculation(int pixelsInMillimeter, int xDiameterInPixels, int yDiameterInPixels, int zDiameterInPixels, BE.Models.Series CurrentSerries, BE.Models.DropPhoto dropPhoto)
         {
             dropPhoto.Drop.XDiameterInMeters = xDiameterInPixels / (double)pixelsInMillimeter / 1000;
             dropPhoto.Drop.YDiameterInMeters = yDiameterInPixels / (double)pixelsInMillimeter / 1000;

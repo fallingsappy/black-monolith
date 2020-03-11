@@ -18,22 +18,22 @@ namespace DDrop
     /// </summary>
     public partial class Login : Window
     {
-        public static readonly DependencyProperty UserLoginProperty = DependencyProperty.Register("UserLogin", typeof(UserViewModel), typeof(Login));
-        private DDropContext _dDropContext;
+        public static readonly DependencyProperty UserLoginProperty = DependencyProperty.Register("UserLogin", typeof(User), typeof(Login));
+        private IDDropRepository _dDropRepository;
         private readonly Notifier _notifier;
         public bool LoginSucceeded;
-        public UserViewModel UserLogin
+        public User UserLogin
         {
-            get { return (UserViewModel)GetValue(UserLoginProperty); }
+            get { return (User)GetValue(UserLoginProperty); }
             set
             {
                 SetValue(UserLoginProperty, value);
             }
         }
 
-        public Login(DDropContext dDropContext, Notifier notifier)
+        public Login(IDDropRepository dDropRepository, Notifier notifier)
         {
-            _dDropContext = dDropContext;
+            _dDropRepository = dDropRepository;
             _notifier = notifier;
             InitializeComponent();
             DataContext = this;
@@ -63,7 +63,7 @@ namespace DDrop
                     var user = await _dDropContext.Users.FirstOrDefaultAsync(x => x.Email == email);
                     if (user != null && PasswordOperations.PasswordsMatch(password, user.Password))
                     {
-                        UserLogin = new UserViewModel()
+                        UserLogin = new User()
                         {
                             Email = user.Email,
                             Password = user.Password,
@@ -90,7 +90,7 @@ namespace DDrop
         private void RegistrationButton_Click(object sender, RoutedEventArgs e)
         {
             Visibility = Visibility.Collapsed;
-            Registration registrationWindow = new Registration(_dDropContext, _notifier)
+            Registration registrationWindow = new Registration(_dDropRepository, _notifier)
             {
                 Owner = this
             };
@@ -131,7 +131,7 @@ namespace DDrop
 
         private void LoginOfflineButton_Click(object sender, RoutedEventArgs e)
         {
-            UserLogin = new UserViewModel()
+            UserLogin = new User()
             {
                 Email = "anonymousUser@anonymousUser.com",
                 UserPhoto = ImageInterpreter.ImageToByteArray(Properties.Resources.cool_profile_picture_300x219_vectorized__1_),

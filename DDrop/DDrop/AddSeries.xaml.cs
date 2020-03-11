@@ -28,20 +28,20 @@ namespace DDrop
         private bool _allSelectedSeriesChanging;
         private bool? _allSelectedSeries = false;
         private bool triggerOnClose = true;
-        public static readonly DependencyProperty SeriesForAddProperty = DependencyProperty.Register("SeriesForAdd", typeof(ObservableCollection<SeriesViewModel>), typeof(AddSeries));
-        public static readonly DependencyProperty CurrentSeriesProperty = DependencyProperty.Register("CurrentSeries", typeof(SeriesViewModel), typeof(AddSeries));
-        public ObservableCollection<SeriesViewModel> SeriesForAdd
+        public static readonly DependencyProperty SeriesForAddProperty = DependencyProperty.Register("SeriesForAdd", typeof(ObservableCollection<Series>), typeof(AddSeries));
+        public static readonly DependencyProperty CurrentSeriesProperty = DependencyProperty.Register("CurrentSeries", typeof(Series), typeof(AddSeries));
+        public ObservableCollection<Series> SeriesForAdd
         {
-            get { return (ObservableCollection<SeriesViewModel>)GetValue(SeriesForAddProperty); }
+            get { return (ObservableCollection<Series>)GetValue(SeriesForAddProperty); }
             set
             {
                 SetValue(SeriesForAddProperty, value);
             }
         }
 
-        public SeriesViewModel CurrentSeries
+        public Series CurrentSeries
         {
-            get { return (SeriesViewModel)GetValue(CurrentSeriesProperty); }
+            get { return (Series)GetValue(CurrentSeriesProperty); }
             set
             {
                 SetValue(CurrentSeriesProperty, value);
@@ -116,11 +116,11 @@ namespace DDrop
 
         private void EntryOnPropertyChanged(object sender, PropertyChangedEventArgs args)
         {
-            if (args.PropertyName == nameof(SeriesViewModel.IsCheckedForAdd))
+            if (args.PropertyName == nameof(Series.IsCheckedForAdd))
                 RecheckAllSelected();
         }
 
-        public AddSeries(ObservableCollection<SeriesViewModel> seriesViewModel)
+        public AddSeries(ObservableCollection<Series> seriesViewModel)
         {
             SeriesForAdd = seriesViewModel;
             foreach (var series in SeriesForAdd)
@@ -141,7 +141,7 @@ namespace DDrop
 
         private void AddSeriesPreviewDataGrid_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            DropPhotoViewModel selectedFile = (DropPhotoViewModel)AddSeriesPreviewDataGrid.SelectedItem;
+            DropPhoto selectedFile = (DropPhoto)AddSeriesPreviewDataGrid.SelectedItem;
             ImgPreview.Source = selectedFile != null ? ImageInterpreter.LoadImage(selectedFile.Content) : null;
         }
 

@@ -9,6 +9,6 @@ namespace DDrop.BL.DropPhoto
 {
     public interface IDropPhotoBL
     {
-        BE.Models.Entities.DropPhoto DropPhotoViewModelToDropPhoto(DropPhotoViewModel dropPhotoViewModel);
+        BE.Models.Entities.DropPhoto DropPhotoViewModelToDropPhoto(BE.Models.DropPhoto dropPhotoViewModel);
     }
 }

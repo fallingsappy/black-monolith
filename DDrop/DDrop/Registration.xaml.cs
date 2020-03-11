@@ -13,14 +13,12 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
-using DDrop.BE.Models.Entities;
 using DDrop.Controls;
 using DDrop.Controls.PhotoCropper;
 using DDrop.DAL;
 using ToastNotifications;
 using ToastNotifications.Messages;
 using DDrop.Utility.Cryptography;
-using DDrop.DAL.DbEntities;
 
 namespace DDrop
 {
@@ -29,26 +27,26 @@ namespace DDrop
     /// </summary>
     public partial class Registration
     {
-        public static readonly DependencyProperty UserLoginProperty = DependencyProperty.Register("UserLogin", typeof(UserViewModel), typeof(Registration));
-        private DDropContext _dDropContext;
+        public static readonly DependencyProperty UserLoginProperty = DependencyProperty.Register("UserLogin", typeof(BE.Models.User), typeof(Registration));
+        private IDDropRepository _dDropRepository;
         private readonly Notifier _notifier;
 
         public bool RegistrationSucceeded;
         public byte[] UserPhoto { get; set; }
 
-        public UserViewModel UserLogin
+        public User UserLogin
         {
-            get { return (UserViewModel)GetValue(UserLoginProperty); }
+            get { return (BE.Models.User)GetValue(UserLoginProperty); }
             set
             {
                 SetValue(UserLoginProperty, value);
             }
         }
 
-        public Registration(DDropContext dDropContext, Notifier notifier)
+        public Registration(IDDropRepository dDropRepository, Notifier notifier)
         {
             _notifier = notifier;
-            _dDropContext = dDropContext;
+            _dDropRepository = dDropRepository;
             InitializeComponent();
         }
 
@@ -146,10 +144,10 @@ namespace DDrop
                     var userToRegister = await Task.Run(() => _dDropContext.Users.FirstOrDefault(x => x.Email == emailToCheck));
                     if (userToRegister == null)
                     {
-                        UserLogin = new UserViewModel()
+                        UserLogin = new BE.Models.User()
                         {
                             Email = TextBoxEmail.Text.Trim(),
-                            UserSeries = new ObservableCollection<SeriesViewModel>(),
+                            UserSeries = new ObservableCollection<BE.Models.Series>(),
                             FirstName = TextBoxFirstName.Text,
                             LastName = TextBoxLastName.Text,
                             IsLoggedIn = true,

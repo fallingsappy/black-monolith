@@ -10,12 +10,12 @@ namespace DDrop.BL.Series
 {
     public interface ISeriesBL
     {
-        Task<ObservableCollection<SeriesViewModel>> ImportLocalSeriesAsync(string fileName, UserViewModel User);
+        Task<ObservableCollection<BE.Models.Series>> ImportLocalSeriesAsync(string fileName, User User);
 
-        ObservableCollection<SeriesViewModel> ConvertSeriesToSeriesViewModel(List<BE.Models.Entities.Series> series,
-            UserViewModel user);
-        Task ExportSeriesLocalAsync(string fileName, UserViewModel user);
-        List<BE.Models.Entities.Series> SeriesViewModelToSeries(UserViewModel user);
-        BE.Models.Entities.Series SingleSeriesViewModelToSingleSeries(SeriesViewModel userSeries);
+        ObservableCollection<BE.Models.Series> ConvertSeriesToSeriesViewModel(List<BE.Models.Entities.Series> series,
+            User user);
+        Task ExportSeriesLocalAsync(string fileName, User user);
+        List<BE.Models.Entities.Series> SeriesViewModelToSeries(User user);
+        BE.Models.Entities.Series SingleSeriesViewModelToSingleSeries(BE.Models.Series userSeries);
     }
 }
