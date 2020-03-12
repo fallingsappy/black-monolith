@@ -23,7 +23,7 @@ namespace DDrop.Utility.Mappers
             };
         }
 
-        public static User DbUserToUser(DbUser dbUser, User user)
+        public static User DbUserToUser(DbUser dbUser)
         {
             return new User
             {
@@ -32,7 +32,7 @@ namespace DDrop.Utility.Mappers
                 UserPhoto = dbUser.UserPhoto,
                 FirstName = dbUser.FirstName,
                 LastName = dbUser.LastName,
-                UserSeries = DbSeriesToSeries(dbUser.UserSeries, user),
+                IsLoggedIn = true
             };
         }
 

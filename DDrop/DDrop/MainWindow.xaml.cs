@@ -128,32 +128,6 @@ namespace DDrop
             if (login.LoginSucceeded)
             {
                 User = login.UserLogin;
-                User.UserSeries = _seriesBL.ConvertSeriesToSeriesViewModel(_dDropContext.Users.FirstOrDefault((object x) => x.UserId == User.UserId).UserSeries.Select((object x) => new BE.Models.Entities.Series
-                {
-                    Title = x.Title,
-                    SeriesId = x.SeriesId,
-                    AddedDate = x.AddedDate,
-                    IntervalBetweenPhotos = x.IntervalBetweenPhotos,
-                    ReferencePhotoForSeries = new BE.Models.Entities.ReferencePhoto
-                    {
-                        Name = x.ReferencePhotoForSeries.Name,
-                        PixelsInMillimeter = x.ReferencePhotoForSeries.PixelsInMillimeter,
-                        ReferencePhotoId = x.ReferencePhotoForSeries.ReferencePhotoId,
-                        //SimpleLine = x.ReferencePhotoForSeries.SimpleLine
-                    } ?? null,
-                    DropPhotosSeries = x.DropPhotosSeries.Select((object s) => new BE.Models.Entities.DropPhoto
-                    {
-                        Name = s.Name,
-                        AddedDate = s.AddedDate,
-                        //Drop = s.Drop,
-                        DropPhotoId = s.DropPhotoId,
-                        //SimpleHorizontalLine = s.SimpleHorizontalLine,
-                        //SimpleVerticalLine = s.SimpleVerticalLine,
-                        XDiameterInPixels = s.XDiameterInPixels,
-                        YDiameterInPixels = s.YDiameterInPixels,
-                        ZDiameterInPixels = s.ZDiameterInPixels
-                    }).ToList()
-                }).ToList(), User);
                 SeriesDataGrid.ItemsSource = User.UserSeries;
             }
 
@@ -258,7 +232,7 @@ namespace DDrop
 
             if (User.UserSeries == null)
             {
-                User.UserSeries = new ObservableCollection<BE.Models.Series>();
+                User.UserSeries = new ObservableCollection<Series>();
                 SeriesDataGrid.ItemsSource = User.UserSeries;
             }
 
@@ -266,12 +240,12 @@ namespace DDrop
             {
                 seriesTitle = OneLineSetterValue.Text;
 
-                BE.Models.Series seriesToAdd = new BE.Models.Series(User)
+                Series seriesToAdd = new Series(User)
                 {
                     SeriesId = Guid.NewGuid(),
                     Title = seriesTitle,                    
                     AddedDate = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"),
-                    ReferencePhotoForSeries = new BE.Models.ReferencePhoto
+                    ReferencePhotoForSeries = new ReferencePhoto
                     {
                         ReferencePhotoId = Guid.NewGuid()
                     }
@@ -280,11 +254,9 @@ namespace DDrop
                 seriesToAdd.PropertyChanged += EntryOnPropertyChanged;
 
                 User.UserSeries.Add(seriesToAdd);
-                //_dDropContext.Users.FirstOrDefault(x => x.UserId == User.UserId).UserSeries.Add(_seriesBL.SingleSeriesViewModelToSingleSeries(seriesToAdd));
-                await _dDropContext.SaveChangesAsync();
                 SeriesDataGrid.ItemsSource = User.UserSeries;
                 OneLineSetterValue.Text = "";
-                await _dDropContext.SaveChangesAsync();
+
                 notifier.ShowSuccess($"Серия {seriesToAdd.Title} добавлена.");
             }
             else
@@ -327,45 +299,6 @@ namespace DDrop
             if (messageBoxResult == MessageBoxResult.Yes)
             {
                 notifier.ShowSuccess($"Серия {User.UserSeries[SeriesDataGrid.SelectedIndex].Title} была удалена.");
-
-                using (_dDropContext = new DDropContext())
-                {
-                    var id = User.UserSeries[SeriesDataGrid.SelectedIndex].SeriesId;
-                    var series = await _dDropContext.Series
-                        .Include(x => x.DropPhotosSeries)
-                        .Include(x => x.ReferencePhotoForSeries)
-                        .FirstOrDefaultAsync(x => x.SeriesId == id);
-                    if (series != null)
-                    {
-                        if (series.DropPhotosSeries != null)
-                        {
-                            foreach (var item in series.DropPhotosSeries)
-                            {
-                                _dDropContext.Drops.Remove(item.Drop);
-                                if (item.SimpleVerticalLine != null)
-                                {
-                                    _dDropContext.SimpleLines.Remove(item?.SimpleVerticalLine);
-                                }
-
-                                if (item.SimpleHorizontalLine != null)
-                                {
-                                    _dDropContext.SimpleLines.Remove(item?.SimpleHorizontalLine);
-                                }                                                              
-                            }
-
-                        }
-
-                        if (series.ReferencePhotoForSeries.SimpleLine != null)
-                        {
-                            _dDropContext.SimpleLines.Remove(series.ReferencePhotoForSeries.SimpleLine);
-                        }
-                        
-                        _dDropContext.ReferencePhotos.Remove(series?.ReferencePhotoForSeries);                        
-                    }
-
-                    //_dDropContext.Users.FirstOrDefault(x => x.UserId == User.UserId).UserSeries.Remove(_seriesBL.SingleSeriesViewModelToSingleSeries(User.UserSeries[SeriesDataGrid.SelectedIndex]));
-                    await _dDropContext.SaveChangesAsync();
-                }
 
                 User.UserSeries.RemoveAt(SeriesDataGrid.SelectedIndex);
                 Photos.ItemsSource = null;
@@ -680,8 +613,7 @@ namespace DDrop
                         {
                             DropId = Guid.NewGuid()
                         };
-                        //_dDropContext.Users.FirstOrDefault(x => x.UserId == User.UserId).UserSeries.FirstOrDefault(x => x.SeriesId == CurrentSeries.SeriesId).DropPhotosSeries.Add(_dropPhotoBL.DropPhotoViewModelToDropPhoto(imageForAdding));
-                        await _dDropContext.SaveChangesAsync();
+
                         notifier.ShowSuccess($"Снимок {imageForAdding.Name} добавлен.");                        
                     }
                     else
@@ -949,7 +881,7 @@ namespace DDrop
 
         private void LoginMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            Login login = new Login(_dDropContext, notifier)
+            Login login = new Login(_dDropRepository, notifier)
             {
                 Owner = this
             };

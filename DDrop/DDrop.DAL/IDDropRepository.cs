@@ -5,7 +5,8 @@ namespace DDrop.DAL
 {
     public interface IDDropRepository
     {
+        Task CreateUserAsync(DbUser user);
         Task UpdateUserAsync(DbUser user);
-        Task<DbUser> GetUserByLoginAndPassword(string email);
+        Task<DbUser> GetUserByLogin(string email);
     }
 }

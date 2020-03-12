@@ -19,6 +19,7 @@ using DDrop.DAL;
 using ToastNotifications;
 using ToastNotifications.Messages;
 using DDrop.Utility.Cryptography;
+using DDrop.Utility.Mappers;
 
 namespace DDrop
 {
@@ -122,7 +123,8 @@ namespace DDrop
                 ErrorMessage.Text = "Введите электронную почту.";
                 TextBoxEmail.Focus();
             }
-            else if (!Regex.IsMatch(TextBoxEmail.Text, @"^[a-zA-Z][\w\.-]*[a-zA-Z0-9]@[a-zA-Z0-9][\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]$"))
+            else if (!Regex.IsMatch(TextBoxEmail.Text,
+                @"^[a-zA-Z][\w\.-]*[a-zA-Z0-9]@[a-zA-Z0-9][\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]$"))
             {
                 ErrorMessage.Text = "Электронная почта имеет не верный формат.";
                 TextBoxEmail.Select(0, TextBoxEmail.Text.Length);
@@ -138,13 +140,13 @@ namespace DDrop
             }
             else
             {
-                using (_dDropContext = new DDropContext())
+                var emailToCheck = TextBoxEmail.Text;
+                var userToRegister = await Task.Run(() => _dDropRepository.GetUserByLogin(emailToCheck));
+                if (userToRegister == null)
                 {
-                    var emailToCheck = TextBoxEmail.Text;
-                    var userToRegister = await Task.Run(() => _dDropContext.Users.FirstOrDefault(x => x.Email == emailToCheck));
-                    if (userToRegister == null)
+                    try
                     {
-                        UserLogin = new BE.Models.User()
+                        var user = new User()
                         {
                             Email = TextBoxEmail.Text.Trim(),
                             UserSeries = new ObservableCollection<BE.Models.Series>(),
@@ -155,26 +157,24 @@ namespace DDrop
                             UserId = Guid.NewGuid(),
                             UserPhoto = UserPhoto,
                         };
-                        _dDropContext.Users.Add(new DbUser()
-                        {
-                            UserId = UserLogin.UserId,
-                            Email = UserLogin.Email.Trim(),
-                            FirstName = UserLogin.FirstName,
-                            LastName = UserLogin.LastName,
-                            Password = PasswordOperations.HashPassword(PasswordBox1.Password),
-                            UserPhoto = UserLogin.UserPhoto,
-                            UserSeries = new System.Collections.Generic.List<DbSeries>()
-                        });
-                        await Task.Run(() => _dDropContext.SaveChangesAsync());
+
+                        await _dDropRepository.CreateUserAsync(DDropDbEntitiesMapper.UserToDbUser(user));
+
+                        UserLogin = user;
+
                         _notifier.ShowSuccess($"Пользователь {UserLogin.Email} успешно зарегистрирован.");
                         RegistrationSucceeded = true;
                         Close();
                     }
-                    else
+                    catch
                     {
-                        _notifier.ShowError("Пользователь с таким Email уже существует.");
-                        RegistrationSucceeded = false;
+                        _notifier.ShowError("Не удалось установить соединение. Проверьте интернет подключение.");
                     }
+                }
+                else
+                {
+                    _notifier.ShowError("Пользователь с таким Email уже существует.");
+                    RegistrationSucceeded = false;
                 }
             }
         }

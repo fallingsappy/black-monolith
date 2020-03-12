@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Input;
 using DDrop.BL.Series;
 using DDrop.DAL;
+using DDrop.Utility.Mappers;
 using ToastNotifications;
 using ToastNotifications.Messages;
 
@@ -58,20 +59,15 @@ namespace DDrop
                 var email = TextBoxEmail.Text;
                 var password = LoginPasswordBox.Password;
 
+                try
+                {
                     var user = await _dDropRepository.GetUserByLogin(email);
+
                     if (user != null && PasswordOperations.PasswordsMatch(password, user.Password))
                     {
-                        
-                        UserLogin = new User()
-                        {
-                            Email = user.Email,
-                            Password = user.Password,
-                            UserPhoto = user.UserPhoto,
-                            UserId = user.UserId,
-                            FirstName = user.FirstName,
-                            LastName = user.LastName,
-                            IsLoggedIn = true,
-                        };
+
+                        UserLogin = DDropDbEntitiesMapper.DbUserToUser(user);
+                        UserLogin.UserSeries = DDropDbEntitiesMapper.DbSeriesToSeries(user.UserSeries, UserLogin);
 
                         LoginSucceeded = true;
                         _notifier.ShowSuccess($"Пользователь {user.Email} авторизован.");
@@ -82,7 +78,11 @@ namespace DDrop
                         ErrorMessage.Text = "Неверный логин или пароль.";
                         LoginSucceeded = false;
                     }
-                
+                }
+                catch (Exception exception)
+                {
+                    _notifier.ShowError("Не удалось установить соединение. Проверьте интернет подключение.");
+                }
             }
         }
 

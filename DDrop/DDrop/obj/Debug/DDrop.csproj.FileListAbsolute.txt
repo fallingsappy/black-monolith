@@ -704,3 +704,6 @@ D:\fallingsappyGit\DDrop\DDrop\bin\Debug\Unity.Container.pdb
 D:\fallingsappyGit\DDrop\DDrop\obj\Debug\CropPhoto.g.cs
 D:\fallingsappyGit\DDrop\DDrop\obj\Debug\DDrop_Content.g.cs
 D:\fallingsappyGit\DDrop\DDrop\obj\Debug\CropPhoto.baml
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\bin\Debug\DDrop.Db.dll
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\bin\Debug\DDrop.Db.pdb
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\bin\Debug\DDrop.Db.dll.config
