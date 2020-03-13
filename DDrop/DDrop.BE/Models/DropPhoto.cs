@@ -6,6 +6,12 @@ namespace DDrop.BE.Models
 {
     public class DropPhoto : INotifyPropertyChanged
     {
+        public DropPhoto(Series currentSeries, Guid currentSeriesId)
+        {
+            CurrentSeriesId = currentSeriesId;
+            CurrentSeries = currentSeries;
+        }
+
         public Guid DropPhotoId { get; set; }
         private string _path;
         public string Path
@@ -174,6 +180,9 @@ namespace DDrop.BE.Models
                 OnPropertyChanged(new PropertyChangedEventArgs("AddedDate"));
             }
         }
+
+        public Guid CurrentSeriesId { get; set; }
+        public Series CurrentSeries { get; set; }
 
         private bool _isChecked;
         public bool IsChecked

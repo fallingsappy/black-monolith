@@ -21,3 +21,5 @@ E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Db\obj\Debug\DDrop.Db.csp
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Db\obj\Debug\DDrop.Db.csproj.CopyComplete
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Db\obj\Debug\DDrop.Db.dll
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Db\obj\Debug\DDrop.Db.pdb
+D:\fallingsappyGit\DDrop\DDrop.Db\obj\Debug\DDrop.Db.Migrations.intial.resources
+D:\fallingsappyGit\DDrop\DDrop.Db\obj\Debug\DDrop.Db.csproj.GenerateResource.cache

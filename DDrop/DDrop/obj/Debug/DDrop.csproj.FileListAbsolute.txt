@@ -707,3 +707,6 @@ D:\fallingsappyGit\DDrop\DDrop\obj\Debug\CropPhoto.baml
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\bin\Debug\DDrop.Db.dll
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\bin\Debug\DDrop.Db.pdb
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\bin\Debug\DDrop.Db.dll.config
+D:\fallingsappyGit\DDrop\DDrop\bin\Debug\DDrop.Db.dll
+D:\fallingsappyGit\DDrop\DDrop\bin\Debug\DDrop.Db.pdb
+D:\fallingsappyGit\DDrop\DDrop\bin\Debug\DDrop.Db.dll.config

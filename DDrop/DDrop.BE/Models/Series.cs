@@ -7,10 +7,14 @@ namespace DDrop.BE.Models
 {
     public class Series : INotifyPropertyChanged
     {
-        User _user;
+        public Guid CurrentUserId { get; set; }
+
+        public User CurrentUser { get; set; }
+
         public Series(User user)
         {
-            _user = user;
+            CurrentUser = user;
+            CurrentUserId = user.UserId;
             _dropPhotosSeries = new ObservableCollection<DropPhoto>();
             _dropPhotosSeries.CollectionChanged += _dropPhotosSeries_CollectionChanged;
         }
@@ -18,7 +22,7 @@ namespace DDrop.BE.Models
         private void _dropPhotosSeries_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             OnPropertyChanged(new PropertyChangedEventArgs(nameof(CanDrawPlot)));
-            _user.OnPropertyChanged(new PropertyChangedEventArgs(nameof(User.IsAnySelectedSeriesCanDrawPlot)));
+            CurrentUser.OnPropertyChanged(new PropertyChangedEventArgs(nameof(User.IsAnySelectedSeriesCanDrawPlot)));
         }
 
         public Guid SeriesId { get; set; }
@@ -163,7 +167,7 @@ namespace DDrop.BE.Models
                 OnPropertyChanged(new PropertyChangedEventArgs(nameof(CanDrawPlot)));
 
             if (e.PropertyName == nameof(IsChecked))
-                _user.OnPropertyChanged(new PropertyChangedEventArgs(nameof(User.IsAnySelectedSeriesCanDrawPlot))); ;
+                CurrentUser.OnPropertyChanged(new PropertyChangedEventArgs(nameof(User.IsAnySelectedSeriesCanDrawPlot))); ;
 
             PropertyChanged?.Invoke(this, e);
         }

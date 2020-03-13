@@ -9,5 +9,7 @@ namespace DDrop.BE.Models.Serializable
         public byte[] Content { get; set; }
         public virtual SimpleLine SimpleLine { get; set; }
         public int PixelsInMillimeter { get; set; }
+
+        public Series Series { get; set; }
     }
 }
