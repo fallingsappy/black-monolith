@@ -6,10 +6,32 @@ namespace DDrop.BE.Models
 {
     public class DropPhoto : INotifyPropertyChanged
     {
-        public DropPhoto(Series currentSeries, Guid currentSeriesId)
+        private Guid _currentSeriesId;
+        public Guid CurrentSeriesId
         {
-            CurrentSeriesId = currentSeriesId;
-            CurrentSeries = currentSeries;
+            get
+            {
+                return _currentSeriesId;
+            }
+            set
+            {
+                _currentSeriesId = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("CurrentSeriesId"));
+            }
+        }
+
+        private Series _currentSeries;
+        public Series CurrentSeries
+        {
+            get
+            {
+                return _currentSeries;
+            }
+            set
+            {
+                _currentSeries = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("CurrentSeries"));
+            }
         }
 
         public Guid DropPhotoId { get; set; }
@@ -180,9 +202,6 @@ namespace DDrop.BE.Models
                 OnPropertyChanged(new PropertyChangedEventArgs("AddedDate"));
             }
         }
-
-        public Guid CurrentSeriesId { get; set; }
-        public Series CurrentSeries { get; set; }
 
         private bool _isChecked;
         public bool IsChecked

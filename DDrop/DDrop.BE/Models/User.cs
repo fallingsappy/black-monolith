@@ -134,7 +134,6 @@ namespace DDrop.BE.Models
         }
 
         private bool _isLoggedIn;
-        [NotMapped]
         public bool IsLoggedIn
         {
             get

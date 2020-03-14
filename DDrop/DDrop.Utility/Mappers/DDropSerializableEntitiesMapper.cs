@@ -25,14 +25,14 @@ namespace DDrop.Utility.Mappers
             ObservableCollection<Series> addSeriesViewModel = new ObservableCollection<Series>();
             for (int i = 0; i < series.Count; i++)
             {
-                Series addSingleSeriesViewModel = new BE.Models.Series(user);
+                Series addSingleSeriesViewModel = new Series();
                 ObservableCollection<DropPhoto> dropPhotosSeries = new ObservableCollection<DropPhoto>();
 
                 if (series[i].DropPhotosSeries != null)
                 {
                     foreach (var dropPhoto in series[i].DropPhotosSeries)
                     {
-                        var userDropPhoto = new DropPhoto(addSingleSeriesViewModel, addSingleSeriesViewModel.SeriesId)
+                        var userDropPhoto = new DropPhoto()
                         {
                             Name = dropPhoto.Name,
                             Content = dropPhoto.Content,
@@ -42,7 +42,9 @@ namespace DDrop.Utility.Mappers
                             XDiameterInPixels = dropPhoto.XDiameterInPixels,
                             YDiameterInPixels = dropPhoto.YDiameterInPixels,
                             ZDiameterInPixels = dropPhoto.ZDiameterInPixels,
-                            AddedDate = dropPhoto.AddedDate
+                            AddedDate = dropPhoto.AddedDate,
+                            CurrentSeries = addSingleSeriesViewModel,
+                            CurrentSeriesId = addSingleSeriesViewModel.SeriesId
                         };
 
                         if (dropPhoto.SimpleHorizontalLine != null)
@@ -68,14 +70,16 @@ namespace DDrop.Utility.Mappers
                                 Stroke = Brushes.Green
                             };
                         }
-                        var userDrop = new Drop(addSingleSeriesViewModel, userDropPhoto)
+                        var userDrop = new Drop()
                         {
                             DropId = dropPhoto.Drop.DropId,
                             RadiusInMeters = dropPhoto.Drop.RadiusInMeters,
                             VolumeInCubicalMeters = dropPhoto.Drop.VolumeInCubicalMeters,
                             XDiameterInMeters = dropPhoto.Drop.XDiameterInMeters,
                             YDiameterInMeters = dropPhoto.Drop.YDiameterInMeters,
-                            ZDiameterInMeters = dropPhoto.Drop.ZDiameterInMeters
+                            ZDiameterInMeters = dropPhoto.Drop.ZDiameterInMeters,
+                            Series = addSingleSeriesViewModel,
+                            DropPhoto = userDropPhoto,
                         };
 
                         userDropPhoto.Drop = userDrop;
@@ -87,13 +91,14 @@ namespace DDrop.Utility.Mappers
 
                 if (series[i].ReferencePhotoForSeries != null)
                 {
-                    addSingleSeriesViewModel.ReferencePhotoForSeries = new ReferencePhoto(addSingleSeriesViewModel)
+                    addSingleSeriesViewModel.ReferencePhotoForSeries = new ReferencePhoto()
                     {
                         Content = series[i].ReferencePhotoForSeries.Content,
                         Name = series[i].ReferencePhotoForSeries.Name,
                         PixelsInMillimeter = series[i].ReferencePhotoForSeries.PixelsInMillimeter,
                         ReferencePhotoId = series[i].ReferencePhotoForSeries.ReferencePhotoId,
                         SimpleLine = series[i].ReferencePhotoForSeries.SimpleLine,
+                        Series = addSingleSeriesViewModel
                     };
                 }
 
@@ -113,6 +118,8 @@ namespace DDrop.Utility.Mappers
                 addSingleSeriesViewModel.DropPhotosSeries = dropPhotosSeries;
                 addSingleSeriesViewModel.IntervalBetweenPhotos = series[i].IntervalBetweenPhotos;
                 addSingleSeriesViewModel.SeriesId = series[i].SeriesId;
+                addSingleSeriesViewModel.CurrentUser = user;
+                addSingleSeriesViewModel.CurrentUserId = user.UserId;
 
                 addSeriesViewModel.Add(addSingleSeriesViewModel);
             }

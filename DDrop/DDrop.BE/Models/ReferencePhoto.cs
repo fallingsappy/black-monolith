@@ -6,9 +6,18 @@ namespace DDrop.BE.Models
 {
     public class ReferencePhoto : INotifyPropertyChanged
     {
-        public ReferencePhoto(Series series)
+        private Series _series;
+        public Series Series
         {
-            Series = series;
+            get
+            {
+                return _series;
+            }
+            set
+            {
+                _series = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("Series"));
+            }
         }
 
         public Guid ReferencePhotoId { get; set; }
@@ -82,8 +91,6 @@ namespace DDrop.BE.Models
                 OnPropertyChanged(new PropertyChangedEventArgs("PixelsInMillimeter"));
             }
         }
-
-        public Series Series { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged(PropertyChangedEventArgs e)

@@ -6,12 +6,32 @@ namespace DDrop.BE.Models
 {
     public class Drop : INotifyPropertyChanged
     {
-        Series _series;
-        DropPhoto _dropPhoto;
-        public Drop(Series series, DropPhoto dropPhoto)
+        private Series _series;
+        public Series Series
         {
-            _series = series;
-            _dropPhoto = dropPhoto;
+            get
+            {
+                return _series;
+            }
+            set
+            {
+                _series = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("Series"));
+            }
+        }
+
+        private DropPhoto _dropPhoto;
+        public DropPhoto DropPhoto
+        {
+            get
+            {
+                return _dropPhoto;
+            }
+            set
+            {
+                _dropPhoto = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("DropPhoto"));
+            }
         }
 
         public Guid DropId { get; set; }

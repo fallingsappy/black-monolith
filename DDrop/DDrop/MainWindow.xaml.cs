@@ -22,6 +22,7 @@ using pbu = RFM.RFM_WPFProgressBarUpdate;
 using DDrop.BL.DropPhoto;
 using DDrop.DAL;
 using DDrop.Utility.Mappers;
+using System.Threading.Tasks;
 
 namespace DDrop
 {
@@ -129,6 +130,9 @@ namespace DDrop
             if (login.LoginSucceeded)
             {
                 User = login.UserLogin;
+
+                User.UserSeries = DDropDbEntitiesMapper.DbSeriesToSeries(_dDropRepository.GetSeriesByUserId(User.UserId), User);
+
                 SeriesDataGrid.ItemsSource = User.UserSeries;
             }
 
@@ -241,15 +245,19 @@ namespace DDrop
             {
                 seriesTitle = OneLineSetterValue.Text;
 
-                Series seriesToAdd = new Series(User)
+                Series seriesToAdd = new Series()
                 {
                     SeriesId = Guid.NewGuid(),
                     Title = seriesTitle,                    
                     AddedDate = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"),
-                    ReferencePhotoForSeries = new ReferencePhoto(CurrentSeries)
+                    ReferencePhotoForSeries = new ReferencePhoto()
                     {
-                        ReferencePhotoId = Guid.NewGuid()
-                    }
+                        ReferencePhotoId = Guid.NewGuid(),
+                        Series = CurrentSeries,
+                        SimpleLine = new SimpleLine { SimpleLineId = Guid.NewGuid()}
+                    },
+                    CurrentUser = User,
+                    CurrentUserId = User.UserId
                 };
 
                 seriesToAdd.PropertyChanged += EntryOnPropertyChanged;
@@ -258,7 +266,17 @@ namespace DDrop
                 SeriesDataGrid.ItemsSource = User.UserSeries;
                 OneLineSetterValue.Text = "";
 
-                notifier.ShowSuccess($"Серия {seriesToAdd.Title} добавлена.");
+                try
+                {
+                    var dbUser = await _dDropRepository.GetUserByLogin(User.Email);
+
+                    await _dDropRepository.CreateSeries(DDropDbEntitiesMapper.SingleSeriesToSingleDbSeries(seriesToAdd, dbUser));
+                    
+                }
+                catch (Exception)
+                {
+                    notifier.ShowError($"Серия {seriesToAdd.Title} не добавлена. Не удалось установить подключение. Проверьте интернет соединение.");
+                }               
             }
             else
             {
@@ -270,7 +288,11 @@ namespace DDrop
         {
             if (User.UserSeries.Count > 0 && SeriesDataGrid.SelectedItem != null)
             {
-                Series old = new Series(User);
+                Series old = new Series()
+                {
+                    CurrentUser = User,
+                    CurrentUserId = User.UserId
+                };
 
                 if (e.RemovedItems.Count > 0)
                     old = e.RemovedItems[0] as Series;
@@ -597,22 +619,26 @@ namespace DDrop
                         Photos.ItemsSource = CurrentSeries.DropPhotosSeries;
                     }
 
-                    var imageForAdding = new DropPhoto(CurrentSeries, CurrentSeries.SeriesId)
+                    var imageForAdding = new DropPhoto()
                     {
                         DropPhotoId = Guid.NewGuid(),
                         Name = openFileDialog.SafeFileNames[i],
                         Path = openFileDialog.FileNames[i],
                         Content = File.ReadAllBytes(openFileDialog.FileNames[i]),
-                        AddedDate = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")
+                        AddedDate = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"),
+                        CurrentSeries = CurrentSeries,
+                        CurrentSeriesId = CurrentSeries.SeriesId,
                     };
                     
                     if (ImageValidator.ValidateImage(imageForAdding.Content))
                     {
                         imageForAdding.PropertyChanged += PhotosOnPropertyChanged;
                         CurrentSeries.DropPhotosSeries.Add(imageForAdding);
-                        CurrentSeries.DropPhotosSeries[CurrentSeries.DropPhotosSeries.Count - 1].Drop = new Drop(CurrentSeries, CurrentSeries.DropPhotosSeries[CurrentSeries.DropPhotosSeries.Count - 1])
+                        CurrentSeries.DropPhotosSeries[CurrentSeries.DropPhotosSeries.Count - 1].Drop = new Drop()
                         {
-                            DropId = Guid.NewGuid()
+                            DropId = Guid.NewGuid(),
+                            Series = CurrentSeries,
+                            DropPhoto = CurrentSeries.DropPhotosSeries[CurrentSeries.DropPhotosSeries.Count - 1]
                         };
 
                         notifier.ShowSuccess($"Снимок {imageForAdding.Name} добавлен.");                        

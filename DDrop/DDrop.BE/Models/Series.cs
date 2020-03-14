@@ -7,14 +7,36 @@ namespace DDrop.BE.Models
 {
     public class Series : INotifyPropertyChanged
     {
-        public Guid CurrentUserId { get; set; }
-
-        public User CurrentUser { get; set; }
-
-        public Series(User user)
+        private Guid _currentUserId;
+        public Guid CurrentUserId
         {
-            CurrentUser = user;
-            CurrentUserId = user.UserId;
+            get
+            {
+                return _currentUserId;
+            }
+            set
+            {
+                _currentUserId = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("CurrentUserId"));
+            }
+        }
+
+        private User _currentUser;
+        public User CurrentUser
+        {
+            get
+            {
+                return _currentUser;
+            }
+            set
+            {
+                _currentUser = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("CurrentUser"));
+            }
+        }
+
+        public Series()
+        {
             _dropPhotosSeries = new ObservableCollection<DropPhoto>();
             _dropPhotosSeries.CollectionChanged += _dropPhotosSeries_CollectionChanged;
         }

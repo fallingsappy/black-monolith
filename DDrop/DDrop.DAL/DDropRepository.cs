@@ -3,6 +3,8 @@ using System.Data.Entity;
 using DDrop.Db.DbEntities;
 using System.Threading.Tasks;
 using DDrop.Db;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace DDrop.DAL
 {
@@ -23,7 +25,7 @@ namespace DDrop.DAL
                 catch (Exception e)
                 {
                     throw new Exception(e.Message);
-                }                
+                }
             }
         }
 
@@ -67,9 +69,18 @@ namespace DDrop.DAL
         {
             using (var context = new DDropContext())
             {
+                context.Users.Attach(series.CurrentUser);
                 var createdSeries = context.Series.Add(series);
 
                 await context.SaveChangesAsync();
+            }
+        }
+
+        public List<DbSeries> GetSeriesByUserId(Guid dbUserId)
+        {
+            using (var context = new DDropContext())
+            {
+                return context.Series.Where(x => x.CurrentUserId == dbUserId).ToList();
             }
         }
 
