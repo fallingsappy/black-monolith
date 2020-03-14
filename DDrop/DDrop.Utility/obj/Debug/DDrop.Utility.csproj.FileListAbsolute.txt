@@ -143,3 +143,4 @@ D:\fallingsappyGit\DDrop\DDrop.Utility\bin\Debug\EntityFramework.dll
 D:\fallingsappyGit\DDrop\DDrop.Utility\bin\Debug\DDrop.Db.pdb
 D:\fallingsappyGit\DDrop\DDrop.Utility\bin\Debug\DDrop.Db.dll.config
 D:\fallingsappyGit\DDrop\DDrop.Utility\bin\Debug\EntityFramework.xml
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.csproj.CoreCompileInputs.cache

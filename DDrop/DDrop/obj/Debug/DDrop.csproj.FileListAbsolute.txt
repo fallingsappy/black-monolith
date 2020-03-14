@@ -710,3 +710,4 @@ E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\bin\Debug\DDrop.Db.dll.co
 D:\fallingsappyGit\DDrop\DDrop\bin\Debug\DDrop.Db.dll
 D:\fallingsappyGit\DDrop\DDrop\bin\Debug\DDrop.Db.pdb
 D:\fallingsappyGit\DDrop\DDrop\bin\Debug\DDrop.Db.dll.config
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\DDrop.csproj.CoreCompileInputs.cache

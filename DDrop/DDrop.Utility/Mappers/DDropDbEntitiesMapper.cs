@@ -150,116 +150,119 @@ namespace DDrop.Utility.Mappers
         public static ObservableCollection<Series> DbSeriesToSeries(List<DbSeries> series, User user)
         {
             ObservableCollection<Series> addSeriesViewModel = new ObservableCollection<Series>();
-            for (int i = 0; i < series.Count; i++)
+            if (series != null)
             {
-                BE.Models.Series addSingleSeriesViewModel = new BE.Models.Series(user);
-                ObservableCollection<DropPhoto> dropPhotosSeries = new ObservableCollection<DropPhoto>();
-
-                if (series[i].DropPhotosSeries != null)
+                for (int i = 0; i < series.Count; i++)
                 {
-                    foreach (var dropPhoto in series[i].DropPhotosSeries)
+                    Series addSingleSeriesViewModel = new Series(user);
+                    ObservableCollection<DropPhoto> dropPhotosSeries = new ObservableCollection<DropPhoto>();
+
+                    if (series[i].DropPhotosSeries != null)
                     {
-                        var userDropPhoto = new DropPhoto(addSingleSeriesViewModel, addSingleSeriesViewModel.SeriesId)
+                        foreach (var dropPhoto in series[i].DropPhotosSeries)
                         {
-                            Name = dropPhoto.Name,
-                            Content = dropPhoto.Content,
-                            DropPhotoId = dropPhoto.DropPhotoId,
-                            SimpleHorizontalLine = new SimpleLine
+                            var userDropPhoto = new DropPhoto(addSingleSeriesViewModel, addSingleSeriesViewModel.SeriesId)
                             {
-                                X1 = dropPhoto.SimpleHorizontalLine.X1,
-                                X2 = dropPhoto.SimpleHorizontalLine.X2,
-                                Y1 = dropPhoto.SimpleHorizontalLine.Y1,
-                                Y2 = dropPhoto.SimpleHorizontalLine.Y2
-                            }, 
-                            SimpleVerticalLine = new SimpleLine
-                            {
-                                X1 = dropPhoto.SimpleVerticalLine.X1,
-                                X2 = dropPhoto.SimpleVerticalLine.X2,
-                                Y1 = dropPhoto.SimpleVerticalLine.Y1,
-                                Y2 = dropPhoto.SimpleVerticalLine.Y2
-                            },
-                            XDiameterInPixels = dropPhoto.XDiameterInPixels,
-                            YDiameterInPixels = dropPhoto.YDiameterInPixels,
-                            ZDiameterInPixels = dropPhoto.ZDiameterInPixels,
-                            AddedDate = dropPhoto.AddedDate
-                        };
-
-                        if (dropPhoto.SimpleHorizontalLine != null)
-                        {
-                            userDropPhoto.HorizontalLine = new Line
-                            {
-                                X1 = dropPhoto.SimpleHorizontalLine.X1,
-                                X2 = dropPhoto.SimpleHorizontalLine.X2,
-                                Y1 = dropPhoto.SimpleHorizontalLine.Y1,
-                                Y2 = dropPhoto.SimpleHorizontalLine.Y2,
-                                Stroke = Brushes.DeepPink
+                                Name = dropPhoto.Name,
+                                Content = dropPhoto.Content,
+                                DropPhotoId = dropPhoto.DropPhotoId,
+                                SimpleHorizontalLine = new SimpleLine
+                                {
+                                    X1 = dropPhoto.SimpleHorizontalLine.X1,
+                                    X2 = dropPhoto.SimpleHorizontalLine.X2,
+                                    Y1 = dropPhoto.SimpleHorizontalLine.Y1,
+                                    Y2 = dropPhoto.SimpleHorizontalLine.Y2
+                                },
+                                SimpleVerticalLine = new SimpleLine
+                                {
+                                    X1 = dropPhoto.SimpleVerticalLine.X1,
+                                    X2 = dropPhoto.SimpleVerticalLine.X2,
+                                    Y1 = dropPhoto.SimpleVerticalLine.Y1,
+                                    Y2 = dropPhoto.SimpleVerticalLine.Y2
+                                },
+                                XDiameterInPixels = dropPhoto.XDiameterInPixels,
+                                YDiameterInPixels = dropPhoto.YDiameterInPixels,
+                                ZDiameterInPixels = dropPhoto.ZDiameterInPixels,
+                                AddedDate = dropPhoto.AddedDate
                             };
-                        }
 
-                        if (dropPhoto.SimpleVerticalLine != null)
-                        {
-                            userDropPhoto.VerticalLine = new Line
+                            if (dropPhoto.SimpleHorizontalLine != null)
                             {
-                                X1 = dropPhoto.SimpleVerticalLine.X1,
-                                X2 = dropPhoto.SimpleVerticalLine.X2,
-                                Y1 = dropPhoto.SimpleVerticalLine.Y1,
-                                Y2 = dropPhoto.SimpleVerticalLine.Y2,
-                                Stroke = Brushes.Green
+                                userDropPhoto.HorizontalLine = new Line
+                                {
+                                    X1 = dropPhoto.SimpleHorizontalLine.X1,
+                                    X2 = dropPhoto.SimpleHorizontalLine.X2,
+                                    Y1 = dropPhoto.SimpleHorizontalLine.Y1,
+                                    Y2 = dropPhoto.SimpleHorizontalLine.Y2,
+                                    Stroke = Brushes.DeepPink
+                                };
+                            }
+
+                            if (dropPhoto.SimpleVerticalLine != null)
+                            {
+                                userDropPhoto.VerticalLine = new Line
+                                {
+                                    X1 = dropPhoto.SimpleVerticalLine.X1,
+                                    X2 = dropPhoto.SimpleVerticalLine.X2,
+                                    Y1 = dropPhoto.SimpleVerticalLine.Y1,
+                                    Y2 = dropPhoto.SimpleVerticalLine.Y2,
+                                    Stroke = Brushes.Green
+                                };
+                            }
+                            var userDrop = new Drop(addSingleSeriesViewModel, userDropPhoto)
+                            {
+                                DropId = dropPhoto.Drop.DropId,
+                                RadiusInMeters = dropPhoto.Drop.RadiusInMeters,
+                                VolumeInCubicalMeters = dropPhoto.Drop.VolumeInCubicalMeters,
+                                XDiameterInMeters = dropPhoto.Drop.XDiameterInMeters,
+                                YDiameterInMeters = dropPhoto.Drop.YDiameterInMeters,
+                                ZDiameterInMeters = dropPhoto.Drop.ZDiameterInMeters
                             };
+
+                            userDropPhoto.Drop = userDrop;
+
+                            dropPhotosSeries.Add(userDropPhoto);
                         }
-                        var userDrop = new Drop(addSingleSeriesViewModel, userDropPhoto)
-                        {
-                            DropId = dropPhoto.Drop.DropId,
-                            RadiusInMeters = dropPhoto.Drop.RadiusInMeters,
-                            VolumeInCubicalMeters = dropPhoto.Drop.VolumeInCubicalMeters,
-                            XDiameterInMeters = dropPhoto.Drop.XDiameterInMeters,
-                            YDiameterInMeters = dropPhoto.Drop.YDiameterInMeters,
-                            ZDiameterInMeters = dropPhoto.Drop.ZDiameterInMeters
-                        };
-
-                        userDropPhoto.Drop = userDrop;
-
-                        dropPhotosSeries.Add(userDropPhoto);
                     }
-                }
 
 
-                if (series[i].ReferencePhotoForSeries != null)
-                {
-                    addSingleSeriesViewModel.ReferencePhotoForSeries = new ReferencePhoto(addSingleSeriesViewModel)
+                    if (series[i].ReferencePhotoForSeries != null)
                     {
-                        Content = series[i].ReferencePhotoForSeries.Content,
-                        Name = series[i].ReferencePhotoForSeries.Name,
-                        PixelsInMillimeter = series[i].ReferencePhotoForSeries.PixelsInMillimeter,
-                        ReferencePhotoId = series[i].ReferencePhotoForSeries.ReferencePhotoId,
-                        SimpleLine = new SimpleLine
+                        addSingleSeriesViewModel.ReferencePhotoForSeries = new ReferencePhoto(addSingleSeriesViewModel)
+                        {
+                            Content = series[i].ReferencePhotoForSeries.Content,
+                            Name = series[i].ReferencePhotoForSeries.Name,
+                            PixelsInMillimeter = series[i].ReferencePhotoForSeries.PixelsInMillimeter,
+                            ReferencePhotoId = series[i].ReferencePhotoForSeries.ReferencePhotoId,
+                            SimpleLine = new SimpleLine
+                            {
+                                X1 = series[i].ReferencePhotoForSeries.SimpleLine.X1,
+                                X2 = series[i].ReferencePhotoForSeries.SimpleLine.X2,
+                                Y1 = series[i].ReferencePhotoForSeries.SimpleLine.Y1,
+                                Y2 = series[i].ReferencePhotoForSeries.SimpleLine.Y2
+                            },
+                        };
+                    }
+
+                    if (series[i].ReferencePhotoForSeries?.SimpleLine != null)
+                    {
+                        addSingleSeriesViewModel.ReferencePhotoForSeries.Line = new Line
                         {
                             X1 = series[i].ReferencePhotoForSeries.SimpleLine.X1,
                             X2 = series[i].ReferencePhotoForSeries.SimpleLine.X2,
                             Y1 = series[i].ReferencePhotoForSeries.SimpleLine.Y1,
-                            Y2 = series[i].ReferencePhotoForSeries.SimpleLine.Y2
-                        }, 
-                    };
-                }
+                            Y2 = series[i].ReferencePhotoForSeries.SimpleLine.Y2,
+                            Stroke = Brushes.DeepPink
+                        };
+                    }
+                    addSingleSeriesViewModel.AddedDate = series[i].AddedDate;
+                    addSingleSeriesViewModel.Title = series[i].Title;
+                    addSingleSeriesViewModel.DropPhotosSeries = dropPhotosSeries;
+                    addSingleSeriesViewModel.IntervalBetweenPhotos = series[i].IntervalBetweenPhotos;
+                    addSingleSeriesViewModel.SeriesId = series[i].SeriesId;
 
-                if (series[i].ReferencePhotoForSeries?.SimpleLine != null)
-                {
-                    addSingleSeriesViewModel.ReferencePhotoForSeries.Line = new Line
-                    {
-                        X1 = series[i].ReferencePhotoForSeries.SimpleLine.X1,
-                        X2 = series[i].ReferencePhotoForSeries.SimpleLine.X2,
-                        Y1 = series[i].ReferencePhotoForSeries.SimpleLine.Y1,
-                        Y2 = series[i].ReferencePhotoForSeries.SimpleLine.Y2,
-                        Stroke = Brushes.DeepPink
-                    };
+                    addSeriesViewModel.Add(addSingleSeriesViewModel);
                 }
-                addSingleSeriesViewModel.AddedDate = series[i].AddedDate;
-                addSingleSeriesViewModel.Title = series[i].Title;
-                addSingleSeriesViewModel.DropPhotosSeries = dropPhotosSeries;
-                addSingleSeriesViewModel.IntervalBetweenPhotos = series[i].IntervalBetweenPhotos;
-                addSingleSeriesViewModel.SeriesId = series[i].SeriesId;
-
-                addSeriesViewModel.Add(addSingleSeriesViewModel);
             }
 
             return addSeriesViewModel;

@@ -232,3 +232,4 @@ E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Controls\obj\Debug\PhotoC
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Controls\obj\Debug\PhotoCropper\CropControl.baml
 D:\fallingsappyGit\DDrop\DDrop.Controls\obj\Debug\PhotoCropper\CropControl.g.cs
 D:\fallingsappyGit\DDrop\DDrop.Controls\obj\Debug\PhotoCropper\CropControl.baml
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.csproj.CoreCompileInputs.cache

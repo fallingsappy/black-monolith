@@ -120,3 +120,4 @@ D:\fallingsappyGit\DDrop\DDrop.DAL\bin\Debug\EntityFramework.SqlServer.xml
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.DAL\bin\Debug\DDrop.Db.dll
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.DAL\bin\Debug\DDrop.Db.pdb
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.DAL\bin\Debug\DDrop.Db.dll.config
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.csproj.CoreCompileInputs.cache
