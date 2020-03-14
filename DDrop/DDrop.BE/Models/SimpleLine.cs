@@ -9,5 +9,9 @@ namespace DDrop.BE.Models
         public double Y1 { get; set; }
         public double X2 { get; set; }
         public double Y2 { get; set; }
+
+        public ReferencePhoto ReferencePhoto { get; set; }
+        public DropPhoto DropPhotoHorizontalLine { get; set; }
+        public DropPhoto DropPhotoVerticalLine { get; set; }
     }
 }

@@ -10,5 +10,7 @@ namespace DDrop.BE.Models.Serializable
         public double ZDiameterInMeters { get; set; }
         public double VolumeInCubicalMeters { get; set; }
         public double? RadiusInMeters { get; set; }
+
+        public DropPhoto DropPhoto { get; set; }
     }
 }

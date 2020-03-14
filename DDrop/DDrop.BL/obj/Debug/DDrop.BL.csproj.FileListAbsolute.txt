@@ -148,3 +148,8 @@ E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\bin\Debug\EntityFramew
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\bin\Debug\DDrop.Db.pdb
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\bin\Debug\DDrop.Db.dll.config
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\bin\Debug\EntityFramework.xml
+D:\fallingsappyGit\DDrop\DDrop.BL\bin\Debug\DDrop.Db.dll
+D:\fallingsappyGit\DDrop\DDrop.BL\bin\Debug\EntityFramework.dll
+D:\fallingsappyGit\DDrop\DDrop.BL\bin\Debug\DDrop.Db.pdb
+D:\fallingsappyGit\DDrop\DDrop.BL\bin\Debug\DDrop.Db.dll.config
+D:\fallingsappyGit\DDrop\DDrop.BL\bin\Debug\EntityFramework.xml

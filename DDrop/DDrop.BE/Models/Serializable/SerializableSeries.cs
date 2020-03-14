@@ -11,5 +11,8 @@ namespace DDrop.BE.Models.Serializable
         public virtual SerializableReferencePhoto ReferencePhotoForSeries { get; set; }
         public double IntervalBetweenPhotos { get; set; }
         public string AddedDate { get; set; }
+
+        public Guid CurrentUserId { get; set; }
+        public User CurrentUser { get; set; }
     }
 }

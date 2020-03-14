@@ -21,6 +21,7 @@ using ToastNotifications.Position;
 using pbu = RFM.RFM_WPFProgressBarUpdate;
 using DDrop.BL.DropPhoto;
 using DDrop.DAL;
+using DDrop.Utility.Mappers;
 
 namespace DDrop
 {
@@ -245,7 +246,7 @@ namespace DDrop
                     SeriesId = Guid.NewGuid(),
                     Title = seriesTitle,                    
                     AddedDate = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"),
-                    ReferencePhotoForSeries = new ReferencePhoto
+                    ReferencePhotoForSeries = new ReferencePhoto(CurrentSeries)
                     {
                         ReferencePhotoId = Guid.NewGuid()
                     }
@@ -269,10 +270,10 @@ namespace DDrop
         {
             if (User.UserSeries.Count > 0 && SeriesDataGrid.SelectedItem != null)
             {
-                BE.Models.Series old = new BE.Models.Series(User);
+                Series old = new Series(User);
 
                 if (e.RemovedItems.Count > 0)
-                    old = e.RemovedItems[0] as BE.Models.Series;
+                    old = e.RemovedItems[0] as Series;
                 CurrentSeries = User.UserSeries[SeriesDataGrid.SelectedIndex];
 
                 SeriesDrawerSwap(old);
@@ -308,7 +309,7 @@ namespace DDrop
         }
         private void SeriesPreviewDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            BE.Models.DropPhoto selectedFile = (BE.Models.DropPhoto)SeriesPreviewDataGrid.SelectedItem;
+            DropPhoto selectedFile = (DropPhoto)SeriesPreviewDataGrid.SelectedItem;
             if (selectedFile != null)
             {
                 ImgPreview.Source = ImageInterpreter.LoadImage(selectedFile.Content);
@@ -439,7 +440,7 @@ namespace DDrop
             if (saveFileDialog.ShowDialog() == true)
             {
                 ProgressBar.IsIndeterminate = true;                
-                await _seriesBL.ExportSeriesLocalAsync(saveFileDialog.FileName, (BE.Models.User)User);
+                await DDropSerializableEntitiesMapper.ExportSeriesLocalAsync(saveFileDialog.FileName, User);
                 ProgressBar.IsIndeterminate = false;
                 notifier.ShowSuccess($"{saveFileDialog.SafeFileName} сохранен на диске.");
             }
@@ -456,12 +457,12 @@ namespace DDrop
                 CheckPathExists = true
             };
 
-            ObservableCollection<BE.Models.Series> addSeriesViewModel = new ObservableCollection<BE.Models.Series>();
+            ObservableCollection<Series> addSeriesViewModel = new ObservableCollection<Series>();
 
             if (openFileDialog.ShowDialog() == true)
             {
                 ProgressBar.IsIndeterminate = true;
-                addSeriesViewModel = await _seriesBL.ImportLocalSeriesAsync(openFileDialog.FileName, (BE.Models.User)User);
+                addSeriesViewModel = await DDropSerializableEntitiesMapper.ImportLocalSeriesAsync(openFileDialog.FileName, User);
                 ProgressBar.IsIndeterminate = false;
             
                 AddSeries addSeries = new AddSeries(addSeriesViewModel);
@@ -592,11 +593,11 @@ namespace DDrop
                     pbu.CurValue[pbuHandle1] += 1;
                     if (CurrentSeries.DropPhotosSeries == null)
                     {
-                        CurrentSeries.DropPhotosSeries = new ObservableCollection<BE.Models.DropPhoto>();
+                        CurrentSeries.DropPhotosSeries = new ObservableCollection<DropPhoto>();
                         Photos.ItemsSource = CurrentSeries.DropPhotosSeries;
                     }
 
-                    var imageForAdding = new BE.Models.DropPhoto
+                    var imageForAdding = new DropPhoto(CurrentSeries, CurrentSeries.SeriesId)
                     {
                         DropPhotoId = Guid.NewGuid(),
                         Name = openFileDialog.SafeFileNames[i],
@@ -609,7 +610,7 @@ namespace DDrop
                     {
                         imageForAdding.PropertyChanged += PhotosOnPropertyChanged;
                         CurrentSeries.DropPhotosSeries.Add(imageForAdding);
-                        CurrentSeries.DropPhotosSeries[CurrentSeries.DropPhotosSeries.Count - 1].Drop = new BE.Models.Drop(CurrentSeries, CurrentSeries.DropPhotosSeries[CurrentSeries.DropPhotosSeries.Count - 1])
+                        CurrentSeries.DropPhotosSeries[CurrentSeries.DropPhotosSeries.Count - 1].Drop = new Drop(CurrentSeries, CurrentSeries.DropPhotosSeries[CurrentSeries.DropPhotosSeries.Count - 1])
                         {
                             DropId = Guid.NewGuid()
                         };
@@ -630,7 +631,7 @@ namespace DDrop
 
         private void Photos_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            BE.Models.DropPhoto selectedFile = (BE.Models.DropPhoto)Photos.SelectedItem;
+            DropPhoto selectedFile = (DropPhoto)Photos.SelectedItem;
             if (selectedFile != null)
             {
                 ImgCurrent.Source = ImageInterpreter.LoadImage(selectedFile.Content);

@@ -14,5 +14,8 @@ namespace DDrop.BE.Models.Serializable
         public byte[] Content { get; set; }
         public virtual SerializableDrop Drop { get; set; }
         public string AddedDate { get; set; }
+
+        public Guid CurrentSeriesId { get; set; }
+        public Series CurrentSeries { get; set; }
     }
 }

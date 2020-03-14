@@ -3,9 +3,6 @@ using DDrop.Utility.ImageOperations;
 using Microsoft.Win32;
 using System;
 using System.Collections.ObjectModel;
-using System.Data.Entity;
-using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -13,8 +10,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
-using DDrop.Controls;
-using DDrop.Controls.PhotoCropper;
 using DDrop.DAL;
 using ToastNotifications;
 using ToastNotifications.Messages;
@@ -28,7 +23,7 @@ namespace DDrop
     /// </summary>
     public partial class Registration
     {
-        public static readonly DependencyProperty UserLoginProperty = DependencyProperty.Register("UserLogin", typeof(BE.Models.User), typeof(Registration));
+        public static readonly DependencyProperty UserLoginProperty = DependencyProperty.Register("UserLogin", typeof(User), typeof(Registration));
         private IDDropRepository _dDropRepository;
         private readonly Notifier _notifier;
 
@@ -37,7 +32,7 @@ namespace DDrop
 
         public User UserLogin
         {
-            get { return (BE.Models.User)GetValue(UserLoginProperty); }
+            get { return (User)GetValue(UserLoginProperty); }
             set
             {
                 SetValue(UserLoginProperty, value);
@@ -94,7 +89,7 @@ namespace DDrop
                 croppingWindow.CroppingControl.SourceImage.Width = new BitmapImage(new Uri(openFileDialog.FileName)).Width;
 
                 if (SystemParameters.PrimaryScreenHeight < croppingWindow.CroppingControl.SourceImage.Height ||
-                    croppingWindow.CroppingControl.SourceImage.Width < croppingWindow.CroppingControl.SourceImage.Width)
+                    SystemParameters.PrimaryScreenWidth < croppingWindow.CroppingControl.SourceImage.Width)
                 {
                     _notifier.ShowInformation("Вертикальный или горизонтальный размер фотографии слишком велик.");
                 }
@@ -149,11 +144,11 @@ namespace DDrop
                         var user = new User()
                         {
                             Email = TextBoxEmail.Text.Trim(),
-                            UserSeries = new ObservableCollection<BE.Models.Series>(),
+                            UserSeries = new ObservableCollection<Series>(),
                             FirstName = TextBoxFirstName.Text,
                             LastName = TextBoxLastName.Text,
                             IsLoggedIn = true,
-                            Password = PasswordBox1.Password,
+                            Password = PasswordOperations.HashPassword(PasswordBox1.Password),
                             UserId = Guid.NewGuid(),
                             UserPhoto = UserPhoto,
                         };
