@@ -839,12 +839,23 @@ namespace DDrop
                         CurrentSeries.ReferencePhotoForSeries.PixelsInMillimeter = 0;
                     }
                     CurrentSeries.ReferencePhotoForSeries.Name = openFileDialog.SafeFileNames[0];
-                    CurrentSeries.ReferencePhotoForSeries.ReferencePhotoId = Guid.NewGuid();
+                    CurrentSeries.ReferencePhotoForSeries.ReferencePhotoId = CurrentSeries.SeriesId;
                     CurrentSeries.ReferencePhotoForSeries.Line = new Line();
                     CurrentSeries.ReferencePhotoForSeries.Content = ImageInterpreter.FileToByteArray(openFileDialog.FileName);
-                    ReferenceImage = ImageInterpreter.LoadImage(CurrentSeries.ReferencePhotoForSeries.Content);
 
-                    notifier.ShowSuccess($"Референсный снимок {CurrentSeries.ReferencePhotoForSeries.Name} добавлен.");
+                    try
+                    {
+                        var dbSeries = _dDropRepository.GetSeriesByUserId(User.UserId);
+                        await _dDropRepository.CreateReferencePhoto(DDropDbEntitiesMapper.ReferencePhotoToDbReferencePhoto(CurrentSeries.ReferencePhotoForSeries, dbSeries.FirstOrDefault(x => x.SeriesId == CurrentSeries.SeriesId)));
+
+                        ReferenceImage = ImageInterpreter.LoadImage(CurrentSeries.ReferencePhotoForSeries.Content);
+
+                        notifier.ShowSuccess($"Референсный снимок {CurrentSeries.ReferencePhotoForSeries.Name} добавлен.");
+                    }
+                    catch (Exception)
+                    {
+                        notifier.ShowError($"Референсный снимок {CurrentSeries.ReferencePhotoForSeries.Name} не добавлен. Не удалось установить подключение. Проверьте интернет соединение.");
+                    }
                 }
                 else
                 {
@@ -853,13 +864,16 @@ namespace DDrop
             }
         }
 
-        private void DeleteReferencePhotoButton_Click(object sender, RoutedEventArgs e)
+        private async void DeleteReferencePhotoButton_Click(object sender, RoutedEventArgs e)
         {
             if(CurrentSeries.ReferencePhotoForSeries.Content != null)
             {
                 MessageBoxResult messageBoxResult = MessageBox.Show("Удалить референсный снимок?", "Подтверждение удаления", MessageBoxButton.YesNo);
                 if (messageBoxResult == MessageBoxResult.Yes)
                 {
+                    var dbSeries = _dDropRepository.GetSeriesByUserId(User.UserId);
+                    await _dDropRepository.DeleteReferencePhoto(DDropDbEntitiesMapper.ReferencePhotoToDbReferencePhoto(CurrentSeries.ReferencePhotoForSeries, dbSeries.FirstOrDefault(x => x.SeriesId == CurrentSeries.SeriesId)));
+
                     MainWindowPixelDrawer.CanDrawing.Children.Remove(CurrentSeries.ReferencePhotoForSeries.Line);
 
                     notifier.ShowSuccess($"Референсный снимок {CurrentSeries.ReferencePhotoForSeries.Name} удален.");

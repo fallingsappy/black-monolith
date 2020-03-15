@@ -65,6 +65,7 @@ namespace DDrop.DAL
 
         #endregion
 
+        #region Series
         public async Task CreateSeries(DbSeries series)
         {
             using (var context = new DDropContext())
@@ -82,6 +83,7 @@ namespace DDrop.DAL
             {
                 return context.Series.Where(x => x.CurrentUserId == dbUserId)
                     .Include(c => c.ReferencePhotoForSeries)
+                    .Include(c => c.ReferencePhotoForSeries.SimpleLine)
                     .Include(c => c.DropPhotosSeries.Select(x => x.SimpleVerticalLine))
                     .Include(c => c.DropPhotosSeries.Select(x => x.SimpleHorizontalLine))
                     .Include(c => c.DropPhotosSeries.Select(x => x.Drop))
@@ -114,6 +116,9 @@ namespace DDrop.DAL
             }
         }
 
+        #endregion
+
+        #region Drop Photo
         public async Task CreateDropPhoto(DbDropPhoto dropPhoto)
         {
             using (var context = new DDropContext())
@@ -145,16 +150,36 @@ namespace DDrop.DAL
             }
         }
 
+        #endregion
+
+        #region Reference Photo
+
         public async Task CreateReferencePhoto(DbReferencePhoto referencePhoto)
         {
             using (var context = new DDropContext())
             {
-                
+                context.Series.Attach(referencePhoto.Series);
                 var createdReferencePhoto = context.ReferencePhotos.Add(referencePhoto);
 
                 await context.SaveChangesAsync();
             }
         }
+
+        public async Task DeleteReferencePhoto(DbReferencePhoto dbReferencePhoto)
+        {
+            using (var context = new DDropContext())
+            {
+                context.Series.Attach(dbReferencePhoto.Series);
+                context.ReferencePhotos.Add(dbReferencePhoto);
+                var createdSeries = context.ReferencePhotos.Remove(dbReferencePhoto);
+
+                await context.SaveChangesAsync();
+            }
+        }
+
+        #endregion
+
+        #region Simple Line
 
         public async Task CreateOrUpdateSimpleLine(List<DbSimpleLine> dbSimpleLines)
         {
@@ -209,5 +234,7 @@ namespace DDrop.DAL
                 await context.SaveChangesAsync();
             }
         }
+
+        #endregion
     }
 }

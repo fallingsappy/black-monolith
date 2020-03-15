@@ -17,6 +17,7 @@ namespace DDrop.DAL
         Task CreateDropPhoto(DbDropPhoto dropPhoto);
         Task UpdatDropPhoto(DbDropPhoto dropPhoto);
         Task CreateReferencePhoto(DbReferencePhoto referencePhoto);
+        Task DeleteReferencePhoto(DbReferencePhoto dbReferencePhoto);
         Task CreateOrUpdateSimpleLine(List<DbSimpleLine> dbSimpleLines);
     }
 }

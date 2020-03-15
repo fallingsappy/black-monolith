@@ -138,17 +138,20 @@ namespace DDrop.Utility.Mappers
                     Series = singleSeries,
                 };
 
-                var simpleLineForReferencePhoto = new DbSimpleLine
+                if (userSeries.ReferencePhotoForSeries.SimpleLine != null)
                 {
-                    X1 = userSeries.ReferencePhotoForSeries.SimpleLine.X1,
-                    X2 = userSeries.ReferencePhotoForSeries.SimpleLine.X2,
-                    Y1 = userSeries.ReferencePhotoForSeries.SimpleLine.Y1,
-                    Y2 = userSeries.ReferencePhotoForSeries.SimpleLine.Y2,
-                    ReferencePhoto = referencePhoto,
-                    SimpleLineId = userSeries.ReferencePhotoForSeries.SimpleLine.SimpleLineId,
-                };
+                    var simpleLineForReferencePhoto = new DbSimpleLine
+                    {
+                        X1 = userSeries.ReferencePhotoForSeries.SimpleLine.X1,
+                        X2 = userSeries.ReferencePhotoForSeries.SimpleLine.X2,
+                        Y1 = userSeries.ReferencePhotoForSeries.SimpleLine.Y1,
+                        Y2 = userSeries.ReferencePhotoForSeries.SimpleLine.Y2,
+                        ReferencePhoto = referencePhoto,
+                        SimpleLineId = userSeries.ReferencePhotoForSeries.SimpleLine.SimpleLineId,
+                    };
 
-                referencePhoto.SimpleLine = simpleLineForReferencePhoto;
+                    referencePhoto.SimpleLine = simpleLineForReferencePhoto;
+                }
 
                 singleSeries.ReferencePhotoForSeries = referencePhoto;
             }
@@ -274,16 +277,19 @@ namespace DDrop.Utility.Mappers
                             Series = addSingleSeriesViewModel,
                         };
 
-                        var newSimpleLine = new SimpleLine
+                        if (series[i].ReferencePhotoForSeries.SimpleLine != null)
                         {
-                            X1 = series[i].ReferencePhotoForSeries.SimpleLine.X1,
-                            X2 = series[i].ReferencePhotoForSeries.SimpleLine.X2,
-                            Y1 = series[i].ReferencePhotoForSeries.SimpleLine.Y1,
-                            Y2 = series[i].ReferencePhotoForSeries.SimpleLine.Y2,
-                            ReferencePhoto = addSingleSeriesViewModel.ReferencePhotoForSeries,
-                            SimpleLineId = series[i].ReferencePhotoForSeries.SimpleLine.SimpleLineId
-                        };
-                        addSingleSeriesViewModel.ReferencePhotoForSeries.SimpleLine = newSimpleLine;
+                            var newSimpleLine = new SimpleLine
+                            {
+                                X1 = series[i].ReferencePhotoForSeries.SimpleLine.X1,
+                                X2 = series[i].ReferencePhotoForSeries.SimpleLine.X2,
+                                Y1 = series[i].ReferencePhotoForSeries.SimpleLine.Y1,
+                                Y2 = series[i].ReferencePhotoForSeries.SimpleLine.Y2,
+                                ReferencePhoto = addSingleSeriesViewModel.ReferencePhotoForSeries,
+                                SimpleLineId = series[i].ReferencePhotoForSeries.SimpleLine.SimpleLineId
+                            };
+                            addSingleSeriesViewModel.ReferencePhotoForSeries.SimpleLine = newSimpleLine;
+                        }
                     }
 
                     if (series[i].ReferencePhotoForSeries?.SimpleLine != null)
@@ -364,6 +370,34 @@ namespace DDrop.Utility.Mappers
             }
            
             return dbDropPhoto;
+        }
+
+        public static DbReferencePhoto ReferencePhotoToDbReferencePhoto(ReferencePhoto referencePhoto, DbSeries dbSeries)
+        {
+            var dbReferencePhoto = new DbReferencePhoto
+            {
+                Content = referencePhoto.Content,
+                ReferencePhotoId = referencePhoto.ReferencePhotoId,
+                Name = referencePhoto.Name,              
+                Series = dbSeries
+            };
+
+            if (referencePhoto.SimpleLine != null)
+            {
+                var newDbSimpleLine = new DbSimpleLine()
+                {
+                    X1 = referencePhoto.SimpleLine.X1,
+                    X2 = referencePhoto.SimpleLine.X2,
+                    Y1 = referencePhoto.SimpleLine.Y1,
+                    Y2 = referencePhoto.SimpleLine.Y2,
+                    ReferencePhoto = dbReferencePhoto,
+                    SimpleLineId = referencePhoto.SimpleLine.SimpleLineId,
+                };
+
+                dbReferencePhoto.SimpleLine = newDbSimpleLine;
+            }
+
+            return dbReferencePhoto;
         }
 
         public static List<DbSimpleLine> SimpleLineToDbSimpleLine(DbDropPhoto dbDropPhoto = null, DbReferencePhoto dbReferencePhoto = null)
