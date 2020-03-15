@@ -101,8 +101,10 @@ namespace DDrop.BE.Models
             set
             {
                 _radiusInMeters = value;
-                _series.OnPropertyChanged(new PropertyChangedEventArgs(nameof(Series.CanDrawPlot)));
-                _dropPhoto.OnPropertyChanged(new PropertyChangedEventArgs(nameof(DropPhoto.Processed)));
+                if (_series != null)
+                    _series.OnPropertyChanged(new PropertyChangedEventArgs(nameof(Series.CanDrawPlot)));
+                if (_dropPhoto != null)
+                    _dropPhoto.OnPropertyChanged(new PropertyChangedEventArgs(nameof(DropPhoto.Processed)));
                 OnPropertyChanged(new PropertyChangedEventArgs("RadiusInMeters"));
             }
         }

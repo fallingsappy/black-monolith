@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Аккаунт" Height="290" Width="590" Icon="Resources/Icons/MainIcon.png" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" x:Name="AccountInfo">
+        Title="Аккаунт" Height="290" Width="590" Icon="Resources/Icons/MainIcon.png" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" x:Name="AccountInfo" Topmost="True">
     <Grid>
         <Border Background="Gray" BorderThickness="1" BorderBrush="#34558b" Margin="20,22,0,0" Height="191" VerticalAlignment="Top" HorizontalAlignment="Left" Width="191">
             <Image Name="ProfilePicture" Margin="0,0,-1,-1"/>

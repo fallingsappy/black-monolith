@@ -13,6 +13,7 @@ using DDrop.DAL;
 using DDrop.Utility.Mappers;
 using ToastNotifications;
 using ToastNotifications.Messages;
+using DDrop.Utility.Cryptography;
 
 namespace DDrop
 {
@@ -87,6 +88,7 @@ namespace DDrop
                         {
                             try
                             {
+                                User.UserPhoto = croppingWindow.UserPhotoForCropp;
                                 await _dDropRepository.UpdateUserAsync(DDropDbEntitiesMapper.UserToDbUser(User));
                                 ProfilePicture.Source = ImageInterpreter.LoadImage(User.UserPhoto);
                                 _notifier.ShowSuccess("Фотография обновлена.");
@@ -281,15 +283,16 @@ namespace DDrop
 
         private async void ChangePasswordButton_OnClick(object sender, RoutedEventArgs e)
         {
-            if (User.Password == CurrentPassword.Password)
+            if (PasswordOperations.PasswordsMatch(CurrentPassword.Password, User.Password))
             {
                 if (NewPassword.Password == NewPasswordConfirm.Password &&
                     !string.IsNullOrWhiteSpace(NewPassword.Password))
                 {
                     try
                     {
+                        User.Password = PasswordOperations.HashPassword(NewPassword.Password);
                         await _dDropRepository.UpdateUserAsync(DDropDbEntitiesMapper.UserToDbUser(User));
-                        User.Password = NewPassword.Password;
+                        
                         _notifier.ShowSuccess("Пароль успешно изменен.");
                         NewPasswordConfirm.Password = "";
                         NewPassword.Password = "";

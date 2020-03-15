@@ -58,6 +58,12 @@ namespace DDrop.Utility.Mappers
         public static DbSeries SingleSeriesToSingleDbSeries(Series userSeries, DbUser user)
         {
             DbSeries singleSeries = new DbSeries();
+            singleSeries.IntervalBetweenPhotos = userSeries.IntervalBetweenPhotos;
+            singleSeries.AddedDate = userSeries.AddedDate;
+            singleSeries.SeriesId = userSeries.SeriesId;
+            singleSeries.Title = userSeries.Title;
+            singleSeries.CurrentUser = user;
+            singleSeries.CurrentUserId = user.UserId;
             List<DbDropPhoto> dropPhotosSeries = new List<DbDropPhoto>();
 
             foreach (var dropPhoto in userSeries.DropPhotosSeries)
@@ -74,26 +80,36 @@ namespace DDrop.Utility.Mappers
                     CurrentSeries = singleSeries,
                     CurrentSeriesId = singleSeries.SeriesId,                    
                 };
-
-                DbSimpleLine newHorizontalDbSimpleLine = new DbSimpleLine
+                if (dropPhoto.SimpleHorizontalLine != null)
                 {
-                    X1 = dropPhoto.SimpleHorizontalLine.X1,
-                    X2 = dropPhoto.SimpleHorizontalLine.X2,
-                    Y1 = dropPhoto.SimpleHorizontalLine.Y1,
-                    Y2 = dropPhoto.SimpleHorizontalLine.Y2,
-                    DropPhotoHorizontalLine = newDbDropPhoto,
-                    SimpleLineId = dropPhoto.SimpleHorizontalLine.SimpleLineId,
-                };
+                    DbSimpleLine newHorizontalDbSimpleLine = new DbSimpleLine
+                    {
+                        X1 = dropPhoto.SimpleHorizontalLine.X1,
+                        X2 = dropPhoto.SimpleHorizontalLine.X2,
+                        Y1 = dropPhoto.SimpleHorizontalLine.Y1,
+                        Y2 = dropPhoto.SimpleHorizontalLine.Y2,
+                        DropPhotoHorizontalLine = newDbDropPhoto,
+                        SimpleLineId = dropPhoto.SimpleHorizontalLine.SimpleLineId,
+                    };
 
-                DbSimpleLine newVerticalDbSimpleLine = new DbSimpleLine
+                    newDbDropPhoto.SimpleHorizontalLine = newHorizontalDbSimpleLine;
+                }
+
+                if (dropPhoto.SimpleVerticalLine != null)
                 {
-                    X1 = dropPhoto.SimpleVerticalLine.X1,
-                    X2 = dropPhoto.SimpleVerticalLine.X2,
-                    Y1 = dropPhoto.SimpleVerticalLine.Y1,
-                    Y2 = dropPhoto.SimpleVerticalLine.Y2,
-                    DropPhotoVerticalLine = newDbDropPhoto,
-                    SimpleLineId = dropPhoto.SimpleHorizontalLine.SimpleLineId,
-                };
+                    DbSimpleLine newVerticalDbSimpleLine = new DbSimpleLine
+                    {
+                        X1 = dropPhoto.SimpleVerticalLine.X1,
+                        X2 = dropPhoto.SimpleVerticalLine.X2,
+                        Y1 = dropPhoto.SimpleVerticalLine.Y1,
+                        Y2 = dropPhoto.SimpleVerticalLine.Y2,
+                        DropPhotoVerticalLine = newDbDropPhoto,
+                        SimpleLineId = dropPhoto.SimpleHorizontalLine.SimpleLineId,
+                    };
+
+                    newDbDropPhoto.SimpleVerticalLine = newVerticalDbSimpleLine;
+                }
+
 
                 DbDrop newDbDrop = new DbDrop()
                 {
@@ -107,9 +123,7 @@ namespace DDrop.Utility.Mappers
                 };
 
                 newDbDropPhoto.Drop = newDbDrop;
-                newDbDropPhoto.SimpleHorizontalLine = newHorizontalDbSimpleLine;
-                newDbDropPhoto.SimpleVerticalLine = newVerticalDbSimpleLine;
-
+                                
                 dropPhotosSeries.Add(newDbDropPhoto);
             }
 
@@ -140,12 +154,6 @@ namespace DDrop.Utility.Mappers
             }
 
             singleSeries.DropPhotosSeries = dropPhotosSeries;
-            singleSeries.IntervalBetweenPhotos = userSeries.IntervalBetweenPhotos;
-            singleSeries.AddedDate = userSeries.AddedDate;
-            singleSeries.SeriesId = userSeries.SeriesId;
-            singleSeries.Title = userSeries.Title;
-            singleSeries.CurrentUser = user;
-            singleSeries.CurrentUserId = user.UserId;
 
             return singleSeries;
         }
@@ -158,6 +166,13 @@ namespace DDrop.Utility.Mappers
                 for (int i = 0; i < series.Count; i++)
                 {
                     Series addSingleSeriesViewModel = new Series();
+                    addSingleSeriesViewModel.AddedDate = series[i].AddedDate;
+                    addSingleSeriesViewModel.Title = series[i].Title;
+                    
+                    addSingleSeriesViewModel.IntervalBetweenPhotos = series[i].IntervalBetweenPhotos;
+                    addSingleSeriesViewModel.SeriesId = series[i].SeriesId;
+                    addSingleSeriesViewModel.CurrentUser = user;
+                    addSingleSeriesViewModel.CurrentUserId = user.UserId;
                     ObservableCollection<DropPhoto> dropPhotosSeries = new ObservableCollection<DropPhoto>();
 
                     if (series[i].DropPhotosSeries != null)
@@ -177,27 +192,33 @@ namespace DDrop.Utility.Mappers
                                 CurrentSeriesId = addSingleSeriesViewModel.SeriesId,
                             };
 
-                            var newSimpleHorizontalLine = new SimpleLine
+                            if (dropPhoto.SimpleHorizontalLine != null)
                             {
-                                X1 = dropPhoto.SimpleHorizontalLine.X1,
-                                X2 = dropPhoto.SimpleHorizontalLine.X2,
-                                Y1 = dropPhoto.SimpleHorizontalLine.Y1,
-                                Y2 = dropPhoto.SimpleHorizontalLine.Y2,
-                                DropPhotoHorizontalLine = userDropPhoto,
-                                SimpleLineId = dropPhoto.SimpleHorizontalLine.SimpleLineId
-                            };
-                            userDropPhoto.SimpleHorizontalLine = newSimpleHorizontalLine;
+                                var newSimpleHorizontalLine = new SimpleLine
+                                {
+                                    X1 = dropPhoto.SimpleHorizontalLine.X1,
+                                    X2 = dropPhoto.SimpleHorizontalLine.X2,
+                                    Y1 = dropPhoto.SimpleHorizontalLine.Y1,
+                                    Y2 = dropPhoto.SimpleHorizontalLine.Y2,
+                                    DropPhotoHorizontalLine = userDropPhoto,
+                                    SimpleLineId = dropPhoto.SimpleHorizontalLine.SimpleLineId
+                                };
+                                userDropPhoto.SimpleHorizontalLine = newSimpleHorizontalLine;
+                            }
 
-                            var newSimpleVerticalLine = new SimpleLine
+                            if (dropPhoto.SimpleVerticalLine != null)
                             {
-                                X1 = dropPhoto.SimpleVerticalLine.X1,
-                                X2 = dropPhoto.SimpleVerticalLine.X2,
-                                Y1 = dropPhoto.SimpleVerticalLine.Y1,
-                                Y2 = dropPhoto.SimpleVerticalLine.Y2,
-                                DropPhotoVerticalLine = userDropPhoto,
-                                SimpleLineId = dropPhoto.SimpleVerticalLine.SimpleLineId
-                            };
-                            userDropPhoto.SimpleVerticalLine = newSimpleVerticalLine;
+                                var newSimpleVerticalLine = new SimpleLine
+                                {
+                                    X1 = dropPhoto.SimpleVerticalLine.X1,
+                                    X2 = dropPhoto.SimpleVerticalLine.X2,
+                                    Y1 = dropPhoto.SimpleVerticalLine.Y1,
+                                    Y2 = dropPhoto.SimpleVerticalLine.Y2,
+                                    DropPhotoVerticalLine = userDropPhoto,
+                                    SimpleLineId = dropPhoto.SimpleVerticalLine.SimpleLineId
+                                };
+                                userDropPhoto.SimpleVerticalLine = newSimpleVerticalLine;
+                            }
 
                             if (dropPhoto.SimpleHorizontalLine != null)
                             {
@@ -240,6 +261,7 @@ namespace DDrop.Utility.Mappers
                         }
                     }
 
+                    addSingleSeriesViewModel.DropPhotosSeries = dropPhotosSeries;
 
                     if (series[i].ReferencePhotoForSeries != null)
                     {
@@ -275,13 +297,7 @@ namespace DDrop.Utility.Mappers
                             Stroke = Brushes.DeepPink
                         };
                     }
-                    addSingleSeriesViewModel.AddedDate = series[i].AddedDate;
-                    addSingleSeriesViewModel.Title = series[i].Title;
-                    addSingleSeriesViewModel.DropPhotosSeries = dropPhotosSeries;
-                    addSingleSeriesViewModel.IntervalBetweenPhotos = series[i].IntervalBetweenPhotos;
-                    addSingleSeriesViewModel.SeriesId = series[i].SeriesId;
-                    addSingleSeriesViewModel.CurrentUser = user;
-                    addSingleSeriesViewModel.CurrentUserId = user.UserId;
+
 
                     addSeriesViewModel.Add(addSingleSeriesViewModel);
                 }
@@ -290,7 +306,7 @@ namespace DDrop.Utility.Mappers
             return addSeriesViewModel;
         }
 
-        public static DbDropPhoto DropPhotoToDbDropPhoto(DropPhoto dropPhotoViewModel)
+        public static DbDropPhoto DropPhotoToDbDropPhoto(DropPhoto dropPhotoViewModel, DbSeries dbSeries)
         {
             var dbDropPhoto = new DbDropPhoto
             {
@@ -300,7 +316,9 @@ namespace DDrop.Utility.Mappers
                 Name = dropPhotoViewModel.Name,
                 XDiameterInPixels = dropPhotoViewModel.XDiameterInPixels,
                 YDiameterInPixels = dropPhotoViewModel.YDiameterInPixels,
-                ZDiameterInPixels = dropPhotoViewModel.ZDiameterInPixels
+                ZDiameterInPixels = dropPhotoViewModel.ZDiameterInPixels,
+                CurrentSeries = dbSeries,
+                CurrentSeriesId = dbSeries.SeriesId,
             };
 
             var newDbDrop = new DbDrop
@@ -315,29 +333,90 @@ namespace DDrop.Utility.Mappers
             };
             dbDropPhoto.Drop = newDbDrop;
 
-            var newDbSimpleHorizontalLine = new DbSimpleLine()
+            if (dropPhotoViewModel.SimpleHorizontalLine != null)
             {
-                X1 = dropPhotoViewModel.SimpleHorizontalLine.X1,
-                X2 = dropPhotoViewModel.SimpleHorizontalLine.X2,
-                Y1 = dropPhotoViewModel.SimpleHorizontalLine.Y1,
-                Y2 = dropPhotoViewModel.SimpleHorizontalLine.Y2,
-                DropPhotoHorizontalLine = dbDropPhoto,
-                SimpleLineId = dropPhotoViewModel.SimpleHorizontalLine.SimpleLineId,
-            };
-            dbDropPhoto.SimpleHorizontalLine = newDbSimpleHorizontalLine;
+                var newDbSimpleHorizontalLine = new DbSimpleLine()
+                {
+                    X1 = dropPhotoViewModel.SimpleHorizontalLine.X1,
+                    X2 = dropPhotoViewModel.SimpleHorizontalLine.X2,
+                    Y1 = dropPhotoViewModel.SimpleHorizontalLine.Y1,
+                    Y2 = dropPhotoViewModel.SimpleHorizontalLine.Y2,
+                    DropPhotoHorizontalLine = dbDropPhoto,
+                    SimpleLineId = dropPhotoViewModel.SimpleHorizontalLine.SimpleLineId,
+                };
 
-            var newDbSimpleVerticalLine = new DbSimpleLine()
+                dbDropPhoto.SimpleHorizontalLine = newDbSimpleHorizontalLine;
+            }
+
+            if (dbDropPhoto.SimpleHorizontalLine != null)
             {
-                X1 = dropPhotoViewModel.SimpleVerticalLine.X1,
-                X2 = dropPhotoViewModel.SimpleVerticalLine.X2,
-                Y1 = dropPhotoViewModel.SimpleVerticalLine.Y1,
-                Y2 = dropPhotoViewModel.SimpleVerticalLine.Y2,
-                DropPhotoVerticalLine = dbDropPhoto,
-                SimpleLineId = dropPhotoViewModel.SimpleVerticalLine.SimpleLineId,
-            };
-            dbDropPhoto.SimpleVerticalLine = newDbSimpleVerticalLine;
+                var newDbSimpleVerticalLine = new DbSimpleLine()
+                {
+                    X1 = dropPhotoViewModel.SimpleVerticalLine.X1,
+                    X2 = dropPhotoViewModel.SimpleVerticalLine.X2,
+                    Y1 = dropPhotoViewModel.SimpleVerticalLine.Y1,
+                    Y2 = dropPhotoViewModel.SimpleVerticalLine.Y2,
+                    DropPhotoVerticalLine = dbDropPhoto,
+                    SimpleLineId = dropPhotoViewModel.SimpleVerticalLine.SimpleLineId,
+                };
 
+                dbDropPhoto.SimpleVerticalLine = newDbSimpleVerticalLine;
+            }
+           
             return dbDropPhoto;
+        }
+
+        public static List<DbSimpleLine> SimpleLineToDbSimpleLine(DbDropPhoto dbDropPhoto = null, DbReferencePhoto dbReferencePhoto = null)
+        {
+            List<DbSimpleLine> dbSimpleLines = new List<DbSimpleLine>();
+              
+            if (dbDropPhoto != null)
+            {
+                dbSimpleLines.Add(new DbSimpleLine
+                {
+                    X1 = dbDropPhoto.SimpleHorizontalLine.X1,
+                    X2 = dbDropPhoto.SimpleHorizontalLine.X2,
+                    Y1 = dbDropPhoto.SimpleHorizontalLine.Y1,
+                    Y2 = dbDropPhoto.SimpleHorizontalLine.Y2,
+                    SimpleLineId = dbDropPhoto.SimpleHorizontalLine.SimpleLineId,
+                    DropPhotoHorizontalLine = dbDropPhoto
+                });
+
+                dbSimpleLines.Add(new DbSimpleLine
+                {
+                    X1 = dbDropPhoto.SimpleVerticalLine.X1,
+                    X2 = dbDropPhoto.SimpleVerticalLine.X2,
+                    Y1 = dbDropPhoto.SimpleVerticalLine.Y1,
+                    Y2 = dbDropPhoto.SimpleVerticalLine.Y2,
+                    SimpleLineId = dbDropPhoto.SimpleVerticalLine.SimpleLineId,
+                    DropPhotoVerticalLine = dbDropPhoto
+                });
+
+                return dbSimpleLines;
+            }
+
+                
+
+            
+            //if (dbDropPhoto != null)
+            //{
+            //    dbSimpleLine.DropPhotoHorizontalLine = dbDropPhoto;
+            //    dbSimpleLine.DropPhotoVerticalLine = dbDropPhoto;
+
+            //    return dbSimpleLine;
+            //}
+
+            //if (simpleLine.DropPhotoVerticalLine != null)
+            //{
+                
+
+            //    return dbSimpleLine;
+            //}
+
+
+            //dbSimpleLine.ReferencePhoto = dbReferencePhoto;
+
+            return dbSimpleLines;
         }
     }
 }
