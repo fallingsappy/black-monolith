@@ -672,7 +672,7 @@ namespace DDrop
                         CurrentSeries.DropPhotosSeries.Add(imageForAdding);
                         CurrentSeries.DropPhotosSeries[CurrentSeries.DropPhotosSeries.Count - 1].Drop = new Drop()
                         {
-                            DropId = Guid.NewGuid(),
+                            DropId = imageForAdding.DropPhotoId,
                             Series = CurrentSeries,
                             DropPhoto = CurrentSeries.DropPhotosSeries[CurrentSeries.DropPhotosSeries.Count - 1]
                         };
@@ -775,13 +775,7 @@ namespace DDrop
                     var dbSeries = _dDropRepository.GetSeriesByUserId(User.UserId);
                     var dbPhoto = DDropDbEntitiesMapper.DropPhotoToDbDropPhoto(CurrentDropPhoto, dbSeries.FirstOrDefault(x => x.SeriesId == CurrentSeries.SeriesId));
 
-                    await _dDropRepository.UpdatDropPhoto(dbPhoto);
-                    //var lines = DDropDbEntitiesMapper.SimpleLineToDbSimpleLine(dbPhoto);
-                    //foreach (var item in lines)
-                    //{
-                    //    await _dDropRepository.CreateOrUpdateSimpleLine(item, dbPhoto);
-                    //}
-                    
+                    await _dDropRepository.UpdatDropPhoto(dbPhoto);                   
 
                     notifier.ShowSuccess($"Расчет для снимка {CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].Name} выполнен.");
                 }
