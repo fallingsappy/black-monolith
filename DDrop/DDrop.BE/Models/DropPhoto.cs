@@ -105,6 +105,19 @@ namespace DDrop.BE.Models
             }
         }
 
+        private Guid? _simpleHorizontalLineId;
+        public Guid? SimpleHorizontalLineId
+        {
+            get
+            {
+                return _simpleHorizontalLineId;
+            }
+            set
+            {
+                _simpleHorizontalLineId = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("SimpleHorizontalLineId"));
+            }
+        }
         private SimpleLine _simpleHorizontalLine;
         public SimpleLine SimpleHorizontalLine
         {
@@ -133,6 +146,19 @@ namespace DDrop.BE.Models
             }
         }
 
+        private Guid? _simpleVerticalLineId;
+        public Guid? SimpleVerticalLineId
+        {
+            get
+            {
+                return _simpleVerticalLineId;
+            }
+            set
+            {
+                _simpleVerticalLineId = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("SimpleVerticalLineId"));
+            }
+        }
         private SimpleLine _simpleVerticalLine;
         public SimpleLine SimpleVerticalLine
         {

@@ -13,7 +13,7 @@ namespace DDrop.Db.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "202003142057492_initial"; }
+            get { return "202003151730406_initial"; }
         }
         
         string IMigrationMetadata.Source

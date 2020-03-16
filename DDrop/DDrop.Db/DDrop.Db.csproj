@@ -57,9 +57,9 @@
     <Compile Include="DbEntities\DbSimpleLine.cs" />
     <Compile Include="DbEntities\DbUser.cs" />
     <Compile Include="DDropContext.cs" />
-    <Compile Include="Migrations\202003142057492_initial.cs" />
-    <Compile Include="Migrations\202003142057492_initial.designer.cs">
-      <DependentUpon>202003142057492_initial.cs</DependentUpon>
+    <Compile Include="Migrations\202003151730406_initial.cs" />
+    <Compile Include="Migrations\202003151730406_initial.designer.cs">
+      <DependentUpon>202003151730406_initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -69,8 +69,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202003142057492_initial.resx">
-      <DependentUpon>202003142057492_initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202003151730406_initial.resx">
+      <DependentUpon>202003151730406_initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

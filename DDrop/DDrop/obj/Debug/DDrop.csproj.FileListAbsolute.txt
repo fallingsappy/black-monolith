@@ -681,11 +681,7 @@ E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\bin\Debug\Microsoft.Bcl.A
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\bin\Debug\System.Buffers.xml
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\DDrop.csprojAssemblyReference.cache
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\Account.baml
-E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\AddSeries.baml
-E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\CropPhoto.baml
-E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\Information.baml
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\Login.baml
-E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\MainWindow.baml
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\ManualEdit.baml
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\Options.baml
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\Registration.baml
@@ -704,6 +700,10 @@ E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\App.g.cs
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\DDrop_Content.g.cs
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\DDrop_MarkupCompile.cache
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\DDrop_MarkupCompile.lref
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\AddSeries.baml
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\CropPhoto.baml
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\Information.baml
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\MainWindow.baml
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\DDrop.g.resources
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\DDrop.Properties.Resources.resources
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\DDrop.csproj.GenerateResource.cache

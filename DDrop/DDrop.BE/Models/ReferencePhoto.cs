@@ -50,6 +50,19 @@ namespace DDrop.BE.Models
             }
         }
 
+        private Guid? _simpleReferencePhotoLineId;
+        public Guid? SimpleReferencePhotoLineId
+        {
+            get
+            {
+                return _simpleReferencePhotoLineId;
+            }
+            set
+            {
+                _simpleReferencePhotoLineId = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("SimpleReferencePhotoLineId"));
+            }
+        }
         private SimpleLine _simpleLine;
         public SimpleLine SimpleLine
         {

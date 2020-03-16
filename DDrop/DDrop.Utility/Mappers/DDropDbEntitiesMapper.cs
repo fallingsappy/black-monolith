@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -78,7 +79,7 @@ namespace DDrop.Utility.Mappers
                     YDiameterInPixels = dropPhoto.YDiameterInPixels,
                     ZDiameterInPixels = dropPhoto.ZDiameterInPixels,
                     CurrentSeries = singleSeries,
-                    CurrentSeriesId = singleSeries.SeriesId,                    
+                    CurrentSeriesId = singleSeries.SeriesId,
                 };
                 if (dropPhoto.SimpleHorizontalLine != null)
                 {
@@ -88,11 +89,12 @@ namespace DDrop.Utility.Mappers
                         X2 = dropPhoto.SimpleHorizontalLine.X2,
                         Y1 = dropPhoto.SimpleHorizontalLine.Y1,
                         Y2 = dropPhoto.SimpleHorizontalLine.Y2,
-                        DropPhotoHorizontalLine = newDbDropPhoto,
+                        DropPhotoHorizontalLine = new List<DbDropPhoto> { newDbDropPhoto },
                         SimpleLineId = dropPhoto.SimpleHorizontalLine.SimpleLineId,
                     };
 
                     newDbDropPhoto.SimpleHorizontalLine = newHorizontalDbSimpleLine;
+                    newDbDropPhoto.SimpleHorizontalLineId = dropPhoto.SimpleHorizontalLineId ?? Guid.NewGuid();
                 }
 
                 if (dropPhoto.SimpleVerticalLine != null)
@@ -103,11 +105,12 @@ namespace DDrop.Utility.Mappers
                         X2 = dropPhoto.SimpleVerticalLine.X2,
                         Y1 = dropPhoto.SimpleVerticalLine.Y1,
                         Y2 = dropPhoto.SimpleVerticalLine.Y2,
-                        DropPhotoVerticalLine = newDbDropPhoto,
+                        DropPhotoVerticalLine = new List<DbDropPhoto> { newDbDropPhoto },
                         SimpleLineId = dropPhoto.SimpleHorizontalLine.SimpleLineId,
                     };
 
                     newDbDropPhoto.SimpleVerticalLine = newVerticalDbSimpleLine;
+                    newDbDropPhoto.SimpleVerticalLineId = dropPhoto.SimpleVerticalLineId ?? Guid.NewGuid();
                 }
 
 
@@ -135,7 +138,7 @@ namespace DDrop.Utility.Mappers
                     Name = userSeries.ReferencePhotoForSeries.Name,
                     PixelsInMillimeter = userSeries.ReferencePhotoForSeries.PixelsInMillimeter,
                     ReferencePhotoId = userSeries.ReferencePhotoForSeries.ReferencePhotoId,
-                    Series = singleSeries,
+                    Series = singleSeries,                    
                 };
 
                 if (userSeries.ReferencePhotoForSeries.SimpleLine != null)
@@ -146,11 +149,12 @@ namespace DDrop.Utility.Mappers
                         X2 = userSeries.ReferencePhotoForSeries.SimpleLine.X2,
                         Y1 = userSeries.ReferencePhotoForSeries.SimpleLine.Y1,
                         Y2 = userSeries.ReferencePhotoForSeries.SimpleLine.Y2,
-                        ReferencePhoto = referencePhoto,
+                        ReferencePhoto = new List<DbReferencePhoto> { referencePhoto },
                         SimpleLineId = userSeries.ReferencePhotoForSeries.SimpleLine.SimpleLineId,
                     };
 
-                    referencePhoto.SimpleLine = simpleLineForReferencePhoto;
+                    referencePhoto.SimpleReferencePhotoLineId = userSeries.ReferencePhotoForSeries.SimpleReferencePhotoLineId ?? Guid.NewGuid();
+                    referencePhoto.SimpleReferencePhotoLine = simpleLineForReferencePhoto;
                 }
 
                 singleSeries.ReferencePhotoForSeries = referencePhoto;
@@ -203,10 +207,11 @@ namespace DDrop.Utility.Mappers
                                     X2 = dropPhoto.SimpleHorizontalLine.X2,
                                     Y1 = dropPhoto.SimpleHorizontalLine.Y1,
                                     Y2 = dropPhoto.SimpleHorizontalLine.Y2,
-                                    DropPhotoHorizontalLine = userDropPhoto,
+                                    DropPhotoHorizontalLine = new List<DropPhoto> { userDropPhoto },
                                     SimpleLineId = dropPhoto.SimpleHorizontalLine.SimpleLineId
                                 };
                                 userDropPhoto.SimpleHorizontalLine = newSimpleHorizontalLine;
+                                userDropPhoto.SimpleHorizontalLineId = dropPhoto.SimpleHorizontalLineId ?? Guid.NewGuid();
                             }
 
                             if (dropPhoto.SimpleVerticalLine != null)
@@ -217,10 +222,11 @@ namespace DDrop.Utility.Mappers
                                     X2 = dropPhoto.SimpleVerticalLine.X2,
                                     Y1 = dropPhoto.SimpleVerticalLine.Y1,
                                     Y2 = dropPhoto.SimpleVerticalLine.Y2,
-                                    DropPhotoVerticalLine = userDropPhoto,
+                                    DropPhotoVerticalLine = new List<DropPhoto> { userDropPhoto },
                                     SimpleLineId = dropPhoto.SimpleVerticalLine.SimpleLineId
                                 };
                                 userDropPhoto.SimpleVerticalLine = newSimpleVerticalLine;
+                                userDropPhoto.SimpleVerticalLineId = dropPhoto.SimpleHorizontalLineId ?? Guid.NewGuid();
                             }
 
                             if (dropPhoto.SimpleHorizontalLine != null)
@@ -277,29 +283,30 @@ namespace DDrop.Utility.Mappers
                             Series = addSingleSeriesViewModel,
                         };
 
-                        if (series[i].ReferencePhotoForSeries.SimpleLine != null)
+                        if (series[i].ReferencePhotoForSeries.SimpleReferencePhotoLine != null)
                         {
                             var newSimpleLine = new SimpleLine
                             {
-                                X1 = series[i].ReferencePhotoForSeries.SimpleLine.X1,
-                                X2 = series[i].ReferencePhotoForSeries.SimpleLine.X2,
-                                Y1 = series[i].ReferencePhotoForSeries.SimpleLine.Y1,
-                                Y2 = series[i].ReferencePhotoForSeries.SimpleLine.Y2,
-                                ReferencePhoto = addSingleSeriesViewModel.ReferencePhotoForSeries,
-                                SimpleLineId = series[i].ReferencePhotoForSeries.SimpleLine.SimpleLineId
+                                X1 = series[i].ReferencePhotoForSeries.SimpleReferencePhotoLine.X1,
+                                X2 = series[i].ReferencePhotoForSeries.SimpleReferencePhotoLine.X2,
+                                Y1 = series[i].ReferencePhotoForSeries.SimpleReferencePhotoLine.Y1,
+                                Y2 = series[i].ReferencePhotoForSeries.SimpleReferencePhotoLine.Y2,
+                                ReferencePhoto = new List<ReferencePhoto> { addSingleSeriesViewModel.ReferencePhotoForSeries },
+                                SimpleLineId = series[i].ReferencePhotoForSeries.SimpleReferencePhotoLine.SimpleLineId
                             };
                             addSingleSeriesViewModel.ReferencePhotoForSeries.SimpleLine = newSimpleLine;
+                            addSingleSeriesViewModel.ReferencePhotoForSeries.SimpleReferencePhotoLineId = series[i].ReferencePhotoForSeries.SimpleReferencePhotoLineId ?? Guid.NewGuid();
                         }
                     }
 
-                    if (series[i].ReferencePhotoForSeries?.SimpleLine != null)
+                    if (series[i].ReferencePhotoForSeries?.SimpleReferencePhotoLine != null)
                     {
                         addSingleSeriesViewModel.ReferencePhotoForSeries.Line = new Line
                         {
-                            X1 = series[i].ReferencePhotoForSeries.SimpleLine.X1,
-                            X2 = series[i].ReferencePhotoForSeries.SimpleLine.X2,
-                            Y1 = series[i].ReferencePhotoForSeries.SimpleLine.Y1,
-                            Y2 = series[i].ReferencePhotoForSeries.SimpleLine.Y2,
+                            X1 = series[i].ReferencePhotoForSeries.SimpleReferencePhotoLine.X1,
+                            X2 = series[i].ReferencePhotoForSeries.SimpleReferencePhotoLine.X2,
+                            Y1 = series[i].ReferencePhotoForSeries.SimpleReferencePhotoLine.Y1,
+                            Y2 = series[i].ReferencePhotoForSeries.SimpleReferencePhotoLine.Y2,
                             Stroke = Brushes.DeepPink
                         };
                     }
@@ -347,10 +354,11 @@ namespace DDrop.Utility.Mappers
                     X2 = dropPhotoViewModel.SimpleHorizontalLine.X2,
                     Y1 = dropPhotoViewModel.SimpleHorizontalLine.Y1,
                     Y2 = dropPhotoViewModel.SimpleHorizontalLine.Y2,
-                    DropPhotoHorizontalLine = dbDropPhoto,
+                    DropPhotoHorizontalLine = new List<DbDropPhoto> { dbDropPhoto },
                     SimpleLineId = dropPhotoViewModel.SimpleHorizontalLine.SimpleLineId,
                 };
 
+                dbDropPhoto.SimpleHorizontalLineId = dropPhotoViewModel.SimpleHorizontalLineId ?? Guid.NewGuid();
                 dbDropPhoto.SimpleHorizontalLine = newDbSimpleHorizontalLine;
             }
 
@@ -362,10 +370,11 @@ namespace DDrop.Utility.Mappers
                     X2 = dropPhotoViewModel.SimpleVerticalLine.X2,
                     Y1 = dropPhotoViewModel.SimpleVerticalLine.Y1,
                     Y2 = dropPhotoViewModel.SimpleVerticalLine.Y2,
-                    DropPhotoVerticalLine = dbDropPhoto,
+                    DropPhotoVerticalLine = new List<DbDropPhoto> { dbDropPhoto },
                     SimpleLineId = dropPhotoViewModel.SimpleVerticalLine.SimpleLineId,
                 };
 
+                dbDropPhoto.SimpleVerticalLineId = dropPhotoViewModel.SimpleVerticalLineId ?? Guid.NewGuid();
                 dbDropPhoto.SimpleVerticalLine = newDbSimpleVerticalLine;
             }
            
@@ -379,7 +388,7 @@ namespace DDrop.Utility.Mappers
                 Content = referencePhoto.Content,
                 ReferencePhotoId = referencePhoto.ReferencePhotoId,
                 Name = referencePhoto.Name,              
-                Series = dbSeries
+                Series = dbSeries,
             };
 
             if (referencePhoto.SimpleLine != null)
@@ -390,11 +399,12 @@ namespace DDrop.Utility.Mappers
                     X2 = referencePhoto.SimpleLine.X2,
                     Y1 = referencePhoto.SimpleLine.Y1,
                     Y2 = referencePhoto.SimpleLine.Y2,
-                    ReferencePhoto = dbReferencePhoto,
+                    ReferencePhoto = new List<DbReferencePhoto> { dbReferencePhoto },
                     SimpleLineId = referencePhoto.SimpleLine.SimpleLineId,
                 };
 
-                dbReferencePhoto.SimpleLine = newDbSimpleLine;
+                dbReferencePhoto.SimpleReferencePhotoLineId = referencePhoto.SimpleReferencePhotoLineId ?? Guid.NewGuid();
+                dbReferencePhoto.SimpleReferencePhotoLine = newDbSimpleLine;
             }
 
             return dbReferencePhoto;
@@ -413,7 +423,7 @@ namespace DDrop.Utility.Mappers
                     Y1 = dbDropPhoto.SimpleHorizontalLine.Y1,
                     Y2 = dbDropPhoto.SimpleHorizontalLine.Y2,
                     SimpleLineId = dbDropPhoto.SimpleHorizontalLine.SimpleLineId,
-                    DropPhotoHorizontalLine = dbDropPhoto
+                    DropPhotoHorizontalLine = new List<DbDropPhoto> { dbDropPhoto }
                 });
 
                 dbSimpleLines.Add(new DbSimpleLine
@@ -423,7 +433,7 @@ namespace DDrop.Utility.Mappers
                     Y1 = dbDropPhoto.SimpleVerticalLine.Y1,
                     Y2 = dbDropPhoto.SimpleVerticalLine.Y2,
                     SimpleLineId = dbDropPhoto.SimpleVerticalLine.SimpleLineId,
-                    DropPhotoVerticalLine = dbDropPhoto
+                    DropPhotoVerticalLine = new List<DbDropPhoto> { dbDropPhoto }
                 });
 
                 return dbSimpleLines;

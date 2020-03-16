@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -14,8 +15,8 @@ namespace DDrop.Db.DbEntities
         public double X2 { get; set; }
         public double Y2 { get; set; }
 
-        public virtual DbReferencePhoto ReferencePhoto { get; set; }
-        public virtual DbDropPhoto DropPhotoHorizontalLine { get; set; }
-        public virtual DbDropPhoto DropPhotoVerticalLine { get; set; }
+        public ICollection<DbReferencePhoto> ReferencePhoto { get; set; }
+        public ICollection<DbDropPhoto> DropPhotoHorizontalLine { get; set; }
+        public ICollection<DbDropPhoto> DropPhotoVerticalLine { get; set; }
     }
 }

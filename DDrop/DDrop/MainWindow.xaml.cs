@@ -776,7 +776,12 @@ namespace DDrop
                     var dbPhoto = DDropDbEntitiesMapper.DropPhotoToDbDropPhoto(CurrentDropPhoto, dbSeries.FirstOrDefault(x => x.SeriesId == CurrentSeries.SeriesId));
 
                     await _dDropRepository.UpdatDropPhoto(dbPhoto);
-                    await _dDropRepository.CreateOrUpdateSimpleLine(DDropDbEntitiesMapper.SimpleLineToDbSimpleLine(dbPhoto));
+                    //var lines = DDropDbEntitiesMapper.SimpleLineToDbSimpleLine(dbPhoto);
+                    //foreach (var item in lines)
+                    //{
+                    //    await _dDropRepository.CreateOrUpdateSimpleLine(item, dbPhoto);
+                    //}
+                    
 
                     notifier.ShowSuccess($"Расчет для снимка {CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].Name} выполнен.");
                 }

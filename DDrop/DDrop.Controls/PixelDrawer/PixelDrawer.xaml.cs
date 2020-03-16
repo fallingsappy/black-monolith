@@ -186,7 +186,7 @@ namespace DDrop.Controls.PixelDrawer
                             X1 = _selectedLine.X1,
                             X2 = _selectedLine.X2,
                             Y1 = _selectedLine.Y1,
-                            Y2 = _selectedLine.Y2
+                            Y2 = _selectedLine.Y2,
                         };
 
                         if (CurrentDropPhoto.SimpleHorizontalLine.SimpleLineId == Guid.Empty)

@@ -83,7 +83,7 @@ namespace DDrop.DAL
             {
                 return context.Series.Where(x => x.CurrentUserId == dbUserId)
                     .Include(c => c.ReferencePhotoForSeries)
-                    .Include(c => c.ReferencePhotoForSeries.SimpleLine)
+                    .Include(c => c.ReferencePhotoForSeries.SimpleReferencePhotoLine)
                     .Include(c => c.DropPhotosSeries.Select(x => x.SimpleVerticalLine))
                     .Include(c => c.DropPhotosSeries.Select(x => x.SimpleHorizontalLine))
                     .Include(c => c.DropPhotosSeries.Select(x => x.Drop))
@@ -136,17 +136,42 @@ namespace DDrop.DAL
             {
                 var dropPhotoToUpdate = await context.DropPhotos.FirstOrDefaultAsync(x => x.DropPhotoId == dropPhoto.DropPhotoId);
 
-                try
+                if (dropPhotoToUpdate != null)
                 {
                     context.Entry(dropPhotoToUpdate).CurrentValues.SetValues(dropPhoto);
 
+                    //if (dropPhotoToUpdate.SimpleHorizontalLine != null)
+                    //    context.SimpleLines.Remove(dropPhotoToUpdate.SimpleHorizontalLine);
+                    if (dropPhotoToUpdate.SimpleHorizontalLine == null)
+                        dropPhotoToUpdate.SimpleHorizontalLine = new DbSimpleLine();
+                    var ad = context.SimpleLines.Add(dropPhoto.SimpleHorizontalLine);
+                    dropPhotoToUpdate.SimpleHorizontalLine = ad;
+                    if (dropPhotoToUpdate.SimpleVerticalLine == null)
+                        dropPhotoToUpdate.SimpleVerticalLine = new DbSimpleLine();
+                    var ad1 = context.SimpleLines.Add(dropPhoto.SimpleVerticalLine);
+                    dropPhotoToUpdate.SimpleVerticalLine = ad1;
+
                     await context.SaveChangesAsync();
+
                 }
-                catch (Exception e)
-                {
-                    throw new Exception(e.Message);
-                }
-                await context.SaveChangesAsync();
+
+                //var dropPhotoToUpdate = await context.DropPhotos.FirstOrDefaultAsync(x => x.DropPhotoId == dropPhoto.DropPhotoId);
+
+                //try
+                //{                  
+                //    if (dropPhoto.SimpleVerticalLine != null)
+                //        context.SimpleLines.Add(dropPhoto.SimpleVerticalLine);
+                //    if (dropPhoto.SimpleHorizontalLine != null)
+                //        context.SimpleLines.Add(dropPhoto.SimpleHorizontalLine);
+                //    context.Entry(dropPhotoToUpdate).CurrentValues.SetValues(dropPhoto);
+
+                //    await context.SaveChangesAsync();
+                //}
+                //catch (Exception e)
+                //{
+                //    throw new Exception(e.Message);
+                //}
+                //await context.SaveChangesAsync();
             }
         }
 
@@ -181,13 +206,12 @@ namespace DDrop.DAL
 
         #region Simple Line
 
-        public async Task CreateOrUpdateSimpleLine(List<DbSimpleLine> dbSimpleLines)
+        public async Task CreateOrUpdateSimpleLine(DbSimpleLine dbSimpleLine, DbDropPhoto dbDropPhoto)
         {
             using (var context = new DDropContext())
             {
-                foreach (var dbSimpleLine in dbSimpleLines)
-                {
                     var dbSimpleLineToUpdate = await context.SimpleLines.FirstOrDefaultAsync(x => x.SimpleLineId == dbSimpleLine.SimpleLineId);
+                     var dbDropPhotoToUpdate = await context.DropPhotos.Include(x => x.Drop).FirstOrDefaultAsync(x => x.DropPhotoId == dbDropPhoto.DropPhotoId);
 
                     if (dbSimpleLineToUpdate != null)
                     {
@@ -204,18 +228,22 @@ namespace DDrop.DAL
                     }
                     else
                     {
-                        //  context.SimpleLines.Attach(dbSimpleLine);
 
-                        ////if (dbSimpleLine.DropPhotoHorizontalLine != null)
-                        ////{
-                        //if (dbSimpleLine.DropPhotoHorizontalLine != null)
-                        //    dbSimpleLine.DropPhotoHorizontalLine = null;
-                        //if (dbSimpleLine.DropPhotoVerticalLine != null)
-                        //    dbSimpleLine.DropPhotoVerticalLine = null;
-                        //if (dbSimpleLine.ReferencePhoto != null)
-                        //    dbSimpleLine.ReferencePhoto = null;
+                    context.DropPhotos.Add(dbDropPhoto);
+                    context.SimpleLines.Add(dbSimpleLine);
+                    //context
+                    //context.Entry(dbDropPhotoToUpdate).CurrentValues.SetValues(dbDropPhoto);
+                    //context.SimpleLines.Attach(dbSimpleLine);
+                    ////if (dbSimpleLine.DropPhotoHorizontalLine != null)
+                    ////{
+                    //if (dbSimpleLine.DropPhotoHorizontalLine != null)
+                    //    dbSimpleLine.DropPhotoHorizontalLine = null;
+                    //if (dbSimpleLine.DropPhotoVerticalLine != null)
+                    //    dbSimpleLine.DropPhotoVerticalLine = null;
+                    //if (dbSimpleLine.ReferencePhoto != null)
+                    //    dbSimpleLine.ReferencePhoto = null;
 
-                        context.SimpleLines.Add(dbSimpleLine);
+                    //context.SimpleLines.Add(dbSimpleLine);
                             //context.DropPhotos.Attach(dbSimpleLine.DropPhotoHorizontalLine);
                         //}
                             
@@ -228,10 +256,11 @@ namespace DDrop.DAL
 
                        // var createdSeries = context.SimpleLines.Add(dbSimpleLine);
                     }
-                }
+                
 
 
                 await context.SaveChangesAsync();
+                context.Entry(dbDropPhotoToUpdate).State = EntityState.Detached;
             }
         }
 

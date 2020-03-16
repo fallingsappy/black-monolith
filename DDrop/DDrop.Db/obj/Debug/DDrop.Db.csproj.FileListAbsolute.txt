@@ -10,6 +10,8 @@ D:\fallingsappyGit\DDrop\DDrop.Db\obj\Debug\DDrop.Db.csproj.CoreCompileInputs.ca
 D:\fallingsappyGit\DDrop\DDrop.Db\obj\Debug\DDrop.Db.csproj.CopyComplete
 D:\fallingsappyGit\DDrop\DDrop.Db\obj\Debug\DDrop.Db.dll
 D:\fallingsappyGit\DDrop\DDrop.Db\obj\Debug\DDrop.Db.pdb
+D:\fallingsappyGit\DDrop\DDrop.Db\obj\Debug\DDrop.Db.Migrations.intial.resources
+D:\fallingsappyGit\DDrop\DDrop.Db\obj\Debug\DDrop.Db.csproj.GenerateResource.cache
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Db\bin\Debug\DDrop.Db.dll.config
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Db\bin\Debug\DDrop.Db.dll
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Db\bin\Debug\DDrop.Db.pdb
@@ -17,12 +19,9 @@ E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Db\bin\Debug\EntityFramew
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Db\bin\Debug\EntityFramework.SqlServer.dll
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Db\bin\Debug\EntityFramework.xml
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Db\bin\Debug\EntityFramework.SqlServer.xml
-E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Db\obj\Debug\DDrop.Db.csprojAssemblyReference.cache
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Db\obj\Debug\DDrop.Db.Migrations.initial.resources
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Db\obj\Debug\DDrop.Db.csproj.GenerateResource.cache
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Db\obj\Debug\DDrop.Db.csproj.CoreCompileInputs.cache
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Db\obj\Debug\DDrop.Db.csproj.CopyComplete
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Db\obj\Debug\DDrop.Db.dll
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Db\obj\Debug\DDrop.Db.pdb
-D:\fallingsappyGit\DDrop\DDrop.Db\obj\Debug\DDrop.Db.Migrations.intial.resources
-D:\fallingsappyGit\DDrop\DDrop.Db\obj\Debug\DDrop.Db.csproj.GenerateResource.cache
-E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Db\obj\Debug\DDrop.Db.csproj.CoreCompileInputs.cache
-E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Db\obj\Debug\DDrop.Db.Migrations.initial.resources
-E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Db\obj\Debug\DDrop.Db.csproj.GenerateResource.cache

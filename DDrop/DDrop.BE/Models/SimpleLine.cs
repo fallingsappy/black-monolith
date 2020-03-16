@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace DDrop.BE.Models
 {
@@ -10,8 +11,8 @@ namespace DDrop.BE.Models
         public double X2 { get; set; }
         public double Y2 { get; set; }
 
-        public ReferencePhoto ReferencePhoto { get; set; }
-        public DropPhoto DropPhotoHorizontalLine { get; set; }
-        public DropPhoto DropPhotoVerticalLine { get; set; }
+        public ICollection<ReferencePhoto> ReferencePhoto { get; set; }
+        public ICollection<DropPhoto> DropPhotoHorizontalLine { get; set; }
+        public ICollection<DropPhoto> DropPhotoVerticalLine { get; set; }
     }
 }

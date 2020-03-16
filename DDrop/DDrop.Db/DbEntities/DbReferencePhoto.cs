@@ -11,9 +11,10 @@ namespace DDrop.Db.DbEntities
         public Guid ReferencePhotoId { get; set; }
         public string Name { get; set; }
         public byte[] Content { get; set; }
-        public virtual DbSimpleLine SimpleLine { get; set; }
-        public int PixelsInMillimeter { get; set; }
 
+        public Guid? SimpleReferencePhotoLineId { get; set; }
+        public DbSimpleLine SimpleReferencePhotoLine { get; set; }
+        public int PixelsInMillimeter { get; set; }
         public virtual DbSeries Series { get; set; }
     }
 }
