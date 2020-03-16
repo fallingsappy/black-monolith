@@ -4,7 +4,9 @@ using DDrop.Db.DbEntities;
 using System.Threading.Tasks;
 using DDrop.Db;
 using System.Collections.Generic;
+using System.Data.Entity.Migrations;
 using System.Linq;
+using DDrop.BE.Models;
 
 namespace DDrop.DAL
 {
@@ -134,44 +136,22 @@ namespace DDrop.DAL
         {
             using (var context = new DDropContext())
             {
-                var dropPhotoToUpdate = await context.DropPhotos.FirstOrDefaultAsync(x => x.DropPhotoId == dropPhoto.DropPhotoId);
-
-                if (dropPhotoToUpdate != null)
+                try
                 {
-                    context.Entry(dropPhotoToUpdate).CurrentValues.SetValues(dropPhoto);
+                    context.SimpleLines.Add(dropPhoto.SimpleHorizontalLine);
+                    context.SimpleLines.Add(dropPhoto.SimpleVerticalLine);
+                    context.Set<DbDropPhoto>().AddOrUpdate(dropPhoto);
 
-                    //if (dropPhotoToUpdate.SimpleHorizontalLine != null)
-                    //    context.SimpleLines.Remove(dropPhotoToUpdate.SimpleHorizontalLine);
-                    if (dropPhotoToUpdate.SimpleHorizontalLine == null)
-                        dropPhotoToUpdate.SimpleHorizontalLine = new DbSimpleLine();
-                    var ad = context.SimpleLines.Add(dropPhoto.SimpleHorizontalLine);
-                    dropPhotoToUpdate.SimpleHorizontalLine = ad;
-                    if (dropPhotoToUpdate.SimpleVerticalLine == null)
-                        dropPhotoToUpdate.SimpleVerticalLine = new DbSimpleLine();
-                    var ad1 = context.SimpleLines.Add(dropPhoto.SimpleVerticalLine);
-                    dropPhotoToUpdate.SimpleVerticalLine = ad1;
 
+                    //context.Set<DbDropPhoto>().AddOrUpdate(dropPhoto);
                     await context.SaveChangesAsync();
 
                 }
 
-                //var dropPhotoToUpdate = await context.DropPhotos.FirstOrDefaultAsync(x => x.DropPhotoId == dropPhoto.DropPhotoId);
+                catch (Exception ex)
+                {
 
-                //try
-                //{                  
-                //    if (dropPhoto.SimpleVerticalLine != null)
-                //        context.SimpleLines.Add(dropPhoto.SimpleVerticalLine);
-                //    if (dropPhoto.SimpleHorizontalLine != null)
-                //        context.SimpleLines.Add(dropPhoto.SimpleHorizontalLine);
-                //    context.Entry(dropPhotoToUpdate).CurrentValues.SetValues(dropPhoto);
-
-                //    await context.SaveChangesAsync();
-                //}
-                //catch (Exception e)
-                //{
-                //    throw new Exception(e.Message);
-                //}
-                //await context.SaveChangesAsync();
+                }
             }
         }
 

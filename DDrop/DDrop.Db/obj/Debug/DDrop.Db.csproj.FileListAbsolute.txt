@@ -5,13 +5,10 @@ D:\fallingsappyGit\DDrop\DDrop.Db\bin\Debug\EntityFramework.dll
 D:\fallingsappyGit\DDrop\DDrop.Db\bin\Debug\EntityFramework.SqlServer.dll
 D:\fallingsappyGit\DDrop\DDrop.Db\bin\Debug\EntityFramework.xml
 D:\fallingsappyGit\DDrop\DDrop.Db\bin\Debug\EntityFramework.SqlServer.xml
-D:\fallingsappyGit\DDrop\DDrop.Db\obj\Debug\DDrop.Db.csprojAssemblyReference.cache
 D:\fallingsappyGit\DDrop\DDrop.Db\obj\Debug\DDrop.Db.csproj.CoreCompileInputs.cache
 D:\fallingsappyGit\DDrop\DDrop.Db\obj\Debug\DDrop.Db.csproj.CopyComplete
 D:\fallingsappyGit\DDrop\DDrop.Db\obj\Debug\DDrop.Db.dll
 D:\fallingsappyGit\DDrop\DDrop.Db\obj\Debug\DDrop.Db.pdb
-D:\fallingsappyGit\DDrop\DDrop.Db\obj\Debug\DDrop.Db.Migrations.intial.resources
-D:\fallingsappyGit\DDrop\DDrop.Db\obj\Debug\DDrop.Db.csproj.GenerateResource.cache
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Db\bin\Debug\DDrop.Db.dll.config
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Db\bin\Debug\DDrop.Db.dll
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Db\bin\Debug\DDrop.Db.pdb
@@ -25,3 +22,6 @@ E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Db\obj\Debug\DDrop.Db.csp
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Db\obj\Debug\DDrop.Db.csproj.CopyComplete
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Db\obj\Debug\DDrop.Db.dll
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Db\obj\Debug\DDrop.Db.pdb
+D:\fallingsappyGit\DDrop\DDrop.Db\obj\Debug\DDrop.Db.csprojAssemblyReference.cache
+D:\fallingsappyGit\DDrop\DDrop.Db\obj\Debug\DDrop.Db.Migrations.initial.resources
+D:\fallingsappyGit\DDrop\DDrop.Db\obj\Debug\DDrop.Db.csproj.GenerateResource.cache

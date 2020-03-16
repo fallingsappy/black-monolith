@@ -39,22 +39,19 @@ namespace DDrop.Db
                 .WithRequiredPrincipal(ad => ad.DropPhoto);
 
             modelBuilder.Entity<DbDropPhoto>()
-                .HasOptional(b => b.SimpleHorizontalLine)
-                .WithMany(a => a.DropPhotoHorizontalLine)
-                .HasForeignKey(b => b.SimpleHorizontalLineId)
-                .WillCascadeOnDelete(false);
+                .HasOptional(c => c.SimpleHorizontalLine)
+                .WithMany()
+                .HasForeignKey(s => s.SimpleHorizontalLineId);
 
             modelBuilder.Entity<DbDropPhoto>()
-                .HasOptional(b => b.SimpleVerticalLine)
-                .WithMany(a => a.DropPhotoVerticalLine)
-                .HasForeignKey(b => b.SimpleVerticalLineId)
-                .WillCascadeOnDelete(false);
+                .HasOptional(c => c.SimpleVerticalLine)
+                .WithMany()
+                .HasForeignKey(s => s.SimpleVerticalLineId);
 
             modelBuilder.Entity<DbReferencePhoto>()
-                .HasOptional(b => b.SimpleReferencePhotoLine)
-                .WithMany(a => a.ReferencePhoto)
-                .HasForeignKey(b => b.SimpleReferencePhotoLineId)
-                .WillCascadeOnDelete(false);
+                .HasOptional(c => c.SimpleReferencePhotoLine)
+                .WithMany()
+                .HasForeignKey(s => s.SimpleReferencePhotoLineId);
         }
     }
 }
