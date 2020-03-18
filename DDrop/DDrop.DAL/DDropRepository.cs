@@ -138,8 +138,8 @@ namespace DDrop.DAL
             {
                 try
                 {
-                    context.SimpleLines.Add(dropPhoto.SimpleHorizontalLine);
-                    context.SimpleLines.Add(dropPhoto.SimpleVerticalLine);
+                    context.Set<DbSimpleLine>().AddOrUpdate(dropPhoto.SimpleHorizontalLine);
+                    context.Set<DbSimpleLine>().AddOrUpdate(dropPhoto.SimpleVerticalLine);
                     context.Set<DbDropPhoto>().AddOrUpdate(dropPhoto);
                     context.Set<DbDrop>().AddOrUpdate(dropPhoto.Drop);
                     await context.SaveChangesAsync();
@@ -149,6 +149,24 @@ namespace DDrop.DAL
                 {
 
                 }
+            }
+        }
+
+        public async Task DeleteDropPhoto(Guid dropPhotoId)
+        {
+            using (var context = new DDropContext())
+            {
+                var dropPhoto = await context.DropPhotos.FirstOrDefaultAsync(x => x.DropPhotoId == dropPhotoId);
+
+                context.DropPhotos.Attach(dropPhoto);
+                if (dropPhoto.SimpleVerticalLine != null)
+                    context.SimpleLines.Remove(dropPhoto.SimpleVerticalLine);
+                if (dropPhoto.SimpleHorizontalLine != null)
+                context.SimpleLines.Remove(dropPhoto.SimpleHorizontalLine);
+                context.Drops.Remove(dropPhoto.Drop);
+                context.DropPhotos.Remove(dropPhoto);
+
+                await context.SaveChangesAsync();
             }
         }
 
@@ -167,13 +185,35 @@ namespace DDrop.DAL
             }
         }
 
-        public async Task DeleteReferencePhoto(DbReferencePhoto dbReferencePhoto)
+        public async Task UpdateReferencePhoto(DbReferencePhoto referencePhoto)
         {
             using (var context = new DDropContext())
             {
-                context.Series.Attach(dbReferencePhoto.Series);
-                context.ReferencePhotos.Add(dbReferencePhoto);
-                var createdSeries = context.ReferencePhotos.Remove(dbReferencePhoto);
+                try
+                {
+                    context.Entry(referencePhoto.SimpleReferencePhotoLine).State = EntityState.Modified;
+                    context.Set<DbSimpleLine>().AddOrUpdate(referencePhoto.SimpleReferencePhotoLine);
+                    context.Set<DbReferencePhoto>().AddOrUpdate(referencePhoto);
+                    
+                    await context.SaveChangesAsync();
+                }
+
+                catch (Exception ex)
+                {
+
+                }
+            }
+        }
+
+        public async Task DeleteReferencePhoto(Guid dbReferencePhotoId)
+        {
+            using (var context = new DDropContext())
+            {
+                var referencePhoto = await context.ReferencePhotos.FirstOrDefaultAsync(x => x.ReferencePhotoId == dbReferencePhotoId);
+
+                context.ReferencePhotos.Attach(referencePhoto);
+                context.SimpleLines.Remove(referencePhoto.SimpleReferencePhotoLine);
+                context.ReferencePhotos.Remove(referencePhoto);
 
                 await context.SaveChangesAsync();
             }

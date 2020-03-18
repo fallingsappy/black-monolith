@@ -5,6 +5,17 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" x:Name="pd">
+    <UserControl.Resources>
+        <Style TargetType="{x:Type Image}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type UIElement}, AncestorLevel=1}, Path=IsEnabled}"
+                             Value="False">
+                    <Setter Property="Opacity"
+                            Value="0.5" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
     <Grid>
         <Canvas Name="CanDrawing"
             MouseMove="canDrawing_MouseMove_NotDown"

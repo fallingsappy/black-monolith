@@ -206,14 +206,28 @@
                                 <Grid>
                                     <Border Name="Border" BorderThickness="1" BorderBrush="#34558b" Margin="10,44,10,10">
                                         <zoomborder:ZoomBorder x:Name="border" ClipToBounds="True" Background="Gray">
-                                            <pixelDrawer:PixelDrawer CurrentSeries="{Binding ElementName=AppMainWindow, Path=CurrentSeries}" ImageSource="{Binding ReferenceImage, ElementName=AppMainWindow}" x:Name="MainWindowPixelDrawer"/>
+                                            <pixelDrawer:PixelDrawer IsEnabled="False" CurrentSeries="{Binding ElementName=AppMainWindow, Path=CurrentSeries}" ImageSource="{Binding ReferenceImage, ElementName=AppMainWindow}" x:Name="MainWindowPixelDrawer"/>
                                         </zoomborder:ZoomBorder>
                                     </Border>
                                 </Grid>
                                 <Button Click="ChooseReference_OnClick" Content="Выбрать референс" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="109"/>
                                 <TextBox IsReadOnly="True" Text="{Binding ElementName=AppMainWindow, Path=CurrentSeries.ReferencePhotoForSeries.PixelsInMillimeter}" Name="PixelsInMillimeterTextBox" Height="20" Margin="0,10,10,0" TextWrapping="Wrap"  VerticalAlignment="Top" HorizontalAlignment="Right" Width="120"/>
                                 <Label Content="Пикселей в миллиметре:" Margin="0,7,135,0" VerticalAlignment="Top" Height="30" Background="{x:Null}" HorizontalAlignment="Right" Width="147"/>
-                                <Button Name="DeleteButton"  HorizontalAlignment="Left" Margin="124,7,0,0" VerticalAlignment="Top" Width="27" Background="{x:Null}" BorderBrush="{x:Null}" Height="25" Click="DeleteReferencePhotoButton_Click">
+                                <Button Name="ChangeReferenceLine" Click="ChangeReferenceLine_Click" Margin="124,9,0,0" VerticalAlignment="Top" Height="23" Background="{x:Null}" BorderBrush="{x:Null}" HorizontalAlignment="Left" Width="25">
+                                    <Rectangle Fill="#34558b" RenderTransformOrigin="0.704,0.315" Height="19" Width="19">
+                                        <Rectangle.OpacityMask>
+                                            <VisualBrush Stretch="Fill" Visual="{StaticResource EditIcon}" />
+                                        </Rectangle.OpacityMask>
+                                    </Rectangle>
+                                </Button>
+                                <Button Visibility="Hidden" Name="SaveReferenceLine" Click="SaveReferenceLine_Click" Margin="124,9,0,0" VerticalAlignment="Top" Height="23" Background="{x:Null}" BorderBrush="{x:Null}" HorizontalAlignment="Left" Width="25">
+                                    <Rectangle Fill="#34558b" RenderTransformOrigin="0.704,0.315" Height="19" Width="19">
+                                        <Rectangle.OpacityMask>
+                                            <VisualBrush Stretch="Fill" Visual="{StaticResource SaveIcon}" />
+                                        </Rectangle.OpacityMask>
+                                    </Rectangle>
+                                </Button>
+                                <Button Name="DeleteButton"  HorizontalAlignment="Left" Margin="154,7,0,0" VerticalAlignment="Top" Width="27" Background="{x:Null}" BorderBrush="{x:Null}" Height="25" Click="DeleteReferencePhotoButton_Click">
                                     <ContentControl Content="{StaticResource DeleteIcon}" Height="21" Width="23"/>
                                 </Button>
                             </Grid>

@@ -25,7 +25,7 @@ namespace DDrop.Controls.PixelDrawer
 
         public DropPhoto CurrentDropPhoto
         {
-            get { return (BE.Models.DropPhoto)GetValue(CurrentDropPhotoProperty); }
+            get { return (DropPhoto)GetValue(CurrentDropPhotoProperty); }
             set
             {
                 SetValue(CurrentDropPhotoProperty, value);
@@ -34,7 +34,7 @@ namespace DDrop.Controls.PixelDrawer
 
         public Series CurrentSeries
         {
-            get { return (BE.Models.Series)GetValue(CurrentSeriesProperty); }
+            get { return (Series)GetValue(CurrentSeriesProperty); }
 
             set
             {
@@ -181,17 +181,24 @@ namespace DDrop.Controls.PixelDrawer
 
                         _horizontalLines.Add(_selectedLine);
                         CurrentDropPhoto.HorizontalLine = _selectedLine;
-                        CurrentDropPhoto.SimpleHorizontalLine = new SimpleLine
+                        var horizontalLineForAdd = new SimpleLine
                         {
                             X1 = _selectedLine.X1,
                             X2 = _selectedLine.X2,
                             Y1 = _selectedLine.Y1,
-                            Y2 = _selectedLine.Y2,
+                            Y2 = _selectedLine.Y2
                         };
 
-                        if (CurrentDropPhoto.SimpleHorizontalLine.SimpleLineId == Guid.Empty)
+                        if (CurrentDropPhoto.SimpleHorizontalLine == null)
                         {
-                            CurrentDropPhoto.SimpleHorizontalLine.SimpleLineId = Guid.NewGuid();
+                            horizontalLineForAdd.SimpleLineId = Guid.NewGuid();
+                            CurrentDropPhoto.SimpleHorizontalLine = horizontalLineForAdd;
+                            CurrentDropPhoto.SimpleHorizontalLineId = CurrentDropPhoto.SimpleHorizontalLine.SimpleLineId;
+                        }
+                        else
+                        {
+                            horizontalLineForAdd.SimpleLineId = CurrentDropPhoto.SimpleHorizontalLine.SimpleLineId;
+                            CurrentDropPhoto.SimpleHorizontalLine = horizontalLineForAdd;
                         }
 
                         PixelsInMillimeterHorizontal = GetPointsOnLine(point11, point22).Count.ToString();
@@ -209,7 +216,7 @@ namespace DDrop.Controls.PixelDrawer
 
                         _verticalLines.Add(_selectedLine);
                         CurrentDropPhoto.VerticalLine = _selectedLine;
-                        CurrentDropPhoto.SimpleVerticalLine = new SimpleLine
+                        var verticalLineForAdd = new SimpleLine
                         {
                             X1 = _selectedLine.X1,
                             X2 = _selectedLine.X2,
@@ -217,9 +224,16 @@ namespace DDrop.Controls.PixelDrawer
                             Y2 = _selectedLine.Y2
                         };
 
-                        if (CurrentDropPhoto.SimpleVerticalLine.SimpleLineId == Guid.Empty)
+                        if (CurrentDropPhoto.SimpleVerticalLine == null)
                         {
-                            CurrentDropPhoto.SimpleVerticalLine.SimpleLineId = Guid.NewGuid();
+                            verticalLineForAdd.SimpleLineId = Guid.NewGuid();
+                            CurrentDropPhoto.SimpleVerticalLine = verticalLineForAdd;
+                            CurrentDropPhoto.SimpleVerticalLineId = CurrentDropPhoto.SimpleVerticalLine.SimpleLineId;
+                        }
+                        else
+                        {
+                            verticalLineForAdd.SimpleLineId = CurrentDropPhoto.SimpleVerticalLine.SimpleLineId;
+                            CurrentDropPhoto.SimpleVerticalLine = verticalLineForAdd;
                         }
 
                         PixelsInMillimeterVertical = GetPointsOnLine(point11, point22).Count.ToString();
@@ -232,7 +246,7 @@ namespace DDrop.Controls.PixelDrawer
                     CanDrawing.Children.Remove(CurrentSeries.ReferencePhotoForSeries.Line);
 
                     CurrentSeries.ReferencePhotoForSeries.Line = _selectedLine;
-                    CurrentSeries.ReferencePhotoForSeries.SimpleLine = new SimpleLine
+                    var simpleReferenceLineForAdd = new SimpleLine
                     {
                         X1 = _selectedLine.X1,
                         X2 = _selectedLine.X2,
@@ -240,9 +254,16 @@ namespace DDrop.Controls.PixelDrawer
                         Y2 = _selectedLine.Y2
                     };
 
-                    if (CurrentSeries.ReferencePhotoForSeries.SimpleLine.SimpleLineId == Guid.Empty)
+                    if (CurrentSeries.ReferencePhotoForSeries.SimpleLine == null)
                     {
-                        CurrentSeries.ReferencePhotoForSeries.SimpleLine.SimpleLineId = Guid.NewGuid();
+                        simpleReferenceLineForAdd.SimpleLineId = Guid.NewGuid();
+                        CurrentSeries.ReferencePhotoForSeries.SimpleLine = simpleReferenceLineForAdd;
+                        CurrentSeries.ReferencePhotoForSeries.SimpleReferencePhotoLineId = CurrentSeries.ReferencePhotoForSeries.SimpleLine.SimpleLineId;
+                    }
+                    else
+                    {
+                        simpleReferenceLineForAdd.SimpleLineId = CurrentSeries.ReferencePhotoForSeries.SimpleLine.SimpleLineId;
+                        CurrentSeries.ReferencePhotoForSeries.SimpleLine = simpleReferenceLineForAdd;                        
                     }
 
                     CurrentSeries.ReferencePhotoForSeries.PixelsInMillimeter = GetPointsOnLine(point11, point22).Count;

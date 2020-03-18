@@ -705,7 +705,7 @@ namespace DDrop
                 ImgCurrent.Source = null;
         }
 
-        private void DeleteInputPhotos_OnClick(object sender, RoutedEventArgs e)
+        private async void DeleteInputPhotos_OnClick(object sender, RoutedEventArgs e)
         {
             if (CurrentSeries.DropPhotosSeries.Count > 0)
             {
@@ -719,7 +719,10 @@ namespace DDrop
                         for (int i = CurrentSeries.DropPhotosSeries.Count - 1; i >= 0; i--)
                         {
                             if (CurrentSeries.DropPhotosSeries[i].IsChecked)
+                            {
+                                await _dDropRepository.DeleteDropPhoto(CurrentSeries.DropPhotosSeries[i].DropPhotoId);
                                 CurrentSeries.DropPhotosSeries.RemoveAt(i);
+                            }                               
                         }
 
                         notifier.ShowSuccess("Выбранные снимки удалены.");
@@ -730,7 +733,12 @@ namespace DDrop
                     MessageBoxResult messageBoxResult = MessageBox.Show("Удалить все снимки?", "Подтверждение удаления", MessageBoxButton.YesNo);
                     if (messageBoxResult == MessageBoxResult.Yes)
                     {
-                        CurrentSeries.DropPhotosSeries.Clear();
+                        for (int i = CurrentSeries.DropPhotosSeries.Count - 1; i >= 0; i--)
+                        {
+                            await _dDropRepository.DeleteDropPhoto(CurrentSeries.DropPhotosSeries[i].DropPhotoId);
+                            CurrentSeries.DropPhotosSeries.RemoveAt(i);
+                        }
+
                         notifier.ShowSuccess("Все снимки удалены");
                     }
                 }
@@ -741,11 +749,12 @@ namespace DDrop
             }
         }
 
-        private void DeleteSingleInputPhotoButton_Click(object sender, RoutedEventArgs e)
+        private async void DeleteSingleInputPhotoButton_Click(object sender, RoutedEventArgs e)
         {
             MessageBoxResult messageBoxResult = MessageBox.Show($"Удалить снимок {CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].Name}?", "Подтверждение удаления", MessageBoxButton.YesNo);
             if (messageBoxResult == MessageBoxResult.Yes)
             {
+                await _dDropRepository.DeleteDropPhoto(CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].DropPhotoId);
                 notifier.ShowSuccess($"Снимок {CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].Name} удален.");
 
                 CurrentSeries.DropPhotosSeries.RemoveAt(Photos.SelectedIndex);
@@ -772,6 +781,7 @@ namespace DDrop
                     DropletSizeCalculator.PerformCalculation(
                         Convert.ToInt32(PixelsInMillimeterTextBox.Text), CurrentDropPhoto.XDiameterInPixels,
                         CurrentDropPhoto.YDiameterInPixels, CurrentSeries, CurrentDropPhoto);
+
                     var dbSeries = _dDropRepository.GetSeriesByUserId(User.UserId);
                     var dbPhoto = DDropDbEntitiesMapper.DropPhotoToDbDropPhoto(CurrentDropPhoto, dbSeries.FirstOrDefault(x => x.SeriesId == CurrentSeries.SeriesId));
 
@@ -849,6 +859,10 @@ namespace DDrop
 
                         ReferenceImage = ImageInterpreter.LoadImage(CurrentSeries.ReferencePhotoForSeries.Content);
 
+                        MainWindowPixelDrawer.IsEnabled = false;
+                        ChangeReferenceLine.Visibility = Visibility.Visible;
+                        SaveReferenceLine.Visibility = Visibility.Hidden;
+
                         notifier.ShowSuccess($"Референсный снимок {CurrentSeries.ReferencePhotoForSeries.Name} добавлен.");
                     }
                     catch (Exception)
@@ -869,9 +883,8 @@ namespace DDrop
             {
                 MessageBoxResult messageBoxResult = MessageBox.Show("Удалить референсный снимок?", "Подтверждение удаления", MessageBoxButton.YesNo);
                 if (messageBoxResult == MessageBoxResult.Yes)
-                {
-                    var dbSeries = _dDropRepository.GetSeriesByUserId(User.UserId);
-                    await _dDropRepository.DeleteReferencePhoto(DDropDbEntitiesMapper.ReferencePhotoToDbReferencePhoto(CurrentSeries.ReferencePhotoForSeries, dbSeries.FirstOrDefault(x => x.SeriesId == CurrentSeries.SeriesId)));
+                {            
+                    await _dDropRepository.DeleteReferencePhoto(CurrentSeries.ReferencePhotoForSeries.ReferencePhotoId);
 
                     MainWindowPixelDrawer.CanDrawing.Children.Remove(CurrentSeries.ReferencePhotoForSeries.Line);
 
@@ -888,6 +901,34 @@ namespace DDrop
             else
             {
                 notifier.ShowInformation("Нет референсного снимка для удаления.");
+            }
+        }
+
+        private async void SaveReferenceLine_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindowPixelDrawer.IsEnabled = false;
+            ChangeReferenceLine.Visibility = Visibility.Visible;
+            SaveReferenceLine.Visibility = Visibility.Hidden;
+
+            var dbSeries = _dDropRepository.GetSeriesByUserId(User.UserId);
+            var dbReferencePhoto = DDropDbEntitiesMapper.ReferencePhotoToDbReferencePhoto(CurrentSeries.ReferencePhotoForSeries, dbSeries.FirstOrDefault(x => x.SeriesId == CurrentSeries.SeriesId));
+
+            await _dDropRepository.UpdateReferencePhoto(dbReferencePhoto);
+
+            notifier.ShowSuccess("Сохранено новое референсное расстояние.");
+        }
+
+        private void ChangeReferenceLine_Click(object sender, RoutedEventArgs e)
+        {
+            if (CurrentSeries.ReferencePhotoForSeries != null)
+            {
+                MainWindowPixelDrawer.IsEnabled = true;
+                ChangeReferenceLine.Visibility = Visibility.Hidden;
+                SaveReferenceLine.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                notifier.ShowInformation("Загрузите референсный снимок.");
             }
         }
 

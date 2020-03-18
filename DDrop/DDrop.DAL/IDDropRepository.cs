@@ -16,7 +16,9 @@ namespace DDrop.DAL
         Task DeleteSingleSeries(DbSeries series);
         Task CreateDropPhoto(DbDropPhoto dropPhoto);
         Task UpdatDropPhoto(DbDropPhoto dropPhoto);
+        Task DeleteDropPhoto(Guid dropPhotoId);
         Task CreateReferencePhoto(DbReferencePhoto referencePhoto);
-        Task DeleteReferencePhoto(DbReferencePhoto dbReferencePhoto);
+        Task DeleteReferencePhoto(Guid dbReferencePhotoId);
+        Task UpdateReferencePhoto(DbReferencePhoto referencePhoto);
     }
 }
