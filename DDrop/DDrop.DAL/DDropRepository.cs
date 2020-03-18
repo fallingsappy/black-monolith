@@ -99,6 +99,18 @@ namespace DDrop.DAL
             using (var context = new DDropContext())
             {
                 context.Series.Attach(series);
+
+                foreach (var dropPhoto in series.DropPhotosSeries)
+                {
+                    if (dropPhoto.SimpleVerticalLine != null)
+                        context.SimpleLines.Remove(dropPhoto.SimpleVerticalLine);
+
+                    if (dropPhoto.SimpleHorizontalLine != null)
+                        context.SimpleLines.Remove(dropPhoto.SimpleHorizontalLine);
+                }
+
+                context.SimpleLines.Remove(series.ReferencePhotoForSeries.SimpleReferencePhotoLine);
+
                 var createdSeries = context.Series.Remove(series);
 
                 await context.SaveChangesAsync();
@@ -162,7 +174,7 @@ namespace DDrop.DAL
                 if (dropPhoto.SimpleVerticalLine != null)
                     context.SimpleLines.Remove(dropPhoto.SimpleVerticalLine);
                 if (dropPhoto.SimpleHorizontalLine != null)
-                context.SimpleLines.Remove(dropPhoto.SimpleHorizontalLine);
+                    context.SimpleLines.Remove(dropPhoto.SimpleHorizontalLine);
                 context.Drops.Remove(dropPhoto.Drop);
                 context.DropPhotos.Remove(dropPhoto);
 

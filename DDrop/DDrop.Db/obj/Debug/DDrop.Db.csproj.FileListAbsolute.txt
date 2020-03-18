@@ -26,4 +26,3 @@ D:\fallingsappyGit\DDrop\DDrop.Db\obj\Debug\DDrop.Db.csproj.GenerateResource.cac
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Db\obj\Debug\DDrop.Db.csprojAssemblyReference.cache
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Db\obj\Debug\DDrop.Db.Migrations.initial.resources
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Db\obj\Debug\DDrop.Db.csproj.GenerateResource.cache
-E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Db\obj\Debug\DDrop.Db.Migrations.initial2.resources
