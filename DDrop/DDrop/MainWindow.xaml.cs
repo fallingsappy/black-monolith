@@ -260,6 +260,8 @@ namespace DDrop
                     User.UserSeries.Add(seriesToAdd);
                     SeriesDataGrid.ItemsSource = User.UserSeries;
                     OneLineSetterValue.Text = "";
+
+                    notifier.ShowSuccess($"Добавлена новая серия {seriesToAdd.Title}");
                 }
                 catch (Exception)
                 {

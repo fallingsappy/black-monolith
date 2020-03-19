@@ -328,17 +328,20 @@ namespace DDrop.Utility.Mappers
                 CurrentSeriesId = dbSeries.SeriesId,
             };
 
-            var newDbDrop = new DbDrop
+            if (dropPhotoViewModel.Drop != null)
             {
-                DropId = dropPhotoViewModel.Drop.DropId,
-                RadiusInMeters = dropPhotoViewModel.Drop.RadiusInMeters,
-                VolumeInCubicalMeters = dropPhotoViewModel.Drop.VolumeInCubicalMeters,
-                XDiameterInMeters = dropPhotoViewModel.Drop.XDiameterInMeters,
-                YDiameterInMeters = dropPhotoViewModel.Drop.YDiameterInMeters,
-                ZDiameterInMeters = dropPhotoViewModel.Drop.ZDiameterInMeters,
-                DropPhoto = dbDropPhoto
-            };
-            dbDropPhoto.Drop = newDbDrop;
+                var newDbDrop = new DbDrop
+                {
+                    DropId = dropPhotoViewModel.Drop.DropId,
+                    RadiusInMeters = dropPhotoViewModel.Drop.RadiusInMeters,
+                    VolumeInCubicalMeters = dropPhotoViewModel.Drop.VolumeInCubicalMeters,
+                    XDiameterInMeters = dropPhotoViewModel.Drop.XDiameterInMeters,
+                    YDiameterInMeters = dropPhotoViewModel.Drop.YDiameterInMeters,
+                    ZDiameterInMeters = dropPhotoViewModel.Drop.ZDiameterInMeters,
+                    DropPhoto = dbDropPhoto
+                };
+                dbDropPhoto.Drop = newDbDrop;
+            }
 
             if (dropPhotoViewModel.SimpleHorizontalLine != null)
             {
