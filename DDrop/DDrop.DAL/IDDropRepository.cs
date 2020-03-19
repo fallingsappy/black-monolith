@@ -17,8 +17,10 @@ namespace DDrop.DAL
         Task CreateDropPhoto(DbDropPhoto dropPhoto);
         Task UpdatDropPhoto(DbDropPhoto dropPhoto);
         Task DeleteDropPhoto(Guid dropPhotoId);
+        Task<byte[]> GetDropPhotoContent(Guid dropPhotoId);
         Task CreateReferencePhoto(DbReferencePhoto referencePhoto);
         Task DeleteReferencePhoto(Guid dbReferencePhotoId);
         Task UpdateReferencePhoto(DbReferencePhoto referencePhoto);
+        Task<byte[]> GetReferencePhotoContent(Guid referencePhotoId);
     }
 }
