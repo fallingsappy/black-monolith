@@ -46,7 +46,7 @@
                         </Grid>
                     </Border>
                     <Border Grid.Column="0" Grid.Row="0" BorderThickness="1" BorderBrush="#34558b" Margin="10,45,10,10">
-                        <DataGrid CanUserAddRows="false" IsReadOnly="False" AutoGenerateColumns="False" SelectionMode="Single" Margin="0" BorderThickness="0" ClipToBounds="True" ItemsSource="{Binding User.UserSeries}" SelectionChanged="SeriesDataGrid_OnSelectionChanged" Name="SeriesDataGrid">
+                        <DataGrid CellEditEnding="SeriesDataGrid_CellEditEnding" CanUserAddRows="false" IsReadOnly="False" AutoGenerateColumns="False" SelectionMode="Single" Margin="0" BorderThickness="0" ClipToBounds="True" ItemsSource="{Binding User.UserSeries}" SelectionChanged="SeriesDataGrid_OnSelectionChanged" Name="SeriesDataGrid">
                             <DataGrid.Columns>
                                 <DataGridCheckBoxColumn IsReadOnly="False" Binding="{Binding IsChecked, UpdateSourceTrigger=PropertyChanged}" CanUserResize="False">
                                     <DataGridCheckBoxColumn.HeaderTemplate>
@@ -138,7 +138,7 @@
                                         <Label Content="Интервал между снимками (c):" Margin="0,0,130,-4" VerticalAlignment="Top" Height="30" Background="{x:Null}" HorizontalAlignment="Right" Width="180"/>
                                     </Grid>
                                 </Border>
-                                <DataGrid utilityVisualHelper:VisualHelper.EnableRowsMove="True" CanUserSortColumns="False" CanUserAddRows="false" AutoGenerateColumns="False" Grid.Row="0" HorizontalAlignment="Stretch" Name="Photos" Margin="10,43,10,10" SelectionMode="Single" SelectionChanged="Photos_SelectionChanged" IsReadOnly="False" ItemsSource="{Binding CurrentSeries.DropPhotosSeries}">
+                                <DataGrid CellEditEnding="Photos_CellEditEnding" utilityVisualHelper:VisualHelper.EnableRowsMove="True" CanUserSortColumns="False" CanUserAddRows="false" AutoGenerateColumns="False" Grid.Row="0" HorizontalAlignment="Stretch" Name="Photos" Margin="10,43,10,10" SelectionMode="Single" SelectionChanged="Photos_SelectionChanged" IsReadOnly="False" ItemsSource="{Binding CurrentSeries.DropPhotosSeries}">
                                     <DataGrid.Columns>
                                         <DataGridCheckBoxColumn IsReadOnly="False" Binding="{Binding IsChecked, UpdateSourceTrigger=PropertyChanged}" CanUserResize="False">
                                             <DataGridCheckBoxColumn.HeaderTemplate>

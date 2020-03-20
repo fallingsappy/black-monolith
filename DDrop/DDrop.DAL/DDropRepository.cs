@@ -264,14 +264,50 @@ namespace DDrop.DAL
             }
         }
 
-        public async Task UpdateSeriesName(string seriesName)
+        public async Task UpdateSeriesName(string seriesName, Guid seriesId)
         {
+            using(var context = new DDropContext())
+            {
+                try
+                {
+                    var sereis = await context.Series.FirstOrDefaultAsync(x => x.SeriesId == seriesId);
 
+                    sereis.Title = seriesName;
+
+                    await context.SaveChangesAsync();
+                }
+                catch (DbUpdateException e)
+                {
+                    throw new DbUpdateException(e.Message);
+                }
+                catch (InvalidOperationException e)
+                {
+                    throw new InvalidOperationException(e.Message);
+                }
+            }
         }
 
-        public async Task UpdateSeriesIntervalBetweenPhotos(int interval)
+        public async Task UpdateSeriesIntervalBetweenPhotos(int interval, Guid seriesId)
         {
+            using (var context = new DDropContext())
+            {
+                try
+                {
+                    var sereis = await context.Series.FirstOrDefaultAsync(x => x.SeriesId == seriesId);
 
+                    sereis.IntervalBetweenPhotos = interval;
+
+                    await context.SaveChangesAsync();
+                }
+                catch (DbUpdateException e)
+                {
+                    throw new DbUpdateException(e.Message);
+                }
+                catch (InvalidOperationException e)
+                {
+                    throw new InvalidOperationException(e.Message);
+                }
+            }
         }
 
         #endregion
@@ -347,9 +383,27 @@ namespace DDrop.DAL
             }
         }
 
-        public async Task UpdateDropPhotoName(string newName)
+        public async Task UpdateDropPhotoName(string newName, Guid dropPhotoId)
         {
+            using (var context = new DDropContext())
+            {
+                try
+                {
+                    var dropPhoto = await context.DropPhotos.FirstOrDefaultAsync(x => x.DropPhotoId == dropPhotoId);
 
+                    dropPhoto.Name = newName;
+
+                    await context.SaveChangesAsync();
+                }
+                catch (DbUpdateException e)
+                {
+                    throw new DbUpdateException(e.Message);
+                }
+                catch (InvalidOperationException e)
+                {
+                    throw new InvalidOperationException(e.Message);
+                }
+            }
         }
 
         public async Task DeleteDropPhoto(Guid dropPhotoId)
@@ -400,7 +454,6 @@ namespace DDrop.DAL
                         context.DropPhotos.Remove(dropPhoto);
                     }
 
-
                     await context.SaveChangesAsync();
                 }
                 catch (DbUpdateException e)
@@ -443,7 +496,6 @@ namespace DDrop.DAL
             {
                 try
                 {
-                    //context.Series.Attach(referencePhoto.Series);
                     var createdReferencePhoto = context.ReferencePhotos.Add(referencePhoto);
 
                     await context.SaveChangesAsync();

@@ -23,6 +23,7 @@ using DDrop.BL.DropPhoto;
 using DDrop.DAL;
 using DDrop.Utility.Mappers;
 using System.Collections.Generic;
+using System.Data;
 
 namespace DDrop
 {
@@ -566,6 +567,20 @@ namespace DDrop
             
         }
 
+        private async void SeriesDataGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        {
+            var seriesNameCell = e.EditingElement as TextBox;
+            try
+            {
+                await _dDropRepository.UpdateSeriesName(seriesNameCell.Text, CurrentSeries.SeriesId);
+                notifier.ShowSuccess("Название серии изменено успешно.");
+            }
+            catch (Exception)
+            {
+                notifier.ShowError("Не удалось изменить название серии. Не удалось установить подключение. Проверьте интернет соединение.");
+            }
+        }
+
         #endregion
 
         #region Drop Photos
@@ -884,7 +899,7 @@ namespace DDrop
             }
         }
 
-        private void IntervalBetweenPhotos_TextChanged(object sender, TextChangedEventArgs e)
+        private async void IntervalBetweenPhotos_TextChanged(object sender, TextChangedEventArgs e)
         {
             var intervalBetweenPhotosTextBox = sender as TextBox;
 
@@ -892,13 +907,36 @@ namespace DDrop
             {
                 if (int.TryParse(intervalBetweenPhotosTextBox?.Text, out int intervalBetweenPhotos))
                 {
-                    CurrentSeries.IntervalBetweenPhotos = intervalBetweenPhotos;
+                    try
+                    {
+                        await _dDropRepository.UpdateSeriesIntervalBetweenPhotos(intervalBetweenPhotos, CurrentSeries.SeriesId);
+
+                        CurrentSeries.IntervalBetweenPhotos = intervalBetweenPhotos;
+                    }
+                    catch (Exception)
+                    {
+                        notifier.ShowError("Не удалось сохранить результаты новый временной интервал между снимками. Не удалось установить подключение. Проверьте интернет соединение.");
+                    }
                 }                   
                 else
                 {
                     CurrentSeries.IntervalBetweenPhotos = 0;
                     notifier.ShowInformation("Некорректное значение для интервала между снимками. Укажите интервал между снимками в секундах.");
                 }
+            }
+        }
+
+        private async void Photos_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        {
+            var photoNameCell = e.EditingElement as TextBox;
+            try
+            {
+                await _dDropRepository.UpdateDropPhotoName(photoNameCell.Text, CurrentDropPhoto.DropPhotoId);
+                notifier.ShowSuccess("Название снимка изменено успешно.");
+            }
+            catch (Exception)
+            {
+                notifier.ShowError("Не удалось изменить название снимка. Не удалось установить подключение. Проверьте интернет соединение.");
             }
         }
 
@@ -1234,5 +1272,6 @@ namespace DDrop
         }
 
         #endregion
+
     }
 }
