@@ -14,7 +14,8 @@ namespace DDrop.DAL
         Task<DbSeries> GetSingleSeriesById(Guid dbSeriesId);
         Task CreateSeries(DbSeries series);
         Task DeleteSingleSeries(DbSeries series);
-        Task CreateDropPhoto(DbDropPhoto dropPhoto);
+        Task DeleteListOfDropPhoto(List<Guid> dropPhotoIds);
+        Task CreateDropPhoto(DbDropPhoto dropPhoto, DbSeries series);
         Task UpdatDropPhoto(DbDropPhoto dropPhoto);
         Task DeleteDropPhoto(Guid dropPhotoId);
         Task<byte[]> GetDropPhotoContent(Guid dropPhotoId);

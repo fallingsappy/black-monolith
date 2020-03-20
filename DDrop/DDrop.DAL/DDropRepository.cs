@@ -264,18 +264,52 @@ namespace DDrop.DAL
             }
         }
 
+        public async Task UpdateSeriesName(string seriesName)
+        {
+
+        }
+
+        public async Task UpdateSeriesIntervalBetweenPhotos(int interval)
+        {
+
+        }
+
         #endregion
 
         #region Drop Photo
 
-        public async Task CreateDropPhoto(DbDropPhoto dropPhoto)
+        public async Task CreateDropPhoto(DbDropPhoto dropPhoto, DbSeries series)
         {
             using (var context = new DDropContext())
             {
                 try
                 {
-                    context.Series.Attach(dropPhoto.CurrentSeries);
-                    var createdDropPhoto = context.DropPhotos.Add(dropPhoto);
+                    var ph = new DbDropPhoto
+                    {
+                        AddedDate = dropPhoto.AddedDate,
+                        Content = dropPhoto.Content,
+                        CurrentSeriesId = series.SeriesId,
+                        Drop = new DbDrop
+                        {
+                            DropId = dropPhoto.DropPhotoId,
+                            RadiusInMeters = dropPhoto.Drop.RadiusInMeters,
+                            VolumeInCubicalMeters = dropPhoto.Drop.VolumeInCubicalMeters,
+                            XDiameterInMeters = dropPhoto.Drop.XDiameterInMeters,
+                            YDiameterInMeters = dropPhoto.Drop.YDiameterInMeters,
+                            ZDiameterInMeters = dropPhoto.Drop.ZDiameterInMeters
+                        },
+                        DropPhotoId = dropPhoto.DropPhotoId,
+                        Name = dropPhoto.Name,
+                        SimpleHorizontalLine = dropPhoto.SimpleHorizontalLine,
+                        SimpleHorizontalLineId = dropPhoto.SimpleHorizontalLineId,
+                        SimpleVerticalLine = dropPhoto.SimpleVerticalLine,
+                        SimpleVerticalLineId = dropPhoto.SimpleVerticalLineId,
+                        XDiameterInPixels = dropPhoto.XDiameterInPixels,
+                        YDiameterInPixels = dropPhoto.YDiameterInPixels,
+                        ZDiameterInPixels = dropPhoto.ZDiameterInPixels
+                    };
+
+                    context.DropPhotos.Add(ph);
 
                     await context.SaveChangesAsync();
                 }
@@ -313,6 +347,11 @@ namespace DDrop.DAL
             }
         }
 
+        public async Task UpdateDropPhotoName(string newName)
+        {
+
+        }
+
         public async Task DeleteDropPhoto(Guid dropPhotoId)
         {
             using (var context = new DDropContext())
@@ -340,6 +379,39 @@ namespace DDrop.DAL
                     throw new InvalidOperationException(e.Message);
                 }
             }
+        }
+
+        public async Task DeleteListOfDropPhoto(List<Guid> dropPhotoIds)
+        {
+            using (var context = new DDropContext())
+            {
+                try
+                {
+                    foreach (var dropPhotoId in dropPhotoIds)
+                    {
+                        var dropPhoto = await context.DropPhotos.FirstOrDefaultAsync(x => x.DropPhotoId == dropPhotoId);
+
+                        context.DropPhotos.Attach(dropPhoto);
+                        if (dropPhoto.SimpleVerticalLine != null)
+                            context.SimpleLines.Remove(dropPhoto.SimpleVerticalLine);
+                        if (dropPhoto.SimpleHorizontalLine != null)
+                            context.SimpleLines.Remove(dropPhoto.SimpleHorizontalLine);
+                        context.Drops.Remove(dropPhoto.Drop);
+                        context.DropPhotos.Remove(dropPhoto);
+                    }
+
+
+                    await context.SaveChangesAsync();
+                }
+                catch (DbUpdateException e)
+                {
+                    throw new DbUpdateException(e.Message);
+                }
+                catch (InvalidOperationException e)
+                {
+                    throw new InvalidOperationException(e.Message);
+                }
+            } 
         }
 
         public async Task<byte[]> GetDropPhotoContent(Guid dropPhotoId)
@@ -371,7 +443,7 @@ namespace DDrop.DAL
             {
                 try
                 {
-                    context.Series.Attach(referencePhoto.Series);
+                    //context.Series.Attach(referencePhoto.Series);
                     var createdReferencePhoto = context.ReferencePhotos.Add(referencePhoto);
 
                     await context.SaveChangesAsync();

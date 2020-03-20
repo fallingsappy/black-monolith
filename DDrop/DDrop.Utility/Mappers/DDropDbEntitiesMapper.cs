@@ -247,19 +247,23 @@ namespace DDrop.Utility.Mappers
                                     Stroke = Brushes.Green
                                 };
                             }
-                            var userDrop = new Drop()
-                            {
-                                DropId = dropPhoto.Drop.DropId,
-                                RadiusInMeters = dropPhoto.Drop.RadiusInMeters,
-                                VolumeInCubicalMeters = dropPhoto.Drop.VolumeInCubicalMeters,
-                                XDiameterInMeters = dropPhoto.Drop.XDiameterInMeters,
-                                YDiameterInMeters = dropPhoto.Drop.YDiameterInMeters,
-                                ZDiameterInMeters = dropPhoto.Drop.ZDiameterInMeters,
-                                Series = addSingleSeriesViewModel,
-                                DropPhoto = userDropPhoto
-                            };
 
-                            userDropPhoto.Drop = userDrop;
+                            if (dropPhoto.Drop != null)
+                            {
+                                var userDrop = new Drop()
+                                {
+                                    DropId = dropPhoto.Drop.DropId,
+                                    RadiusInMeters = dropPhoto.Drop.RadiusInMeters,
+                                    VolumeInCubicalMeters = dropPhoto.Drop.VolumeInCubicalMeters,
+                                    XDiameterInMeters = dropPhoto.Drop.XDiameterInMeters,
+                                    YDiameterInMeters = dropPhoto.Drop.YDiameterInMeters,
+                                    ZDiameterInMeters = dropPhoto.Drop.ZDiameterInMeters,
+                                    Series = addSingleSeriesViewModel,
+                                    DropPhoto = userDropPhoto
+                                };
+
+                                userDropPhoto.Drop = userDrop;
+                            }
 
                             dropPhotosSeries.Add(userDropPhoto);
                         }
@@ -324,7 +328,7 @@ namespace DDrop.Utility.Mappers
                 XDiameterInPixels = dropPhotoViewModel.XDiameterInPixels,
                 YDiameterInPixels = dropPhotoViewModel.YDiameterInPixels,
                 ZDiameterInPixels = dropPhotoViewModel.ZDiameterInPixels,
-                CurrentSeries = dbSeries,
+                //CurrentSeries = dbSeries,
                 CurrentSeriesId = dbSeries.SeriesId,
             };
 
@@ -383,7 +387,7 @@ namespace DDrop.Utility.Mappers
                 Content = referencePhoto.Content,
                 ReferencePhotoId = referencePhoto.ReferencePhotoId,
                 Name = referencePhoto.Name,              
-                Series = dbSeries,
+                //Series = dbSeries,
                 PixelsInMillimeter = referencePhoto.PixelsInMillimeter
             };
 

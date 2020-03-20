@@ -22,6 +22,7 @@ using pbu = RFM.RFM_WPFProgressBarUpdate;
 using DDrop.BL.DropPhoto;
 using DDrop.DAL;
 using DDrop.Utility.Mappers;
+using System.Collections.Generic;
 
 namespace DDrop
 {
@@ -674,23 +675,23 @@ namespace DDrop
                         CurrentSeries = CurrentSeries,
                         CurrentSeriesId = CurrentSeries.SeriesId,
                     };
-                    
+                    imageForAdding.Drop = new Drop()
+                    {
+                        DropId = imageForAdding.DropPhotoId,
+                        Series = CurrentSeries,
+                        DropPhoto = imageForAdding
+                    };
+
+                    imageForAdding.PropertyChanged += PhotosOnPropertyChanged;
+
                     if (ImageValidator.ValidateImage(imageForAdding.Content))
                     {
                         try
                         {
-                            imageForAdding.PropertyChanged += PhotosOnPropertyChanged;
-
                             var dbSeries = _dDropRepository.GetSeriesByUserId(User.UserId);
-                            await _dDropRepository.CreateDropPhoto(DDropDbEntitiesMapper.DropPhotoToDbDropPhoto(imageForAdding, dbSeries.FirstOrDefault(x => x.SeriesId == CurrentSeries.SeriesId)));
+                            await _dDropRepository.CreateDropPhoto(DDropDbEntitiesMapper.DropPhotoToDbDropPhoto(imageForAdding, dbSeries.FirstOrDefault(x => x.SeriesId == CurrentSeries.SeriesId)), dbSeries.Where(x=>x.SeriesId == CurrentSeries.SeriesId).FirstOrDefault());
 
                             CurrentSeries.DropPhotosSeries.Add(imageForAdding);
-                            CurrentSeries.DropPhotosSeries[CurrentSeries.DropPhotosSeries.Count - 1].Drop = new Drop()
-                            {
-                                DropId = imageForAdding.DropPhotoId,
-                                Series = CurrentSeries,
-                                DropPhoto = CurrentSeries.DropPhotosSeries[CurrentSeries.DropPhotosSeries.Count - 1]
-                            };
 
                             notifier.ShowSuccess($"Снимок {imageForAdding.Name} добавлен.");
                         }
@@ -718,7 +719,9 @@ namespace DDrop
             {
                 try
                 {
-                    ImgCurrent.Source = ImageInterpreter.LoadImage(await _dDropRepository.GetDropPhotoContent(selectedFile.DropPhotoId));
+                    CurrentDropPhoto = CurrentSeries.DropPhotosSeries[Photos.SelectedIndex];
+                    CurrentDropPhoto.Content = await _dDropRepository.GetDropPhotoContent(selectedFile.DropPhotoId);
+                    ImgCurrent.Source = ImageInterpreter.LoadImage(CurrentDropPhoto.Content);
                 }
                 catch (Exception)
                 {
@@ -731,6 +734,8 @@ namespace DDrop
 
         private async void DeleteInputPhotos_OnClick(object sender, RoutedEventArgs e)
         {
+            ObservableCollection<DropPhoto> photosForDelete = new ObservableCollection<DropPhoto>();
+            List<Guid> photosForDeleteIds = new List<Guid>();
             if (CurrentSeries.DropPhotosSeries.Count > 0)
             {
                 bool isAnyChecked = CurrentSeries.DropPhotosSeries.Any(x => x.IsChecked);
@@ -744,19 +749,27 @@ namespace DDrop
                         {
                             if (CurrentSeries.DropPhotosSeries[i].IsChecked)
                             {
-                                try
-                                {
-                                    await _dDropRepository.DeleteDropPhoto(CurrentSeries.DropPhotosSeries[i].DropPhotoId);
-                                    CurrentSeries.DropPhotosSeries.RemoveAt(i);
-                                }
-                                catch (Exception)
-                                {
-                                    notifier.ShowError($"Не удалось удалить снимок {CurrentSeries.DropPhotosSeries[i].Name}. Не удалось установить подключение. Проверьте интернет соединение.");
-                                }
+                                photosForDelete.Add(CurrentSeries.DropPhotosSeries[i]);
+                                photosForDeleteIds.Add(CurrentSeries.DropPhotosSeries[i].DropPhotoId);
                             }                               
                         }
 
-                        notifier.ShowSuccess("Выбранные снимки удалены.");
+                        DropPhoto currentDeletedPhoto = new DropPhoto();
+
+                        try
+                        {                           
+                            await _dDropRepository.DeleteListOfDropPhoto(photosForDeleteIds);
+                            foreach (var photoForDelete in photosForDelete)
+                            {
+                                currentDeletedPhoto = photoForDelete;
+                                CurrentSeries.DropPhotosSeries.Remove(photoForDelete);
+                            }
+                            notifier.ShowSuccess("Выбранные снимки удалены");
+                        }
+                        catch (Exception)
+                        {
+                            notifier.ShowError($"Не удалось удалить снимок {currentDeletedPhoto.Name}. Не удалось установить подключение. Проверьте интернет соединение.");
+                        }                       
                     }
                 }
                 else
@@ -766,18 +779,26 @@ namespace DDrop
                     {
                         for (int i = CurrentSeries.DropPhotosSeries.Count - 1; i >= 0; i--)
                         {
-                            try
-                            {
-                                await _dDropRepository.DeleteDropPhoto(CurrentSeries.DropPhotosSeries[i].DropPhotoId);
-                                CurrentSeries.DropPhotosSeries.RemoveAt(i);
-                            }
-                            catch (Exception)
-                            {
-                                notifier.ShowError($"Не удалось удалить снимок {CurrentSeries.DropPhotosSeries[i].Name}. Не удалось установить подключение. Проверьте интернет соединение.");
-                            }
+                            photosForDelete.Add(CurrentSeries.DropPhotosSeries[i]);
+                            photosForDeleteIds.Add(CurrentSeries.DropPhotosSeries[i].DropPhotoId);
                         }
 
-                        notifier.ShowSuccess("Все снимки удалены");
+                        DropPhoto currentDeletedPhoto = new DropPhoto();
+
+                        try
+                        {
+                            await _dDropRepository.DeleteListOfDropPhoto(photosForDeleteIds);
+                            foreach (var photoForDelete in photosForDelete)
+                            {
+                                currentDeletedPhoto = photoForDelete;
+                                CurrentSeries.DropPhotosSeries.Remove(photoForDelete);
+                            }
+                            notifier.ShowSuccess("Все снимки удалены");
+                        }
+                        catch (Exception)
+                        {
+                            notifier.ShowError($"Не удалось удалить снимок {currentDeletedPhoto.Name}. Не удалось установить подключение. Проверьте интернет соединение.");
+                        }                       
                     }
                 }
             }
@@ -809,9 +830,7 @@ namespace DDrop
         private async void EditInputPhotoButton_Click(object sender, RoutedEventArgs e)
         {
             if (!string.IsNullOrWhiteSpace(PixelsInMillimeterTextBox.Text) && PixelsInMillimeterTextBox.Text != "0")
-            {
-                CurrentDropPhoto = CurrentSeries.DropPhotosSeries[Photos.SelectedIndex];
-
+            {                
                 if (CurrentDropPhoto.HorizontalLine == null)
                     CurrentDropPhoto.HorizontalLine = new Line();
 
