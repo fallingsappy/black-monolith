@@ -103,6 +103,7 @@
                             <DataGridTextColumn Header="Радиус, м" Binding="{Binding Drop.RadiusInMeters}"/>
                             <DataGridTextColumn Header="Объем, кубические метры" Binding="{Binding Drop.VolumeInCubicalMeters}"/>
                             <DataGridTextColumn Header="Время добавления" Binding="{Binding AddedDate}"/>
+                            <DataGridTextColumn Header="Время создания" Binding="{Binding CreationDateTime}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                     <GridSplitter HorizontalAlignment="Center" 
@@ -136,6 +137,7 @@
                                         </Button>
                                         <TextBox x:Name="IntervalBetweenPhotos" Text="{Binding ElementName=AppMainWindow, Path=CurrentSeries.IntervalBetweenPhotos}" TextChanged="IntervalBetweenPhotos_TextChanged" Height="20" Margin="0,3,10,0" TextWrapping="Wrap"  VerticalAlignment="Top" HorizontalAlignment="Right" Width="115"/>
                                         <Label Content="Интервал между снимками (c):" Margin="0,0,130,-4" VerticalAlignment="Top" Height="30" Background="{x:Null}" HorizontalAlignment="Right" Width="180"/>
+                                        <CheckBox x:Name="CreationTimeCheckBox" Checked="CreationTimeCheckBox_Checked" Unchecked="CreationTimeCheckBox_Unchecked" Content="Использовать время создания снимка" Margin="0,6,315,3" HorizontalAlignment="Right" Width="245"/>
                                     </Grid>
                                 </Border>
                                 <DataGrid CellEditEnding="Photos_CellEditEnding" utilityVisualHelper:VisualHelper.EnableRowsMove="True" CanUserSortColumns="False" CanUserAddRows="false" AutoGenerateColumns="False" Grid.Row="0" HorizontalAlignment="Stretch" Name="Photos" Margin="10,43,10,10" SelectionMode="Single" SelectionChanged="Photos_SelectionChanged" IsReadOnly="False" ItemsSource="{Binding CurrentSeries.DropPhotosSeries}">
@@ -155,6 +157,7 @@
                                         <DataGridTextColumn IsReadOnly="True" Header="Радиус, м" Binding="{Binding Drop.RadiusInMeters}"/>
                                         <DataGridTextColumn IsReadOnly="True" Header="Объем, кубические метры" Binding="{Binding Drop.VolumeInCubicalMeters}"/>
                                         <DataGridTextColumn IsReadOnly="True" Header="Время добавления" Binding="{Binding AddedDate}"/>
+                                        <DataGridTextColumn IsReadOnly="True" Header="Время создания" Binding="{Binding CreationDateTime}"/>
                                         <DataGridTemplateColumn IsReadOnly="True" CanUserResize="False">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>

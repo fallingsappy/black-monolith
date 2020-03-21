@@ -13,9 +13,7 @@ namespace DDrop.Utility.Mappers
     {
         public static async Task<ObservableCollection<Series>> ImportLocalSeriesAsync(string fileName, User user)
         {
-            List<SerializableSeries> series = new List<SerializableSeries>();
-
-            series = await Task.Run(() => LocalSeriesProvider.DeserializeAsync<List<SerializableSeries>>(fileName));
+            var series = await Task.Run(() => LocalSeriesProvider.DeserializeAsync<List<SerializableSeries>>(fileName));
 
             return ConvertSeriesToSeriesViewModel(series, user);
         }
@@ -44,7 +42,10 @@ namespace DDrop.Utility.Mappers
                             ZDiameterInPixels = dropPhoto.ZDiameterInPixels,
                             AddedDate = dropPhoto.AddedDate,
                             CurrentSeries = addSingleSeriesViewModel,
-                            CurrentSeriesId = addSingleSeriesViewModel.SeriesId
+                            CurrentSeriesId = addSingleSeriesViewModel.SeriesId,
+                            SimpleHorizontalLineId = dropPhoto.SimpleHorizontalLineId,
+                            SimpleVerticalLineId = dropPhoto.SimpleVerticalLineId,
+                            CreationDateTime = dropPhoto.CreationDateTime,
                         };
 
                         if (dropPhoto.SimpleHorizontalLine != null)
@@ -98,7 +99,8 @@ namespace DDrop.Utility.Mappers
                         PixelsInMillimeter = series[i].ReferencePhotoForSeries.PixelsInMillimeter,
                         ReferencePhotoId = series[i].ReferencePhotoForSeries.ReferencePhotoId,
                         SimpleLine = series[i].ReferencePhotoForSeries.SimpleLine,
-                        Series = addSingleSeriesViewModel
+                        Series = addSingleSeriesViewModel,
+                        SimpleReferencePhotoLineId = series[i].ReferencePhotoForSeries.SimpleReferencePhotoLineId
                     };
                 }
 
@@ -139,20 +141,20 @@ namespace DDrop.Utility.Mappers
             List<SerializableSeries> series = new List<SerializableSeries>();
             foreach (var userSeries in user.UserSeries)
             {
-                series.Add(SingleSeriesViewModelToSingleSeries(userSeries));
+                series.Add(SingleSeriesViewModelToSingleSeries(userSeries, user));
             }
 
             return series;
         }
 
-        public static SerializableSeries SingleSeriesViewModelToSingleSeries(Series userSeries)
+        public static SerializableSeries SingleSeriesViewModelToSingleSeries(Series userSeries, User user)
         {
-            SerializableSeries SingleSeries = new SerializableSeries();
+            SerializableSeries singleSeries = new SerializableSeries();
             List<SerializableDropPhoto> dropPhotosSeries = new List<SerializableDropPhoto>();
 
             foreach (var dropPhoto in userSeries.DropPhotosSeries)
             {
-                dropPhotosSeries.Add(new SerializableDropPhoto()
+                dropPhotosSeries.Add(new SerializableDropPhoto
                 {
                     Name = dropPhoto.Name,
                     Content = dropPhoto.Content,
@@ -163,7 +165,8 @@ namespace DDrop.Utility.Mappers
                         VolumeInCubicalMeters = dropPhoto.Drop.VolumeInCubicalMeters,
                         XDiameterInMeters = dropPhoto.Drop.XDiameterInMeters,
                         YDiameterInMeters = dropPhoto.Drop.YDiameterInMeters,
-                        ZDiameterInMeters = dropPhoto.Drop.ZDiameterInMeters
+                        ZDiameterInMeters = dropPhoto.Drop.ZDiameterInMeters,
+                        DropPhoto = dropPhoto
                     },
                     AddedDate = dropPhoto.AddedDate,
                     DropPhotoId = dropPhoto.DropPhotoId,
@@ -171,7 +174,12 @@ namespace DDrop.Utility.Mappers
                     SimpleVerticalLine = dropPhoto.SimpleVerticalLine,
                     XDiameterInPixels = dropPhoto.XDiameterInPixels,
                     YDiameterInPixels = dropPhoto.YDiameterInPixels,
-                    ZDiameterInPixels = dropPhoto.ZDiameterInPixels
+                    ZDiameterInPixels = dropPhoto.ZDiameterInPixels,
+                    SimpleHorizontalLineId = dropPhoto.SimpleHorizontalLineId,
+                    SimpleVerticalLineId = dropPhoto.SimpleVerticalLineId,
+                    CreationDateTime = dropPhoto.CreationDateTime,
+                    CurrentSeries = dropPhoto.CurrentSeries,
+                    CurrentSeriesId = dropPhoto.CurrentSeriesId
                 });
             }
 
@@ -183,19 +191,23 @@ namespace DDrop.Utility.Mappers
                     Name = userSeries.ReferencePhotoForSeries.Name,
                     PixelsInMillimeter = userSeries.ReferencePhotoForSeries.PixelsInMillimeter,
                     ReferencePhotoId = userSeries.ReferencePhotoForSeries.ReferencePhotoId,
-                    SimpleLine = userSeries.ReferencePhotoForSeries.SimpleLine
+                    SimpleLine = userSeries.ReferencePhotoForSeries.SimpleLine,
+                    Series = userSeries,
+                    SimpleReferencePhotoLineId = userSeries.ReferencePhotoForSeries.SimpleReferencePhotoLineId
                 };
 
-                SingleSeries.ReferencePhotoForSeries = referencePhoto;
+                singleSeries.ReferencePhotoForSeries = referencePhoto;
             }
 
-            SingleSeries.DropPhotosSeries = dropPhotosSeries;
-            SingleSeries.IntervalBetweenPhotos = userSeries.IntervalBetweenPhotos;
-            SingleSeries.AddedDate = userSeries.AddedDate;
-            SingleSeries.SeriesId = userSeries.SeriesId;
-            SingleSeries.Title = userSeries.Title;
+            singleSeries.DropPhotosSeries = dropPhotosSeries;
+            singleSeries.IntervalBetweenPhotos = userSeries.IntervalBetweenPhotos;
+            singleSeries.AddedDate = userSeries.AddedDate;
+            singleSeries.SeriesId = userSeries.SeriesId;
+            singleSeries.Title = userSeries.Title;
+            singleSeries.CurrentUser = user;
+            singleSeries.CurrentUserId = user.UserId;
 
-            return SingleSeries;
+            return singleSeries;
         }
 
         public static SerializableDropPhoto DropPhotoViewModelToDropPhoto(DropPhoto dropPhotoViewModel)

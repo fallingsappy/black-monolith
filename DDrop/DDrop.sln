@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.1000
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29123.88
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDrop", "DDrop\DDrop.csproj", "{A98D9D65-E225-44A2-BA68-7F38ED4F590D}"
 EndProject
@@ -16,6 +16,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDrop.Utility", "DDrop.Utility\DDrop.Utility.csproj", "{85478E42-C1EA-4839-87E1-7CAAB53CF4C8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDrop.Db", "DDrop.Db\DDrop.Db.csproj", "{8CE97B04-F51F-4350-A8CA-A82E40845793}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDrop.UnitTests", "DDrop.UnitTests\DDrop.UnitTests.csproj", "{20E2AA45-6ED1-4E9B-BEA1-3900FEA16901}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{8CE97B04-F51F-4350-A8CA-A82E40845793}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8CE97B04-F51F-4350-A8CA-A82E40845793}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8CE97B04-F51F-4350-A8CA-A82E40845793}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20E2AA45-6ED1-4E9B-BEA1-3900FEA16901}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20E2AA45-6ED1-4E9B-BEA1-3900FEA16901}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20E2AA45-6ED1-4E9B-BEA1-3900FEA16901}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20E2AA45-6ED1-4E9B-BEA1-3900FEA16901}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

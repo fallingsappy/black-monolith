@@ -26,7 +26,7 @@ namespace DDrop.Db.DbEntities
         public byte[] Content { get; set; }
         public virtual DbDrop Drop { get; set; }
         public string AddedDate { get; set; }
-
+        public string CreationDateTime { get; set; }
         public Guid CurrentSeriesId { get; set; }
         public DbSeries CurrentSeries { get; set; }
     }

@@ -260,6 +260,20 @@ namespace DDrop.BE.Models
             }
         }
 
+        private string _creationDateTime;
+        public string CreationDateTime
+        {
+            get
+            {
+                return _creationDateTime;
+            }
+            set
+            {
+                _creationDateTime = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("CreationDateTime"));
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged(PropertyChangedEventArgs e)
         {

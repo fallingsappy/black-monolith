@@ -706,7 +706,6 @@ E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\MainWindow.baml
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\DDrop.g.resources
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\DDrop.Properties.Resources.resources
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\DDrop.csproj.GenerateResource.cache
-E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\DDrop.csproj.CoreCompileInputs.cache
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\DDrop.csproj.CopyComplete
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\DDrop.exe
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\DDrop.pdb

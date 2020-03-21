@@ -317,7 +317,7 @@ namespace DDrop.Utility.Mappers
             return addSeriesViewModel;
         }
 
-        public static DbDropPhoto DropPhotoToDbDropPhoto(DropPhoto dropPhotoViewModel, DbSeries dbSeries)
+        public static DbDropPhoto DropPhotoToDbDropPhoto(DropPhoto dropPhotoViewModel, Guid dbSeriesId)
         {
             var dbDropPhoto = new DbDropPhoto
             {
@@ -328,8 +328,8 @@ namespace DDrop.Utility.Mappers
                 XDiameterInPixels = dropPhotoViewModel.XDiameterInPixels,
                 YDiameterInPixels = dropPhotoViewModel.YDiameterInPixels,
                 ZDiameterInPixels = dropPhotoViewModel.ZDiameterInPixels,
-                //CurrentSeries = dbSeries,
-                CurrentSeriesId = dbSeries.SeriesId,
+
+                CurrentSeriesId = dbSeriesId,
             };
 
             if (dropPhotoViewModel.Drop != null)

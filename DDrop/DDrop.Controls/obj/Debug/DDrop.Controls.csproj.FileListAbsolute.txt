@@ -229,7 +229,6 @@ E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Controls\obj\Debug\Scatte
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.g.resources
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.Properties.Resources.resources
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.csproj.GenerateResource.cache
-E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.csproj.CoreCompileInputs.cache
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.csproj.CopyComplete
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.dll
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.pdb

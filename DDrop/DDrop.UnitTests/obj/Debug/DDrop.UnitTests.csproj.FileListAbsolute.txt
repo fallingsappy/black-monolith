@@ -1,0 +1,16 @@
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.UnitTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.UnitTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.UnitTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.UnitTests\bin\Debug\DDrop.UnitTests.dll
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.UnitTests\bin\Debug\DDrop.UnitTests.pdb
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.UnitTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.dll
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.UnitTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.UnitTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.xml
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.UnitTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.xml
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.UnitTests\obj\Debug\DDrop.UnitTests.csprojAssemblyReference.cache
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.UnitTests\obj\Debug\DDrop.UnitTests.csproj.CopyComplete
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.UnitTests\obj\Debug\DDrop.UnitTests.dll
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.UnitTests\obj\Debug\DDrop.UnitTests.pdb
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.UnitTests\bin\Debug\ru\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.resources.dll
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.UnitTests\bin\Debug\ru\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.resources.dll
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.UnitTests\bin\Debug\ru\Microsoft.VisualStudio.TestPlatform.TestFramework.resources.dll

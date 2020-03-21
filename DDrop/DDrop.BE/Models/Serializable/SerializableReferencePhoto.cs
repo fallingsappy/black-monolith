@@ -7,6 +7,7 @@ namespace DDrop.BE.Models.Serializable
         public Guid ReferencePhotoId { get; set; }
         public string Name { get; set; }
         public byte[] Content { get; set; }
+        public Guid? SimpleReferencePhotoLineId { get; set; }
         public virtual SimpleLine SimpleLine { get; set; }
         public int PixelsInMillimeter { get; set; }
 

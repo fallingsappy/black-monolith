@@ -17,7 +17,7 @@ namespace DDrop.DAL
         Task UpdateSeriesName(string seriesName, Guid seriesId);
         Task UpdateSeriesIntervalBetweenPhotos(int interval, Guid seriesId);
         Task DeleteListOfDropPhoto(List<Guid> dropPhotoIds);
-        Task CreateDropPhoto(DbDropPhoto dropPhoto, DbSeries series);
+        Task CreateDropPhoto(DbDropPhoto dropPhoto, Guid seriesId);
         Task UpdatDropPhoto(DbDropPhoto dropPhoto);
         Task DeleteDropPhoto(Guid dropPhotoId);
         Task UpdateDropPhotoName(string newName, Guid dropPhotoId);

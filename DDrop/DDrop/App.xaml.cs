@@ -20,8 +20,7 @@ namespace DDrop
             container.RegisterType<IDropPhotoBL, DropPhotoBL>();
             container.RegisterType<IDDropRepository, DDropRepository>();
 
-            var window = container.Resolve<MainWindow>();
-            //window.Show();
+            container.Resolve<MainWindow>();
         }
     }
 }

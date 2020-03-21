@@ -7,7 +7,11 @@
         Title="Опции" Height="367" Width="800" MinWidth="400" MinHeight="50" Icon="Resources/Icons/MainIcon.png" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     <Grid>
         <TabControl>
-            <TabItem Header="Общие"></TabItem>
+            <TabItem Header="Общие">
+                <Grid>
+
+                </Grid>
+            </TabItem>
             <TabItem Header="Расчет"></TabItem>
             <TabItem Header="Python расчет">
                 <Grid>

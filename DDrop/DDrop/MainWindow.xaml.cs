@@ -24,6 +24,7 @@ using DDrop.DAL;
 using DDrop.Utility.Mappers;
 using System.Collections.Generic;
 using System.Data;
+using DDrop.BL.ImageProcessing.CSharp;
 
 namespace DDrop
 {
@@ -122,6 +123,8 @@ namespace DDrop
             _dropPhotoBL = dropPhotoBL;
             _dDropRepository = dDropRepository;
             AppMainWindow.Show();
+            DropletImageProcessor dropletImageProcessor = new DropletImageProcessor();
+            dropletImageProcessor.GetDiameters();
             Login login = new Login(_dDropRepository, notifier)
             {
                 Owner = AppMainWindow
@@ -581,6 +584,16 @@ namespace DDrop
             }
         }
 
+        private void CreationTimeCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            IntervalBetweenPhotos.IsEnabled = false;
+        }
+
+        private void CreationTimeCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            IntervalBetweenPhotos.IsEnabled = true;
+        }
+
         #endregion
 
         #region Drop Photos
@@ -689,6 +702,7 @@ namespace DDrop
                         AddedDate = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"),
                         CurrentSeries = CurrentSeries,
                         CurrentSeriesId = CurrentSeries.SeriesId,
+                        CreationDateTime = File.GetCreationTime(openFileDialog.FileNames[i]).ToString(),
                     };
                     imageForAdding.Drop = new Drop()
                     {
@@ -703,8 +717,7 @@ namespace DDrop
                     {
                         try
                         {
-                            var dbSeries = _dDropRepository.GetSeriesByUserId(User.UserId);
-                            await _dDropRepository.CreateDropPhoto(DDropDbEntitiesMapper.DropPhotoToDbDropPhoto(imageForAdding, dbSeries.FirstOrDefault(x => x.SeriesId == CurrentSeries.SeriesId)), dbSeries.Where(x=>x.SeriesId == CurrentSeries.SeriesId).FirstOrDefault());
+                            await _dDropRepository.CreateDropPhoto(DDropDbEntitiesMapper.DropPhotoToDbDropPhoto(imageForAdding, CurrentSeries.SeriesId), CurrentSeries.SeriesId);
 
                             CurrentSeries.DropPhotosSeries.Add(imageForAdding);
 
@@ -875,8 +888,7 @@ namespace DDrop
                             Convert.ToInt32(PixelsInMillimeterTextBox.Text), CurrentDropPhoto.XDiameterInPixels,
                             CurrentDropPhoto.YDiameterInPixels, CurrentDropPhoto);
 
-                        var dbSeries = _dDropRepository.GetSeriesByUserId(User.UserId);
-                        var dbPhoto = DDropDbEntitiesMapper.DropPhotoToDbDropPhoto(CurrentDropPhoto, dbSeries.FirstOrDefault(x => x.SeriesId == CurrentSeries.SeriesId));
+                        var dbPhoto = DDropDbEntitiesMapper.DropPhotoToDbDropPhoto(CurrentDropPhoto, CurrentSeries.SeriesId);
 
                         await _dDropRepository.UpdatDropPhoto(dbPhoto);
 
@@ -1272,6 +1284,5 @@ namespace DDrop
         }
 
         #endregion
-
     }
 }

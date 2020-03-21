@@ -20,7 +20,7 @@ namespace DDrop.DAL
             {               
                 try
                 {
-                    var createdUser = context.Users.Add(user);
+                    context.Users.Add(user);
 
                     await context.SaveChangesAsync();
                 }
@@ -87,7 +87,7 @@ namespace DDrop.DAL
                 try
                 {
                     context.Users.Attach(series.CurrentUser);
-                    var createdSeries = context.Series.Add(series);
+                    context.Series.Add(series);
 
                     await context.SaveChangesAsync();
                 }
@@ -153,27 +153,24 @@ namespace DDrop.DAL
 
                         List<DbDropPhoto> dbDropPhotoForAdd = new List<DbDropPhoto>();
 
-                        if (dropPhotoForSeries != null)
+                        foreach (var dropPhoto in dropPhotoForSeries)
                         {
-                            foreach (var dropPhoto in dropPhotoForSeries)
+                            dbDropPhotoForAdd.Add(new DbDropPhoto
                             {
-                                dbDropPhotoForAdd.Add(new DbDropPhoto
-                                {
-                                    AddedDate = dropPhoto.AddedDate,
-                                    CurrentSeries = dropPhoto.CurrentSeries,
-                                    CurrentSeriesId = dropPhoto.CurrentSeriesId,
-                                    Drop = dropPhoto.Drop,
-                                    DropPhotoId = dropPhoto.DropPhotoId,
-                                    Name = dropPhoto.Name,
-                                    SimpleHorizontalLine = dropPhoto.SimpleHorizontalLine,
-                                    SimpleHorizontalLineId = dropPhoto.SimpleHorizontalLineId,
-                                    SimpleVerticalLine = dropPhoto.SimpleVerticalLine,
-                                    SimpleVerticalLineId = dropPhoto.SimpleVerticalLineId,
-                                    XDiameterInPixels = dropPhoto.XDiameterInPixels,
-                                    YDiameterInPixels = dropPhoto.YDiameterInPixels,
-                                    ZDiameterInPixels = dropPhoto.ZDiameterInPixels
-                                });
-                            }
+                                AddedDate = dropPhoto.AddedDate,
+                                CurrentSeries = dropPhoto.CurrentSeries,
+                                CurrentSeriesId = dropPhoto.CurrentSeriesId,
+                                Drop = dropPhoto.Drop,
+                                DropPhotoId = dropPhoto.DropPhotoId,
+                                Name = dropPhoto.Name,
+                                SimpleHorizontalLine = dropPhoto.SimpleHorizontalLine,
+                                SimpleHorizontalLineId = dropPhoto.SimpleHorizontalLineId,
+                                SimpleVerticalLine = dropPhoto.SimpleVerticalLine,
+                                SimpleVerticalLineId = dropPhoto.SimpleVerticalLineId,
+                                XDiameterInPixels = dropPhoto.XDiameterInPixels,
+                                YDiameterInPixels = dropPhoto.YDiameterInPixels,
+                                ZDiameterInPixels = dropPhoto.ZDiameterInPixels
+                            });
                         }
 
                         dbSeries.Add(new DbSeries
@@ -193,7 +190,7 @@ namespace DDrop.DAL
                                 SimpleReferencePhotoLineId = referencePhotoForSeries.SimpleReferencePhotoLineId,
                                 Series = referencePhotoForSeries.Series
                             } : null,
-                            DropPhotosSeries = dbDropPhotoForAdd != null ? dbDropPhotoForAdd : null
+                            DropPhotosSeries = dbDropPhotoForAdd
                         });
                     }
 
@@ -226,7 +223,7 @@ namespace DDrop.DAL
                     if (series.ReferencePhotoForSeries != null && series.ReferencePhotoForSeries.SimpleReferencePhotoLine != null)
                         context.SimpleLines.Remove(series.ReferencePhotoForSeries.SimpleReferencePhotoLine);
 
-                    var createdSeries = context.Series.Remove(series);
+                    context.Series.Remove(series);
 
                     await context.SaveChangesAsync();
                 }
@@ -270,9 +267,9 @@ namespace DDrop.DAL
             {
                 try
                 {
-                    var sereis = await context.Series.FirstOrDefaultAsync(x => x.SeriesId == seriesId);
+                    var series = await context.Series.FirstOrDefaultAsync(x => x.SeriesId == seriesId);
 
-                    sereis.Title = seriesName;
+                    if (series != null) series.Title = seriesName;
 
                     await context.SaveChangesAsync();
                 }
@@ -293,9 +290,9 @@ namespace DDrop.DAL
             {
                 try
                 {
-                    var sereis = await context.Series.FirstOrDefaultAsync(x => x.SeriesId == seriesId);
+                    var series = await context.Series.FirstOrDefaultAsync(x => x.SeriesId == seriesId);
 
-                    sereis.IntervalBetweenPhotos = interval;
+                    if (series != null) series.IntervalBetweenPhotos = interval;
 
                     await context.SaveChangesAsync();
                 }
@@ -314,7 +311,7 @@ namespace DDrop.DAL
 
         #region Drop Photo
 
-        public async Task CreateDropPhoto(DbDropPhoto dropPhoto, DbSeries series)
+        public async Task CreateDropPhoto(DbDropPhoto dropPhoto, Guid seriesId)
         {
             using (var context = new DDropContext())
             {
@@ -324,7 +321,7 @@ namespace DDrop.DAL
                     {
                         AddedDate = dropPhoto.AddedDate,
                         Content = dropPhoto.Content,
-                        CurrentSeriesId = series.SeriesId,
+                        CurrentSeriesId = seriesId,
                         Drop = new DbDrop
                         {
                             DropId = dropPhoto.DropPhotoId,
@@ -342,7 +339,8 @@ namespace DDrop.DAL
                         SimpleVerticalLineId = dropPhoto.SimpleVerticalLineId,
                         XDiameterInPixels = dropPhoto.XDiameterInPixels,
                         YDiameterInPixels = dropPhoto.YDiameterInPixels,
-                        ZDiameterInPixels = dropPhoto.ZDiameterInPixels
+                        ZDiameterInPixels = dropPhoto.ZDiameterInPixels,
+                        CreationDateTime = dropPhoto.CreationDateTime
                     };
 
                     context.DropPhotos.Add(ph);
@@ -391,7 +389,7 @@ namespace DDrop.DAL
                 {
                     var dropPhoto = await context.DropPhotos.FirstOrDefaultAsync(x => x.DropPhotoId == dropPhotoId);
 
-                    dropPhoto.Name = newName;
+                    if (dropPhoto != null) dropPhoto.Name = newName;
 
                     await context.SaveChangesAsync();
                 }
@@ -414,7 +412,7 @@ namespace DDrop.DAL
                 {
                     var dropPhoto = await context.DropPhotos.FirstOrDefaultAsync(x => x.DropPhotoId == dropPhotoId);
 
-                    context.DropPhotos.Attach(dropPhoto);
+                    context.DropPhotos.Attach(dropPhoto ?? throw new InvalidOperationException());
                     if (dropPhoto.SimpleVerticalLine != null)
                         context.SimpleLines.Remove(dropPhoto.SimpleVerticalLine);
                     if (dropPhoto.SimpleHorizontalLine != null)
@@ -445,7 +443,7 @@ namespace DDrop.DAL
                     {
                         var dropPhoto = await context.DropPhotos.FirstOrDefaultAsync(x => x.DropPhotoId == dropPhotoId);
 
-                        context.DropPhotos.Attach(dropPhoto);
+                        context.DropPhotos.Attach(dropPhoto ?? throw new InvalidOperationException());
                         if (dropPhoto.SimpleVerticalLine != null)
                             context.SimpleLines.Remove(dropPhoto.SimpleVerticalLine);
                         if (dropPhoto.SimpleHorizontalLine != null)
@@ -496,7 +494,7 @@ namespace DDrop.DAL
             {
                 try
                 {
-                    var createdReferencePhoto = context.ReferencePhotos.Add(referencePhoto);
+                    context.ReferencePhotos.Add(referencePhoto);
 
                     await context.SaveChangesAsync();
                 }
@@ -542,7 +540,7 @@ namespace DDrop.DAL
                 {
                     var referencePhoto = await context.ReferencePhotos.FirstOrDefaultAsync(x => x.ReferencePhotoId == dbReferencePhotoId);
 
-                    context.ReferencePhotos.Attach(referencePhoto);
+                    context.ReferencePhotos.Attach(referencePhoto ?? throw new InvalidOperationException());
                     context.SimpleLines.Remove(referencePhoto.SimpleReferencePhotoLine);
                     context.ReferencePhotos.Remove(referencePhoto);
 
