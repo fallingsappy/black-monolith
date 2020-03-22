@@ -11,7 +11,7 @@ namespace DDrop
     /// <summary>
     /// Логика взаимодействия для ManualEdit.xaml
     /// </summary>
-    public partial class ManualEdit : Window
+    public partial class ManualEdit
     {
         private int _initialXDiameterInPixels;
         private int _initialYDiameterInPixels;
@@ -64,6 +64,8 @@ namespace DDrop
             {
                 SavePixelDiameters();
             }
+
+            Close();
         }
 
         private void SavePixelDiameters()

@@ -232,7 +232,10 @@ namespace DDrop
                 MainWindowPixelDrawer.CanDrawing.Children.Remove(old.ReferencePhotoForSeries.Line);
 
             if (CurrentSeries.ReferencePhotoForSeries?.Line != null)
+            {
+                MainWindowPixelDrawer.CanDrawing.Children.Remove(CurrentSeries.ReferencePhotoForSeries.Line);
                 MainWindowPixelDrawer.CanDrawing.Children.Add(CurrentSeries.ReferencePhotoForSeries.Line);
+            }
         }
 
         private async void AddNewSeries_OnClick(object sender, RoutedEventArgs e)
@@ -791,6 +794,13 @@ namespace DDrop
             {
                 try
                 {
+                    if (e.RemovedItems.Count > 0)
+                    {
+                        var oldCurrentPhoto = e.RemovedItems[0] as DropPhoto;
+                        CurrentSeries.DropPhotosSeries.FirstOrDefault(x => oldCurrentPhoto != null && x.DropPhotoId == oldCurrentPhoto.DropPhotoId)
+                            .Content = null;
+                    }
+
                     CurrentDropPhoto = CurrentSeries.DropPhotosSeries[Photos.SelectedIndex];
                     CurrentDropPhoto.Content = await _dDropRepository.GetDropPhotoContent(selectedFile.DropPhotoId);
                     ImgCurrent.Source = ImageInterpreter.LoadImage(CurrentDropPhoto.Content);
@@ -903,6 +913,8 @@ namespace DDrop
 
         private async void EditInputPhotoButton_Click(object sender, RoutedEventArgs e)
         {
+            TogglePhotosTable();
+
             if (!string.IsNullOrWhiteSpace(PixelsInMillimeterTextBox.Text) && PixelsInMillimeterTextBox.Text != "0")
             {                
                 if (CurrentDropPhoto.HorizontalLine == null)
@@ -910,57 +922,61 @@ namespace DDrop
 
                 if (CurrentDropPhoto.VerticalLine == null)
                     CurrentDropPhoto.VerticalLine = new Line();
-                if (CurrentDropPhoto.Content != null)
+
+                if (CurrentDropPhoto.Content == null)
+                    CurrentDropPhoto.Content = await _dDropRepository.GetDropPhotoContent(CurrentDropPhoto.DropPhotoId);
+
+                ManualEdit manualEdit = new ManualEdit(CurrentDropPhoto);
+                manualEdit.ShowDialog();
+
+                if (CurrentDropPhoto.XDiameterInPixels != 0 && CurrentDropPhoto.YDiameterInPixels != 0)
                 {
-                    ManualEdit manualEdit = new ManualEdit(CurrentDropPhoto);
-                    manualEdit.ShowDialog();
-
-                    if (CurrentDropPhoto.XDiameterInPixels != 0 && CurrentDropPhoto.YDiameterInPixels != 0)
+                    Drop tempDrop = new Drop
                     {
-                        Drop tempDrop = new Drop
-                        {
-                            DropId = CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].Drop.DropId,
-                            DropPhoto = CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].Drop.DropPhoto,
-                            RadiusInMeters = CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].Drop.RadiusInMeters,
-                            Series = CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].Drop.Series,
-                            VolumeInCubicalMeters = CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].Drop.VolumeInCubicalMeters,
-                            XDiameterInMeters = CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].Drop.XDiameterInMeters,
-                            YDiameterInMeters = CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].Drop.YDiameterInMeters,
-                            ZDiameterInMeters = CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].Drop.ZDiameterInMeters
-                        };
+                        DropId = CurrentDropPhoto.Drop.DropId,
+                        DropPhoto = CurrentDropPhoto.Drop.DropPhoto,
+                        RadiusInMeters = CurrentDropPhoto.Drop.RadiusInMeters,
+                        Series = CurrentDropPhoto.Drop.Series,
+                        VolumeInCubicalMeters = CurrentDropPhoto.Drop.VolumeInCubicalMeters,
+                        XDiameterInMeters = CurrentDropPhoto.Drop.XDiameterInMeters,
+                        YDiameterInMeters = CurrentDropPhoto.Drop.YDiameterInMeters,
+                        ZDiameterInMeters = CurrentDropPhoto.Drop.ZDiameterInMeters
+                    };
 
-                        try
-                        {
-                            DropletSizeCalculator.PerformCalculation(
-                                Convert.ToInt32(PixelsInMillimeterTextBox.Text), CurrentDropPhoto.XDiameterInPixels,
-                                CurrentDropPhoto.YDiameterInPixels, CurrentDropPhoto);
+                    try
+                    {
+                        DropletSizeCalculator.PerformCalculation(
+                            Convert.ToInt32(PixelsInMillimeterTextBox.Text), CurrentDropPhoto.XDiameterInPixels,
+                            CurrentDropPhoto.YDiameterInPixels, CurrentDropPhoto);
 
-                            var dbPhoto = DDropDbEntitiesMapper.DropPhotoToDbDropPhoto(CurrentDropPhoto, CurrentSeries.SeriesId);
+                        var dbPhoto = DDropDbEntitiesMapper.DropPhotoToDbDropPhoto(CurrentDropPhoto, CurrentSeries.SeriesId);
 
-                            await _dDropRepository.UpdateDropPhoto(dbPhoto);
+                        await _dDropRepository.UpdateDropPhoto(dbPhoto);
 
-                            notifier.ShowSuccess($"Расчет для снимка {CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].Name} выполнен.");
-                        }
-                        catch (Exception)
-                        {
-                            CurrentDropPhoto.Drop = tempDrop;
-                            notifier.ShowError("Не удалось сохранить результаты расчета. Не удалось установить подключение. Проверьте интернет соединение.");
-                        }
+                        notifier.ShowSuccess($"Расчет для снимка {CurrentDropPhoto.Name} выполнен.");
                     }
-                    else
+                    catch (Exception)
                     {
-                        notifier.ShowInformation($"Не указан один из диаметров. Расчет для снимка {CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].Name} не выполнен.");
+                        CurrentDropPhoto.Drop = tempDrop;
+                        notifier.ShowError("Не удалось сохранить результаты расчета. Не удалось установить подключение. Проверьте интернет соединение.");
                     }
                 }
                 else
                 {
-                    notifier.ShowInformation($"Снимок {CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].Name} все еще загружается.");
+                    notifier.ShowInformation($"Не указан один из диаметров. Расчет для снимка {CurrentDropPhoto.Name} не выполнен.");
                 }
             }
             else
             {
                 notifier.ShowInformation("Выберите референсное расстояние на референсном снимке.");
             }
+
+            TogglePhotosTable();
+        }
+
+        private void TogglePhotosTable()
+        {
+            Photos.IsEnabled = !Photos.IsEnabled;
         }
 
         private async void IntervalBetweenPhotos_TextChanged(object sender, TextChangedEventArgs e)
