@@ -86,6 +86,14 @@
     <Compile Include="Cryptography\PasswordOperations.cs" />
     <Compile Include="DataGrid\VisualHelper.cs" />
     <Compile Include="ExcelOperations\ExcelOperations.cs" />
+    <Compile Include="ExceptionHandling\ExceptionHandling\GlobalExceptionHandlerBase.cs" />
+    <Compile Include="ExceptionHandling\ExceptionHandling\WindowExceptionHandler.cs" />
+    <Compile Include="ExceptionHandling\Exceptions\SampleException.cs" />
+    <Compile Include="ExceptionHandling\Exceptions\UnknownAppDomainException.cs" />
+    <Compile Include="ExceptionHandling\ViewModels\ExceptionWindowViewModel.cs" />
+    <Compile Include="ExceptionHandling\Windows\ExceptionWindow.xaml.cs">
+      <DependentUpon>ExceptionWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ImageOperations\ImageInterpreter.cs" />
     <Compile Include="ImageOperations\ImageValidator.cs" />
     <Compile Include="Mappers\DDropDbEntitiesMapper.cs" />
@@ -109,6 +117,11 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Page Include="ExceptionHandling\Windows\ExceptionWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

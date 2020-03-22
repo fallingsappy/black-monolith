@@ -123,6 +123,7 @@ namespace DDrop
             _dropPhotoBL = dropPhotoBL;
             _dDropRepository = dDropRepository;
             AppMainWindow.Show();
+
             //DropletImageProcessor dropletImageProcessor = new DropletImageProcessor();
             //dropletImageProcessor.GetDiameters();
             Login login = new Login(_dDropRepository, notifier)

@@ -2,6 +2,7 @@
 using DDrop.BL.Series;
 using System.Windows;
 using DDrop.DAL;
+using DDrop.Utility.ExceptionHandling.ExceptionHandling;
 using Unity;
 
 namespace DDrop
@@ -11,6 +12,13 @@ namespace DDrop
     /// </summary>
     public partial class App : Application
     {
+        private readonly WindowExceptionHandler _exceptionHandler;
+
+        public App()
+        {
+            _exceptionHandler = new WindowExceptionHandler();
+        }
+
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
