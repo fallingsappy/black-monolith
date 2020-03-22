@@ -123,8 +123,8 @@ namespace DDrop
             _dropPhotoBL = dropPhotoBL;
             _dDropRepository = dDropRepository;
             AppMainWindow.Show();
-            DropletImageProcessor dropletImageProcessor = new DropletImageProcessor();
-            dropletImageProcessor.GetDiameters();
+            //DropletImageProcessor dropletImageProcessor = new DropletImageProcessor();
+            //dropletImageProcessor.GetDiameters();
             Login login = new Login(_dDropRepository, notifier)
             {
                 Owner = AppMainWindow
@@ -575,8 +575,11 @@ namespace DDrop
             var seriesNameCell = e.EditingElement as TextBox;
             try
             {
-                await _dDropRepository.UpdateSeriesName(seriesNameCell.Text, CurrentSeries.SeriesId);
-                notifier.ShowSuccess("Название серии изменено успешно.");
+                if (seriesNameCell != null)
+                {
+                    await _dDropRepository.UpdateSeriesName(seriesNameCell.Text, CurrentSeries.SeriesId);
+                    notifier.ShowSuccess("Название серии изменено успешно.");
+                }
             }
             catch (Exception)
             {
@@ -584,21 +587,60 @@ namespace DDrop
             }
         }
 
-        private void CreationTimeCheckBox_Checked(object sender, RoutedEventArgs e)
+        private async void CreationTimeCheckBox_Checked(object sender, RoutedEventArgs e)
         {
+            CurrentSeries.UseCreationDateTime = true;
             IntervalBetweenPhotos.IsEnabled = false;
+
+            try
+            {
+                await _dDropRepository.UseCreationDateTime(true, CurrentSeries.SeriesId);
+                notifier.ShowSuccess($"Серия {CurrentSeries.Title} использует время создания снимков. Порядок фотографий будет проигнорирован. График перестроен.");
+            }
+            catch
+            {
+                notifier.ShowError("Не удалось изменить режим построения графика. Не удалось установить подключение. Проверьте интернет соединение.");
+            }
         }
 
-        private void CreationTimeCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        private async void CreationTimeCheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
             IntervalBetweenPhotos.IsEnabled = true;
+            CurrentSeries.UseCreationDateTime = false;
+            try
+            {
+                await _dDropRepository.UseCreationDateTime(false, CurrentSeries.SeriesId);
+                notifier.ShowSuccess($"Серия {CurrentSeries.Title} использует интервал между снимками. График перестроен.");
+            }
+            catch
+            {
+                notifier.ShowError("Не удалось изменить режим построения графика. Не удалось установить подключение. Проверьте интернет соединение.");
+            }
+        }
+
+        private void EditPhotosOrder_OnClick(object sender, RoutedEventArgs e)
+        {
+            EditTable editTableWindow = new EditTable(CurrentSeries, _dDropRepository);
+
+            try
+            {
+                editTableWindow.ShowDialog();
+                notifier.ShowSuccess($"Порядок снимков для серии {CurrentSeries.Title} обновлен.");
+                Photos.ItemsSource = CurrentSeries.DropPhotosSeries;
+                SeriesPreviewDataGrid.ItemsSource = CurrentSeries.DropPhotosSeries;
+            }
+            catch
+            {
+                notifier.ShowError(
+                    $"Не удалось обновить порядок снимков для серии {CurrentSeries.Title}. Не удалось установить подключение. Проверьте интернет соединение.");
+            }
         }
 
         #endregion
 
         #region Drop Photos
 
-        private void AllSelectedPhotosChanged()
+        private async void AllSelectedPhotosChanged()
         {
             if (CurrentSeries.DropPhotosSeries != null)
             {
@@ -703,6 +745,7 @@ namespace DDrop
                         CurrentSeries = CurrentSeries,
                         CurrentSeriesId = CurrentSeries.SeriesId,
                         CreationDateTime = File.GetCreationTime(openFileDialog.FileNames[i]).ToString(),
+                        PhotoOrderInSeries = CurrentSeries.DropPhotosSeries.Count
                     };
                     imageForAdding.Drop = new Drop()
                     {
@@ -719,8 +762,9 @@ namespace DDrop
                         {
                             await _dDropRepository.CreateDropPhoto(DDropDbEntitiesMapper.DropPhotoToDbDropPhoto(imageForAdding, CurrentSeries.SeriesId), CurrentSeries.SeriesId);
 
+                            imageForAdding.Content = null;
                             CurrentSeries.DropPhotosSeries.Add(imageForAdding);
-
+                            
                             notifier.ShowSuccess($"Снимок {imageForAdding.Name} добавлен.");
                         }
                         catch (Exception)
@@ -787,11 +831,13 @@ namespace DDrop
                         try
                         {                           
                             await _dDropRepository.DeleteListOfDropPhoto(photosForDeleteIds);
+
                             foreach (var photoForDelete in photosForDelete)
                             {
                                 currentDeletedPhoto = photoForDelete;
                                 CurrentSeries.DropPhotosSeries.Remove(photoForDelete);
                             }
+
                             notifier.ShowSuccess("Выбранные снимки удалены");
                         }
                         catch (Exception)
@@ -864,45 +910,51 @@ namespace DDrop
 
                 if (CurrentDropPhoto.VerticalLine == null)
                     CurrentDropPhoto.VerticalLine = new Line();
-
-                ManualEdit manualEdit = new ManualEdit(CurrentDropPhoto);
-                manualEdit.ShowDialog();
-
-                if (CurrentDropPhoto.XDiameterInPixels != 0 && CurrentDropPhoto.YDiameterInPixels != 0)
+                if (CurrentDropPhoto.Content != null)
                 {
-                    Drop tempDrop = new Drop
+                    ManualEdit manualEdit = new ManualEdit(CurrentDropPhoto);
+                    manualEdit.ShowDialog();
+
+                    if (CurrentDropPhoto.XDiameterInPixels != 0 && CurrentDropPhoto.YDiameterInPixels != 0)
                     {
-                        DropId = CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].Drop.DropId,
-                        DropPhoto = CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].Drop.DropPhoto,
-                        RadiusInMeters = CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].Drop.RadiusInMeters,
-                        Series = CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].Drop.Series,
-                        VolumeInCubicalMeters = CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].Drop.VolumeInCubicalMeters,
-                        XDiameterInMeters = CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].Drop.XDiameterInMeters,
-                        YDiameterInMeters = CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].Drop.YDiameterInMeters,
-                        ZDiameterInMeters = CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].Drop.ZDiameterInMeters
-                    };
+                        Drop tempDrop = new Drop
+                        {
+                            DropId = CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].Drop.DropId,
+                            DropPhoto = CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].Drop.DropPhoto,
+                            RadiusInMeters = CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].Drop.RadiusInMeters,
+                            Series = CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].Drop.Series,
+                            VolumeInCubicalMeters = CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].Drop.VolumeInCubicalMeters,
+                            XDiameterInMeters = CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].Drop.XDiameterInMeters,
+                            YDiameterInMeters = CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].Drop.YDiameterInMeters,
+                            ZDiameterInMeters = CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].Drop.ZDiameterInMeters
+                        };
 
-                    try
-                    {
-                        DropletSizeCalculator.PerformCalculation(
-                            Convert.ToInt32(PixelsInMillimeterTextBox.Text), CurrentDropPhoto.XDiameterInPixels,
-                            CurrentDropPhoto.YDiameterInPixels, CurrentDropPhoto);
+                        try
+                        {
+                            DropletSizeCalculator.PerformCalculation(
+                                Convert.ToInt32(PixelsInMillimeterTextBox.Text), CurrentDropPhoto.XDiameterInPixels,
+                                CurrentDropPhoto.YDiameterInPixels, CurrentDropPhoto);
 
-                        var dbPhoto = DDropDbEntitiesMapper.DropPhotoToDbDropPhoto(CurrentDropPhoto, CurrentSeries.SeriesId);
+                            var dbPhoto = DDropDbEntitiesMapper.DropPhotoToDbDropPhoto(CurrentDropPhoto, CurrentSeries.SeriesId);
 
-                        await _dDropRepository.UpdatDropPhoto(dbPhoto);
+                            await _dDropRepository.UpdateDropPhoto(dbPhoto);
 
-                        notifier.ShowSuccess($"Расчет для снимка {CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].Name} выполнен.");
+                            notifier.ShowSuccess($"Расчет для снимка {CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].Name} выполнен.");
+                        }
+                        catch (Exception)
+                        {
+                            CurrentDropPhoto.Drop = tempDrop;
+                            notifier.ShowError("Не удалось сохранить результаты расчета. Не удалось установить подключение. Проверьте интернет соединение.");
+                        }
                     }
-                    catch (Exception)
+                    else
                     {
-                        CurrentDropPhoto.Drop = tempDrop;
-                        notifier.ShowError("Не удалось сохранить результаты расчета. Не удалось установить подключение. Проверьте интернет соединение.");
+                        notifier.ShowInformation($"Не указан один из диаметров. Расчет для снимка {CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].Name} не выполнен.");
                     }
                 }
                 else
                 {
-                    notifier.ShowInformation($"Не указан один из диаметров. Расчет для снимка {CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].Name} не выполнен.");
+                    notifier.ShowInformation($"Снимок {CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].Name} все еще загружается.");
                 }
             }
             else
@@ -943,8 +995,11 @@ namespace DDrop
             var photoNameCell = e.EditingElement as TextBox;
             try
             {
-                await _dDropRepository.UpdateDropPhotoName(photoNameCell.Text, CurrentDropPhoto.DropPhotoId);
-                notifier.ShowSuccess("Название снимка изменено успешно.");
+                if (photoNameCell != null)
+                {
+                    await _dDropRepository.UpdateDropPhotoName(photoNameCell.Text, CurrentDropPhoto.DropPhotoId);
+                    notifier.ShowSuccess("Название снимка изменено успешно.");
+                }
             }
             catch (Exception)
             {

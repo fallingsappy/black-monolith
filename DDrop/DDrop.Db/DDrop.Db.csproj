@@ -65,6 +65,14 @@
     <Compile Include="Migrations\202003210446365_AddedDateTime.designer.cs">
       <DependentUpon>202003210446365_AddedDateTime.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202003220519027_UseAddedDateTime.cs" />
+    <Compile Include="Migrations\202003220519027_UseAddedDateTime.designer.cs">
+      <DependentUpon>202003220519027_UseAddedDateTime.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003220813329_PhotoOrder.cs" />
+    <Compile Include="Migrations\202003220813329_PhotoOrder.designer.cs">
+      <DependentUpon>202003220813329_PhotoOrder.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -78,6 +86,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202003210446365_AddedDateTime.resx">
       <DependentUpon>202003210446365_AddedDateTime.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003220519027_UseAddedDateTime.resx">
+      <DependentUpon>202003220519027_UseAddedDateTime.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003220813329_PhotoOrder.resx">
+      <DependentUpon>202003220813329_PhotoOrder.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

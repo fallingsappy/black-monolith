@@ -58,13 +58,16 @@ namespace DDrop.Utility.Mappers
 
         public static DbSeries SingleSeriesToSingleDbSeries(Series userSeries, DbUser user)
         {
-            DbSeries singleSeries = new DbSeries();
-            singleSeries.IntervalBetweenPhotos = userSeries.IntervalBetweenPhotos;
-            singleSeries.AddedDate = userSeries.AddedDate;
-            singleSeries.SeriesId = userSeries.SeriesId;
-            singleSeries.Title = userSeries.Title;
-            singleSeries.CurrentUser = user;
-            singleSeries.CurrentUserId = user.UserId;
+            DbSeries singleSeries = new DbSeries
+            {
+                IntervalBetweenPhotos = userSeries.IntervalBetweenPhotos,
+                AddedDate = userSeries.AddedDate,
+                SeriesId = userSeries.SeriesId,
+                Title = userSeries.Title,
+                CurrentUser = user,
+                CurrentUserId = user.UserId,
+                UseCreationDateTime = userSeries.UseCreationDateTime
+            };
             List<DbDropPhoto> dropPhotosSeries = new List<DbDropPhoto>();
 
             foreach (var dropPhoto in userSeries.DropPhotosSeries)
@@ -80,6 +83,8 @@ namespace DDrop.Utility.Mappers
                     ZDiameterInPixels = dropPhoto.ZDiameterInPixels,
                     CurrentSeries = singleSeries,
                     CurrentSeriesId = singleSeries.SeriesId,
+                    CreationDateTime = dropPhoto.CreationDateTime,
+                    PhotoOrderInSeries = dropPhoto.PhotoOrderInSeries
                 };
                 if (dropPhoto.SimpleHorizontalLine != null)
                 {
@@ -169,15 +174,16 @@ namespace DDrop.Utility.Mappers
             {
                 for (int i = 0; i < series.Count; i++)
                 {
-                    Series addSingleSeriesViewModel = new Series();
-                    addSingleSeriesViewModel.AddedDate = series[i].AddedDate;
-                    addSingleSeriesViewModel.Title = series[i].Title;
-                    
-                    addSingleSeriesViewModel.IntervalBetweenPhotos = series[i].IntervalBetweenPhotos;
-                    addSingleSeriesViewModel.SeriesId = series[i].SeriesId;
-                    addSingleSeriesViewModel.CurrentUser = user;
-                    addSingleSeriesViewModel.CurrentUserId = user.UserId;
-                    ObservableCollection<DropPhoto> dropPhotosSeries = new ObservableCollection<DropPhoto>();
+                    Series addSingleSeriesViewModel = new Series
+                    {
+                        AddedDate = series[i].AddedDate,
+                        Title = series[i].Title,
+                        IntervalBetweenPhotos = series[i].IntervalBetweenPhotos,
+                        SeriesId = series[i].SeriesId,
+                        CurrentUser = user,
+                        CurrentUserId = user.UserId,
+                        UseCreationDateTime = series[i].UseCreationDateTime
+                    };
 
                     if (series[i].DropPhotosSeries != null)
                     {
@@ -194,6 +200,8 @@ namespace DDrop.Utility.Mappers
                                 AddedDate = dropPhoto.AddedDate,
                                 CurrentSeries = addSingleSeriesViewModel,
                                 CurrentSeriesId = addSingleSeriesViewModel.SeriesId,
+                                CreationDateTime = dropPhoto.CreationDateTime,
+                                PhotoOrderInSeries = dropPhoto.PhotoOrderInSeries
                             };
 
                             if (dropPhoto.SimpleHorizontalLine != null)
@@ -265,11 +273,9 @@ namespace DDrop.Utility.Mappers
                                 userDropPhoto.Drop = userDrop;
                             }
 
-                            dropPhotosSeries.Add(userDropPhoto);
+                            addSingleSeriesViewModel.DropPhotosSeries.Add(userDropPhoto);
                         }
                     }
-
-                    addSingleSeriesViewModel.DropPhotosSeries = dropPhotosSeries;
 
                     if (series[i].ReferencePhotoForSeries != null)
                     {
@@ -317,6 +323,18 @@ namespace DDrop.Utility.Mappers
             return addSeriesViewModel;
         }
 
+        public static List<DbDropPhoto> ListOfDropPhotosToListOfDbDropPhotos(ObservableCollection<DropPhoto> dropPhotos, Guid dbSeriesId)
+        {
+            List<DbDropPhoto> dbDropPhotos = new List<DbDropPhoto>();
+
+            foreach (var dropPhoto in dropPhotos)
+            {
+                dbDropPhotos.Add(DropPhotoToDbDropPhoto(dropPhoto, dbSeriesId));
+            }
+
+            return dbDropPhotos;
+        }
+
         public static DbDropPhoto DropPhotoToDbDropPhoto(DropPhoto dropPhotoViewModel, Guid dbSeriesId)
         {
             var dbDropPhoto = new DbDropPhoto
@@ -328,7 +346,8 @@ namespace DDrop.Utility.Mappers
                 XDiameterInPixels = dropPhotoViewModel.XDiameterInPixels,
                 YDiameterInPixels = dropPhotoViewModel.YDiameterInPixels,
                 ZDiameterInPixels = dropPhotoViewModel.ZDiameterInPixels,
-
+                CreationDateTime = dropPhotoViewModel.CreationDateTime,
+                PhotoOrderInSeries = dropPhotoViewModel.PhotoOrderInSeries,
                 CurrentSeriesId = dbSeriesId,
             };
 
@@ -386,8 +405,7 @@ namespace DDrop.Utility.Mappers
             {
                 Content = referencePhoto.Content,
                 ReferencePhotoId = referencePhoto.ReferencePhotoId,
-                Name = referencePhoto.Name,              
-                //Series = dbSeries,
+                Name = referencePhoto.Name,
                 PixelsInMillimeter = referencePhoto.PixelsInMillimeter
             };
 

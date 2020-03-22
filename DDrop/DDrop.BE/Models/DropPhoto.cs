@@ -274,6 +274,21 @@ namespace DDrop.BE.Models
             }
         }
 
+        private int _photoOrderInSeries;
+
+        public int PhotoOrderInSeries
+        {
+            get
+            {
+                return _photoOrderInSeries;
+            }
+            set
+            {
+                _photoOrderInSeries = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("PhotoOrderInSeries"));
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged(PropertyChangedEventArgs e)
         {

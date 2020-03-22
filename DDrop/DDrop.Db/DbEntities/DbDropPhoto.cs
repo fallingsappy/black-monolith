@@ -27,6 +27,7 @@ namespace DDrop.Db.DbEntities
         public virtual DbDrop Drop { get; set; }
         public string AddedDate { get; set; }
         public string CreationDateTime { get; set; }
+        public int PhotoOrderInSeries { get; set; }
         public Guid CurrentSeriesId { get; set; }
         public DbSeries CurrentSeries { get; set; }
     }

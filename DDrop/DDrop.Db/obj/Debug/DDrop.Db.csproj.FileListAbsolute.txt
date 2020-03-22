@@ -26,3 +26,5 @@ E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Db\obj\Debug\DDrop.Db.csp
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Db\obj\Debug\DDrop.Db.Migrations.initial.resources
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Db\obj\Debug\DDrop.Db.csproj.GenerateResource.cache
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Db\obj\Debug\DDrop.Db.Migrations.AddedDateTime.resources
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Db\obj\Debug\DDrop.Db.Migrations.UseAddedDateTime.resources
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Db\obj\Debug\DDrop.Db.Migrations.PhotoOrder.resources

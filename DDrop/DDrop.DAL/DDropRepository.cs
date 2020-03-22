@@ -102,6 +102,16 @@ namespace DDrop.DAL
             }
         }
 
+        public async Task AddListOfSeries()
+        {
+
+        }
+
+        public async Task AddSingleSeries()
+        {
+
+        }
+
         public List<DbSeries> GetSeriesByUserId(Guid dbUserId)
         {
             using (var context = new DDropContext())
@@ -116,6 +126,7 @@ namespace DDrop.DAL
                         x.AddedDate,
                         x.CurrentUserId,
                         x.CurrentUser,
+                        x.UseCreationDateTime,
                     }).ToList();
 
                     List<DbSeries> dbSeries = new List<DbSeries>();
@@ -148,7 +159,9 @@ namespace DDrop.DAL
                                 x.XDiameterInPixels,
                                 x.YDiameterInPixels,
                                 x.ZDiameterInPixels,
-                                x.AddedDate
+                                x.AddedDate,
+                                x.CreationDateTime,
+                                x.PhotoOrderInSeries
                             }).ToList();
 
                         List<DbDropPhoto> dbDropPhotoForAdd = new List<DbDropPhoto>();
@@ -169,7 +182,9 @@ namespace DDrop.DAL
                                 SimpleVerticalLineId = dropPhoto.SimpleVerticalLineId,
                                 XDiameterInPixels = dropPhoto.XDiameterInPixels,
                                 YDiameterInPixels = dropPhoto.YDiameterInPixels,
-                                ZDiameterInPixels = dropPhoto.ZDiameterInPixels
+                                ZDiameterInPixels = dropPhoto.ZDiameterInPixels,
+                                CreationDateTime = dropPhoto.CreationDateTime,
+                                PhotoOrderInSeries = dropPhoto.PhotoOrderInSeries,
                             });
                         }
 
@@ -177,6 +192,7 @@ namespace DDrop.DAL
                         {
                             Title = series.Title,
                             AddedDate = series.AddedDate,
+                            UseCreationDateTime = series.UseCreationDateTime,
                             CurrentUser = series.CurrentUser,
                             CurrentUserId = series.CurrentUserId,
                             IntervalBetweenPhotos = series.IntervalBetweenPhotos,
@@ -190,7 +206,7 @@ namespace DDrop.DAL
                                 SimpleReferencePhotoLineId = referencePhotoForSeries.SimpleReferencePhotoLineId,
                                 Series = referencePhotoForSeries.Series
                             } : null,
-                            DropPhotosSeries = dbDropPhotoForAdd
+                            DropPhotosSeries = dbDropPhotoForAdd.OrderBy(x => x.PhotoOrderInSeries).ToList()
                         });
                     }
 
@@ -238,6 +254,44 @@ namespace DDrop.DAL
             }
         }
 
+        public async Task DeleteListOfSeries(List<DbSeries> serieses)
+        {
+            using (var context = new DDropContext())
+            {
+                try
+                {
+                    foreach (var series in serieses)
+                    {
+                        context.Series.Attach(series);
+
+                        foreach (var dropPhoto in series.DropPhotosSeries)
+                        {
+                            if (dropPhoto.SimpleVerticalLine != null)
+                                context.SimpleLines.Remove(dropPhoto.SimpleVerticalLine);
+
+                            if (dropPhoto.SimpleHorizontalLine != null)
+                                context.SimpleLines.Remove(dropPhoto.SimpleHorizontalLine);
+                        }
+
+                        if (series.ReferencePhotoForSeries != null && series.ReferencePhotoForSeries.SimpleReferencePhotoLine != null)
+                            context.SimpleLines.Remove(series.ReferencePhotoForSeries.SimpleReferencePhotoLine);
+
+                        context.Series.Remove(series);
+                    }
+
+                    await context.SaveChangesAsync();
+                }
+                catch (DbUpdateException e)
+                {
+                    throw new DbUpdateException(e.Message);
+                }
+                catch (InvalidOperationException e)
+                {
+                    throw new InvalidOperationException(e.Message);
+                }
+            }
+        }
+
         public Task<DbSeries> GetSingleSeriesById(Guid dbSeriesId)
         {
             using (var context = new DDropContext())
@@ -270,6 +324,29 @@ namespace DDrop.DAL
                     var series = await context.Series.FirstOrDefaultAsync(x => x.SeriesId == seriesId);
 
                     if (series != null) series.Title = seriesName;
+                    
+                    await context.SaveChangesAsync();
+                }
+                catch (DbUpdateException e)
+                {
+                    throw new DbUpdateException(e.Message);
+                }
+                catch (InvalidOperationException e)
+                {
+                    throw new InvalidOperationException(e.Message);
+                }
+            }
+        }
+
+        public async Task UseCreationDateTime(bool useCreationDateTime, Guid seriesId)
+        {
+            using (var context = new DDropContext())
+            {
+                try
+                {
+                    var series = await context.Series.FirstOrDefaultAsync(x => x.SeriesId == seriesId);
+
+                    if (series != null) series.UseCreationDateTime = useCreationDateTime;
 
                     await context.SaveChangesAsync();
                 }
@@ -317,7 +394,7 @@ namespace DDrop.DAL
             {
                 try
                 {
-                    var ph = new DbDropPhoto
+                    var dbDropPhoto = new DbDropPhoto
                     {
                         AddedDate = dropPhoto.AddedDate,
                         Content = dropPhoto.Content,
@@ -340,10 +417,62 @@ namespace DDrop.DAL
                         XDiameterInPixels = dropPhoto.XDiameterInPixels,
                         YDiameterInPixels = dropPhoto.YDiameterInPixels,
                         ZDiameterInPixels = dropPhoto.ZDiameterInPixels,
-                        CreationDateTime = dropPhoto.CreationDateTime
+                        CreationDateTime = dropPhoto.CreationDateTime,
+                        PhotoOrderInSeries = dropPhoto.PhotoOrderInSeries,
                     };
 
-                    context.DropPhotos.Add(ph);
+                    context.DropPhotos.Add(dbDropPhoto);
+
+                    await context.SaveChangesAsync();
+                }
+                catch (DbUpdateException e)
+                {
+                    throw new DbUpdateException(e.Message);
+                }
+                catch (InvalidOperationException e)
+                {
+                    throw new InvalidOperationException(e.Message);
+                }
+            }
+        }
+        
+        public async Task CreateListOfDropPhoto(List<DbDropPhoto> dropPhotos, Guid seriesId)
+        {
+            using (var context = new DDropContext())
+            {
+                try
+                {
+                    foreach (var dropPhoto in dropPhotos)
+                    {
+                        var dbDropPhoto = new DbDropPhoto
+                        {
+                            AddedDate = dropPhoto.AddedDate,
+                            Content = dropPhoto.Content,
+                            CurrentSeriesId = seriesId,
+                            Drop = new DbDrop
+                            {
+                                DropId = dropPhoto.DropPhotoId,
+                                RadiusInMeters = dropPhoto.Drop.RadiusInMeters,
+                                VolumeInCubicalMeters = dropPhoto.Drop.VolumeInCubicalMeters,
+                                XDiameterInMeters = dropPhoto.Drop.XDiameterInMeters,
+                                YDiameterInMeters = dropPhoto.Drop.YDiameterInMeters,
+                                ZDiameterInMeters = dropPhoto.Drop.ZDiameterInMeters
+                            },
+                            DropPhotoId = dropPhoto.DropPhotoId,
+                            Name = dropPhoto.Name,
+                            SimpleHorizontalLine = dropPhoto.SimpleHorizontalLine,
+                            SimpleHorizontalLineId = dropPhoto.SimpleHorizontalLineId,
+                            SimpleVerticalLine = dropPhoto.SimpleVerticalLine,
+                            SimpleVerticalLineId = dropPhoto.SimpleVerticalLineId,
+                            XDiameterInPixels = dropPhoto.XDiameterInPixels,
+                            YDiameterInPixels = dropPhoto.YDiameterInPixels,
+                            ZDiameterInPixels = dropPhoto.ZDiameterInPixels,
+                            CreationDateTime = dropPhoto.CreationDateTime,
+                            PhotoOrderInSeries = dropPhoto.PhotoOrderInSeries
+                        };
+
+                        context.DropPhotos.Add(dbDropPhoto);
+                    }
 
                     await context.SaveChangesAsync();
                 }
@@ -358,7 +487,7 @@ namespace DDrop.DAL
             }
         }
 
-        public async Task UpdatDropPhoto(DbDropPhoto dropPhoto)
+        public async Task UpdateDropPhoto(DbDropPhoto dropPhoto)
         {
             using (var context = new DDropContext())
             {
@@ -368,6 +497,33 @@ namespace DDrop.DAL
                     context.Set<DbSimpleLine>().AddOrUpdate(dropPhoto.SimpleVerticalLine);
                     context.Set<DbDropPhoto>().AddOrUpdate(dropPhoto);
                     context.Set<DbDrop>().AddOrUpdate(dropPhoto.Drop);
+                    await context.SaveChangesAsync();
+                }
+                catch (DbUpdateException e)
+                {
+                    throw new DbUpdateException(e.Message);
+                }
+                catch (InvalidOperationException e)
+                {
+                    throw new InvalidOperationException(e.Message);
+                }
+            }
+        }
+
+        public async Task UpdateListOfDropPhoto(List<DbDropPhoto> dropPhotos)
+        {
+            using (var context = new DDropContext())
+            {
+                try
+                {
+                    foreach (var dropPhoto in dropPhotos)
+                    {
+                        context.Set<DbSimpleLine>().AddOrUpdate(dropPhoto.SimpleHorizontalLine);
+                        context.Set<DbSimpleLine>().AddOrUpdate(dropPhoto.SimpleVerticalLine);
+                        context.Set<DbDropPhoto>().AddOrUpdate(dropPhoto);
+                        context.Set<DbDrop>().AddOrUpdate(dropPhoto.Drop);
+                    }
+
                     await context.SaveChangesAsync();
                 }
                 catch (DbUpdateException e)
@@ -476,6 +632,31 @@ namespace DDrop.DAL
                 catch (ArgumentNullException e)
                 {
                     throw new ArgumentNullException(e.Message);
+                }
+                catch (InvalidOperationException e)
+                {
+                    throw new InvalidOperationException(e.Message);
+                }
+            }
+        }
+
+        public async Task UpdatePhotosOrderInSeries(List<DbDropPhoto> newDbDropPhotos)
+        {
+            using (var context = new DDropContext())
+            {
+                try
+                {
+                    foreach (var dropPhoto in newDbDropPhotos)
+                    {
+                        context.DropPhotos.Attach(dropPhoto);
+                        context.Entry(dropPhoto).Property(x => x.PhotoOrderInSeries).IsModified = true;
+                    }
+
+                    await context.SaveChangesAsync();
+                }
+                catch (DbUpdateException e)
+                {
+                    throw new DbUpdateException(e.Message);
                 }
                 catch (InvalidOperationException e)
                 {

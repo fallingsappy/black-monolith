@@ -1,18 +1,18 @@
-﻿using DDrop.BE.Models;
+﻿using System;
+using System.ComponentModel;
+using System.Linq;
+using System.Windows;
+using DDrop.BE.Models;
 using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Windows;
-using System.Windows.Controls;
 
-namespace DDrop.Controls
+namespace DDrop.Controls.ScatterPlot
 {
     /// <summary>
     /// Логика взаимодействия для UserControl1.xaml
     /// </summary>
-    public partial class ScatterPlot : UserControl, INotifyPropertyChanged
+    public partial class ScatterPlot : INotifyPropertyChanged
     {
         public static readonly DependencyProperty UserProperty =
         DependencyProperty.Register("User", typeof(User), typeof(ScatterPlot));
@@ -46,60 +46,104 @@ namespace DDrop.Controls
 
         private void ScatterPlot_Loaded(object sender, RoutedEventArgs e)
         {
-            List<ChartValues<ObservablePoint>> seriesValues = new List<ChartValues<ObservablePoint>>();
             SeriesCollection = new SeriesCollection();
 
             if (User?.UserSeries != null)
             {
                 if (ParticularSeriesIndex != null)
                 {
-                    SingleSeriesPlot(seriesValues);
+                    SingleSeriesPlot();
                 }
                 else
                 {
-                    MultiSeriesPlot(seriesValues);
+                    MultiSeriesPlot();
                 }
             }
 
             DataContext = this;
         }
 
-        private void MultiSeriesPlot(List<ChartValues<ObservablePoint>> seriesValues)
+        private void MultiSeriesPlot()
         {
             for (int i = 0; i < User.UserSeries.Count; i++)
             {
-                if (User.UserSeries[i].CanDrawPlot == true && User.UserSeries[i].IsChecked)
+                var temp = new ChartValues<ObservablePoint>();
+                if (User.UserSeries[i].CanDrawPlot && User.UserSeries[i].IsChecked)
                 {
-                    seriesValues.Add(new ChartValues<ObservablePoint>());
-                    for (int j = 0; j < User.UserSeries[i].DropPhotosSeries.Count; j++)
+                    if (!User.UserSeries[i].UseCreationDateTime)
                     {
-                        seriesValues[i].Add(new ObservablePoint(j * User.UserSeries[i].IntervalBetweenPhotos, User.UserSeries[i].DropPhotosSeries[j].Drop.RadiusInMeters.Value));
+                        for (var j = 0; j < User.UserSeries[i].DropPhotosSeries.Count; j++)
+                        {
+                            var dropRadiusInMeters = User.UserSeries[i].DropPhotosSeries[j].Drop.RadiusInMeters;
+                            if (dropRadiusInMeters != null)
+                                temp.Add(new ObservablePoint(j * User.UserSeries[i].IntervalBetweenPhotos,
+                                    dropRadiusInMeters.Value));
+                        }
+                    }
+                    else
+                    {
+                        var orderedDropPhotos = User.UserSeries[i].DropPhotosSeries
+                            .OrderBy(x => DateTime.Parse(x.CreationDateTime)).ToList();
+
+                        for (int j = 0; j < orderedDropPhotos.Count; j++)
+                        {
+                            var dropRadiusInMeters = orderedDropPhotos[j].Drop.RadiusInMeters;
+                            if (dropRadiusInMeters != null)
+                                temp.Add(new ObservablePoint(
+                                    (DateTime.Parse(orderedDropPhotos[j].CreationDateTime) - DateTime.Parse(orderedDropPhotos[0].CreationDateTime)).TotalSeconds,
+                                    dropRadiusInMeters
+                                        .Value));
+                        }
                     }
 
                     SeriesCollection.Add(new LineSeries
                     {
                         Title = User.UserSeries[i].Title,
-                        Values = seriesValues[i],
+                        Values = temp,
                         LineSmoothness = 0,
                     });
                 }
             }
         }
 
-        private void SingleSeriesPlot(List<ChartValues<ObservablePoint>> seriesValues)
+        private void SingleSeriesPlot()
         {
-            if (User.UserSeries[ParticularSeriesIndex.Value].CanDrawPlot == true)
+            if (ParticularSeriesIndex != null && User.UserSeries[ParticularSeriesIndex.Value].CanDrawPlot)
             {
-                seriesValues.Add(new ChartValues<ObservablePoint>());
-                for (int j = 0; j < User.UserSeries[ParticularSeriesIndex.Value].DropPhotosSeries.Count; j++)
+                var temp = new ChartValues<ObservablePoint>();
+                if (!User.UserSeries[ParticularSeriesIndex.Value].UseCreationDateTime)
                 {
-                    seriesValues[0].Add(new ObservablePoint(j * User.UserSeries[ParticularSeriesIndex.Value].IntervalBetweenPhotos, User.UserSeries[ParticularSeriesIndex.Value].DropPhotosSeries[j].Drop.RadiusInMeters.Value));
+                    for (int j = 0; j < User.UserSeries[ParticularSeriesIndex.Value].DropPhotosSeries.Count; j++)
+                    {
+                        var dropRadiusInMeters = User.UserSeries[ParticularSeriesIndex.Value].DropPhotosSeries[j].Drop
+                            .RadiusInMeters;
+                        if (dropRadiusInMeters != null)
+                            temp.Add(new ObservablePoint(
+                                j * User.UserSeries[ParticularSeriesIndex.Value].IntervalBetweenPhotos,
+                                dropRadiusInMeters
+                                    .Value));
+                    }
+                }
+                else
+                {
+                    var orderedDropPhotos = User.UserSeries[ParticularSeriesIndex.Value].DropPhotosSeries
+                        .OrderBy(x => DateTime.Parse(x.CreationDateTime)).ToList();
+
+                    for (int j = 0; j < orderedDropPhotos.Count; j++)
+                    {
+                        var dropRadiusInMeters = orderedDropPhotos[j].Drop.RadiusInMeters;
+                        if (dropRadiusInMeters != null)
+                            temp.Add(new ObservablePoint(
+                                (DateTime.Parse(orderedDropPhotos[j].CreationDateTime) - DateTime.Parse(orderedDropPhotos[0].CreationDateTime)).TotalSeconds,
+                                dropRadiusInMeters
+                                    .Value));
+                    }
                 }
 
                 SeriesCollection.Add(new LineSeries
                 {
                     Title = User.UserSeries[ParticularSeriesIndex.Value].Title,
-                    Values = seriesValues[0],
+                    Values = temp,
                     LineSmoothness = 0,
                 });
             }

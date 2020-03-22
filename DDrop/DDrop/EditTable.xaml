@@ -1,0 +1,32 @@
+﻿<Window x:Class="DDrop.EditTable"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DDrop"
+        xmlns:dataGrid="clr-namespace:DDrop.Utility.DataGrid;assembly=DDrop.Utility"
+        mc:Ignorable="d"
+        Title="Редактирование таблицы" Height="450" Width="800"  Icon="Resources/Icons/MainIcon.png" WindowState="Maximized" Topmost="True" x:Name="EditTableWindow" Closing="EditTable_OnClosing">
+    <Grid>
+        <Border Background="Gainsboro" BorderThickness="1" Height="29" Margin="10,10,10,0" VerticalAlignment="Top">
+            <Grid>
+                <Button Visibility="Visible" Grid.Row="0" Name="SavePhotosOrder"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="27" Background="{x:Null}" BorderBrush="{x:Null}" Height="25" Click="SavePhotosOrder_OnClick">
+                    <ContentControl Content="{StaticResource SaveIcon}" Height="21"/>
+                </Button>
+            </Grid>
+        </Border>
+        <DataGrid dataGrid:VisualHelper.EnableRowsMove="True" CanUserSortColumns="False" CanUserAddRows="false" AutoGenerateColumns="False" Grid.Row="0" HorizontalAlignment="Stretch" Name="Photos" Margin="10,44,10,10" SelectionMode="Single" IsReadOnly="False" ItemsSource="{Binding Series.DropPhotosSeries, ElementName=EditTableWindow,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+            <DataGrid.Columns>
+                <DataGridTextColumn IsReadOnly="False" Header="Имя файла" Binding="{Binding Name}"/>
+                <DataGridTextColumn IsReadOnly="True" Header="Горизонтальный диаметр, px" Binding="{Binding XDiameterInPixels}"/>
+                <DataGridTextColumn IsReadOnly="True" Header="Вертикальный диаметр, px" Binding="{Binding YDiameterInPixels}"/>
+                <DataGridTextColumn IsReadOnly="True" Header="Горизонтальный диаметр, м" Binding="{Binding Drop.XDiameterInMeters}" />
+                <DataGridTextColumn IsReadOnly="True" Header="Вертикальный диаметр, м" Binding="{Binding Drop.YDiameterInMeters}"/>
+                <DataGridTextColumn IsReadOnly="True" Header="Радиус, м" Binding="{Binding Drop.RadiusInMeters}"/>
+                <DataGridTextColumn IsReadOnly="True" Header="Объем, кубические метры" Binding="{Binding Drop.VolumeInCubicalMeters}"/>
+                <DataGridTextColumn IsReadOnly="True" Header="Время добавления" Binding="{Binding AddedDate}"/>
+                <DataGridTextColumn IsReadOnly="True" Header="Время создания" Binding="{Binding CreationDateTime}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>

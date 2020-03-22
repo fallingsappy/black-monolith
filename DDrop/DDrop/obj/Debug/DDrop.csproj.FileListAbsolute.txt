@@ -709,3 +709,5 @@ E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\DDrop.csproj.Ge
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\DDrop.csproj.CopyComplete
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\DDrop.exe
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\DDrop.pdb
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\EditTable.g.cs
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\EditTable.baml

@@ -44,6 +44,10 @@ namespace DDrop.BE.Models
         private void _dropPhotosSeries_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             OnPropertyChanged(new PropertyChangedEventArgs(nameof(CanDrawPlot)));
+            foreach (var photo in _dropPhotosSeries)
+            {
+                photo.PhotoOrderInSeries = _dropPhotosSeries.IndexOf(photo);
+            }
             CurrentUser.OnPropertyChanged(new PropertyChangedEventArgs(nameof(User.IsAnySelectedSeriesCanDrawPlot)));
         }
 
@@ -154,7 +158,8 @@ namespace DDrop.BE.Models
             {
                 if (_dropPhotosSeries?.Where(x => x.Drop?.RadiusInMeters != null).ToList().Count > 1 &&
                     _dropPhotosSeries?.Where(x => x.Drop?.RadiusInMeters == null).ToList().Count == 0 &&
-                    _dropPhotosSeries.All(x => x.Drop?.RadiusInMeters != 0) && IntervalBetweenPhotos != 0)
+                    _dropPhotosSeries.All(x => x.Drop?.RadiusInMeters != 0) && (IntervalBetweenPhotos != 0 || 
+                    _dropPhotosSeries?.Where(x => x.CreationDateTime == null).ToList().Count == 0 && UseCreationDateTime))
                 {
                     return true;
                 }
@@ -182,10 +187,42 @@ namespace DDrop.BE.Models
             }
         }
 
+        private bool _useCreationDateTime;
+        public bool UseCreationDateTime
+        {
+            get
+            {
+                return _useCreationDateTime;
+            }
+            set
+            {
+                _useCreationDateTime = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("UseCreationDateTime"));
+            }
+        }
+
+        private bool _enableDropPhotosOrderChange;
+
+        public bool EnableDropPhotosOrderChange
+        {
+            get
+            {
+                return _enableDropPhotosOrderChange;
+            }
+            set
+            {
+                _enableDropPhotosOrderChange = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("EnableDropPhotosOrderChange"));
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged(PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(IntervalBetweenPhotos))
+                OnPropertyChanged(new PropertyChangedEventArgs(nameof(CanDrawPlot)));
+
+            if (e.PropertyName == nameof(UseCreationDateTime))
                 OnPropertyChanged(new PropertyChangedEventArgs(nameof(CanDrawPlot)));
 
             if (e.PropertyName == nameof(IsChecked))
