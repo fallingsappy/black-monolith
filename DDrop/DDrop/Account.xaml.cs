@@ -20,7 +20,7 @@ namespace DDrop
     /// <summary>
     /// Interaction logic for Account.xaml
     /// </summary>
-    public partial class Account : Window
+    public partial class Account
     {
         public static readonly DependencyProperty UserProperty = DependencyProperty.Register("User", typeof(User), typeof(Account));
         private readonly Notifier _notifier;

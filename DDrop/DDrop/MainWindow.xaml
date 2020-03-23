@@ -26,27 +26,27 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <Border Grid.Column="0" Grid.Row="0" Background="Gainsboro" BorderThickness="1" Height="30" Margin="10,10,10,0" VerticalAlignment="Top">
+                    <Border x:Name="SeriesManagerMenuBar" Grid.Column="0" Grid.Row="0" Background="Gainsboro" BorderThickness="1" Height="41" Margin="10,10,10,0" VerticalAlignment="Top">
                         <Grid>
-                            <Button Grid.Column="0" Grid.Row="0" Name="AddSeriesButton"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="28" BorderBrush="{x:Null}" Background="{x:Null}" Height="26" Click="AddNewSeries_OnClick">
+                            <Button Grid.Column="0" Grid.Row="0" Name="AddSeriesButton"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="28" BorderBrush="{x:Null}" Background="{x:Null}" Height="26" Click="AddNewSeries_OnClick" Margin="10,6,0,0">
                                 <ContentControl Content="{StaticResource AddIcon}" Height="22" Width="23"/>
                             </Button>
-                            <TextBox Grid.Column="0" Grid.Row="0" Name="OneLineSetterValue" Height="19" VerticalAlignment="Top" Margin="33,4,251,0" />
-                            <Button ToolTip="Создать Excel отчет" Grid.Column="0" Grid.Row="0" Name="ExportSeriesButton" BorderBrush="{x:Null}" Background="{x:Null}" Click="ExportSeriesButton_Click" Margin="0,0,43,2" HorizontalAlignment="Right" Width="28">
+                            <TextBox Grid.Column="0" Grid.Row="0" Name="OneLineSetterValue" Height="19" VerticalAlignment="Top" Margin="43,10,241,0" />
+                            <Button ToolTip="Создать Excel отчет" Grid.Column="0" Grid.Row="0" Name="ExportSeriesButton" BorderBrush="{x:Null}" Background="{x:Null}" Click="ExportSeriesButton_Click" Margin="0,6,43,7" HorizontalAlignment="Right" Width="28">
                                 <ContentControl Content="{StaticResource FileExport}" Height="22" Width="23"/>
                             </Button>
-                            <Button Grid.Column="0" Grid.Row="0" x:Name="DeleteSeriesButton" BorderBrush="{x:Null}" Background="{x:Null}" Click="DeleteSeriesButton_Click" Margin="0,0,10,2" HorizontalAlignment="Right" Width="28">
+                            <Button Grid.Column="0" Grid.Row="0" x:Name="DeleteSeriesButton" BorderBrush="{x:Null}" Background="{x:Null}" Click="DeleteSeriesButton_Click" Margin="0,6,10,7" HorizontalAlignment="Right" Width="28">
                                 <ContentControl Content="{StaticResource DeleteIcon}" Height="22" Width="23"/>
                             </Button>
-                            <Button ToolTip="Загрузить серии с компьютера" Grid.Column="0" Grid.Row="0" x:Name="ImportLocalSeries" BorderBrush="{x:Null}" Background="{x:Null}" Click="ImportLocalSeries_ClickAsync" Margin="0,0,76,2" HorizontalAlignment="Right" Width="28" RenderTransformOrigin="-1.25,0.615">
+                            <Button ToolTip="Загрузить серии с компьютера" Grid.Column="0" Grid.Row="0" x:Name="ImportLocalSeries" BorderBrush="{x:Null}" Background="{x:Null}" Click="ImportLocalSeries_ClickAsync" Margin="0,6,76,7" HorizontalAlignment="Right" Width="28" RenderTransformOrigin="-1.25,0.615">
                                 <ContentControl Content="{StaticResource ImportLocalSeries}" Height="22" Width="23"/>
                             </Button>
-                            <Button ToolTip="Выгрузить серии на компьютер" Grid.Column="0" Grid.Row="0" x:Name="ExportSeriesLocal" BorderBrush="{x:Null}" Background="{x:Null}" Click="ExportSeriesLocal_ClickAsync" Margin="0,0,109,2" HorizontalAlignment="Right" Width="28" RenderTransformOrigin="-1.25,0.615">
+                            <Button ToolTip="Выгрузить серии на компьютер" Grid.Column="0" Grid.Row="0" x:Name="ExportSeriesLocal" BorderBrush="{x:Null}" Background="{x:Null}" Click="ExportSeriesLocal_ClickAsync" Margin="0,6,109,0" HorizontalAlignment="Right" Width="28" RenderTransformOrigin="-1.25,0.615" Height="26" VerticalAlignment="Top">
                                 <ContentControl Content="{StaticResource ExoportLocalSeries}" Height="22" Width="23"/>
                             </Button>
                         </Grid>
                     </Border>
-                    <Border Grid.Column="0" Grid.Row="0" BorderThickness="1" BorderBrush="#34558b" Margin="10,45,10,10">
+                    <Border Grid.Column="0" Grid.Row="0" BorderThickness="1" BorderBrush="#34558b" Margin="10,56,10,10">
                         <DataGrid CellEditEnding="SeriesDataGrid_CellEditEnding" CanUserAddRows="false" IsReadOnly="False" AutoGenerateColumns="False" SelectionMode="Single" Margin="0" BorderThickness="0" ClipToBounds="True" ItemsSource="{Binding User.UserSeries}" SelectionChanged="SeriesDataGrid_OnSelectionChanged" Name="SeriesDataGrid">
                             <DataGrid.Columns>
                                 <DataGridCheckBoxColumn IsReadOnly="False" Binding="{Binding IsChecked, UpdateSourceTrigger=PropertyChanged}" CanUserResize="False">
@@ -128,23 +128,23 @@
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
-                                <Border Background="Gainsboro" BorderThickness="1" Height="29" Margin="10,10,10,0" VerticalAlignment="Top">
+                                <Border Background="Gainsboro" BorderThickness="1" Height="42" Margin="10,10,10,0" VerticalAlignment="Top">
                                     <Grid>
-                                        <Button Grid.Row="0" Name="AddPhotoButton" HorizontalAlignment="Left" Margin="0,0,0,-2" VerticalAlignment="Top" Width="28" BorderBrush="{x:Null}" Background="{x:Null}" Height="25" Click="MenuItemChoosePhotos_OnClick">
-                                            <ContentControl Content="{StaticResource AddIcon}" Height="20" Width="24"/>
+                                        <Button Grid.Row="0" Name="AddPhotoButton" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top" Width="28" BorderBrush="{x:Null}" Background="{x:Null}" Height="26" Click="MenuItemChoosePhotos_OnClick">
+                                            <ContentControl Content="{StaticResource AddIcon}" Height="22" Width="24"/>
                                         </Button>
-                                        <Button Grid.Row="0"  Name="DeleteInputPhotosButton" HorizontalAlignment="Left" Margin="33,0,0,-2" VerticalAlignment="Top" Width="27" Background="{x:Null}" BorderBrush="{x:Null}" Height="25" Click="DeleteInputPhotos_OnClick">
-                                            <ContentControl Content="{StaticResource DeleteIcon}" Height="21"/>
+                                        <Button Grid.Row="0"  Name="DeleteInputPhotosButton" HorizontalAlignment="Left" Margin="43,6,0,0" VerticalAlignment="Top" Width="27" Background="{x:Null}" BorderBrush="{x:Null}" Height="26" Click="DeleteInputPhotos_OnClick">
+                                            <ContentControl Content="{StaticResource DeleteIcon}" Height="21" Width="23"/>
                                         </Button>
-                                        <Button Grid.Row="0"  Name="EditPhotosOrder" HorizontalAlignment="Left" Margin="65,0,0,0" VerticalAlignment="Top" Width="27" Background="{x:Null}" BorderBrush="{x:Null}" Height="27" Click="EditPhotosOrder_OnClick">
+                                        <Button Grid.Row="0"  Name="EditPhotosOrder" HorizontalAlignment="Left" Margin="75,6,0,0" VerticalAlignment="Top" Width="27" Background="{x:Null}" BorderBrush="{x:Null}" Height="27" Click="EditPhotosOrder_OnClick">
                                             <ContentControl Content="{StaticResource EditTable}" Height="21"/>
                                         </Button>
-                                        <TextBox x:Name="IntervalBetweenPhotos" Text="{Binding ElementName=AppMainWindow, Path=CurrentSeries.IntervalBetweenPhotos}" TextChanged="IntervalBetweenPhotos_TextChanged" Height="20" Margin="0,3,10,0" TextWrapping="Wrap"  VerticalAlignment="Top" HorizontalAlignment="Right" Width="115"/>
-                                        <Label Content="Интервал между снимками (c):" Margin="0,0,130,-4" VerticalAlignment="Top" Height="30" Background="{x:Null}" HorizontalAlignment="Right" Width="180"/>
-                                        <CheckBox x:Name="CreationTimeCheckBox" IsChecked="{Binding CurrentSeries.UseCreationDateTime, ElementName=AppMainWindow,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Checked="CreationTimeCheckBox_Checked" Unchecked="CreationTimeCheckBox_Unchecked" Content="Использовать время создания снимка" Margin="0,6,315,3" HorizontalAlignment="Right" Width="245"/>
+                                        <TextBox x:Name="IntervalBetweenPhotos" Text="{Binding ElementName=AppMainWindow, Path=CurrentSeries.IntervalBetweenPhotos}" TextChanged="IntervalBetweenPhotos_TextChanged" Height="20" Margin="0,10,10,0" TextWrapping="Wrap"  VerticalAlignment="Top" HorizontalAlignment="Right" Width="115"/>
+                                        <Label Content="Интервал между снимками (c):" Margin="0,6,130,0" VerticalAlignment="Top" Height="27" Background="{x:Null}" HorizontalAlignment="Right" Width="180"/>
+                                        <CheckBox x:Name="CreationTimeCheckBox" IsChecked="{Binding CurrentSeries.UseCreationDateTime, ElementName=AppMainWindow,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Checked="CreationTimeCheckBox_Checked" Unchecked="CreationTimeCheckBox_Unchecked" Content="Использовать время создания снимка" Margin="0,12,315,9" HorizontalAlignment="Right" Width="245"/>
                                     </Grid>
                                 </Border>
-                                <DataGrid CellEditEnding="Photos_CellEditEnding" CanUserSortColumns="False" CanUserAddRows="false" AutoGenerateColumns="False" Grid.Row="0" HorizontalAlignment="Stretch" Name="Photos" Margin="10,44,10,10" SelectionMode="Single" SelectionChanged="Photos_SelectionChanged" IsReadOnly="False" ItemsSource="{Binding CurrentSeries.DropPhotosSeries}">
+                                <DataGrid CellEditEnding="Photos_CellEditEnding" CanUserSortColumns="False" CanUserAddRows="false" AutoGenerateColumns="False" Grid.Row="0" HorizontalAlignment="Stretch" Name="Photos" Margin="10,57,10,10" SelectionMode="Single" SelectionChanged="Photos_SelectionChanged" IsReadOnly="False" ItemsSource="{Binding CurrentSeries.DropPhotosSeries}">
                                     <DataGrid.Columns>
                                         <DataGridCheckBoxColumn IsReadOnly="False" Binding="{Binding IsChecked, UpdateSourceTrigger=PropertyChanged}" CanUserResize="False">
                                             <DataGridCheckBoxColumn.HeaderTemplate>

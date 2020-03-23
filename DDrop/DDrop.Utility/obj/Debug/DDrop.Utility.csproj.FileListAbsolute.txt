@@ -147,3 +147,5 @@ E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Utility\obj\Debug\Excepti
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Utility\obj\Debug\ExceptionHandling\Windows\ExceptionWindow.g.cs
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility_MarkupCompile.cache
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.g.resources
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Utility\bin\Debug\NLog.dll
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Utility\bin\Debug\NLog.xml

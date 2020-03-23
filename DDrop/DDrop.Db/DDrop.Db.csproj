@@ -50,8 +50,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DbEntities\DbContour.cs" />
     <Compile Include="DbEntities\DbDrop.cs" />
     <Compile Include="DbEntities\DbDropPhoto.cs" />
+    <Compile Include="DbEntities\DbLog.cs" />
     <Compile Include="DbEntities\DbReferencePhoto.cs" />
     <Compile Include="DbEntities\DbSeries.cs" />
     <Compile Include="DbEntities\DbSimpleLine.cs" />
