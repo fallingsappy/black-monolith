@@ -239,7 +239,12 @@
                                 <Grid>
                                     <Border Name="Border" BorderThickness="1" BorderBrush="#34558b" Margin="10,44,10,10">
                                         <zoomborder:ZoomBorder x:Name="border" ClipToBounds="True" Background="Gray">
-                                            <pixelDrawer:PixelDrawer IsEnabled="False" CurrentSeries="{Binding ElementName=AppMainWindow, Path=CurrentSeries}" ImageSource="{Binding ReferenceImage, ElementName=AppMainWindow}" x:Name="MainWindowPixelDrawer"/>
+                                            <loadingSpinner:AdornedControl Name="ReferenceImageLoading">
+                                                <loadingSpinner:AdornedControl.AdornerContent>
+                                                    <simpleSample:LoadingWait></simpleSample:LoadingWait>
+                                                </loadingSpinner:AdornedControl.AdornerContent>
+                                                <pixelDrawer:PixelDrawer IsEnabled="False" CurrentSeries="{Binding ElementName=AppMainWindow, Path=CurrentSeries}" ImageSource="{Binding ReferenceImage, ElementName=AppMainWindow}" x:Name="MainWindowPixelDrawer"/>
+                                            </loadingSpinner:AdornedControl>
                                         </zoomborder:ZoomBorder>
                                     </Border>
                                 </Grid>
@@ -276,7 +281,7 @@
             </TabItem>
         </TabControl>
 
-        <Menu Height="22" Margin="10,10,10,0" VerticalAlignment="Top">
+        <Menu x:Name="MainMenuBar" Height="22" Margin="10,10,10,0" VerticalAlignment="Top">
             <Menu.ItemsPanel>
                 <ItemsPanelTemplate>
                     <DockPanel HorizontalAlignment="Stretch"/>

@@ -562,72 +562,80 @@ namespace DDrop
 
         private async void ExportSeriesLocal_ClickAsync(object sender, RoutedEventArgs e)
         {
-            SaveFileDialog saveFileDialog = new SaveFileDialog
+            if (false)
             {
-                Filter = "DDrop files (*.ddrops)|*.ddrops|All files (*.*)|*.*",
-                AddExtension = true,
-            };
+                SaveFileDialog saveFileDialog = new SaveFileDialog
+                {
+                    Filter = "DDrop files (*.ddrops)|*.ddrops|All files (*.*)|*.*",
+                    AddExtension = true,
+                };
 
-            if (saveFileDialog.ShowDialog() == true)
-            {
-                SeriesWindowLoading();
-                await DDropSerializableEntitiesMapper.ExportSeriesLocalAsync(saveFileDialog.FileName, User);
-                ProgressBar.IsIndeterminate = false;
-                notifier.ShowSuccess($"{saveFileDialog.SafeFileName} сохранен на диске.");
-                SeriesWindowLoading(false);
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    SeriesWindowLoading();
+                    await DDropSerializableEntitiesMapper.ExportSeriesLocalAsync(saveFileDialog.FileName, User);
+                    ProgressBar.IsIndeterminate = false;
+                    notifier.ShowSuccess($"{saveFileDialog.SafeFileName} сохранен на диске.");
+                    SeriesWindowLoading(false);
+                }
             }
+            notifier.ShowInformation("Эта функция в разработке.");
         }
 
         private async void ImportLocalSeries_ClickAsync(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog
+            if (false)
             {
-                Filter = "DDrop files (*.ddrops)|*.ddrops|All files (*.*)|*.*",
-                Multiselect = true,
-                AddExtension = true,
-                CheckFileExists = true,
-                CheckPathExists = true
-            };
-
-            ObservableCollection<Series> addSeriesViewModel = new ObservableCollection<Series>();
-
-            if (openFileDialog.ShowDialog() == true)
-            {
-                SeriesWindowLoading(false);
-                addSeriesViewModel = await DDropSerializableEntitiesMapper.ImportLocalSeriesAsync(openFileDialog.FileName, User);
-                SeriesWindowLoading(false);
-
-                AddSeries addSeries = new AddSeries(addSeriesViewModel);
-                addSeries.ShowDialog();
-
-                if (addSeriesViewModel.Count != 0)
+                OpenFileDialog openFileDialog = new OpenFileDialog
                 {
-                    bool isAnyChecked = addSeriesViewModel.Any(x => x.IsCheckedForAdd);
+                    Filter = "DDrop files (*.ddrops)|*.ddrops|All files (*.*)|*.*",
+                    Multiselect = true,
+                    AddExtension = true,
+                    CheckFileExists = true,
+                    CheckPathExists = true
+                };
 
-                    foreach (var seriesViewModel in addSeriesViewModel)
+                ObservableCollection<Series> addSeriesViewModel = new ObservableCollection<Series>();
+
+                if (openFileDialog.ShowDialog() == true)
+                {
+                    SeriesWindowLoading(false);
+                    addSeriesViewModel = await DDropSerializableEntitiesMapper.ImportLocalSeriesAsync(openFileDialog.FileName, User);
+                    SeriesWindowLoading(false);
+
+                    AddSeries addSeries = new AddSeries(addSeriesViewModel);
+                    addSeries.ShowDialog();
+
+                    if (addSeriesViewModel.Count != 0)
                     {
-                        if (isAnyChecked)
+                        bool isAnyChecked = addSeriesViewModel.Any(x => x.IsCheckedForAdd);
+
+                        foreach (var seriesViewModel in addSeriesViewModel)
                         {
-                            if (seriesViewModel.IsCheckedForAdd)
+                            if (isAnyChecked)
+                            {
+                                if (seriesViewModel.IsCheckedForAdd)
+                                {
+                                    User.UserSeries.Add(seriesViewModel);
+                                    notifier.ShowSuccess($"Серия {seriesViewModel.Title} добавлена.");
+                                }
+                            }
+                            else
                             {
                                 User.UserSeries.Add(seriesViewModel);
                                 notifier.ShowSuccess($"Серия {seriesViewModel.Title} добавлена.");
                             }
                         }
-                        else
-                        {
-                            User.UserSeries.Add(seriesViewModel);
-                            notifier.ShowSuccess($"Серия {seriesViewModel.Title} добавлена.");
-                        }
-                    }
 
-                
-                    notifier.ShowSuccess($"Все серии успешно добавлены.");
+
+                        notifier.ShowSuccess($"Все серии успешно добавлены.");
+                    }
                 }
+                if (SeriesDataGrid.ItemsSource == null)
+                    SeriesDataGrid.ItemsSource = User.UserSeries;
             }
-            if (SeriesDataGrid.ItemsSource == null)
-                SeriesDataGrid.ItemsSource = User.UserSeries;
-            
+
+            notifier.ShowInformation("Эта функция в разработке.");
         }
 
         private async void SeriesDataGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
@@ -914,7 +922,6 @@ namespace DDrop
 
         private void CurrentSeriesPhotoContentLoadingWindow()
         {
-
             CurrentSeriesPhotoContentLoading.IsAdornerVisible = !CurrentSeriesPhotoContentLoading.IsAdornerVisible;
         }
 
@@ -1094,6 +1101,13 @@ namespace DDrop
             Photos.IsEnabled = !Photos.IsEnabled;
             SeriesManager.IsEnabled = !SeriesManager.IsEnabled;
             ReferenceTab.IsEnabled = !ReferenceTab.IsEnabled;
+            AddPhotoButton.IsEnabled = !AddPhotoButton.IsEnabled;
+            DeleteInputPhotosButton.IsEnabled = !DeleteInputPhotosButton.IsEnabled;
+            EditPhotosOrder.IsEnabled = !EditPhotosOrder.IsEnabled;
+            IntervalBetweenPhotos.IsEnabled = !IntervalBetweenPhotos.IsEnabled;
+            CreationTimeCheckBox.IsEnabled = !CreationTimeCheckBox.IsEnabled;
+            SingleSeries.IsEnabled = !SingleSeries.IsEnabled;
+            MainMenuBar.IsEnabled = !MainMenuBar.IsEnabled;
         }
 
         private async void IntervalBetweenPhotos_TextChanged(object sender, TextChangedEventArgs e)
@@ -1166,7 +1180,7 @@ namespace DDrop
             {
                 ProgressBar.IsIndeterminate = true;
                 ToggleUiPhotosTableOperations();
-                CurrentSeriesPhotoContentLoadingWindow();
+                ReferencePhotoContentLoadingWindow();
 
                 if (ImageValidator.ValidateImage(ImageInterpreter.FileToByteArray(openFileDialog.FileName)))
                 {
@@ -1307,13 +1321,18 @@ namespace DDrop
             }
         }
 
+        private void ReferencePhotoContentLoadingWindow()
+        {
+            ReferenceImageLoading.IsAdornerVisible = !ReferenceImageLoading.IsAdornerVisible;
+        }
+
         #endregion
 
         #region Calculation
 
         private void Calculate_OnClick(object sender, RoutedEventArgs e)
         {
-            if (PythonMenuItem.IsChecked)
+            if (false)
             {
                 bool interpreterAndScriptCheck = string.IsNullOrWhiteSpace(Properties.Settings.Default.ScriptToRun) || string.IsNullOrWhiteSpace(Properties.Settings.Default.Interpreter);
                 if (!interpreterAndScriptCheck)
