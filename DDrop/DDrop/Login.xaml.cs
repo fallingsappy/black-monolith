@@ -4,6 +4,7 @@ using DDrop.Utility.ImageOperations;
 using System;
 using System.Data.Entity;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using DDrop.BL.Series;
@@ -61,7 +62,8 @@ namespace DDrop
 
                 try
                 {
-                    var user = await _dDropRepository.GetUserByLogin(email);
+                    LoginWindowLoading();
+                    var user = await Task.Run( () => _dDropRepository.GetUserByLogin(email));
 
                     if (user != null && PasswordOperations.PasswordsMatch(password, user.Password))
                     {
@@ -71,19 +73,29 @@ namespace DDrop
 
                         LoginSucceeded = true;
                         _notifier.ShowSuccess($"Пользователь {user.Email} авторизован.");
+                        LoginWindowLoading();
                         Close();
                     }
                     else
                     {
                         ErrorMessage.Text = "Неверный логин или пароль.";
                         LoginSucceeded = false;
+                        LoginWindowLoading();
                     }
                 }
                 catch (Exception exception)
                 {
+                    LoginWindowLoading();
                     _notifier.ShowError("Не удалось установить соединение. Проверьте интернет подключение.");
                 }
             }
+        }
+
+        private void LoginWindowLoading()
+        {
+            LoginButton.IsEnabled = !LoginButton.IsEnabled;
+            RegistrationButton.IsEnabled = !RegistrationButton.IsEnabled;
+            LoadingAdorner.IsAdornerVisible = !LoadingAdorner.IsAdornerVisible;
         }
 
         private void RegistrationButton_Click(object sender, RoutedEventArgs e)

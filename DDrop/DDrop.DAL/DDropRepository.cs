@@ -722,7 +722,8 @@ namespace DDrop.DAL
                     var referencePhoto = await context.ReferencePhotos.FirstOrDefaultAsync(x => x.ReferencePhotoId == dbReferencePhotoId);
 
                     context.ReferencePhotos.Attach(referencePhoto ?? throw new InvalidOperationException());
-                    context.SimpleLines.Remove(referencePhoto.SimpleReferencePhotoLine);
+                    if (referencePhoto.SimpleReferencePhotoLine != null)
+                        context.SimpleLines.Remove(referencePhoto.SimpleReferencePhotoLine);
                     context.ReferencePhotos.Remove(referencePhoto);
 
                     await context.SaveChangesAsync();

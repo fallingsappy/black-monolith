@@ -56,6 +56,12 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LoadingSpinner\AdornedControl.cs" />
+    <Compile Include="LoadingSpinner\AdornerPlacement.cs" />
+    <Compile Include="LoadingSpinner\FrameworkElementAdorner.cs" />
+    <Compile Include="LoadingSpinner\LoadingWait.xaml.cs">
+      <DependentUpon>LoadingWait.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PhotoCropper\CropControl.xaml.cs">
       <DependentUpon>CropControl.xaml</DependentUpon>
     </Compile>
@@ -71,6 +77,10 @@
       <DependentUpon>PixelDrawer.xaml</DependentUpon>
     </Compile>
     <Compile Include="Zoomborder\Zoomborder.cs" />
+    <Page Include="LoadingSpinner\LoadingWait.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="PhotoCropper\CropControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

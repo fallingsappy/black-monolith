@@ -136,6 +136,7 @@ namespace DDrop
             else
             {
                 var emailToCheck = TextBoxEmail.Text;
+                RegistrationWindowLoading();
                 var userToRegister = await Task.Run(() => _dDropRepository.GetUserByLogin(emailToCheck));
                 if (userToRegister == null)
                 {
@@ -153,21 +154,24 @@ namespace DDrop
                             UserPhoto = UserPhoto,
                         };
 
-                        await _dDropRepository.CreateUserAsync(DDropDbEntitiesMapper.UserToDbUser(user));
+                        await Task.Run(() => _dDropRepository.CreateUserAsync(DDropDbEntitiesMapper.UserToDbUser(user)));
 
                         UserLogin = user;
 
                         _notifier.ShowSuccess($"Пользователь {UserLogin.Email} успешно зарегистрирован.");
                         RegistrationSucceeded = true;
+                        RegistrationWindowLoading();
                         Close();
                     }
                     catch
                     {
+                        RegistrationWindowLoading();
                         _notifier.ShowError("Не удалось установить соединение. Проверьте интернет подключение.");
                     }
                 }
                 else
                 {
+                    RegistrationWindowLoading();
                     _notifier.ShowError("Пользователь с таким Email уже существует.");
                     RegistrationSucceeded = false;
                 }
@@ -251,6 +255,14 @@ namespace DDrop
             {
                 e.Handled = true;
             }
+        }
+
+        private void RegistrationWindowLoading()
+        {
+            CancelRegistrationButton.IsEnabled = !CancelRegistrationButton.IsEnabled;
+            Submit.IsEnabled = !Submit.IsEnabled;
+            ChooseProfilePicture.IsEnabled = !ChooseProfilePicture.IsEnabled;
+            RegistrationLoading.IsAdornerVisible = !RegistrationLoading.IsAdornerVisible;
         }
     }
 }

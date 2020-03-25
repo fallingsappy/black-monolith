@@ -2,6 +2,7 @@
 using System.Data.Entity;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using DDrop.BE.Models;
 using DDrop.Utility.ImageOperations;
 using Microsoft.Win32;
@@ -88,8 +89,13 @@ namespace DDrop
                         {
                             try
                             {
+                                AccountLoadingWindow();
                                 User.UserPhoto = croppingWindow.UserPhotoForCropp;
-                                await _dDropRepository.UpdateUserAsync(DDropDbEntitiesMapper.UserToDbUser(User));
+                                await Task.Run(() =>
+                                {
+                                    Dispatcher.InvokeAsync(() => _dDropRepository.UpdateUserAsync(
+                                            DDropDbEntitiesMapper.UserToDbUser(User)));
+                                });
                                 ProfilePicture.Source = ImageInterpreter.LoadImage(User.UserPhoto);
                                 _notifier.ShowSuccess("Фотография обновлена.");
                             }
@@ -97,6 +103,8 @@ namespace DDrop
                             {
                                 _notifier.ShowError("Не удалось сохранить изменения. Проверьте интернет соединение.");
                             }
+
+                            AccountLoadingWindow();
                         }                            
                     }
                 }
@@ -115,14 +123,22 @@ namespace DDrop
         {
             try
             {
-                await _dDropRepository.UpdateUserAsync(DDropDbEntitiesMapper.UserToDbUser(User));
+                AccountLoadingWindow();
+
+                await Task.Run(() =>
+                {
+                    Dispatcher.InvokeAsync(() => _dDropRepository.UpdateUserAsync(DDropDbEntitiesMapper.UserToDbUser(User)));
+                });
                 User.FirstName = TextBlockFirstnameValue.Text;
+
+                _notifier.ShowSuccess("Имя обновлено.");
             }
             catch
             {
                 _notifier.ShowError("Не удалось сохранить изменения. Проверьте интернет соединение.");
             }
 
+            AccountLoadingWindow();
             TextBlockFirstnameValue.IsEnabled = false;
             ChangeFirstNameButton.Visibility = Visibility.Visible;
             SaveChangeFirstNameButton.Visibility = Visibility.Hidden;
@@ -140,14 +156,20 @@ namespace DDrop
         {
             try
             {
-                await _dDropRepository.UpdateUserAsync(DDropDbEntitiesMapper.UserToDbUser(User));
+                AccountLoadingWindow();
+                await Task.Run(() =>
+                {
+                    Dispatcher.InvokeAsync(() => _dDropRepository.UpdateUserAsync(DDropDbEntitiesMapper.UserToDbUser(User)));
+                });
                 User.LastName = TextBlockLastNameValue.Text;
+                _notifier.ShowSuccess("Фамилия обновлена.");
             }
             catch
             {
                 _notifier.ShowError("Не удалось сохранить изменения. Проверьте интернет соединение.");
             }
 
+            AccountLoadingWindow();
             TextBlockLastNameValue.IsEnabled = false;
             ChangeLastNameButton.Visibility = Visibility.Visible;
             SaveChangeLastNameButton.Visibility = Visibility.Hidden;
@@ -290,28 +312,51 @@ namespace DDrop
                 {
                     try
                     {
+                        AccountLoadingWindow();
                         User.Password = PasswordOperations.HashPassword(NewPassword.Password);
-                        await _dDropRepository.UpdateUserAsync(DDropDbEntitiesMapper.UserToDbUser(User));
+                        await Task.Run(() =>
+                        {
+                            Dispatcher.InvokeAsync(() => _dDropRepository.UpdateUserAsync(DDropDbEntitiesMapper.UserToDbUser(User)));
+                        });
                         
                         _notifier.ShowSuccess("Пароль успешно изменен.");
                         NewPasswordConfirm.Password = "";
                         NewPassword.Password = "";
                         CurrentPassword.Password = "";
+                        
+                        AccountLoadingWindow();
                     }
                     catch
                     {
                         _notifier.ShowError("Не удалось сохранить изменения. Проверьте интернет соединение.");
+
+                        AccountLoadingWindow();
                     }
                 }
                 else
                 {
                     _notifier.ShowError("Новый пароль и его подтверждение не совпадают.");
+
+                    AccountLoadingWindow();
                 }
             }
             else
             {
                 _notifier.ShowError("Неверный старый пароль.");
+
+                AccountLoadingWindow();
             }
+        }
+
+        private void AccountLoadingWindow()
+        {
+            ChangePasswordButton.IsEnabled = !ChangePasswordButton.IsEnabled;
+            SaveChangeLastNameButton.IsEnabled = !SaveChangeLastNameButton.IsEnabled;
+            ChangeLastNameButton.IsEnabled = !ChangeLastNameButton.IsEnabled;
+            SaveChangeFirstNameButton.IsEnabled = !SaveChangeFirstNameButton.IsEnabled;
+            ChangeFirstNameButton.IsEnabled = !ChangeFirstNameButton.IsEnabled;
+            ChooseProfilePicture.IsEnabled = !ChooseProfilePicture.IsEnabled;
+            AccountLoading.IsAdornerVisible = !AccountLoading.IsAdornerVisible;
         }
     }
 }

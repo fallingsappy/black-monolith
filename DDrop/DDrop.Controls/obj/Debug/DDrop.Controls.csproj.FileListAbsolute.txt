@@ -232,3 +232,5 @@ E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Controls\obj\Debug\DDrop.
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.csproj.CopyComplete
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.dll
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.pdb
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Controls\obj\Debug\LoadingSpinner\LoadingWait.baml
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Controls\obj\Debug\LoadingSpinner\LoadingWait.g.cs
