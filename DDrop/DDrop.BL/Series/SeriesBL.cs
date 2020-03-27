@@ -5,7 +5,6 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using DDrop.BE.Models.Serializable;
 
 namespace DDrop.BL.Series
 {

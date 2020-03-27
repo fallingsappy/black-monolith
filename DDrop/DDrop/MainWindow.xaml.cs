@@ -23,9 +23,8 @@ using DDrop.BL.DropPhoto;
 using DDrop.DAL;
 using DDrop.Utility.Mappers;
 using System.Collections.Generic;
-using System.Data;
 using System.Threading.Tasks;
-using DDrop.BL.ImageProcessing.CSharp;
+using Ookii.Dialogs.Wpf;
 
 namespace DDrop
 {
@@ -562,91 +561,97 @@ namespace DDrop
 
         private async void ExportSeriesLocal_ClickAsync(object sender, RoutedEventArgs e)
         {
-            if (false)
+            VistaFolderBrowserDialog saveFileDialog = new VistaFolderBrowserDialog
             {
-                SaveFileDialog saveFileDialog = new SaveFileDialog
-                {
-                    Filter = "DDrop files (*.ddrops)|*.ddrops|All files (*.*)|*.*",
-                    AddExtension = true,
-                };
+                UseDescriptionForTitle = true,
+                Description = "Выберите папку для сохранения..."
+            };
 
-                if (saveFileDialog.ShowDialog() == true)
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                SeriesWindowLoading();
+                var dbUser = await _dDropRepository.GetUserByLogin(User.Email);
+                List<Guid> seriesIds = new List<Guid>();
+                foreach (var series in User.UserSeries)
                 {
-                    SeriesWindowLoading();
-                    await DDropSerializableEntitiesMapper.ExportSeriesLocalAsync(saveFileDialog.FileName, User);
-                    ProgressBar.IsIndeterminate = false;
-                    notifier.ShowSuccess($"{saveFileDialog.SafeFileName} сохранен на диске.");
-                    SeriesWindowLoading(false);
+                    if (series.IsChecked)
+                    {
+                        notifier.ShowSuccess($"файл {series.Title}.ddrops сохранен на диске.");
+                        await DDropDbEntitiesMapper.ExportSeriesLocalAsync(
+                            $"{saveFileDialog.SelectedPath}\\{series.Title}.ddrop",
+                            await _dDropRepository.GetListOfFullDbSeriesByIds(series.SeriesId));
+                    }
                 }
+
+                ProgressBar.IsIndeterminate = false;
+                
+                SeriesWindowLoading(false);
             }
-            notifier.ShowInformation("Эта функция в разработке.");
         }
 
         private async void ImportLocalSeries_ClickAsync(object sender, RoutedEventArgs e)
         {
-            if (false)
+            OpenFileDialog openFileDialog = new OpenFileDialog
             {
-                OpenFileDialog openFileDialog = new OpenFileDialog
+                Filter = "DDrop files (*.ddrops)|*.ddrops|All files (*.*)|*.*",
+                Multiselect = true,
+                AddExtension = true,
+                CheckFileExists = true,
+                CheckPathExists = true
+            };
+
+            ObservableCollection<Series> addSeriesViewModel = new ObservableCollection<Series>();
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                SeriesWindowLoading(false);
+                foreach (var fileName in openFileDialog.FileNames)
                 {
-                    Filter = "DDrop files (*.ddrops)|*.ddrops|All files (*.*)|*.*",
-                    Multiselect = true,
-                    AddExtension = true,
-                    CheckFileExists = true,
-                    CheckPathExists = true
-                };
+                    addSeriesViewModel.Add(await DDropDbEntitiesMapper.ImportLocalSeriesAsync(fileName, User));
+                }
+                
+                SeriesWindowLoading(false);
 
-                ObservableCollection<Series> addSeriesViewModel = new ObservableCollection<Series>();
+                AddSeries addSeries = new AddSeries(addSeriesViewModel);
+                addSeries.ShowDialog();
 
-                if (openFileDialog.ShowDialog() == true)
+                if (addSeriesViewModel.Count != 0)
                 {
-                    SeriesWindowLoading(false);
-                    addSeriesViewModel = await DDropSerializableEntitiesMapper.ImportLocalSeriesAsync(openFileDialog.FileName, User);
-                    SeriesWindowLoading(false);
+                    bool isAnyChecked = addSeriesViewModel.Any(x => x.IsCheckedForAdd);
 
-                    AddSeries addSeries = new AddSeries(addSeriesViewModel);
-                    addSeries.ShowDialog();
-
-                    if (addSeriesViewModel.Count != 0)
+                    foreach (var seriesViewModel in addSeriesViewModel)
                     {
-                        bool isAnyChecked = addSeriesViewModel.Any(x => x.IsCheckedForAdd);
-
-                        foreach (var seriesViewModel in addSeriesViewModel)
+                        if (isAnyChecked)
                         {
-                            if (isAnyChecked)
-                            {
-                                if (seriesViewModel.IsCheckedForAdd)
-                                {
-                                    User.UserSeries.Add(seriesViewModel);
-                                    notifier.ShowSuccess($"Серия {seriesViewModel.Title} добавлена.");
-                                }
-                            }
-                            else
+                            if (seriesViewModel.IsCheckedForAdd)
                             {
                                 User.UserSeries.Add(seriesViewModel);
                                 notifier.ShowSuccess($"Серия {seriesViewModel.Title} добавлена.");
                             }
                         }
-
-
-                        notifier.ShowSuccess($"Все серии успешно добавлены.");
+                        else
+                        {
+                            User.UserSeries.Add(seriesViewModel);
+                            notifier.ShowSuccess($"Серия {seriesViewModel.Title} добавлена.");
+                        }
                     }
-                }
-                if (SeriesDataGrid.ItemsSource == null)
-                    SeriesDataGrid.ItemsSource = User.UserSeries;
-            }
 
-            notifier.ShowInformation("Эта функция в разработке.");
+
+                    notifier.ShowSuccess($"Все серии успешно добавлены.");
+                }
+            }
+            if (SeriesDataGrid.ItemsSource == null)
+                SeriesDataGrid.ItemsSource = User.UserSeries;
         }
 
         private async void SeriesDataGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
+            SeriesWindowLoading(false);
             var seriesNameCell = e.EditingElement as TextBox;
             try
             {
                 if (seriesNameCell != null)
                 {
-                    SeriesWindowLoading(false);
-
                     await _dDropRepository.UpdateSeriesName(seriesNameCell.Text, CurrentSeries.SeriesId);
                     notifier.ShowSuccess("Название серии изменено успешно.");
                 }
@@ -734,7 +739,7 @@ namespace DDrop
 
         #region Drop Photos
 
-        private async void AllSelectedPhotosChanged()
+        private void AllSelectedPhotosChanged()
         {
             if (CurrentSeries.DropPhotosSeries != null)
             {
@@ -1532,12 +1537,6 @@ namespace DDrop
             Information information = new Information();
             information.ShowDialog();
         }
-
-        #endregion
-
-        #region Utility
-
-        
 
         #endregion
     }

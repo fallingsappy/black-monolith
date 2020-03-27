@@ -102,16 +102,6 @@ namespace DDrop.DAL
             }
         }
 
-        public async Task AddListOfSeries()
-        {
-
-        }
-
-        public async Task AddSingleSeries()
-        {
-
-        }
-
         public List<DbSeries> GetSeriesByUserId(Guid dbUserId)
         {
             using (var context = new DDropContext())
@@ -211,6 +201,106 @@ namespace DDrop.DAL
                     }
 
                     return dbSeries;
+                }
+                catch (ArgumentNullException e)
+                {
+                    throw new ArgumentNullException(e.Message);
+                }
+            }
+        }
+
+        public async Task<DbSeries> GetListOfFullDbSeriesByIds(Guid seriesId)
+        {
+            using (var context = new DDropContext())
+            {
+                try
+                {
+                    DbSeries dbSeries = new DbSeries();
+
+                    var series = await context.Series.Where(x => x.SeriesId == seriesId)
+                    .Select(x => new {
+                        x.Title,
+                        x.IntervalBetweenPhotos,
+                        x.AddedDate,
+                        x.UseCreationDateTime
+                    }).FirstOrDefaultAsync();
+
+                    var referencePhotoForSeries = context.ReferencePhotos.Where(x => x.Series.SeriesId == seriesId)
+                        .Select(x => new
+                        {
+                            x.Name,
+                            x.PixelsInMillimeter,
+                            x.SimpleReferencePhotoLine,
+                            x.Content
+                        }).FirstOrDefault();
+
+                    var dropPhotoForSeries = context.DropPhotos.Where(x => x.CurrentSeriesId == seriesId)
+                        .Select(x => new
+                        {
+                            x.Name,
+                            x.Content,
+                            x.SimpleHorizontalLine,
+                            x.SimpleVerticalLine,
+                            x.XDiameterInPixels,
+                            x.YDiameterInPixels,
+                            x.ZDiameterInPixels,
+                            x.AddedDate,
+                            x.CreationDateTime,
+                            x.PhotoOrderInSeries,
+                            x.DropPhotoId
+                        }).ToList();
+
+                    List<DbDropPhoto> dbDropPhotoForAdd = new List<DbDropPhoto>();
+
+                    foreach (var dropPhoto in dropPhotoForSeries)
+                    {
+                        var drop = await context.Drops.Where(x => x.DropPhoto.DropPhotoId == dropPhoto.DropPhotoId).Select(x => new
+                        {
+                            x.RadiusInMeters,
+                            x.VolumeInCubicalMeters,
+                            x.XDiameterInMeters,
+                            x.YDiameterInMeters,
+                            x.ZDiameterInMeters,                                
+                        }).FirstOrDefaultAsync();
+
+                        dbDropPhotoForAdd.Add(new DbDropPhoto
+                        {
+                            AddedDate = dropPhoto.AddedDate,
+                            Drop = new DbDrop
+                            {
+                                RadiusInMeters = drop.RadiusInMeters,
+                                VolumeInCubicalMeters = drop.VolumeInCubicalMeters,
+                                XDiameterInMeters = drop.XDiameterInMeters,
+                                YDiameterInMeters = drop.YDiameterInMeters,
+                                ZDiameterInMeters = drop.ZDiameterInMeters
+                            },
+                            Content = dropPhoto.Content,
+                            Name = dropPhoto.Name,
+                            SimpleHorizontalLine = dropPhoto.SimpleHorizontalLine,
+                            SimpleVerticalLine = dropPhoto.SimpleVerticalLine,
+                            XDiameterInPixels = dropPhoto.XDiameterInPixels,
+                            YDiameterInPixels = dropPhoto.YDiameterInPixels,
+                            ZDiameterInPixels = dropPhoto.ZDiameterInPixels,
+                            CreationDateTime = dropPhoto.CreationDateTime,
+                            PhotoOrderInSeries = dropPhoto.PhotoOrderInSeries,
+                        });
+                    }
+
+                    return new DbSeries
+                    {
+                        Title = series.Title,
+                        AddedDate = series.AddedDate,
+                        UseCreationDateTime = series.UseCreationDateTime,
+                        IntervalBetweenPhotos = series.IntervalBetweenPhotos,
+                        ReferencePhotoForSeries = referencePhotoForSeries != null ? new DbReferencePhoto
+                        {
+                            Name = referencePhotoForSeries.Name,
+                            PixelsInMillimeter = referencePhotoForSeries.PixelsInMillimeter,
+                            SimpleReferencePhotoLine = referencePhotoForSeries.SimpleReferencePhotoLine,
+                            Content = referencePhotoForSeries.Content,
+                        } : null,
+                        DropPhotosSeries = dbDropPhotoForAdd.OrderBy(x => x.PhotoOrderInSeries).ToList()
+                    };
                 }
                 catch (ArgumentNullException e)
                 {

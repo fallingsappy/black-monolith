@@ -48,7 +48,7 @@ namespace DDrop
             _dDropRepository = dDropRepository;
         }
 
-        private async void SavePhotosOrder_OnClick(object sender, RoutedEventArgs e)
+        private void SavePhotosOrder_OnClick(object sender, RoutedEventArgs e)
         {
             Close();
         }

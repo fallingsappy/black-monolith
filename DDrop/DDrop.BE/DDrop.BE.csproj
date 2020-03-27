@@ -57,10 +57,6 @@
     <Compile Include="Models\Drop.cs" />
     <Compile Include="Models\DropPhoto.cs" />
     <Compile Include="Models\ReferencePhoto.cs" />
-    <Compile Include="Models\Serializable\SerializableDrop.cs" />
-    <Compile Include="Models\Serializable\SerializableDropPhoto.cs" />
-    <Compile Include="Models\Serializable\SerializableReferencePhoto.cs" />
-    <Compile Include="Models\Serializable\SerializableSeries.cs" />
     <Compile Include="Models\SimpleLine.cs" />
     <Compile Include="Models\Series.cs" />
     <Compile Include="Models\SeriesToExcel.cs" />

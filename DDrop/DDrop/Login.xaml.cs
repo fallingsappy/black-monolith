@@ -83,7 +83,7 @@ namespace DDrop
                         LoginWindowLoading();
                     }
                 }
-                catch (Exception exception)
+                catch
                 {
                     LoginWindowLoading();
                     _notifier.ShowError("Не удалось установить соединение. Проверьте интернет подключение.");
