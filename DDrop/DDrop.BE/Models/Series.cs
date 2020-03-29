@@ -159,7 +159,7 @@ namespace DDrop.BE.Models
                 if (_dropPhotosSeries?.Where(x => x.Drop?.RadiusInMeters != null).ToList().Count > 1 &&
                     _dropPhotosSeries?.Where(x => x.Drop?.RadiusInMeters == null).ToList().Count == 0 &&
                     _dropPhotosSeries.All(x => x.Drop?.RadiusInMeters != 0) && (IntervalBetweenPhotos != 0 || 
-                    _dropPhotosSeries?.Where(x => x.CreationDateTime == null).ToList().Count == 0 && UseCreationDateTime))
+                    _dropPhotosSeries?.Where(x => x.CreationDateTime == null).ToList().Count == 0 && UseCreationDateTime) && _loaded)
                 {
                     return true;
                 }
@@ -170,6 +170,21 @@ namespace DDrop.BE.Models
             {
                 _canDrawPlot = value;
                 OnPropertyChanged(new PropertyChangedEventArgs("CanDrawPlot"));
+            }
+        }
+
+        private bool _loaded = true;
+
+        public bool Loaded
+        {
+            get
+            {
+                return _loaded;
+            }
+            set
+            {
+                _loaded = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("Loaded"));
             }
         }
 
@@ -219,6 +234,9 @@ namespace DDrop.BE.Models
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged(PropertyChangedEventArgs e)
         {
+            if (e.PropertyName == nameof(Loaded))
+                OnPropertyChanged(new PropertyChangedEventArgs(nameof(CanDrawPlot)));
+
             if (e.PropertyName == nameof(IntervalBetweenPhotos))
                 OnPropertyChanged(new PropertyChangedEventArgs(nameof(CanDrawPlot)));
 

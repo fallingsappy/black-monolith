@@ -23,7 +23,6 @@ using DDrop.BL.DropPhoto;
 using DDrop.DAL;
 using DDrop.Utility.Mappers;
 using System.Threading.Tasks;
-using DDrop.Db.DbEntities;
 using Ookii.Dialogs.Wpf;
 
 namespace DDrop
@@ -31,7 +30,7 @@ namespace DDrop
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window, INotifyPropertyChanged
+    public partial class MainWindow : INotifyPropertyChanged
     {
         #region Variable Declaration
         private bool _allSelectedSeriesChanging;
@@ -750,8 +749,6 @@ namespace DDrop
         {
             if (indeterminateLoadingBar)
                 ProgressBar.IsIndeterminate = !ProgressBar.IsIndeterminate;
-            //SingleSeries.IsEnabled = !SingleSeries.IsEnabled;
-            //SeriesManagerMenuBar.IsEnabled = !SeriesManagerMenuBar.IsEnabled;
             SeriesLoading.IsAdornerVisible = !SeriesLoading.IsAdornerVisible;
         }
 
@@ -918,6 +915,7 @@ namespace DDrop
             {
                 try
                 {
+                    
                     ProgressBar.IsIndeterminate = true;
                     ImgCurrent.Source = null;
                     CurrentSeriesImageLoadingWindow();
@@ -1103,6 +1101,7 @@ namespace DDrop
 
         private void ToggleUiPhotosTableOperations()
         {
+            CurrentSeries.Loaded = !CurrentSeries.Loaded;
             Photos.IsEnabled = !Photos.IsEnabled;
             SeriesManager.IsEnabled = !SeriesManager.IsEnabled;
             ReferenceTab.IsEnabled = !ReferenceTab.IsEnabled;
@@ -1111,7 +1110,6 @@ namespace DDrop
             EditPhotosOrder.IsEnabled = !EditPhotosOrder.IsEnabled;
             IntervalBetweenPhotos.IsEnabled = !IntervalBetweenPhotos.IsEnabled;
             CreationTimeCheckBox.IsEnabled = !CreationTimeCheckBox.IsEnabled;
-            SingleSeries.IsEnabled = !SingleSeries.IsEnabled;
             MainMenuBar.IsEnabled = !MainMenuBar.IsEnabled;
         }
 
