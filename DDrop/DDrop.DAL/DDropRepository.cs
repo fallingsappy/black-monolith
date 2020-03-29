@@ -209,19 +209,16 @@ namespace DDrop.DAL
             }
         }
 
-        public async Task<DbSeries> GetListOfFullDbSeriesByIds(Guid seriesId)
+        public async Task<DbSeries> GetFullDbSeriesForExportById(Guid seriesId)
         {
             using (var context = new DDropContext())
             {
                 try
                 {
-                    DbSeries dbSeries = new DbSeries();
-
                     var series = await context.Series.Where(x => x.SeriesId == seriesId)
                     .Select(x => new {
                         x.Title,
                         x.IntervalBetweenPhotos,
-                        x.AddedDate,
                         x.UseCreationDateTime
                     }).FirstOrDefaultAsync();
 
@@ -233,7 +230,7 @@ namespace DDrop.DAL
                             x.SimpleReferencePhotoLine,
                             x.Content
                         }).FirstOrDefault();
-
+                    
                     var dropPhotoForSeries = context.DropPhotos.Where(x => x.CurrentSeriesId == seriesId)
                         .Select(x => new
                         {
@@ -244,13 +241,12 @@ namespace DDrop.DAL
                             x.XDiameterInPixels,
                             x.YDiameterInPixels,
                             x.ZDiameterInPixels,
-                            x.AddedDate,
                             x.CreationDateTime,
                             x.PhotoOrderInSeries,
                             x.DropPhotoId
                         }).ToList();
 
-                    List<DbDropPhoto> dbDropPhotoForAdd = new List<DbDropPhoto>();
+                    var dbDropPhotoForAdd = new List<DbDropPhoto>();
 
                     foreach (var dropPhoto in dropPhotoForSeries)
                     {
@@ -265,10 +261,9 @@ namespace DDrop.DAL
 
                         dbDropPhotoForAdd.Add(new DbDropPhoto
                         {
-                            AddedDate = dropPhoto.AddedDate,
                             Drop = new DbDrop
                             {
-                                RadiusInMeters = drop.RadiusInMeters,
+                                RadiusInMeters = drop?.RadiusInMeters,
                                 VolumeInCubicalMeters = drop.VolumeInCubicalMeters,
                                 XDiameterInMeters = drop.XDiameterInMeters,
                                 YDiameterInMeters = drop.YDiameterInMeters,
@@ -276,8 +271,20 @@ namespace DDrop.DAL
                             },
                             Content = dropPhoto.Content,
                             Name = dropPhoto.Name,
-                            SimpleHorizontalLine = dropPhoto.SimpleHorizontalLine,
-                            SimpleVerticalLine = dropPhoto.SimpleVerticalLine,
+                            SimpleHorizontalLine = dropPhoto.SimpleHorizontalLine != null ? new DbSimpleLine
+                            {
+                                X1 = dropPhoto.SimpleHorizontalLine.X1,
+                                Y1 = dropPhoto.SimpleHorizontalLine.Y1,
+                                Y2 = dropPhoto.SimpleHorizontalLine.X2,
+                                X2 = dropPhoto.SimpleHorizontalLine.Y2
+                            } : null,
+                            SimpleVerticalLine = dropPhoto.SimpleVerticalLine != null ? new DbSimpleLine
+                            {
+                                X1 = dropPhoto.SimpleVerticalLine.X1,
+                                Y1 = dropPhoto.SimpleVerticalLine.Y1,
+                                Y2 = dropPhoto.SimpleVerticalLine.Y2,
+                                X2 = dropPhoto.SimpleVerticalLine.X2
+                            } : null,
                             XDiameterInPixels = dropPhoto.XDiameterInPixels,
                             YDiameterInPixels = dropPhoto.YDiameterInPixels,
                             ZDiameterInPixels = dropPhoto.ZDiameterInPixels,
@@ -286,25 +293,65 @@ namespace DDrop.DAL
                         });
                     }
 
+                    DbReferencePhoto referencePhotoForAdd = null;
+
+                    if (referencePhotoForSeries != null)
+                    {
+                        referencePhotoForAdd = new DbReferencePhoto
+                        {
+                            Name = referencePhotoForSeries?.Name,
+                            PixelsInMillimeter = referencePhotoForSeries.PixelsInMillimeter,
+                            Content = referencePhotoForSeries.Content,
+                        };
+
+                        if (referencePhotoForSeries.SimpleReferencePhotoLine != null)
+                        {
+                            var simpleReferencePhotoLineForAdd = new DbSimpleLine
+                            {
+                                X1 = referencePhotoForSeries.SimpleReferencePhotoLine.X1,
+                                Y1 = referencePhotoForSeries.SimpleReferencePhotoLine.Y1,
+                                X2 = referencePhotoForSeries.SimpleReferencePhotoLine.X2,
+                                Y2 = referencePhotoForSeries.SimpleReferencePhotoLine.Y2
+                            };
+
+                            referencePhotoForAdd.SimpleReferencePhotoLine = simpleReferencePhotoLineForAdd;
+                        }
+                    }
+                    
                     return new DbSeries
                     {
-                        Title = series.Title,
-                        AddedDate = series.AddedDate,
+                        Title = series?.Title,
                         UseCreationDateTime = series.UseCreationDateTime,
                         IntervalBetweenPhotos = series.IntervalBetweenPhotos,
-                        ReferencePhotoForSeries = referencePhotoForSeries != null ? new DbReferencePhoto
-                        {
-                            Name = referencePhotoForSeries.Name,
-                            PixelsInMillimeter = referencePhotoForSeries.PixelsInMillimeter,
-                            SimpleReferencePhotoLine = referencePhotoForSeries.SimpleReferencePhotoLine,
-                            Content = referencePhotoForSeries.Content,
-                        } : null,
+                        ReferencePhotoForSeries = referencePhotoForAdd,
                         DropPhotosSeries = dbDropPhotoForAdd.OrderBy(x => x.PhotoOrderInSeries).ToList()
                     };
                 }
                 catch (ArgumentNullException e)
                 {
                     throw new ArgumentNullException(e.Message);
+                }
+            }
+        }
+
+        public async Task CreateFullSeries(DbSeries series)
+        {
+            using (var context = new DDropContext())
+            {
+                try
+                {
+                    context.Users.Attach(series.CurrentUser);
+                    context.Series.Add(series);
+
+                    await context.SaveChangesAsync();
+                }
+                catch (DbUpdateException e)
+                {
+                    throw new DbUpdateException(e.Message);
+                }
+                catch (InvalidOperationException e)
+                {
+                    throw new InvalidOperationException(e.Message);
                 }
             }
         }

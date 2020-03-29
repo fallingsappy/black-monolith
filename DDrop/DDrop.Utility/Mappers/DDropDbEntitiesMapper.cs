@@ -12,11 +12,13 @@ namespace DDrop.Utility.Mappers
 {
     public static class DDropDbEntitiesMapper
     {
-        public static async Task<Series> ImportLocalSeriesAsync(string fileName, User user)
+        public static async Task<DbSeries> ImportLocalSeriesAsync(string fileName, DbUser user)
         {
             var series = await Task.Run(() => LocalSeriesProvider.DeserializeAsync<DbSeries>(fileName));
-
-            return SingleDbSerieToSerie(series, user);
+            series.CurrentUser = user;
+            series.CurrentUserId = user.UserId;
+            
+            return series;
         }
 
         public static async Task ExportSeriesLocalAsync(string fileName, DbSeries dbSeries)
@@ -195,14 +197,14 @@ namespace DDrop.Utility.Mappers
             return addSeriesViewModel;
         }
 
-        public static Series SingleDbSerieToSerie(DbSeries serie, User user)
+        public static Series SingleDbSerieToSerie(DbSeries serie, User user, bool deserialization = false)
         {
             Series addSingleSeriesViewModel = new Series
             {
-                AddedDate = serie.AddedDate,
+                AddedDate = deserialization ? DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") : serie.AddedDate,
                 Title = serie.Title,
                 IntervalBetweenPhotos = serie.IntervalBetweenPhotos,
-                SeriesId = serie.SeriesId,
+                SeriesId = deserialization ? Guid.NewGuid() : serie.SeriesId,
                 CurrentUser = user,
                 CurrentUserId = user.UserId,
                 UseCreationDateTime = serie.UseCreationDateTime
@@ -216,11 +218,11 @@ namespace DDrop.Utility.Mappers
                     {
                         Name = dropPhoto.Name,
                         Content = dropPhoto.Content,
-                        DropPhotoId = dropPhoto.DropPhotoId,
+                        DropPhotoId = deserialization ? Guid.NewGuid() : dropPhoto.DropPhotoId,
                         XDiameterInPixels = dropPhoto.XDiameterInPixels,
                         YDiameterInPixels = dropPhoto.YDiameterInPixels,
                         ZDiameterInPixels = dropPhoto.ZDiameterInPixels,
-                        AddedDate = dropPhoto.AddedDate,
+                        AddedDate = deserialization ? DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") : dropPhoto.AddedDate,
                         CurrentSeries = addSingleSeriesViewModel,
                         CurrentSeriesId = addSingleSeriesViewModel.SeriesId,
                         CreationDateTime = dropPhoto.CreationDateTime,
@@ -235,7 +237,7 @@ namespace DDrop.Utility.Mappers
                             X2 = dropPhoto.SimpleHorizontalLine.X2,
                             Y1 = dropPhoto.SimpleHorizontalLine.Y1,
                             Y2 = dropPhoto.SimpleHorizontalLine.Y2,
-                            SimpleLineId = dropPhoto.SimpleHorizontalLine.SimpleLineId
+                            SimpleLineId = deserialization ? Guid.NewGuid() : dropPhoto.SimpleHorizontalLine.SimpleLineId
                         };
                         userDropPhoto.SimpleHorizontalLine = newSimpleHorizontalLine;
                         userDropPhoto.SimpleHorizontalLineId = newSimpleHorizontalLine.SimpleLineId;
@@ -249,7 +251,7 @@ namespace DDrop.Utility.Mappers
                             X2 = dropPhoto.SimpleVerticalLine.X2,
                             Y1 = dropPhoto.SimpleVerticalLine.Y1,
                             Y2 = dropPhoto.SimpleVerticalLine.Y2,
-                            SimpleLineId = dropPhoto.SimpleVerticalLine.SimpleLineId
+                            SimpleLineId = deserialization ? Guid.NewGuid() : dropPhoto.SimpleVerticalLine.SimpleLineId
                         };
                         userDropPhoto.SimpleVerticalLine = newSimpleVerticalLine;
                         userDropPhoto.SimpleVerticalLineId = dropPhoto.SimpleHorizontalLineId ?? Guid.NewGuid();
@@ -283,7 +285,7 @@ namespace DDrop.Utility.Mappers
                     {
                         var userDrop = new Drop()
                         {
-                            DropId = dropPhoto.Drop.DropId,
+                            DropId = deserialization ? userDropPhoto.DropPhotoId : dropPhoto.Drop.DropId,
                             RadiusInMeters = dropPhoto.Drop.RadiusInMeters,
                             VolumeInCubicalMeters = dropPhoto.Drop.VolumeInCubicalMeters,
                             XDiameterInMeters = dropPhoto.Drop.XDiameterInMeters,
@@ -307,7 +309,7 @@ namespace DDrop.Utility.Mappers
                     Content = serie.ReferencePhotoForSeries.Content,
                     Name = serie.ReferencePhotoForSeries.Name,
                     PixelsInMillimeter = serie.ReferencePhotoForSeries.PixelsInMillimeter,
-                    ReferencePhotoId = serie.ReferencePhotoForSeries.ReferencePhotoId,
+                    ReferencePhotoId = deserialization ? addSingleSeriesViewModel.SeriesId : serie.ReferencePhotoForSeries.ReferencePhotoId,
                     Series = addSingleSeriesViewModel,
                 };
 
@@ -319,7 +321,7 @@ namespace DDrop.Utility.Mappers
                         X2 = serie.ReferencePhotoForSeries.SimpleReferencePhotoLine.X2,
                         Y1 = serie.ReferencePhotoForSeries.SimpleReferencePhotoLine.Y1,
                         Y2 = serie.ReferencePhotoForSeries.SimpleReferencePhotoLine.Y2,
-                        SimpleLineId = serie.ReferencePhotoForSeries.SimpleReferencePhotoLine.SimpleLineId
+                        SimpleLineId = deserialization ? Guid.NewGuid() : serie.ReferencePhotoForSeries.SimpleReferencePhotoLine.SimpleLineId
                     };
                     addSingleSeriesViewModel.ReferencePhotoForSeries.SimpleLine = newSimpleLine;
                     addSingleSeriesViewModel.ReferencePhotoForSeries.SimpleReferencePhotoLineId = newSimpleLine.SimpleLineId;

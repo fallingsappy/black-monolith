@@ -12,9 +12,10 @@ namespace DDrop.DAL
         Task<DbUser> GetUserByLogin(string email);
         List<DbSeries> GetSeriesByUserId(Guid dbUserId);
         Task<DbSeries> GetSingleSeriesById(Guid dbSeriesId);
-        Task<DbSeries> GetListOfFullDbSeriesByIds(Guid seriesId);
+        Task<DbSeries> GetFullDbSeriesForExportById(Guid seriesId);
         Task CreateSeries(DbSeries series);
         Task DeleteSingleSeries(DbSeries series);
+        Task CreateFullSeries(DbSeries series);
         Task DeleteListOfSeries(List<DbSeries> serieses);
         Task UseCreationDateTime(bool useCreationDateTime, Guid seriesId);
         Task UpdateSeriesName(string seriesName, Guid seriesId);

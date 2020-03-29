@@ -22,8 +22,8 @@ using pbu = RFM.RFM_WPFProgressBarUpdate;
 using DDrop.BL.DropPhoto;
 using DDrop.DAL;
 using DDrop.Utility.Mappers;
-using System.Collections.Generic;
 using System.Threading.Tasks;
+using DDrop.Db.DbEntities;
 using Ookii.Dialogs.Wpf;
 
 namespace DDrop
@@ -41,7 +41,7 @@ namespace DDrop
         private readonly ISeriesBL _seriesBL;
         private readonly IDropPhotoBL _dropPhotoBL;
         private readonly IDDropRepository _dDropRepository;
-        readonly PythonProvider pythonProvider = new PythonProvider();
+        readonly PythonProvider _pythonProvider = new PythonProvider();
 
         public static readonly DependencyProperty CurrentSeriesProperty = DependencyProperty.Register("CurrentSeries", typeof(Series), typeof(MainWindow));
         public static readonly DependencyProperty CurrentDropPhotoProperty = DependencyProperty.Register("CurrentDropPhoto", typeof(DropPhoto), typeof(MainWindow));
@@ -49,7 +49,7 @@ namespace DDrop
         public static readonly DependencyProperty UserProperty = DependencyProperty.Register("User", typeof(User), typeof(MainWindow));
         public static readonly DependencyProperty ParticularSeriesIndexProperty = DependencyProperty.Register("ParticularSeriesIndex", typeof(int), typeof(MainWindow));
 
-        private readonly Notifier notifier = new Notifier(cfg =>
+        private readonly Notifier _notifier = new Notifier(cfg =>
         {
             cfg.PositionProvider = new WindowPositionProvider(
                 parentWindow: Application.Current.MainWindow,
@@ -70,40 +70,31 @@ namespace DDrop
 
         public DropPhoto CurrentDropPhoto
         {
-            get { return (DropPhoto)GetValue(CurrentDropPhotoProperty); }
-            set
-            {
-                SetValue(CurrentDropPhotoProperty, value);
-            }
+            get => (DropPhoto)GetValue(CurrentDropPhotoProperty);
+            set => SetValue(CurrentDropPhotoProperty, value);
         }
 
         public Series CurrentSeries
         {
-            get { return (Series)GetValue(CurrentSeriesProperty); }
-            set
-            {
-                SetValue(CurrentSeriesProperty, value);
-            }
+            get => (Series)GetValue(CurrentSeriesProperty);
+            set => SetValue(CurrentSeriesProperty, value);
         }
 
         public ImageSource ReferenceImage
         {
-            get { return (ImageSource)GetValue(ReferenceImageProperty); }
-            set
-            {
-                SetValue(ReferenceImageProperty, value);
-            }
+            get => (ImageSource)GetValue(ReferenceImageProperty);
+            set => SetValue(ReferenceImageProperty, value);
         }
 
         public User User
         {
-            get { return (User)GetValue(UserProperty); }
-            set { SetValue(UserProperty, value); }
+            get => (User)GetValue(UserProperty);
+            set => SetValue(UserProperty, value);
         }
 
         public int ParticularSeriesIndex
         {
-            get { return (int)GetValue(ParticularSeriesIndexProperty); }
+            get => (int)GetValue(ParticularSeriesIndexProperty);
             set { SetValue(ParticularSeriesIndexProperty, value); OnPropertyChanged(new PropertyChangedEventArgs("ParticularSeriesIndex")); }
         }
 
@@ -128,7 +119,7 @@ namespace DDrop
 
             //DropletImageProcessor dropletImageProcessor = new DropletImageProcessor();
             //dropletImageProcessor.GetDiameters();
-            Login login = new Login(_dDropRepository, notifier)
+            Login login = new Login(_dDropRepository, _notifier)
             {
                 Owner = AppMainWindow
             };
@@ -232,7 +223,7 @@ namespace DDrop
         }
 
         private async void AddNewSeries_OnClick(object sender, RoutedEventArgs e)
-        {            
+        {
             if (User.UserSeries == null)
             {
                 User.UserSeries = new ObservableCollection<Series>();
@@ -241,6 +232,9 @@ namespace DDrop
 
             if (!string.IsNullOrWhiteSpace(OneLineSetterValue.Text))
             {
+                SeriesWindowLoading();
+                ToggleUiPhotosTableOperations();
+
                 Series seriesToAdd = new Series
                 {
                     SeriesId = Guid.NewGuid(),
@@ -252,12 +246,10 @@ namespace DDrop
 
                 try
                 {
-                    ProgressBar.IsIndeterminate = true;
-                    SingleSeries.IsEnabled = false;
+                    var userEmail = User.Email;
+                    var dbUser = await Task.Run(() =>_dDropRepository.GetUserByLogin(userEmail));
 
-                    var dbUser = await _dDropRepository.GetUserByLogin(User.Email);
-
-                    await _dDropRepository.CreateSeries(DDropDbEntitiesMapper.SingleSeriesToSingleDbSeries(seriesToAdd, dbUser));
+                    await Task.Run(() => _dDropRepository.CreateSeries(DDropDbEntitiesMapper.SingleSeriesToSingleDbSeries(seriesToAdd, dbUser)));
 
                     seriesToAdd.PropertyChanged += EntryOnPropertyChanged;
 
@@ -265,19 +257,19 @@ namespace DDrop
                     SeriesDataGrid.ItemsSource = User.UserSeries;
                     OneLineSetterValue.Text = "";
 
-                    notifier.ShowSuccess($"Добавлена новая серия {seriesToAdd.Title}");
+                    _notifier.ShowSuccess($"Добавлена новая серия {seriesToAdd.Title}");
                 }
                 catch (Exception)
                 {
-                    notifier.ShowError($"Серия {seriesToAdd.Title} не добавлена. Не удалось установить подключение. Проверьте интернет соединение.");
+                    _notifier.ShowError($"Серия {seriesToAdd.Title} не добавлена. Не удалось установить подключение. Проверьте интернет соединение.");
                 }
 
-                ProgressBar.IsIndeterminate = false;
-                SingleSeries.IsEnabled = true;
+                SeriesWindowLoading();
+                ToggleUiPhotosTableOperations();
             }
             else
             {
-                notifier.ShowInformation("Введите название серии.");
+                _notifier.ShowInformation("Введите название серии.");
             }
         }
 
@@ -285,8 +277,8 @@ namespace DDrop
         {
             if (User.UserSeries.Count > 0 && SeriesDataGrid.SelectedItem != null)
             {
-                ProgressBar.IsIndeterminate = true;
                 SingleSeries.IsEnabled = false;
+                ProgressBar.IsIndeterminate = true;
 
                 Series old = new Series()
                 {
@@ -303,11 +295,12 @@ namespace DDrop
                 {
                     try
                     {
-                        CurrentSeries.ReferencePhotoForSeries.Content = await _dDropRepository.GetReferencePhotoContent(CurrentSeries.ReferencePhotoForSeries.ReferencePhotoId);
+                        var referencePhotoId = CurrentSeries.ReferencePhotoForSeries.ReferencePhotoId;
+                        CurrentSeries.ReferencePhotoForSeries.Content = await Task.Run(() => _dDropRepository.GetReferencePhotoContent(referencePhotoId));
                     }
                     catch (Exception)
                     {
-                        notifier.ShowError("Не удалось загрузить референсный снимок. Не удалось установить подключение. Проверьте интернет соединение.");
+                        _notifier.ShowError("Не удалось загрузить референсный снимок. Не удалось установить подключение. Проверьте интернет соединение.");
                     }
                 }                   
 
@@ -322,8 +315,8 @@ namespace DDrop
                     ReferenceImage = ImageInterpreter.LoadImage(CurrentSeries.ReferencePhotoForSeries.Content);
                 }
 
-                ProgressBar.IsIndeterminate = false;
                 SingleSeries.IsEnabled = true;
+                ProgressBar.IsIndeterminate = false;
             }
             else
             {
@@ -348,24 +341,26 @@ namespace DDrop
             DropPhoto selectedFile = (DropPhoto)SeriesPreviewDataGrid.SelectedItem;
             if (selectedFile != null)
             {
+                PreviewWindowLoading();
+
                 try
                 {
                     ImgPreview.Source = null;
 
-                    PreviewWindowLoading();
-
+                    
                     ProgressBar.IsIndeterminate = true;
 
                     ImgPreview.Source = ImageInterpreter.LoadImage(await Task.Run(() =>
                         _dDropRepository.GetDropPhotoContent(selectedFile.DropPhotoId)));
 
-                    PreviewWindowLoading();
+                    
                 }
                 catch (Exception)
                 {
-                    notifier.ShowError($"Не удалось загрузить снимок {selectedFile.Name}. Не удалось установить подключение. Проверьте интернет соединение.");
+                    _notifier.ShowError($"Не удалось загрузить снимок {selectedFile.Name}. Не удалось установить подключение. Проверьте интернет соединение.");
                 }
 
+                PreviewWindowLoading();
                 ProgressBar.IsIndeterminate = false;
             }
             else
@@ -383,7 +378,7 @@ namespace DDrop
 
             if (tabItem.IsEnabled && User != null)
             {
-                notifier.ShowSuccess("Новый общий график серий построен");
+                _notifier.ShowSuccess("Новый общий график серий построен");
             }
         }
 
@@ -404,17 +399,17 @@ namespace DDrop
                     {
                         ExcelOperations.CreateSingleSeriesExcelFile(User, saveFileDialog.FileName);
 
-                        notifier.ShowSuccess($"Файл {saveFileDialog.SafeFileName} успешно сохранен.");
+                        _notifier.ShowSuccess($"Файл {saveFileDialog.SafeFileName} успешно сохранен.");
                     }
                 }
                 else
                 {
-                    notifier.ShowInformation("Нельзя построить график для выбранных серий.");
+                    _notifier.ShowInformation("Нельзя построить график для выбранных серий.");
                 }
             }
             else
             {
-                notifier.ShowInformation("Нет выбранных серий.");
+                _notifier.ShowInformation("Нет выбранных серий.");
             }
         }
 
@@ -422,76 +417,51 @@ namespace DDrop
         {
             if (User.UserSeries.Count > 0)
             {
-                bool isAnyChecked = User.UserSeries.Any(x => x.IsChecked);
+                var checkedCount = User.UserSeries.Count(x => x.IsChecked);
 
-                var pbuHandle1 = pbu.New(ProgressBar, 0, User.UserSeries.Count, 0);
-                SeriesWindowLoading(false);
-
-                if (isAnyChecked)
+                MessageBoxResult messageBoxResult = MessageBox.Show(checkedCount > 0 ? "Удалить выбранные серии?" : "Удалить все серии?", "Подтверждение удаления", MessageBoxButton.YesNo);
+                if (messageBoxResult == MessageBoxResult.Yes)
                 {
-                    MessageBoxResult messageBoxResult = MessageBox.Show("Удалить выбранные серии?", "Подтверждение удаления", MessageBoxButton.YesNo);
-                    if (messageBoxResult == MessageBoxResult.Yes)
-                    {
-                        for (int i = User.UserSeries.Count - 1; i >= 0; i--)
-                        {
-                            try
-                            {
-                                if (User.UserSeries[i].IsChecked)
-                                {
-                                    var dbUser = await _dDropRepository.GetUserByLogin(User.Email);
-                                    await _dDropRepository.DeleteSingleSeries(DDropDbEntitiesMapper.SingleSeriesToSingleDbSeries(User.UserSeries[i], dbUser));
-
-                                    notifier.ShowSuccess($"Серия {User.UserSeries[i].Title} была удалена.");
-                                    notifier.ShowSuccess("Выбранные серии были удалены.");
-
-                                    pbu.CurValue[pbuHandle1] += 1;
-
-                                    User.UserSeries.RemoveAt(i);
-                                }                                   
-                            }
-                            catch (Exception)
-                            {
-                                notifier.ShowError($"Не удалось удалить серию {User.UserSeries[SeriesDataGrid.SelectedIndex].Title}. Не удалось установить подключение. Проверьте интернет соединение.");
-                            }
-                        }                        
-                    }
-                }
-                else
-                {
-                    MessageBoxResult messageBoxResult = MessageBox.Show("Удалить все серии?", "Подтверждение удаления", MessageBoxButton.YesNo);
-                    if (messageBoxResult == MessageBoxResult.Yes)
+                    var pbuHandle1 = pbu.New(ProgressBar, 0, User.UserSeries.Count, 0);
+                    SeriesWindowLoading(false);
+                    for (int i = User.UserSeries.Count - 1; i >= 0; i--)
                     {
                         try
                         {
-                            var dbUser = await _dDropRepository.GetUserByLogin(User.Email);
-                            
-                            for (var i = 0; i < User.UserSeries.Count; i++)
+                            if (checkedCount > 0 && !User.UserSeries[i].IsChecked)
                             {
-                                await _dDropRepository.DeleteSingleSeries(
-                                    DDropDbEntitiesMapper.SingleSeriesToSingleDbSeries(User.UserSeries[i], dbUser));
-
-                                pbu.CurValue[pbuHandle1] += 1;
+                                continue;
                             }
 
-                            User.UserSeries.Clear();
+                            var userEmail = User.Email;
+                            var dbUser = await Task.Run(() => _dDropRepository.GetUserByLogin(userEmail));
+                            var userSeries = User.UserSeries[i];
+                            await Task.Run(() => _dDropRepository.DeleteSingleSeries(DDropDbEntitiesMapper.SingleSeriesToSingleDbSeries(userSeries, dbUser)));
 
-                            notifier.ShowSuccess("Все серии были удалены.");
-                            SeriesPreviewDataGrid.SelectedIndex = -1;
+                            _notifier.ShowSuccess($"Серия {User.UserSeries[i].Title} была удалена.");
+
+                            User.UserSeries.RemoveAt(i);
                         }
                         catch (Exception)
                         {
-                            notifier.ShowError($"Не удалось удалить серию {User.UserSeries[SeriesDataGrid.SelectedIndex].Title}. Не удалось установить подключение. Проверьте интернет соединение.");
-                        }                        
+                            _notifier.ShowError($"Не удалось удалить серию {User.UserSeries[SeriesDataGrid.SelectedIndex].Title}. Не удалось установить подключение. Проверьте интернет соединение.");
+                        }
+
+                        pbu.CurValue[pbuHandle1] += 1;
                     }
+
+                    SeriesPreviewDataGrid.SelectedIndex = -1;
+
+                    pbu.ResetValue(pbuHandle1);
+                    pbu.Remove(pbuHandle1);
+
+                    SeriesWindowLoading(false);
                 }
 
-                SeriesWindowLoading(false);
-                pbu.ResetValue(pbuHandle1);
-                pbu.Remove(pbuHandle1);
             }
             else
             {
-                notifier.ShowInformation("Нет серий для удаления.");
+                _notifier.ShowInformation("Нет серий для удаления.");
             }
         }
 
@@ -504,22 +474,24 @@ namespace DDrop
                 {
                     SeriesWindowLoading();
 
-                    var dbUser = await _dDropRepository.GetUserByLogin(User.Email);
+                    var userEmail = User.Email;
+                    var dbUser = await Task.Run(() => _dDropRepository.GetUserByLogin(userEmail));
                     await Task.Run(() =>
                     {
                         Dispatcher.InvokeAsync(() => _dDropRepository.DeleteSingleSeries(
                                 DDropDbEntitiesMapper.SingleSeriesToSingleDbSeries(
                                     User.UserSeries[SeriesDataGrid.SelectedIndex], dbUser)));
                     });
-                    notifier.ShowSuccess($"Серия {User.UserSeries[SeriesDataGrid.SelectedIndex].Title} была удалена.");
+                    _notifier.ShowSuccess($"Серия {User.UserSeries[SeriesDataGrid.SelectedIndex].Title} была удалена.");
                     User.UserSeries.RemoveAt(SeriesDataGrid.SelectedIndex);
                     Photos.ItemsSource = null;
                     ImgPreview.Source = null;
                     SeriesPreviewDataGrid.ItemsSource = null;
+                    SeriesPreviewDataGrid.SelectedIndex = -1;
                 }
                 catch (Exception)
                 {
-                    notifier.ShowError($"Не удалось удалить серию {User.UserSeries[SeriesDataGrid.SelectedIndex].Title}. Не удалось установить подключение. Проверьте интернет соединение.");
+                    _notifier.ShowError($"Не удалось удалить серию {User.UserSeries[SeriesDataGrid.SelectedIndex].Title}. Не удалось установить подключение. Проверьте интернет соединение.");
                 }
 
                 SeriesWindowLoading();
@@ -532,7 +504,7 @@ namespace DDrop
 
             if (tabItem.IsEnabled && User != null)
             {
-                notifier.ShowSuccess("Новый график построен");
+                _notifier.ShowSuccess("Новый график построен");
             }
         }
 
@@ -561,31 +533,54 @@ namespace DDrop
 
         private async void ExportSeriesLocal_ClickAsync(object sender, RoutedEventArgs e)
         {
-            VistaFolderBrowserDialog saveFileDialog = new VistaFolderBrowserDialog
+            if (User.UserSeries.Count > 0)
             {
-                UseDescriptionForTitle = true,
-                Description = "Выберите папку для сохранения..."
-            };
-
-            if (saveFileDialog.ShowDialog() == true)
-            {
-                SeriesWindowLoading();
-                var dbUser = await _dDropRepository.GetUserByLogin(User.Email);
-                List<Guid> seriesIds = new List<Guid>();
-                foreach (var series in User.UserSeries)
+                VistaFolderBrowserDialog saveFileDialog = new VistaFolderBrowserDialog
                 {
-                    if (series.IsChecked)
-                    {
-                        notifier.ShowSuccess($"файл {series.Title}.ddrops сохранен на диске.");
-                        await DDropDbEntitiesMapper.ExportSeriesLocalAsync(
-                            $"{saveFileDialog.SelectedPath}\\{series.Title}.ddrop",
-                            await _dDropRepository.GetListOfFullDbSeriesByIds(series.SeriesId));
-                    }
-                }
+                    UseDescriptionForTitle = true,
+                    Description = "Выберите папку для сохранения..."
+                };
 
-                ProgressBar.IsIndeterminate = false;
-                
-                SeriesWindowLoading(false);
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    SeriesWindowLoading(false);
+
+                    int checkedCount = User.UserSeries.Count(x => x.IsChecked);
+
+                    var pbuHandle1 = pbu.New(ProgressBar, 0, checkedCount > 0 ? checkedCount : User.UserSeries.Count, 0);
+
+                    foreach (var series in User.UserSeries)
+                    {
+                        if (checkedCount > 0 && !series.IsChecked)
+                        {
+                            break;
+                        }
+
+                        try
+                        {
+                            var fullDbSeries = await Task.Run(() => _dDropRepository.GetFullDbSeriesForExportById(series.SeriesId));
+
+                            await Task.Run(() => DDropDbEntitiesMapper.ExportSeriesLocalAsync(
+                                $"{saveFileDialog.SelectedPath}\\{series.Title}.ddrops", fullDbSeries));
+                            _notifier.ShowSuccess($"файл {series.Title}.ddrops сохранен на диске.");
+                        }
+                        catch
+                        {
+                            _notifier.ShowError($"Не удалось сохранить серию {series.Title}. Не удалось установить подключение. Проверьте интернет соединение.");
+                        }
+                        
+                        pbu.CurValue[pbuHandle1] += 1;
+                    }
+
+                    pbu.ResetValue(pbuHandle1);
+                    pbu.Remove(pbuHandle1);
+
+                    SeriesWindowLoading(false);
+                }
+            }
+            else
+            {
+                _notifier.ShowInformation("Нет серий для выгрузки.");
             }
         }
 
@@ -600,46 +595,63 @@ namespace DDrop
                 CheckPathExists = true
             };
 
-            ObservableCollection<Series> addSeriesViewModel = new ObservableCollection<Series>();
-
             if (openFileDialog.ShowDialog() == true)
             {
-                SeriesWindowLoading(false);
+                ToggleUiPhotosTableOperations();
+                SeriesWindowLoading();
+
+                var pbuHandle1 = pbu.New(ProgressBar, 0, openFileDialog.FileNames.Length, 0);
+
+                var userEmail = User.Email;
+                var dbUser = await Task.Run(() => _dDropRepository.GetUserByLogin(userEmail));
+
                 foreach (var fileName in openFileDialog.FileNames)
                 {
-                    addSeriesViewModel.Add(await DDropDbEntitiesMapper.ImportLocalSeriesAsync(fileName, User));
-                }
-                
-                SeriesWindowLoading(false);
-
-                AddSeries addSeries = new AddSeries(addSeriesViewModel);
-                addSeries.ShowDialog();
-
-                if (addSeriesViewModel.Count != 0)
-                {
-                    bool isAnyChecked = addSeriesViewModel.Any(x => x.IsCheckedForAdd);
-
-                    foreach (var seriesViewModel in addSeriesViewModel)
+                    try
                     {
-                        if (isAnyChecked)
+                        var dbSerieForAdd = await Task.Run(() => DDropDbEntitiesMapper.ImportLocalSeriesAsync(fileName, dbUser));
+
+                        var deserializedSerie = DDropDbEntitiesMapper.SingleDbSerieToSerie(dbSerieForAdd, User, true);
+
+                        try
                         {
-                            if (seriesViewModel.IsCheckedForAdd)
+                            await Task.Run(() => _dDropRepository.CreateFullSeries(DDropDbEntitiesMapper.SingleSeriesToSingleDbSeries(deserializedSerie, dbUser)));
+
+                            deserializedSerie.ReferencePhotoForSeries.Content = null;
+                            foreach (var dropPhoto in deserializedSerie.DropPhotosSeries)
                             {
-                                User.UserSeries.Add(seriesViewModel);
-                                notifier.ShowSuccess($"Серия {seriesViewModel.Title} добавлена.");
+                                dropPhoto.Content = null;
                             }
+
+                            User.UserSeries.Add(deserializedSerie);
+                            _notifier.ShowSuccess($"Серия {dbSerieForAdd.Title} добавлена.");
+
+                            
                         }
-                        else
+                        catch
                         {
-                            User.UserSeries.Add(seriesViewModel);
-                            notifier.ShowSuccess($"Серия {seriesViewModel.Title} добавлена.");
+                            _notifier.ShowError(
+                                $"Не удалось сохранить серию серию {dbSerieForAdd.Title}. Не удалось установить подключение. Проверьте интернет соединение.");
                         }
                     }
+                    catch
+                    {
+                        _notifier.ShowError(
+                            $"Не удалось десериализовать файл {fileName}. Файл не является файлом серии или поврежден.");
+                    }
+
+                    pbu.CurValue[pbuHandle1] += 1;
 
 
-                    notifier.ShowSuccess($"Все серии успешно добавлены.");
                 }
+
+                pbu.ResetValue(pbuHandle1);
+                pbu.Remove(pbuHandle1);
             }
+
+            ToggleUiPhotosTableOperations();
+            SeriesWindowLoading();
+
             if (SeriesDataGrid.ItemsSource == null)
                 SeriesDataGrid.ItemsSource = User.UserSeries;
         }
@@ -647,21 +659,26 @@ namespace DDrop
         private async void SeriesDataGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
             SeriesWindowLoading(false);
+            ToggleUiPhotosTableOperations();
+
             var seriesNameCell = e.EditingElement as TextBox;
             try
             {
                 if (seriesNameCell != null)
                 {
-                    await _dDropRepository.UpdateSeriesName(seriesNameCell.Text, CurrentSeries.SeriesId);
-                    notifier.ShowSuccess("Название серии изменено успешно.");
+                    var seriesId = CurrentSeries.SeriesId;
+                    var text = seriesNameCell.Text;
+                    await Task.Run(() => _dDropRepository.UpdateSeriesName(text, seriesId));
+                    _notifier.ShowSuccess("Название серии изменено успешно.");
                 }
             }
             catch (Exception)
             {
-                notifier.ShowError("Не удалось изменить название серии. Не удалось установить подключение. Проверьте интернет соединение.");
+                _notifier.ShowError("Не удалось изменить название серии. Не удалось установить подключение. Проверьте интернет соединение.");
             }
 
             SeriesWindowLoading(false);
+            ToggleUiPhotosTableOperations();
         }
 
         private async void CreationTimeCheckBox_Checked(object sender, RoutedEventArgs e)
@@ -675,12 +692,13 @@ namespace DDrop
                 {
                     ProgressBar.IsIndeterminate = true;
 
-                    await _dDropRepository.UseCreationDateTime(true, CurrentSeries.SeriesId);
-                    notifier.ShowSuccess($"Серия {CurrentSeries.Title} использует время создания снимков. Порядок фотографий будет проигнорирован.");
+                    var seriesId = CurrentSeries.SeriesId;
+                    await Task.Run(() => _dDropRepository.UseCreationDateTime(true, seriesId));
+                    _notifier.ShowSuccess($"Серия {CurrentSeries.Title} использует время создания снимков. Порядок фотографий будет проигнорирован.");
                 }
                 catch
                 {
-                    notifier.ShowError("Не удалось изменить режим построения графика. Не удалось установить подключение. Проверьте интернет соединение.");
+                    _notifier.ShowError("Не удалось изменить режим построения графика. Не удалось установить подключение. Проверьте интернет соединение.");
                 }
 
                 ProgressBar.IsIndeterminate = false;
@@ -697,12 +715,13 @@ namespace DDrop
                 {
                     ProgressBar.IsIndeterminate = true;
 
-                    await _dDropRepository.UseCreationDateTime(false, CurrentSeries.SeriesId);
-                    notifier.ShowSuccess($"Серия {CurrentSeries.Title} использует интервал между снимками.");
+                    var seriesId = CurrentSeries.SeriesId;
+                    await Task.Run(() => _dDropRepository.UseCreationDateTime(false, seriesId));
+                    _notifier.ShowSuccess($"Серия {CurrentSeries.Title} использует интервал между снимками.");
                 }
                 catch
                 {
-                    notifier.ShowError("Не удалось изменить режим построения графика. Не удалось установить подключение. Проверьте интернет соединение.");
+                    _notifier.ShowError("Не удалось изменить режим построения графика. Не удалось установить подключение. Проверьте интернет соединение.");
                 }
 
                 ProgressBar.IsIndeterminate = false;
@@ -716,13 +735,13 @@ namespace DDrop
             try
             {
                 editTableWindow.ShowDialog();
-                notifier.ShowSuccess($"Порядок снимков для серии {CurrentSeries.Title} обновлен.");
+                _notifier.ShowSuccess($"Порядок снимков для серии {CurrentSeries.Title} обновлен.");
                 Photos.ItemsSource = CurrentSeries.DropPhotosSeries;
                 SeriesPreviewDataGrid.ItemsSource = CurrentSeries.DropPhotosSeries;
             }
             catch
             {
-                notifier.ShowError(
+                _notifier.ShowError(
                     $"Не удалось обновить порядок снимков для серии {CurrentSeries.Title}. Не удалось установить подключение. Проверьте интернет соединение.");
             }
         }
@@ -731,8 +750,9 @@ namespace DDrop
         {
             if (indeterminateLoadingBar)
                 ProgressBar.IsIndeterminate = !ProgressBar.IsIndeterminate;
-            SingleSeries.IsEnabled = !SingleSeries.IsEnabled;
-            SeriesManagerMenuBar.IsEnabled = !SeriesManagerMenuBar.IsEnabled;
+            //SingleSeries.IsEnabled = !SingleSeries.IsEnabled;
+            //SeriesManagerMenuBar.IsEnabled = !SeriesManagerMenuBar.IsEnabled;
+            SeriesLoading.IsAdornerVisible = !SeriesLoading.IsAdornerVisible;
         }
 
         #endregion
@@ -864,27 +884,28 @@ namespace DDrop
                     {
                         try
                         {
-                            await _dDropRepository.CreateDropPhoto(DDropDbEntitiesMapper.DropPhotoToDbDropPhoto(imageForAdding, CurrentSeries.SeriesId), CurrentSeries.SeriesId);
+                            var seriesId = CurrentSeries.SeriesId;
+                            await Task.Run(() => _dDropRepository.CreateDropPhoto(DDropDbEntitiesMapper.DropPhotoToDbDropPhoto(imageForAdding, seriesId), seriesId));
 
                             imageForAdding.Content = null;
                             CurrentSeries.DropPhotosSeries.Add(imageForAdding);
                             
-                            notifier.ShowSuccess($"Снимок {imageForAdding.Name} добавлен.");
+                            _notifier.ShowSuccess($"Снимок {imageForAdding.Name} добавлен.");
                         }
                         catch (Exception)
                         {
-                            notifier.ShowError($"Снимок {imageForAdding.Name} не добавлен. Не удалось установить подключение. Проверьте интернет соединение.");
+                            _notifier.ShowError($"Снимок {imageForAdding.Name} не добавлен. Не удалось установить подключение. Проверьте интернет соединение.");
                         }                      
                     }
                     else
                     {
-                        notifier.ShowError($"Файл {imageForAdding.Name} имеет неизвестный формат.");
+                        _notifier.ShowError($"Файл {imageForAdding.Name} имеет неизвестный формат.");
                     }
                 }
 
                 ToggleUiPhotosTableOperations();
                 CurrentSeriesPhotoContentLoadingWindow();
-                notifier.ShowSuccess($"Новые снимки успешно добавлены.");
+                _notifier.ShowSuccess($"Новые снимки успешно добавлены.");
                 pbu.ResetValue(pbuHandle1);
                 pbu.Remove(pbuHandle1);
             }
@@ -900,7 +921,8 @@ namespace DDrop
                     ProgressBar.IsIndeterminate = true;
                     ImgCurrent.Source = null;
                     CurrentSeriesImageLoadingWindow();
-                    CurrentSeriesPhotoContentLoadingWindow();
+                    ToggleUiPhotosTableOperations();
+
                     if (e.RemovedItems.Count > 0)
                     {
                         var oldCurrentPhoto = e.RemovedItems[0] as DropPhoto;
@@ -909,17 +931,17 @@ namespace DDrop
                     }
 
                     CurrentDropPhoto = CurrentSeries.DropPhotosSeries[Photos.SelectedIndex];
-                    CurrentDropPhoto.Content = await _dDropRepository.GetDropPhotoContent(selectedFile.DropPhotoId);
+                    CurrentDropPhoto.Content = await Task.Run(() => _dDropRepository.GetDropPhotoContent(selectedFile.DropPhotoId));
                     ImgCurrent.Source = ImageInterpreter.LoadImage(CurrentDropPhoto.Content);
                 }
                 catch (Exception)
                 {
-                    notifier.ShowError($"Не удалось загрузить снимок {selectedFile.Name}. Не удалось установить подключение. Проверьте интернет соединение.");
+                    _notifier.ShowError($"Не удалось загрузить снимок {selectedFile.Name}. Не удалось установить подключение. Проверьте интернет соединение.");
                 }
 
                 ProgressBar.IsIndeterminate = false;
-                CurrentSeriesPhotoContentLoadingWindow();
                 CurrentSeriesImageLoadingWindow();
+                ToggleUiPhotosTableOperations();
             }
             else
                 ImgCurrent.Source = null;
@@ -939,74 +961,48 @@ namespace DDrop
         {
             if (CurrentSeries.DropPhotosSeries.Count > 0)
             {
-                bool isAnyChecked = CurrentSeries.DropPhotosSeries.Any(x => x.IsChecked);
+                int checkedCount = CurrentSeries.DropPhotosSeries.Count(x => x.IsChecked);
 
-                var pbuHandle1 = pbu.New(ProgressBar, 0, CurrentSeries.DropPhotosSeries.Count, 0);
-
-                if (isAnyChecked)
+                MessageBoxResult messageBoxResult = MessageBox.Show(checkedCount > 0 ? "Удалить выбранные снимки?" : "Удалить все снимки?", "Подтверждение удаления", MessageBoxButton.YesNo);
+                if (messageBoxResult == MessageBoxResult.Yes)
                 {
-                    MessageBoxResult messageBoxResult = MessageBox.Show("Удалить выбранные снимки?", "Подтверждение удаления", MessageBoxButton.YesNo);
-                    if (messageBoxResult == MessageBoxResult.Yes)
+                    var pbuHandle1 = pbu.New(ProgressBar, 0, checkedCount > 0 ? checkedCount : CurrentSeries.DropPhotosSeries.Count, 0);
+                    ToggleUiPhotosTableOperations();
+                    CurrentSeriesPhotoContentLoadingWindow();
+
+                    for (int i = CurrentSeries.DropPhotosSeries.Count - 1; i >= 0; i--)
                     {
-                        ToggleUiPhotosTableOperations();
-                        CurrentSeriesPhotoContentLoadingWindow();
-
-                        for (int i = CurrentSeries.DropPhotosSeries.Count - 1; i >= 0; i--)
+                        try
                         {
-                            try
+                            if (checkedCount > 0 && !CurrentSeries.DropPhotosSeries[i].IsChecked)
                             {
-                                if (CurrentSeries.DropPhotosSeries[i].IsChecked)
-                                {
-                                    await _dDropRepository.DeleteDropPhoto(CurrentSeries.DropPhotosSeries[i].DropPhotoId);
+                                continue;
+                            }
 
-                                    CurrentSeries.DropPhotosSeries.Remove(CurrentSeries.DropPhotosSeries[i]);
-                                    
-                                    pbu.CurValue[pbuHandle1] += 1;
-                                }
-                            }
-                            catch (Exception)
-                            {
-                                notifier.ShowError($"Не удалось удалить снимок {CurrentSeries.DropPhotosSeries[i].Name}. Не удалось установить подключение. Проверьте интернет соединение.");
-                            }
+                            var photoForDeleteId = CurrentSeries.DropPhotosSeries[i].DropPhotoId;
+                            await Task.Run(() => _dDropRepository.DeleteDropPhoto(photoForDeleteId));
+
+                            CurrentSeries.DropPhotosSeries.Remove(CurrentSeries.DropPhotosSeries[i]);
+                            
                         }
-                    }
-                }
-                else
-                {
-                    MessageBoxResult messageBoxResult = MessageBox.Show("Удалить все снимки?", "Подтверждение удаления", MessageBoxButton.YesNo);
-                    if (messageBoxResult == MessageBoxResult.Yes)
-                    {
-                        ToggleUiPhotosTableOperations();
-                        CurrentSeriesPhotoContentLoadingWindow();
-
-                        for (int i = CurrentSeries.DropPhotosSeries.Count - 1; i >= 0; i--)
+                        catch (Exception)
                         {
-                            try
-                            {
-                                await _dDropRepository.DeleteDropPhoto(CurrentSeries.DropPhotosSeries[i].DropPhotoId);
-
-                                CurrentSeries.DropPhotosSeries.Remove(CurrentSeries.DropPhotosSeries[i]);
-
-                                pbu.CurValue[pbuHandle1] += 1;
-                            }
-                            catch (Exception)
-                            {
-                                notifier.ShowError($"Не удалось удалить снимок {CurrentSeries.DropPhotosSeries[i].Name}. Не удалось установить подключение. Проверьте интернет соединение.");
-                            }
-
-                            notifier.ShowSuccess("Все снимки удалены");
+                            _notifier.ShowError($"Не удалось удалить снимок {CurrentSeries.DropPhotosSeries[i].Name}. Не удалось установить подключение. Проверьте интернет соединение.");
                         }
-                    }
-                }
 
-                CurrentSeriesPhotoContentLoadingWindow();
-                ToggleUiPhotosTableOperations();
-                pbu.ResetValue(pbuHandle1);
-                pbu.Remove(pbuHandle1);
+                        pbu.CurValue[pbuHandle1] += 1;
+                    }
+
+                    pbu.ResetValue(pbuHandle1);
+                    pbu.Remove(pbuHandle1);
+
+                    CurrentSeriesPhotoContentLoadingWindow();
+                    ToggleUiPhotosTableOperations();
+                }
             }
             else
             {
-                notifier.ShowInformation("Нет снимков для удаления.");
+                _notifier.ShowInformation("Нет снимков для удаления.");
             }
         }
 
@@ -1020,14 +1016,15 @@ namespace DDrop
                 CurrentSeriesPhotoContentLoadingWindow();
                 try
                 {
-                    await _dDropRepository.DeleteDropPhoto(CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].DropPhotoId);
-                    notifier.ShowSuccess($"Снимок {CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].Name} удален.");
+                    var photoForDeleteId = CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].DropPhotoId;
+                    await Task.Run(() => _dDropRepository.DeleteDropPhoto(photoForDeleteId));
+                    _notifier.ShowSuccess($"Снимок {CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].Name} удален.");
 
                     CurrentSeries.DropPhotosSeries.RemoveAt(Photos.SelectedIndex);
                 }
                 catch (Exception)
                 {
-                    notifier.ShowError($"Не удалось удалить снимок {CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].Name}. Не удалось установить подключение. Проверьте интернет соединение.");
+                    _notifier.ShowError($"Не удалось удалить снимок {CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].Name}. Не удалось установить подключение. Проверьте интернет соединение.");
                 }
 
                 ProgressBar.IsIndeterminate = false;
@@ -1050,8 +1047,11 @@ namespace DDrop
                     CurrentDropPhoto.VerticalLine = new Line();
 
                 if (CurrentDropPhoto.Content == null)
-                    CurrentDropPhoto.Content = await _dDropRepository.GetDropPhotoContent(CurrentDropPhoto.DropPhotoId);
-
+                {
+                    var currentDropPhotoId = CurrentDropPhoto.DropPhotoId;
+                    CurrentDropPhoto.Content = await Task.Run(() => _dDropRepository.GetDropPhotoContent(currentDropPhotoId));
+                }
+                
                 ManualEdit manualEdit = new ManualEdit(CurrentDropPhoto);
                 manualEdit.ShowDialog();
 
@@ -1077,24 +1077,24 @@ namespace DDrop
 
                         var dbPhoto = DDropDbEntitiesMapper.DropPhotoToDbDropPhoto(CurrentDropPhoto, CurrentSeries.SeriesId);
 
-                        await _dDropRepository.UpdateDropPhoto(dbPhoto);
+                        await Task.Run(() => _dDropRepository.UpdateDropPhoto(dbPhoto));
 
-                        notifier.ShowSuccess($"Расчет для снимка {CurrentDropPhoto.Name} выполнен.");
+                        _notifier.ShowSuccess($"Расчет для снимка {CurrentDropPhoto.Name} выполнен.");
                     }
                     catch (Exception)
                     {
                         CurrentDropPhoto.Drop = tempDrop;
-                        notifier.ShowError("Не удалось сохранить результаты расчета. Не удалось установить подключение. Проверьте интернет соединение.");
+                        _notifier.ShowError("Не удалось сохранить результаты расчета. Не удалось установить подключение. Проверьте интернет соединение.");
                     }
                 }
                 else
                 {
-                    notifier.ShowInformation($"Не указан один из диаметров. Расчет для снимка {CurrentDropPhoto.Name} не выполнен.");
+                    _notifier.ShowInformation($"Не указан один из диаметров. Расчет для снимка {CurrentDropPhoto.Name} не выполнен.");
                 }
             }
             else
             {
-                notifier.ShowInformation("Выберите референсное расстояние на референсном снимке.");
+                _notifier.ShowInformation("Выберите референсное расстояние на референсном снимке.");
             }
 
             ProgressBar.IsIndeterminate = false;
@@ -1126,44 +1126,52 @@ namespace DDrop
                     try
                     {
                         ProgressBar.IsIndeterminate = true;
+                        ToggleUiPhotosTableOperations();
 
-                        await _dDropRepository.UpdateSeriesIntervalBetweenPhotos(intervalBetweenPhotos, CurrentSeries.SeriesId);
+                        var seriesId = CurrentSeries.SeriesId;
+                        await Task.Run(() => _dDropRepository.UpdateSeriesIntervalBetweenPhotos(intervalBetweenPhotos, seriesId));
 
                         CurrentSeries.IntervalBetweenPhotos = intervalBetweenPhotos;
                     }
-                    catch (Exception)
+                    catch
                     {
-                        notifier.ShowError("Не удалось сохранить результаты новый временной интервал между снимками. Не удалось установить подключение. Проверьте интернет соединение.");
+                        _notifier.ShowError("Не удалось сохранить результаты новый временной интервал между снимками. Не удалось установить подключение. Проверьте интернет соединение.");
                     }
 
                     ProgressBar.IsIndeterminate = false;
+                    ToggleUiPhotosTableOperations();
                 }                   
                 else
                 {
                     CurrentSeries.IntervalBetweenPhotos = 0;
-                    notifier.ShowInformation("Некорректное значение для интервала между снимками. Укажите интервал между снимками в секундах.");
+                    _notifier.ShowInformation("Некорректное значение для интервала между снимками. Укажите интервал между снимками в секундах.");
                 }
             }
         }
 
         private async void Photos_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
+            ToggleUiPhotosTableOperations();
+
             var photoNameCell = e.EditingElement as TextBox;
             try
             {
                 if (photoNameCell != null)
                 {
                     ProgressBar.IsIndeterminate = true;
-
-                    await _dDropRepository.UpdateDropPhotoName(photoNameCell.Text, CurrentDropPhoto.DropPhotoId);
-                    notifier.ShowSuccess("Название снимка изменено успешно.");
+                    
+                    var currentDropPhotoId = CurrentDropPhoto.DropPhotoId;
+                    var text = photoNameCell.Text;
+                    await Task.Run(() => _dDropRepository.UpdateDropPhotoName(text, currentDropPhotoId));
+                    _notifier.ShowSuccess("Название снимка изменено успешно.");
                 }
             }
             catch (Exception)
             {
-                notifier.ShowError("Не удалось изменить название снимка. Не удалось установить подключение. Проверьте интернет соединение.");
+                _notifier.ShowError("Не удалось изменить название снимка. Не удалось установить подключение. Проверьте интернет соединение.");
             }
 
+            ToggleUiPhotosTableOperations();
             ProgressBar.IsIndeterminate = false;
         }
 
@@ -1210,7 +1218,11 @@ namespace DDrop
                     try
                     {
                         var dbSeries = _dDropRepository.GetSeriesByUserId(User.UserId);
-                        await _dDropRepository.CreateReferencePhoto(DDropDbEntitiesMapper.ReferencePhotoToDbReferencePhoto(CurrentSeries.ReferencePhotoForSeries, dbSeries.FirstOrDefault(x => x.SeriesId == CurrentSeries.SeriesId)));
+
+                        var referencePhoto = CurrentSeries.ReferencePhotoForSeries;
+                        var seriesId = CurrentSeries.SeriesId;
+
+                        await Task.Run(() => _dDropRepository.CreateReferencePhoto(DDropDbEntitiesMapper.ReferencePhotoToDbReferencePhoto(referencePhoto, dbSeries.FirstOrDefault(x => x.SeriesId == seriesId))));
 
                         ReferenceImage = ImageInterpreter.LoadImage(CurrentSeries.ReferencePhotoForSeries.Content);
 
@@ -1218,20 +1230,20 @@ namespace DDrop
                         ChangeReferenceLine.Visibility = Visibility.Visible;
                         SaveReferenceLine.Visibility = Visibility.Hidden;
 
-                        notifier.ShowSuccess($"Референсный снимок {CurrentSeries.ReferencePhotoForSeries.Name} добавлен.");
+                        _notifier.ShowSuccess($"Референсный снимок {CurrentSeries.ReferencePhotoForSeries.Name} добавлен.");
                     }
-                    catch (Exception)
+                    catch
                     {
-                        notifier.ShowError($"Референсный снимок {CurrentSeries.ReferencePhotoForSeries.Name} не добавлен. Не удалось установить подключение. Проверьте интернет соединение.");
+                        _notifier.ShowError($"Референсный снимок {CurrentSeries.ReferencePhotoForSeries.Name} не добавлен. Не удалось установить подключение. Проверьте интернет соединение.");
                     }
 
                     ProgressBar.IsIndeterminate = false;
                     ToggleUiPhotosTableOperations();
-                    CurrentSeriesPhotoContentLoadingWindow();
+                    ReferencePhotoContentLoadingWindow();
                 }
                 else
                 {
-                    notifier.ShowError($"Файл {openFileDialog.FileName} имеет неизвестный формат.");
+                    _notifier.ShowError($"Файл {openFileDialog.FileName} имеет неизвестный формат.");
                 }
             }
         }
@@ -1243,6 +1255,9 @@ namespace DDrop
                 MessageBoxResult messageBoxResult = MessageBox.Show("Удалить референсный снимок?", "Подтверждение удаления", MessageBoxButton.YesNo);
                 if (messageBoxResult == MessageBoxResult.Yes)
                 {
+                    ToggleUiPhotosTableOperations();
+                    ReferencePhotoContentLoadingWindow();
+
                     ProgressBar.IsIndeterminate = true;
                     MainWindowPixelDrawer.IsEnabled = false;
                     ChangeReferenceLine.Visibility = Visibility.Visible;
@@ -1250,11 +1265,12 @@ namespace DDrop
 
                     try
                     {
-                        await _dDropRepository.DeleteReferencePhoto(CurrentSeries.ReferencePhotoForSeries.ReferencePhotoId);
+                        var referencePhotoId = CurrentSeries.ReferencePhotoForSeries.ReferencePhotoId;
+                        await Task.Run(() => _dDropRepository.DeleteReferencePhoto(referencePhotoId));
 
                         MainWindowPixelDrawer.CanDrawing.Children.Remove(CurrentSeries.ReferencePhotoForSeries.Line);
 
-                        notifier.ShowSuccess($"Референсный снимок {CurrentSeries.ReferencePhotoForSeries.Name} удален.");
+                        _notifier.ShowSuccess($"Референсный снимок {CurrentSeries.ReferencePhotoForSeries.Name} удален.");
 
                         MainWindowPixelDrawer.PixelsInMillimeter = "";
                         CurrentSeries.ReferencePhotoForSeries.Name = null;
@@ -1263,22 +1279,26 @@ namespace DDrop
                         CurrentSeries.ReferencePhotoForSeries.Content = null;
                         ReferenceImage = null;
                     }
-                    catch (Exception)
+                    catch
                     {
-                        notifier.ShowError($"Референсный снимок {CurrentSeries.ReferencePhotoForSeries.Name} не удален. Не удалось установить подключение. Проверьте интернет соединение.");
+                        _notifier.ShowError($"Референсный снимок {CurrentSeries.ReferencePhotoForSeries.Name} не удален. Не удалось установить подключение. Проверьте интернет соединение.");
                     }
 
+                    ToggleUiPhotosTableOperations();
+                    ReferencePhotoContentLoadingWindow();
                     ProgressBar.IsIndeterminate = false;
                 }
             }
             else
             {
-                notifier.ShowInformation("Нет референсного снимка для удаления.");
+                _notifier.ShowInformation("Нет референсного снимка для удаления.");
             }
         }
 
         private async void SaveReferenceLine_Click(object sender, RoutedEventArgs e)
         {
+            ToggleUiPhotosTableOperations();
+            ReferencePhotoContentLoadingWindow();
             if (CurrentSeries.ReferencePhotoForSeries.SimpleLine != null)
             {
                 try
@@ -1292,15 +1312,17 @@ namespace DDrop
                     var dbSeries = _dDropRepository.GetSeriesByUserId(User.UserId);
                     var dbReferencePhoto = DDropDbEntitiesMapper.ReferencePhotoToDbReferencePhoto(CurrentSeries.ReferencePhotoForSeries, dbSeries.FirstOrDefault(x => x.SeriesId == CurrentSeries.SeriesId));
 
-                    await _dDropRepository.UpdateReferencePhoto(dbReferencePhoto);
+                    await Task.Run(() => _dDropRepository.UpdateReferencePhoto(dbReferencePhoto));
 
-                    notifier.ShowSuccess("Сохранено новое референсное расстояние.");
+                    _notifier.ShowSuccess("Сохранено новое референсное расстояние.");
                 }
-                catch (Exception)
+                catch
                 {
-                    notifier.ShowError($"Не удалось сохранить новое референсное расстояние.");
+                    _notifier.ShowError($"Не удалось сохранить новое референсное расстояние.");
                 }
 
+                ToggleUiPhotosTableOperations();
+                ReferencePhotoContentLoadingWindow();
                 ProgressBar.IsIndeterminate = false;
             }
             else
@@ -1308,7 +1330,7 @@ namespace DDrop
                 MainWindowPixelDrawer.IsEnabled = false;
                 ChangeReferenceLine.Visibility = Visibility.Visible;
                 SaveReferenceLine.Visibility = Visibility.Hidden;
-                notifier.ShowInformation("Нет референсного референсного расстояния для сохранения.");
+                _notifier.ShowInformation("Нет референсного референсного расстояния для сохранения.");
             }
         }
 
@@ -1322,7 +1344,7 @@ namespace DDrop
             }
             else
             {
-                notifier.ShowInformation("Загрузите референсный снимок.");
+                _notifier.ShowInformation("Загрузите референсный снимок.");
             }
         }
 
@@ -1352,7 +1374,7 @@ namespace DDrop
                             {
                                 if (CurrentSeries.DropPhotosSeries[i].IsChecked)
                                 {
-                                    string fs = pythonProvider.RunScript(Properties.Settings.Default.ScriptToRun,
+                                    string fs = _pythonProvider.RunScript(Properties.Settings.Default.ScriptToRun,
                                         Properties.Settings.Default.Interpreter,
                                         CurrentSeries.DropPhotosSeries[i].Content);
                                     //CurrentSeries.DropPhotosSeries[i] = pythonProvider.RunScript(CurrentSeries.DropPhotosSeries[i].Path, @"C:\Users\FallingsappyPC\Desktop\",
@@ -1377,19 +1399,19 @@ namespace DDrop
                             }
                         }
 
-                        notifier.ShowSuccess("Расчет завершен.");
+                        _notifier.ShowSuccess("Расчет завершен.");
                     }
                     else
-                        notifier.ShowInformation("Выберите фотографии для расчета.");
+                        _notifier.ShowInformation("Выберите фотографии для расчета.");
                 }
                 else
                 {
-                    notifier.ShowInformation("Выберите интерпритатор python и исполняемый скрипт в меню \"Опции\"");
+                    _notifier.ShowInformation("Выберите интерпритатор python и исполняемый скрипт в меню \"Опции\"");
                 }
             }
             else
             {
-                notifier.ShowInformation("Эта функция в разработке.");
+                _notifier.ShowInformation("Эта функция в разработке.");
             }
         }
 
@@ -1409,7 +1431,7 @@ namespace DDrop
 
         private void LoginMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            Login login = new Login(_dDropRepository, notifier)
+            Login login = new Login(_dDropRepository, _notifier)
             {
                 Owner = this
             };
@@ -1441,7 +1463,7 @@ namespace DDrop
 
         private void AccountMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            Account accountMenu = new Account(User, notifier, _dDropRepository);
+            Account accountMenu = new Account(User, _notifier, _dDropRepository);
             accountMenu.ShowDialog();
         }
 
@@ -1467,7 +1489,7 @@ namespace DDrop
                 AccountMenuItem.Visibility = Visibility.Collapsed;
                 LogOutMenuItem.Visibility = Visibility.Collapsed;
                 LogInMenuItem.Visibility = Visibility.Visible;
-                Login login = new Login(_dDropRepository, notifier)
+                Login login = new Login(_dDropRepository, _notifier)
                 {
                     Owner = this
                 };
@@ -1523,7 +1545,7 @@ namespace DDrop
                 MessageBoxResult messageBoxResult = MessageBox.Show("Закрыть приложение?", "Подтверждение выхода", MessageBoxButton.YesNo);
                 if (messageBoxResult == MessageBoxResult.Yes)
                 {
-                    notifier.Dispose();
+                    _notifier.Dispose();
                 }
                 else
                 {

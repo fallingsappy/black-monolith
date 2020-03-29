@@ -687,7 +687,6 @@ E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\Registration.ba
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\Resources\Icons\Icons.baml
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\App.baml
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\Account.g.cs
-E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\AddSeries.g.cs
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\CropPhoto.g.cs
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\Information.g.cs
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\Login.g.cs
@@ -699,7 +698,6 @@ E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\App.g.cs
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\DDrop_Content.g.cs
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\DDrop_MarkupCompile.cache
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\DDrop_MarkupCompile.lref
-E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\AddSeries.baml
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\CropPhoto.baml
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\Information.baml
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\MainWindow.baml
