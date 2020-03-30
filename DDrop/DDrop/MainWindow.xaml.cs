@@ -232,7 +232,7 @@ namespace DDrop
             if (!string.IsNullOrWhiteSpace(OneLineSetterValue.Text))
             {
                 SeriesWindowLoading();
-                ToggleUiPhotosTableOperations();
+                ToggleSeriesManagerUiBlocking();
 
                 Series seriesToAdd = new Series
                 {
@@ -264,7 +264,7 @@ namespace DDrop
                 }
 
                 SeriesWindowLoading();
-                ToggleUiPhotosTableOperations();
+                ToggleSeriesManagerUiBlocking();
             }
             else
             {
@@ -278,6 +278,7 @@ namespace DDrop
             {
                 SingleSeries.IsEnabled = false;
                 ProgressBar.IsIndeterminate = true;
+                ToggleSeriesManagerUiBlocking(false);
 
                 Series old = new Series()
                 {
@@ -314,6 +315,7 @@ namespace DDrop
                     ReferenceImage = ImageInterpreter.LoadImage(CurrentSeries.ReferencePhotoForSeries.Content);
                 }
 
+                ToggleSeriesManagerUiBlocking(false);
                 SingleSeries.IsEnabled = true;
                 ProgressBar.IsIndeterminate = false;
             }
@@ -321,6 +323,23 @@ namespace DDrop
             {
                 SingleSeries.IsEnabled = false;
             }
+        }
+
+        private void ToggleSeriesManagerUiBlocking(bool blockSeriesTable = true)
+        {
+            //if (CurrentSeries != null)
+            //    CurrentSeries.Loaded = !CurrentSeries.Loaded;
+            SeriesManager.IsEnabled = !SeriesManager.IsEnabled;
+            if (blockSeriesTable)
+                SeriesDataGrid.IsEnabled = !SeriesDataGrid.IsEnabled;
+            MainMenuBar.IsEnabled = !MainMenuBar.IsEnabled;
+            AddSeriesButton.IsEnabled = !AddSeriesButton.IsEnabled;
+            OneLineSetterValue.IsEnabled = !OneLineSetterValue.IsEnabled;
+            ExportSeriesLocal.IsEnabled = !ExportSeriesLocal.IsEnabled;
+            ImportLocalSeries.IsEnabled = !ImportLocalSeries.IsEnabled;
+            ExportSeriesButton.IsEnabled = !ExportSeriesButton.IsEnabled;
+            DeleteSeriesButton.IsEnabled = !DeleteSeriesButton.IsEnabled;
+            //SingleSeries.IsEnabled = !SingleSeries.IsEnabled;
         }
 
         private void SeriesDrawerSwap(Series old)
@@ -387,6 +406,7 @@ namespace DDrop
             {
                 if (User.IsAnySelectedSeriesCanDrawPlot)
                 {
+                    ToggleSeriesManagerUiBlocking();
                     SaveFileDialog saveFileDialog = new SaveFileDialog
                     {
                         Filter = "Excel files (*.xlsx)|*.xlsx|All files (*.*)|*.*",
@@ -400,6 +420,8 @@ namespace DDrop
 
                         _notifier.ShowSuccess($"Файл {saveFileDialog.SafeFileName} успешно сохранен.");
                     }
+
+                    ToggleSeriesManagerUiBlocking();
                 }
                 else
                 {
@@ -423,6 +445,7 @@ namespace DDrop
                 {
                     var pbuHandle1 = pbu.New(ProgressBar, 0, User.UserSeries.Count, 0);
                     SeriesWindowLoading(false);
+                    ToggleSeriesManagerUiBlocking();
                     for (int i = User.UserSeries.Count - 1; i >= 0; i--)
                     {
                         try
@@ -454,6 +477,7 @@ namespace DDrop
                     pbu.ResetValue(pbuHandle1);
                     pbu.Remove(pbuHandle1);
 
+                    ToggleSeriesManagerUiBlocking();
                     SeriesWindowLoading(false);
                 }
 
@@ -472,6 +496,7 @@ namespace DDrop
                 try
                 {
                     SeriesWindowLoading();
+                    ToggleSeriesManagerUiBlocking();
 
                     var userEmail = User.Email;
                     var dbUser = await Task.Run(() => _dDropRepository.GetUserByLogin(userEmail));
@@ -493,6 +518,7 @@ namespace DDrop
                     _notifier.ShowError($"Не удалось удалить серию {User.UserSeries[SeriesDataGrid.SelectedIndex].Title}. Не удалось установить подключение. Проверьте интернет соединение.");
                 }
 
+                ToggleSeriesManagerUiBlocking();
                 SeriesWindowLoading();
             }
         }
@@ -543,6 +569,7 @@ namespace DDrop
                 if (saveFileDialog.ShowDialog() == true)
                 {
                     SeriesWindowLoading(false);
+                    ToggleSeriesManagerUiBlocking();
 
                     int checkedCount = User.UserSeries.Count(x => x.IsChecked);
 
@@ -552,7 +579,7 @@ namespace DDrop
                     {
                         if (checkedCount > 0 && !series.IsChecked)
                         {
-                            break;
+                            continue;
                         }
 
                         try
@@ -574,6 +601,7 @@ namespace DDrop
                     pbu.ResetValue(pbuHandle1);
                     pbu.Remove(pbuHandle1);
 
+                    ToggleSeriesManagerUiBlocking();
                     SeriesWindowLoading(false);
                 }
             }
@@ -596,7 +624,7 @@ namespace DDrop
 
             if (openFileDialog.ShowDialog() == true)
             {
-                ToggleUiPhotosTableOperations();
+                ToggleSeriesManagerUiBlocking();
                 SeriesWindowLoading();
 
                 var pbuHandle1 = pbu.New(ProgressBar, 0, openFileDialog.FileNames.Length, 0);
@@ -644,12 +672,11 @@ namespace DDrop
 
                 }
 
+                ToggleSeriesManagerUiBlocking();
+                SeriesWindowLoading();
                 pbu.ResetValue(pbuHandle1);
                 pbu.Remove(pbuHandle1);
             }
-
-            ToggleUiPhotosTableOperations();
-            SeriesWindowLoading();
 
             if (SeriesDataGrid.ItemsSource == null)
                 SeriesDataGrid.ItemsSource = User.UserSeries;
@@ -658,7 +685,7 @@ namespace DDrop
         private async void SeriesDataGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
             SeriesWindowLoading(false);
-            ToggleUiPhotosTableOperations();
+            ToggleSeriesManagerUiBlocking();
 
             var seriesNameCell = e.EditingElement as TextBox;
             try
@@ -677,72 +704,7 @@ namespace DDrop
             }
 
             SeriesWindowLoading(false);
-            ToggleUiPhotosTableOperations();
-        }
-
-        private async void CreationTimeCheckBox_Checked(object sender, RoutedEventArgs e)
-        {
-            if (CurrentSeries != null)
-            {
-                CurrentSeries.UseCreationDateTime = true;
-                IntervalBetweenPhotos.IsEnabled = false;
-
-                try
-                {
-                    ProgressBar.IsIndeterminate = true;
-
-                    var seriesId = CurrentSeries.SeriesId;
-                    await Task.Run(() => _dDropRepository.UseCreationDateTime(true, seriesId));
-                    _notifier.ShowSuccess($"Серия {CurrentSeries.Title} использует время создания снимков. Порядок фотографий будет проигнорирован.");
-                }
-                catch
-                {
-                    _notifier.ShowError("Не удалось изменить режим построения графика. Не удалось установить подключение. Проверьте интернет соединение.");
-                }
-
-                ProgressBar.IsIndeterminate = false;
-            }
-        }
-
-        private async void CreationTimeCheckBox_Unchecked(object sender, RoutedEventArgs e)
-        {
-            if (CurrentSeries != null)
-            {
-                IntervalBetweenPhotos.IsEnabled = true;
-                CurrentSeries.UseCreationDateTime = false;
-                try
-                {
-                    ProgressBar.IsIndeterminate = true;
-
-                    var seriesId = CurrentSeries.SeriesId;
-                    await Task.Run(() => _dDropRepository.UseCreationDateTime(false, seriesId));
-                    _notifier.ShowSuccess($"Серия {CurrentSeries.Title} использует интервал между снимками.");
-                }
-                catch
-                {
-                    _notifier.ShowError("Не удалось изменить режим построения графика. Не удалось установить подключение. Проверьте интернет соединение.");
-                }
-
-                ProgressBar.IsIndeterminate = false;
-            }
-        }
-
-        private void EditPhotosOrder_OnClick(object sender, RoutedEventArgs e)
-        {
-            EditTable editTableWindow = new EditTable(CurrentSeries, _dDropRepository);
-
-            try
-            {
-                editTableWindow.ShowDialog();
-                _notifier.ShowSuccess($"Порядок снимков для серии {CurrentSeries.Title} обновлен.");
-                Photos.ItemsSource = CurrentSeries.DropPhotosSeries;
-                SeriesPreviewDataGrid.ItemsSource = CurrentSeries.DropPhotosSeries;
-            }
-            catch
-            {
-                _notifier.ShowError(
-                    $"Не удалось обновить порядок снимков для серии {CurrentSeries.Title}. Не удалось установить подключение. Проверьте интернет соединение.");
-            }
+            ToggleSeriesManagerUiBlocking();
         }
 
         private void SeriesWindowLoading(bool indeterminateLoadingBar = true)
@@ -919,7 +881,7 @@ namespace DDrop
                     ProgressBar.IsIndeterminate = true;
                     ImgCurrent.Source = null;
                     CurrentSeriesImageLoadingWindow();
-                    ToggleUiPhotosTableOperations();
+                    ToggleUiPhotosTableOperations(false);
 
                     if (e.RemovedItems.Count > 0)
                     {
@@ -939,7 +901,7 @@ namespace DDrop
 
                 ProgressBar.IsIndeterminate = false;
                 CurrentSeriesImageLoadingWindow();
-                ToggleUiPhotosTableOperations();
+                ToggleUiPhotosTableOperations(false);
             }
             else
                 ImgCurrent.Source = null;
@@ -1099,10 +1061,12 @@ namespace DDrop
             ToggleUiPhotosTableOperations();
         }
 
-        private void ToggleUiPhotosTableOperations()
+        private void ToggleUiPhotosTableOperations(bool disablePhotos = true)
         {
-            CurrentSeries.Loaded = !CurrentSeries.Loaded;
-            Photos.IsEnabled = !Photos.IsEnabled;
+            if(CurrentSeries != null)
+                CurrentSeries.Loaded = !CurrentSeries.Loaded;
+            if (disablePhotos)
+                Photos.IsEnabled = !Photos.IsEnabled;
             SeriesManager.IsEnabled = !SeriesManager.IsEnabled;
             ReferenceTab.IsEnabled = !ReferenceTab.IsEnabled;
             AddPhotoButton.IsEnabled = !AddPhotoButton.IsEnabled;
@@ -1111,6 +1075,7 @@ namespace DDrop
             IntervalBetweenPhotos.IsEnabled = !IntervalBetweenPhotos.IsEnabled;
             CreationTimeCheckBox.IsEnabled = !CreationTimeCheckBox.IsEnabled;
             MainMenuBar.IsEnabled = !MainMenuBar.IsEnabled;
+            PixelsInMillimeterTextBox.IsEnabled = !PixelsInMillimeterTextBox.IsEnabled;
         }
 
         private async void IntervalBetweenPhotos_TextChanged(object sender, TextChangedEventArgs e)
@@ -1171,6 +1136,71 @@ namespace DDrop
 
             ToggleUiPhotosTableOperations();
             ProgressBar.IsIndeterminate = false;
+        }
+
+        private async void CreationTimeCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            if (CurrentSeries != null)
+            {
+                CurrentSeries.UseCreationDateTime = true;
+                IntervalBetweenPhotos.IsEnabled = false;
+
+                try
+                {
+                    ProgressBar.IsIndeterminate = true;
+
+                    var seriesId = CurrentSeries.SeriesId;
+                    await Task.Run(() => _dDropRepository.UseCreationDateTime(true, seriesId));
+                    _notifier.ShowSuccess($"Серия {CurrentSeries.Title} использует время создания снимков. Порядок фотографий будет проигнорирован.");
+                }
+                catch
+                {
+                    _notifier.ShowError("Не удалось изменить режим построения графика. Не удалось установить подключение. Проверьте интернет соединение.");
+                }
+
+                ProgressBar.IsIndeterminate = false;
+            }
+        }
+
+        private async void CreationTimeCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (CurrentSeries != null)
+            {
+                IntervalBetweenPhotos.IsEnabled = true;
+                CurrentSeries.UseCreationDateTime = false;
+                try
+                {
+                    ProgressBar.IsIndeterminate = true;
+
+                    var seriesId = CurrentSeries.SeriesId;
+                    await Task.Run(() => _dDropRepository.UseCreationDateTime(false, seriesId));
+                    _notifier.ShowSuccess($"Серия {CurrentSeries.Title} использует интервал между снимками.");
+                }
+                catch
+                {
+                    _notifier.ShowError("Не удалось изменить режим построения графика. Не удалось установить подключение. Проверьте интернет соединение.");
+                }
+
+                ProgressBar.IsIndeterminate = false;
+            }
+        }
+
+        private void EditPhotosOrder_OnClick(object sender, RoutedEventArgs e)
+        {
+            EditTable editTableWindow = new EditTable(CurrentSeries, _dDropRepository);
+
+            try
+            {
+                editTableWindow.ShowDialog();
+                _notifier.ShowSuccess($"Порядок снимков для серии {CurrentSeries.Title} обновлен.");
+                Photos.ItemsSource = CurrentSeries.DropPhotosSeries;
+                SeriesPreviewDataGrid.ItemsSource = CurrentSeries.DropPhotosSeries;
+            }
+            catch
+            {
+                _notifier.ShowError(
+                    $"Не удалось обновить порядок снимков для серии {CurrentSeries.Title}. Не удалось установить подключение. Проверьте интернет соединение.");
+            }
         }
 
         #endregion
