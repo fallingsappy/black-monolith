@@ -1387,6 +1387,7 @@ namespace DDrop
 
         private void Calculate_OnClick(object sender, RoutedEventArgs e)
         {
+            _notifier.ShowInformation("Эта функция в разработке.");
             if (false)
             {
                 bool interpreterAndScriptCheck = string.IsNullOrWhiteSpace(Properties.Settings.Default.ScriptToRun) || string.IsNullOrWhiteSpace(Properties.Settings.Default.Interpreter);

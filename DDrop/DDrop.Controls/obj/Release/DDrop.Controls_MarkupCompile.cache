@@ -10,11 +10,11 @@ none
 false
 TRACE
 
-21096482781
+4-9519742
 
-51918310328
+19-679117582
 17189991070
-PixelDrawer\PixelDrawer.xaml;ScatterPlot\ScatterPlot.xaml;
+LoadingSpinner\LoadingWait.xaml;PhotoCropper\CropControl.xaml;PixelDrawer\PixelDrawer.xaml;ScatterPlot\ScatterPlot.xaml;
 
-True
+False
 

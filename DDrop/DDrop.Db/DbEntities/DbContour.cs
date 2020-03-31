@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace DDrop.Db.DbEntities
 {
     public class DbContour
     {
+        [Key]
         public Guid ContourId { get; set; }
-        public List<DbSimpleLine> Contour { get; set; }
-        public Guid CurrentDropPhotoId { get; set; }
-        public DbDropPhoto CurrentDropPhoto { get; set; }
+        public List<DbSimpleLine> SimpleLines { get; set; }
+
+        public virtual DbDropPhoto CurrentDropPhoto { get; set; }
     }
 }

@@ -25,6 +25,7 @@ namespace DDrop.Db.DbEntities
 
         public byte[] Content { get; set; }
         public virtual DbDrop Drop { get; set; }
+        public virtual DbContour Contour { get; set; }
         public string AddedDate { get; set; }
         public string CreationDateTime { get; set; }
         public int PhotoOrderInSeries { get; set; }

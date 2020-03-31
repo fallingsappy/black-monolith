@@ -1,0 +1,12 @@
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BE\bin\Release\DDrop.BE.dll.config
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BE\bin\Release\DDrop.BE.dll
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BE\bin\Release\DDrop.BE.pdb
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BE\bin\Release\EntityFramework.dll
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BE\bin\Release\EntityFramework.SqlServer.dll
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BE\bin\Release\EntityFramework.xml
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BE\bin\Release\EntityFramework.SqlServer.xml
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BE\obj\Release\DDrop.BE.csprojAssemblyReference.cache
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BE\obj\Release\DDrop.BE.csproj.CopyComplete
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BE\obj\Release\DDrop.BE.dll
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BE\obj\Release\DDrop.BE.pdb
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BE\obj\Release\DDrop.BE.csproj.CoreCompileInputs.cache

@@ -75,6 +75,10 @@
     <Compile Include="Migrations\202003220813329_PhotoOrder.designer.cs">
       <DependentUpon>202003220813329_PhotoOrder.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202003301909187_Contour.cs" />
+    <Compile Include="Migrations\202003301909187_Contour.designer.cs">
+      <DependentUpon>202003301909187_Contour.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -94,6 +98,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202003220813329_PhotoOrder.resx">
       <DependentUpon>202003220813329_PhotoOrder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003301909187_Contour.resx">
+      <DependentUpon>202003301909187_Contour.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -13,7 +13,7 @@
         xmlns:simpleSample="clr-namespace:SimpleSample;assembly=DDrop.Controls"
         xmlns:loadingSpinner="clr-namespace:DDrop.Controls.LoadingSpinner;assembly=DDrop.Controls"
         mc:Ignorable="d"
-        Title="DDrop" MinHeight="768" MinWidth="1152" Height="768" Width="1152" Icon="Resources/Icons/MainIcon.png" WindowState="Maximized" x:Name="AppMainWindow" Closing="AppMainWindow_Closing" WindowStartupLocation="CenterScreen">
+        Title="DDrop" MinHeight="500" MinWidth="800" Height="768" Width="1152" Icon="Resources/Icons/MainIcon.png" WindowState="Maximized" x:Name="AppMainWindow" Closing="AppMainWindow_Closing" WindowStartupLocation="CenterScreen">
     <Grid>
         <TabControl x:Name="MainTabControl" SelectionChanged="Selector_OnSelectionChanged" Margin="10,37,10,47">
             <TabItem Name="SeriesManager" Header="Менеджер Серий">
