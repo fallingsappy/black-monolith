@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
 using DDrop.BE.Models;
@@ -82,15 +83,19 @@ namespace DDrop.Controls.ScatterPlot
                     }
                     else
                     {
+                        var ci = new CultureInfo("en-US");
+                        var formats = new[] { "M-d-yyyy", "dd-MM-yyyy", "MM-dd-yyyy", "M.d.yyyy", "dd.MM.yyyy", "MM.dd.yyyy" }
+                                .Union(ci.DateTimeFormat.GetAllDateTimePatterns()).ToArray();
+
                         var orderedDropPhotos = User.UserSeries[i].DropPhotosSeries
-                            .OrderBy(x => DateTime.Parse(x.CreationDateTime)).ToList();
+                            .OrderBy(x => DateTime.Parse(x.CreationDateTime, CultureInfo.InvariantCulture)).ToList();
 
                         for (int j = 0; j < orderedDropPhotos.Count; j++)
                         {
                             var dropRadiusInMeters = orderedDropPhotos[j].Drop.RadiusInMeters;
                             if (dropRadiusInMeters != null)
                                 temp.Add(new ObservablePoint(
-                                    (DateTime.Parse(orderedDropPhotos[j].CreationDateTime) - DateTime.Parse(orderedDropPhotos[0].CreationDateTime)).TotalSeconds,
+                                    (DateTime.Parse(orderedDropPhotos[j].CreationDateTime, CultureInfo.InvariantCulture) - DateTime.Parse(orderedDropPhotos[0].CreationDateTime, CultureInfo.InvariantCulture)).TotalSeconds,
                                     dropRadiusInMeters
                                         .Value));
                         }
@@ -127,14 +132,14 @@ namespace DDrop.Controls.ScatterPlot
                 else
                 {
                     var orderedDropPhotos = User.UserSeries[ParticularSeriesIndex.Value].DropPhotosSeries
-                        .OrderBy(x => DateTime.Parse(x.CreationDateTime)).ToList();
+                        .OrderBy(x => DateTime.Parse(x.CreationDateTime, CultureInfo.InvariantCulture)).ToList();
 
                     for (int j = 0; j < orderedDropPhotos.Count; j++)
                     {
                         var dropRadiusInMeters = orderedDropPhotos[j].Drop.RadiusInMeters;
                         if (dropRadiusInMeters != null)
                             temp.Add(new ObservablePoint(
-                                (DateTime.Parse(orderedDropPhotos[j].CreationDateTime) - DateTime.Parse(orderedDropPhotos[0].CreationDateTime)).TotalSeconds,
+                                (DateTime.Parse(orderedDropPhotos[j].CreationDateTime, CultureInfo.InvariantCulture) - DateTime.Parse(orderedDropPhotos[0].CreationDateTime, CultureInfo.InvariantCulture)).TotalSeconds,
                                 dropRadiusInMeters
                                     .Value));
                     }

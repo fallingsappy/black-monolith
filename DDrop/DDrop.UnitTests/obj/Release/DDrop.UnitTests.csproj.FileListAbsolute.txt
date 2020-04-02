@@ -12,3 +12,5 @@ E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.UnitTests\obj\Release\DDr
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.UnitTests\obj\Release\DDrop.UnitTests.dll
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.UnitTests\obj\Release\DDrop.UnitTests.pdb
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.UnitTests\obj\Release\DDrop.UnitTests.csproj.CoreCompileInputs.cache
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.UnitTests\bin\Release\DDrop.UnitTests.dll.CodeAnalysisLog.xml
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.UnitTests\bin\Release\DDrop.UnitTests.dll.lastcodeanalysissucceeded

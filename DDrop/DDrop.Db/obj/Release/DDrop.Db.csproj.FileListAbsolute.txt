@@ -16,3 +16,5 @@ E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Db\obj\Release\DDrop.Db.c
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Db\obj\Release\DDrop.Db.dll
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Db\obj\Release\DDrop.Db.pdb
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Db\obj\Release\DDrop.Db.csproj.CoreCompileInputs.cache
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Db\bin\Release\DDrop.Db.dll.CodeAnalysisLog.xml
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Db\bin\Release\DDrop.Db.dll.lastcodeanalysissucceeded

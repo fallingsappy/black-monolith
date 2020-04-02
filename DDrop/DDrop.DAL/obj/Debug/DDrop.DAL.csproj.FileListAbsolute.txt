@@ -120,3 +120,4 @@ E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.c
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.csproj.CopyComplete
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.dll
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.pdb
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.DAL\obj\Debug\DDrop.DAL.csproj.CoreCompileInputs.cache

@@ -149,3 +149,4 @@ E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Utility\obj\Debug\DDrop.U
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.g.resources
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Utility\bin\Debug\NLog.dll
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Utility\bin\Debug\NLog.xml
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Utility\obj\Debug\DDrop.Utility.csproj.CoreCompileInputs.cache

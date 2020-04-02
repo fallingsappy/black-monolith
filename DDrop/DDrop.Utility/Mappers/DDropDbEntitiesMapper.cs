@@ -419,7 +419,7 @@ namespace DDrop.Utility.Mappers
             return dbDropPhoto;
         }
 
-        public static DbReferencePhoto ReferencePhotoToDbReferencePhoto(ReferencePhoto referencePhoto, DbSeries dbSeries)
+        public static DbReferencePhoto ReferencePhotoToDbReferencePhoto(ReferencePhoto referencePhoto)
         {
             var dbReferencePhoto = new DbReferencePhoto
             {

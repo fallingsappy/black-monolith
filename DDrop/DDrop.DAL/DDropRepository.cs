@@ -391,67 +391,6 @@ namespace DDrop.DAL
             }
         }
 
-        public async Task DeleteListOfSeries(List<DbSeries> serieses)
-        {
-            using (var context = new DDropContext())
-            {
-                try
-                {
-                    foreach (var series in serieses)
-                    {
-                        context.Series.Attach(series);
-
-                        foreach (var dropPhoto in series.DropPhotosSeries)
-                        {
-                            if (dropPhoto.SimpleVerticalLine != null)
-                                context.SimpleLines.Remove(dropPhoto.SimpleVerticalLine);
-
-                            if (dropPhoto.SimpleHorizontalLine != null)
-                                context.SimpleLines.Remove(dropPhoto.SimpleHorizontalLine);
-                        }
-
-                        if (series.ReferencePhotoForSeries != null && series.ReferencePhotoForSeries.SimpleReferencePhotoLine != null)
-                            context.SimpleLines.Remove(series.ReferencePhotoForSeries.SimpleReferencePhotoLine);
-
-                        context.Series.Remove(series);
-                    }
-
-                    await context.SaveChangesAsync();
-                }
-                catch (DbUpdateException e)
-                {
-                    throw new DbUpdateException(e.Message);
-                }
-                catch (InvalidOperationException e)
-                {
-                    throw new InvalidOperationException(e.Message);
-                }
-            }
-        }
-
-        public Task<DbSeries> GetSingleSeriesById(Guid dbSeriesId)
-        {
-            using (var context = new DDropContext())
-            {
-                try
-                {
-                    return context.Series
-                        .Include(x => x.CurrentUser)
-                        .Include(x => x.DropPhotosSeries)
-                        .Include(x => x.ReferencePhotoForSeries)
-                        .FirstOrDefaultAsync();
-                }
-                catch (ArgumentNullException e)
-                {
-                    throw new ArgumentNullException(e.Message);
-                }
-                catch (InvalidOperationException e)
-                {
-                    throw new InvalidOperationException(e.Message);
-                }
-            }
-        }
-
         public async Task UpdateSeriesName(string seriesName, Guid seriesId)
         {
             using(var context = new DDropContext())
@@ -573,57 +512,6 @@ namespace DDrop.DAL
             }
         }
         
-        public async Task CreateListOfDropPhoto(List<DbDropPhoto> dropPhotos, Guid seriesId)
-        {
-            using (var context = new DDropContext())
-            {
-                try
-                {
-                    foreach (var dropPhoto in dropPhotos)
-                    {
-                        var dbDropPhoto = new DbDropPhoto
-                        {
-                            AddedDate = dropPhoto.AddedDate,
-                            Content = dropPhoto.Content,
-                            CurrentSeriesId = seriesId,
-                            Drop = new DbDrop
-                            {
-                                DropId = dropPhoto.DropPhotoId,
-                                RadiusInMeters = dropPhoto.Drop.RadiusInMeters,
-                                VolumeInCubicalMeters = dropPhoto.Drop.VolumeInCubicalMeters,
-                                XDiameterInMeters = dropPhoto.Drop.XDiameterInMeters,
-                                YDiameterInMeters = dropPhoto.Drop.YDiameterInMeters,
-                                ZDiameterInMeters = dropPhoto.Drop.ZDiameterInMeters
-                            },
-                            DropPhotoId = dropPhoto.DropPhotoId,
-                            Name = dropPhoto.Name,
-                            SimpleHorizontalLine = dropPhoto.SimpleHorizontalLine,
-                            SimpleHorizontalLineId = dropPhoto.SimpleHorizontalLineId,
-                            SimpleVerticalLine = dropPhoto.SimpleVerticalLine,
-                            SimpleVerticalLineId = dropPhoto.SimpleVerticalLineId,
-                            XDiameterInPixels = dropPhoto.XDiameterInPixels,
-                            YDiameterInPixels = dropPhoto.YDiameterInPixels,
-                            ZDiameterInPixels = dropPhoto.ZDiameterInPixels,
-                            CreationDateTime = dropPhoto.CreationDateTime,
-                            PhotoOrderInSeries = dropPhoto.PhotoOrderInSeries
-                        };
-
-                        context.DropPhotos.Add(dbDropPhoto);
-                    }
-
-                    await context.SaveChangesAsync();
-                }
-                catch (DbUpdateException e)
-                {
-                    throw new DbUpdateException(e.Message);
-                }
-                catch (InvalidOperationException e)
-                {
-                    throw new InvalidOperationException(e.Message);
-                }
-            }
-        }
-
         public async Task UpdateDropPhoto(DbDropPhoto dropPhoto)
         {
             using (var context = new DDropContext())
@@ -634,33 +522,6 @@ namespace DDrop.DAL
                     context.Set<DbSimpleLine>().AddOrUpdate(dropPhoto.SimpleVerticalLine);
                     context.Set<DbDropPhoto>().AddOrUpdate(dropPhoto);
                     context.Set<DbDrop>().AddOrUpdate(dropPhoto.Drop);
-                    await context.SaveChangesAsync();
-                }
-                catch (DbUpdateException e)
-                {
-                    throw new DbUpdateException(e.Message);
-                }
-                catch (InvalidOperationException e)
-                {
-                    throw new InvalidOperationException(e.Message);
-                }
-            }
-        }
-
-        public async Task UpdateListOfDropPhoto(List<DbDropPhoto> dropPhotos)
-        {
-            using (var context = new DDropContext())
-            {
-                try
-                {
-                    foreach (var dropPhoto in dropPhotos)
-                    {
-                        context.Set<DbSimpleLine>().AddOrUpdate(dropPhoto.SimpleHorizontalLine);
-                        context.Set<DbSimpleLine>().AddOrUpdate(dropPhoto.SimpleVerticalLine);
-                        context.Set<DbDropPhoto>().AddOrUpdate(dropPhoto);
-                        context.Set<DbDrop>().AddOrUpdate(dropPhoto.Drop);
-                    }
-
                     await context.SaveChangesAsync();
                 }
                 catch (DbUpdateException e)
@@ -726,38 +587,6 @@ namespace DDrop.DAL
             }
         }
 
-        public async Task DeleteListOfDropPhoto(List<Guid> dropPhotoIds)
-        {
-            using (var context = new DDropContext())
-            {
-                try
-                {
-                    foreach (var dropPhotoId in dropPhotoIds)
-                    {
-                        var dropPhoto = await context.DropPhotos.FirstOrDefaultAsync(x => x.DropPhotoId == dropPhotoId);
-
-                        context.DropPhotos.Attach(dropPhoto ?? throw new InvalidOperationException());
-                        if (dropPhoto.SimpleVerticalLine != null)
-                            context.SimpleLines.Remove(dropPhoto.SimpleVerticalLine);
-                        if (dropPhoto.SimpleHorizontalLine != null)
-                            context.SimpleLines.Remove(dropPhoto.SimpleHorizontalLine);
-                        context.Drops.Remove(dropPhoto.Drop);
-                        context.DropPhotos.Remove(dropPhoto);
-                    }
-
-                    await context.SaveChangesAsync();
-                }
-                catch (DbUpdateException e)
-                {
-                    throw new DbUpdateException(e.Message);
-                }
-                catch (InvalidOperationException e)
-                {
-                    throw new InvalidOperationException(e.Message);
-                }
-            } 
-        }
-
         public async Task<byte[]> GetDropPhotoContent(Guid dropPhotoId)
         {
             using (var context = new DDropContext())
@@ -805,36 +634,19 @@ namespace DDrop.DAL
         #endregion
 
         #region Reference Photo
-
-        public async Task CreateReferencePhoto(DbReferencePhoto referencePhoto)
-        {
-            using (var context = new DDropContext())
-            {
-                try
-                {
-                    context.ReferencePhotos.Add(referencePhoto);
-
-                    await context.SaveChangesAsync();
-                }
-                catch (DbUpdateException e)
-                {
-                    throw new DbUpdateException(e.Message);
-                }
-                catch (InvalidOperationException e)
-                {
-                    throw new InvalidOperationException(e.Message);
-                }
-            }
-        }
-        
+       
         public async Task UpdateReferencePhoto(DbReferencePhoto referencePhoto)
         {
             using (var context = new DDropContext())
             {
                 try
                 {
-                    context.Entry(referencePhoto.SimpleReferencePhotoLine).State = EntityState.Modified;
-                    context.Set<DbSimpleLine>().AddOrUpdate(referencePhoto.SimpleReferencePhotoLine);
+                    if (referencePhoto.SimpleReferencePhotoLine != null)
+                    {
+                        context.Entry(referencePhoto.SimpleReferencePhotoLine).State = EntityState.Modified;
+                        context.Set<DbSimpleLine>().AddOrUpdate(referencePhoto.SimpleReferencePhotoLine);
+                    }
+
                     context.Set<DbReferencePhoto>().AddOrUpdate(referencePhoto);
                     
                     await context.SaveChangesAsync();

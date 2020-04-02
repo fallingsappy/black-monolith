@@ -234,3 +234,4 @@ E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Controls\obj\Debug\DDrop.
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.pdb
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Controls\obj\Debug\LoadingSpinner\LoadingWait.baml
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Controls\obj\Debug\LoadingSpinner\LoadingWait.g.cs
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Controls\obj\Debug\DDrop.Controls.csproj.CoreCompileInputs.cache

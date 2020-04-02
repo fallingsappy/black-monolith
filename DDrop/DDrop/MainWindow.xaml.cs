@@ -1031,6 +1031,8 @@ namespace DDrop
 
                     try
                     {
+                        CurrentSeriesPhotoContentLoadingWindow();
+                       
                         DropletSizeCalculator.PerformCalculation(
                             Convert.ToInt32(PixelsInMillimeterTextBox.Text), CurrentDropPhoto.XDiameterInPixels,
                             CurrentDropPhoto.YDiameterInPixels, CurrentDropPhoto);
@@ -1046,6 +1048,8 @@ namespace DDrop
                         CurrentDropPhoto.Drop = tempDrop;
                         _notifier.ShowError("Не удалось сохранить результаты расчета. Не удалось установить подключение. Проверьте интернет соединение.");
                     }
+
+                    CurrentSeriesPhotoContentLoadingWindow();
                 }
                 else
                 {
@@ -1067,6 +1071,7 @@ namespace DDrop
                 CurrentSeries.Loaded = !CurrentSeries.Loaded;
             if (disablePhotos)
                 Photos.IsEnabled = !Photos.IsEnabled;
+            PhotosTab.IsEnabled = !PhotosTab.IsEnabled;
             SeriesManager.IsEnabled = !SeriesManager.IsEnabled;
             ReferenceTab.IsEnabled = !ReferenceTab.IsEnabled;
             AddPhotoButton.IsEnabled = !AddPhotoButton.IsEnabled;
@@ -1075,7 +1080,10 @@ namespace DDrop
             IntervalBetweenPhotos.IsEnabled = !IntervalBetweenPhotos.IsEnabled;
             CreationTimeCheckBox.IsEnabled = !CreationTimeCheckBox.IsEnabled;
             MainMenuBar.IsEnabled = !MainMenuBar.IsEnabled;
-            PixelsInMillimeterTextBox.IsEnabled = !PixelsInMillimeterTextBox.IsEnabled;
+            ChangeReferenceLine.IsEnabled = !ChangeReferenceLine.IsEnabled;
+            DeleteButton.IsEnabled = !DeleteButton.IsEnabled;
+            ChooseReferenceButton.IsEnabled = !ChooseReferenceButton.IsEnabled;
+            //PixelsInMillimeterTextBox.IsEnabled = !PixelsInMillimeterTextBox.IsEnabled;
         }
 
         private async void IntervalBetweenPhotos_TextChanged(object sender, TextChangedEventArgs e)
@@ -1223,35 +1231,62 @@ namespace DDrop
                 ToggleUiPhotosTableOperations();
                 ReferencePhotoContentLoadingWindow();
 
-                if (ImageValidator.ValidateImage(ImageInterpreter.FileToByteArray(openFileDialog.FileName)))
+                var referencePhotoContentForAdd = ImageInterpreter.FileToByteArray(openFileDialog.FileName);
+
+                if (ImageValidator.ValidateImage(referencePhotoContentForAdd))
                 {
+                    ReferencePhoto newReferencePhoto;
                     MainWindowPixelDrawer.TwoLineMode = false;
                     if (CurrentSeries.ReferencePhotoForSeries == null)
                     {
                         CurrentSeries.ReferencePhotoForSeries = new ReferencePhoto();
-                    }
-                    if (CurrentSeries.ReferencePhotoForSeries.Line != null)
-                    {
-                        MainWindowPixelDrawer.CanDrawing.Children.Remove(CurrentSeries.ReferencePhotoForSeries.Line);
 
-                        MainWindowPixelDrawer.PixelsInMillimeter = "";
-                        CurrentSeries.ReferencePhotoForSeries.Line = null;
-                        CurrentSeries.ReferencePhotoForSeries.PixelsInMillimeter = 0;
+                        newReferencePhoto = new ReferencePhoto
+                        {
+                            Content = referencePhotoContentForAdd,
+                            Name = openFileDialog.SafeFileNames[0],
+                            ReferencePhotoId = CurrentSeries.SeriesId,
+                            Line = new Line(),
+                        };
                     }
-                    CurrentSeries.ReferencePhotoForSeries.Name = openFileDialog.SafeFileNames[0];
-                    CurrentSeries.ReferencePhotoForSeries.ReferencePhotoId = CurrentSeries.SeriesId;
-                    CurrentSeries.ReferencePhotoForSeries.Line = new Line();
-                    CurrentSeries.ReferencePhotoForSeries.Content = ImageInterpreter.FileToByteArray(openFileDialog.FileName);
+                    else
+                    {
+                        newReferencePhoto = new ReferencePhoto
+                        {
+                            Content = referencePhotoContentForAdd,
+                            Name = openFileDialog.SafeFileNames[0],
+                            ReferencePhotoId = CurrentSeries.SeriesId,
+                            Line = new Line()                          
+                        };
+
+                        if (CurrentSeries.ReferencePhotoForSeries.SimpleLine != null)
+                        {
+                            newReferencePhoto.SimpleLine = CurrentSeries.ReferencePhotoForSeries.SimpleLine;
+                            newReferencePhoto.SimpleLine.X1 = 0;
+                            newReferencePhoto.SimpleLine.X2 = 0;
+                            newReferencePhoto.SimpleLine.Y1 = 0;
+                            newReferencePhoto.SimpleLine.Y2 = 0;
+                            newReferencePhoto.SimpleReferencePhotoLineId = newReferencePhoto.SimpleLine.SimpleLineId;
+                        }
+                    }
 
                     try
                     {
-                        var dbSeries = _dDropRepository.GetSeriesByUserId(User.UserId);
-
-                        var referencePhoto = CurrentSeries.ReferencePhotoForSeries;
+                        var referencePhoto = newReferencePhoto;
                         var seriesId = CurrentSeries.SeriesId;
 
-                        await Task.Run(() => _dDropRepository.CreateReferencePhoto(DDropDbEntitiesMapper.ReferencePhotoToDbReferencePhoto(referencePhoto, dbSeries.FirstOrDefault(x => x.SeriesId == seriesId))));
+                        await Task.Run(() => _dDropRepository.UpdateReferencePhoto(DDropDbEntitiesMapper.ReferencePhotoToDbReferencePhoto(referencePhoto)));
 
+                        if (CurrentSeries.ReferencePhotoForSeries.Line != null)
+                        {
+                            MainWindowPixelDrawer.CanDrawing.Children.Remove(CurrentSeries.ReferencePhotoForSeries.Line);
+
+                            MainWindowPixelDrawer.PixelsInMillimeter = "";
+                            CurrentSeries.ReferencePhotoForSeries.Line = null;
+                            CurrentSeries.ReferencePhotoForSeries.PixelsInMillimeter = 0;
+                        }
+
+                        CurrentSeries.ReferencePhotoForSeries = newReferencePhoto;
                         ReferenceImage = ImageInterpreter.LoadImage(CurrentSeries.ReferencePhotoForSeries.Content);
 
                         MainWindowPixelDrawer.IsEnabled = false;
@@ -1325,10 +1360,11 @@ namespace DDrop
 
         private async void SaveReferenceLine_Click(object sender, RoutedEventArgs e)
         {
-            ToggleUiPhotosTableOperations();
-            ReferencePhotoContentLoadingWindow();
             if (CurrentSeries.ReferencePhotoForSeries.SimpleLine != null)
             {
+                ToggleUiPhotosTableOperations();
+                ReferencePhotoContentLoadingWindow();
+
                 try
                 {
                     ProgressBar.IsIndeterminate = true;
@@ -1338,7 +1374,7 @@ namespace DDrop
                     SaveReferenceLine.Visibility = Visibility.Hidden;
 
                     var dbSeries = _dDropRepository.GetSeriesByUserId(User.UserId);
-                    var dbReferencePhoto = DDropDbEntitiesMapper.ReferencePhotoToDbReferencePhoto(CurrentSeries.ReferencePhotoForSeries, dbSeries.FirstOrDefault(x => x.SeriesId == CurrentSeries.SeriesId));
+                    var dbReferencePhoto = DDropDbEntitiesMapper.ReferencePhotoToDbReferencePhoto(CurrentSeries.ReferencePhotoForSeries);
 
                     await Task.Run(() => _dDropRepository.UpdateReferencePhoto(dbReferencePhoto));
 
@@ -1502,6 +1538,11 @@ namespace DDrop
             if (messageBoxResult == MessageBoxResult.Yes)
             {
                 MainTabControl.SelectedIndex = 0;
+
+                if (MainWindowPixelDrawer.CanDrawing.Children != null)
+                {
+                    MainWindowPixelDrawer.CanDrawing.Children.Remove(CurrentSeries.ReferencePhotoForSeries.Line);
+                }
 
                 if (User.UserSeries != null)
                 {
