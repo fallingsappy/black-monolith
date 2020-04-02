@@ -1272,10 +1272,7 @@ namespace DDrop
 
                     try
                     {
-                        var referencePhoto = newReferencePhoto;
-                        var seriesId = CurrentSeries.SeriesId;
-
-                        await Task.Run(() => _dDropRepository.UpdateReferencePhoto(DDropDbEntitiesMapper.ReferencePhotoToDbReferencePhoto(referencePhoto)));
+                        await Task.Run(() => _dDropRepository.UpdateReferencePhoto(DDropDbEntitiesMapper.ReferencePhotoToDbReferencePhoto(newReferencePhoto)));
 
                         if (CurrentSeries.ReferencePhotoForSeries.Line != null)
                         {
