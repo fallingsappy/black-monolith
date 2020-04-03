@@ -7,7 +7,7 @@
         xmlns:pixelDrawer="clr-namespace:DDrop.Controls.PixelDrawer;assembly=DDrop.Controls"
         xmlns:zoomborder="clr-namespace:DDrop.Controls.Zoomborder;assembly=DDrop.Controls"
         mc:Ignorable="d"
-        Title="Ручное редактирование" Height="502" Width="970" WindowState="Maximized" Icon="Resources/Icons/MainIcon.png" Closing="Window_Closing" x:Name="AppEditWindow" WindowStartupLocation="CenterScreen">
+        Title="Ручное редактирование" Topmost="True" Height="502" Width="970" WindowState="Maximized" Icon="Resources/Icons/MainIcon.png" Closing="Window_Closing" x:Name="AppEditWindow" WindowStartupLocation="CenterScreen">
     <Grid>
         <Border Background="Gainsboro" BorderThickness="1" Height="28" Margin="10,10,10,0" VerticalAlignment="Top">
             <Grid>
