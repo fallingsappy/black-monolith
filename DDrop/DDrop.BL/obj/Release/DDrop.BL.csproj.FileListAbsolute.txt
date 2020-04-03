@@ -40,5 +40,3 @@ E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\obj\Release\DDrop.BL.c
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\obj\Release\DDrop.BL.dll
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\obj\Release\DDrop.BL.pdb
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\obj\Release\DDrop.BL.csproj.CoreCompileInputs.cache
-E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\bin\Release\DDrop.BL.dll.CodeAnalysisLog.xml
-E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\bin\Release\DDrop.BL.dll.lastcodeanalysissucceeded

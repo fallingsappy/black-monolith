@@ -24,6 +24,7 @@ using DDrop.DAL;
 using DDrop.Utility.Mappers;
 using System.Threading.Tasks;
 using Ookii.Dialogs.Wpf;
+using System.Threading;
 
 namespace DDrop
 {
@@ -37,6 +38,10 @@ namespace DDrop
         private bool? _allSelectedSeries = false;
         private bool _allSelectedPhotosChanging;
         private bool? _allSelectedPhotos = false;
+        private Line HorizontalLineSeriesPreview;
+        private Line VerticalLineSeriesPreview;
+        private Line HorizontalLinePhotosPreview;
+        private Line VerticalLinePhotosPreview;
         private readonly ISeriesBL _seriesBL;
         private readonly IDropPhotoBL _dropPhotoBL;
         private readonly IDDropRepository _dDropRepository;
@@ -276,6 +281,11 @@ namespace DDrop
         {
             if (User.UserSeries.Count > 0 && SeriesDataGrid.SelectedItem != null)
             {
+                PreviewCanvas.Children.Remove(HorizontalLineSeriesPreview);
+                PreviewCanvas.Children.Remove(VerticalLineSeriesPreview);
+                PhotosPreviewCanvas.Children.Remove(HorizontalLinePhotosPreview);
+                PhotosPreviewCanvas.Children.Remove(VerticalLinePhotosPreview);
+
                 SingleSeries.IsEnabled = false;
                 ProgressBar.IsIndeterminate = true;
                 ToggleSeriesManagerUiBlocking(false);
@@ -325,23 +335,6 @@ namespace DDrop
             }
         }
 
-        private void ToggleSeriesManagerUiBlocking(bool blockSeriesTable = true)
-        {
-            //if (CurrentSeries != null)
-            //    CurrentSeries.Loaded = !CurrentSeries.Loaded;
-            SeriesManager.IsEnabled = !SeriesManager.IsEnabled;
-            if (blockSeriesTable)
-                SeriesDataGrid.IsEnabled = !SeriesDataGrid.IsEnabled;
-            MainMenuBar.IsEnabled = !MainMenuBar.IsEnabled;
-            AddSeriesButton.IsEnabled = !AddSeriesButton.IsEnabled;
-            OneLineSetterValue.IsEnabled = !OneLineSetterValue.IsEnabled;
-            ExportSeriesLocal.IsEnabled = !ExportSeriesLocal.IsEnabled;
-            ImportLocalSeries.IsEnabled = !ImportLocalSeries.IsEnabled;
-            ExportSeriesButton.IsEnabled = !ExportSeriesButton.IsEnabled;
-            DeleteSeriesButton.IsEnabled = !DeleteSeriesButton.IsEnabled;
-            //SingleSeries.IsEnabled = !SingleSeries.IsEnabled;
-        }
-
         private void SeriesDrawerSwap(Series old)
         {
             if (old.ReferencePhotoForSeries?.Line != null)
@@ -354,31 +347,54 @@ namespace DDrop
             }
         }
 
+        private CancellationTokenSource _tokenSource;
+
         private async void SeriesPreviewDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            DropPhoto selectedFile = (DropPhoto)SeriesPreviewDataGrid.SelectedItem;
-            if (selectedFile != null)
+            DropPhoto selectedPhoto = (DropPhoto)SeriesPreviewDataGrid.SelectedItem;
+            if (selectedPhoto != null)
             {
+                PreviewCanvas.Children.Clear();
+
                 PreviewWindowLoading();
 
                 try
                 {
+                    if (_tokenSource != null)
+                    {
+                        _tokenSource.Cancel();
+                    }
+
+                    _tokenSource = new CancellationTokenSource();
+
                     ImgPreview.Source = null;
 
-                    
                     ProgressBar.IsIndeterminate = true;
 
                     ImgPreview.Source = ImageInterpreter.LoadImage(await Task.Run(() =>
-                        _dDropRepository.GetDropPhotoContent(selectedFile.DropPhotoId)));
+                        _dDropRepository.GetDropPhotoContent(selectedPhoto.DropPhotoId, _tokenSource.Token)));
 
+                    PrepareLines(selectedPhoto, out HorizontalLineSeriesPreview, out VerticalLineSeriesPreview);
+
+                }
+                catch (OperationCanceledException ex)
+                {
                     
                 }
                 catch (Exception)
                 {
-                    _notifier.ShowError($"Не удалось загрузить снимок {selectedFile.Name}. Не удалось установить подключение. Проверьте интернет соединение.");
+                    _notifier.ShowError($"Не удалось загрузить снимок {selectedPhoto.Name}. Не удалось установить подключение. Проверьте интернет соединение.");
                 }
 
                 PreviewWindowLoading();
+
+                PreviewCanvas.Children.Clear();
+                PreviewCanvas.Children.Add(ImgPreview);
+                if (HorizontalLineSeriesPreview != null)
+                    PreviewCanvas.Children.Add(HorizontalLineSeriesPreview);
+                if (VerticalLineSeriesPreview != null)
+                    PreviewCanvas.Children.Add(VerticalLineSeriesPreview);
+                
                 ProgressBar.IsIndeterminate = false;
             }
             else
@@ -877,7 +893,8 @@ namespace DDrop
             {
                 try
                 {
-                    
+                    PhotosPreviewCanvas.Children.Clear();
+
                     ProgressBar.IsIndeterminate = true;
                     ImgCurrent.Source = null;
                     CurrentSeriesImageLoadingWindow();
@@ -890,21 +907,89 @@ namespace DDrop
                             .Content = null;
                     }
 
+                    if (_tokenSource != null)
+                    {
+                        _tokenSource.Cancel();
+                    }
+
+                    _tokenSource = new CancellationTokenSource();
+
                     CurrentDropPhoto = CurrentSeries.DropPhotosSeries[Photos.SelectedIndex];
-                    CurrentDropPhoto.Content = await Task.Run(() => _dDropRepository.GetDropPhotoContent(selectedFile.DropPhotoId));
+                    CurrentDropPhoto.Content = await Task.Run(() => _dDropRepository.GetDropPhotoContent(selectedFile.DropPhotoId, _tokenSource.Token));
                     ImgCurrent.Source = ImageInterpreter.LoadImage(CurrentDropPhoto.Content);
+
+                    PrepareLines(selectedFile, out HorizontalLinePhotosPreview, out VerticalLinePhotosPreview);
+                }
+                catch (OperationCanceledException ex)
+                {
+
                 }
                 catch (Exception)
                 {
                     _notifier.ShowError($"Не удалось загрузить снимок {selectedFile.Name}. Не удалось установить подключение. Проверьте интернет соединение.");
                 }
 
+
                 ProgressBar.IsIndeterminate = false;
                 CurrentSeriesImageLoadingWindow();
                 ToggleUiPhotosTableOperations(false);
+
+                PhotosPreviewCanvas.Children.Clear();
+                PhotosPreviewCanvas.Children.Add(ImgCurrent);
+                if (HorizontalLinePhotosPreview != null)
+                    PhotosPreviewCanvas.Children.Add(HorizontalLinePhotosPreview);
+                if (VerticalLinePhotosPreview != null)
+                    PhotosPreviewCanvas.Children.Add(VerticalLinePhotosPreview);
             }
             else
                 ImgCurrent.Source = null;
+        }
+
+        private async void LoadPreviewPhoto(DropPhoto dropPhoto)
+        {
+            try
+            {
+                PhotosPreviewCanvas.Children.Clear();
+
+                ProgressBar.IsIndeterminate = true;
+                ImgCurrent.Source = null;
+                CurrentSeriesImageLoadingWindow();
+                ToggleUiPhotosTableOperations(false);
+
+                if (_tokenSource != null)
+                {
+                    _tokenSource.Cancel();
+                }
+
+                _tokenSource = new CancellationTokenSource();
+
+                CurrentDropPhoto = CurrentSeries.DropPhotosSeries[Photos.SelectedIndex];
+                CurrentDropPhoto.Content = await Task.Run(() => _dDropRepository.GetDropPhotoContent(dropPhoto.DropPhotoId, _tokenSource.Token));
+                ImgCurrent.Source = ImageInterpreter.LoadImage(CurrentDropPhoto.Content);
+
+                PrepareLines(dropPhoto, out HorizontalLinePhotosPreview, out VerticalLinePhotosPreview);
+            }
+            catch (OperationCanceledException ex)
+            {
+
+            }
+            catch (Exception)
+            {
+                _notifier.ShowError($"Не удалось загрузить снимок {dropPhoto.Name}. Не удалось установить подключение. Проверьте интернет соединение.");
+            }
+
+
+            ProgressBar.IsIndeterminate = false;
+            CurrentSeriesImageLoadingWindow();
+            ToggleUiPhotosTableOperations(false);
+
+            PhotosPreviewCanvas.Children.Clear();
+            if(ImgCurrent != null)
+                PhotosPreviewCanvas.Children.Add(ImgCurrent);
+            if (HorizontalLinePhotosPreview != null)
+                PhotosPreviewCanvas.Children.Add(HorizontalLinePhotosPreview);
+            if (VerticalLinePhotosPreview != null)
+                PhotosPreviewCanvas.Children.Add(VerticalLinePhotosPreview);
         }
 
         private void CurrentSeriesPhotoContentLoadingWindow()
@@ -1008,52 +1093,77 @@ namespace DDrop
 
                 if (CurrentDropPhoto.Content == null)
                 {
-                    var currentDropPhotoId = CurrentDropPhoto.DropPhotoId;
-                    CurrentDropPhoto.Content = await Task.Run(() => _dDropRepository.GetDropPhotoContent(currentDropPhotoId));
-                }
-                
-                ManualEdit manualEdit = new ManualEdit(CurrentDropPhoto);
-                manualEdit.ShowDialog();
-
-                if (CurrentDropPhoto.XDiameterInPixels != 0 && CurrentDropPhoto.YDiameterInPixels != 0)
-                {
-                    Drop tempDrop = new Drop
+                    if (_tokenSource != null)
                     {
-                        DropId = CurrentDropPhoto.Drop.DropId,
-                        DropPhoto = CurrentDropPhoto.Drop.DropPhoto,
-                        RadiusInMeters = CurrentDropPhoto.Drop.RadiusInMeters,
-                        Series = CurrentDropPhoto.Drop.Series,
-                        VolumeInCubicalMeters = CurrentDropPhoto.Drop.VolumeInCubicalMeters,
-                        XDiameterInMeters = CurrentDropPhoto.Drop.XDiameterInMeters,
-                        YDiameterInMeters = CurrentDropPhoto.Drop.YDiameterInMeters,
-                        ZDiameterInMeters = CurrentDropPhoto.Drop.ZDiameterInMeters
-                    };
+                        _tokenSource.Cancel();
+                    }
 
+                    _tokenSource = new CancellationTokenSource();
+
+                    var currentDropPhotoId = CurrentDropPhoto.DropPhotoId;
                     try
                     {
-                        CurrentSeriesPhotoContentLoadingWindow();
-                       
-                        DropletSizeCalculator.PerformCalculation(
-                            Convert.ToInt32(PixelsInMillimeterTextBox.Text), CurrentDropPhoto.XDiameterInPixels,
-                            CurrentDropPhoto.YDiameterInPixels, CurrentDropPhoto);
+                        CurrentDropPhoto.Content = await Task.Run(() => _dDropRepository.GetDropPhotoContent(currentDropPhotoId, _tokenSource.Token));
+                    }
+                    catch (OperationCanceledException ex)
+                    {
 
-                        var dbPhoto = DDropDbEntitiesMapper.DropPhotoToDbDropPhoto(CurrentDropPhoto, CurrentSeries.SeriesId);
-
-                        await Task.Run(() => _dDropRepository.UpdateDropPhoto(dbPhoto));
-
-                        _notifier.ShowSuccess($"Расчет для снимка {CurrentDropPhoto.Name} выполнен.");
                     }
                     catch (Exception)
                     {
-                        CurrentDropPhoto.Drop = tempDrop;
-                        _notifier.ShowError("Не удалось сохранить результаты расчета. Не удалось установить подключение. Проверьте интернет соединение.");
-                    }
 
-                    CurrentSeriesPhotoContentLoadingWindow();
+                    }                   
+                }
+                
+                if (CurrentDropPhoto.Content != null)
+                {
+                    ManualEdit manualEdit = new ManualEdit(CurrentDropPhoto);
+                    manualEdit.ShowDialog();
+
+                    if (CurrentDropPhoto.XDiameterInPixels != 0 && CurrentDropPhoto.YDiameterInPixels != 0)
+                    {
+                        Drop tempDrop = new Drop
+                        {
+                            DropId = CurrentDropPhoto.Drop.DropId,
+                            DropPhoto = CurrentDropPhoto.Drop.DropPhoto,
+                            RadiusInMeters = CurrentDropPhoto.Drop.RadiusInMeters,
+                            Series = CurrentDropPhoto.Drop.Series,
+                            VolumeInCubicalMeters = CurrentDropPhoto.Drop.VolumeInCubicalMeters,
+                            XDiameterInMeters = CurrentDropPhoto.Drop.XDiameterInMeters,
+                            YDiameterInMeters = CurrentDropPhoto.Drop.YDiameterInMeters,
+                            ZDiameterInMeters = CurrentDropPhoto.Drop.ZDiameterInMeters
+                        };
+
+                        try
+                        {
+                            CurrentSeriesPhotoContentLoadingWindow();
+
+                            DropletSizeCalculator.PerformCalculation(
+                                Convert.ToInt32(PixelsInMillimeterTextBox.Text), CurrentDropPhoto.XDiameterInPixels,
+                                CurrentDropPhoto.YDiameterInPixels, CurrentDropPhoto);
+
+                            var dbPhoto = DDropDbEntitiesMapper.DropPhotoToDbDropPhoto(CurrentDropPhoto, CurrentSeries.SeriesId);
+
+                            await Task.Run(() => _dDropRepository.UpdateDropPhoto(dbPhoto));
+
+                            _notifier.ShowSuccess($"Расчет для снимка {CurrentDropPhoto.Name} выполнен.");
+                        }
+                        catch (Exception)
+                        {
+                            CurrentDropPhoto.Drop = tempDrop;
+                            _notifier.ShowError("Не удалось сохранить результаты расчета. Не удалось установить подключение. Проверьте интернет соединение.");
+                        }
+
+                        CurrentSeriesPhotoContentLoadingWindow();
+                    }
+                    else
+                    {
+                        _notifier.ShowInformation($"Не указан один из диаметров. Расчет для снимка {CurrentDropPhoto.Name} не выполнен.");
+                    }
                 }
                 else
                 {
-                    _notifier.ShowInformation($"Не указан один из диаметров. Расчет для снимка {CurrentDropPhoto.Name} не выполнен.");
+                    _notifier.ShowError("Не удалось загрузить снимок. Не удалось установить подключение. Проверьте интернет соединение.");
                 }
             }
             else
@@ -1061,63 +1171,10 @@ namespace DDrop
                 _notifier.ShowInformation("Выберите референсное расстояние на референсном снимке.");
             }
 
+            LoadPreviewPhoto(CurrentDropPhoto);
+
             ProgressBar.IsIndeterminate = false;
             ToggleUiPhotosTableOperations();
-        }
-
-        private void ToggleUiPhotosTableOperations(bool disablePhotos = true)
-        {
-            if(CurrentSeries != null)
-                CurrentSeries.Loaded = !CurrentSeries.Loaded;
-            if (disablePhotos)
-                Photos.IsEnabled = !Photos.IsEnabled;
-            PhotosTab.IsEnabled = !PhotosTab.IsEnabled;
-            SeriesManager.IsEnabled = !SeriesManager.IsEnabled;
-            ReferenceTab.IsEnabled = !ReferenceTab.IsEnabled;
-            AddPhotoButton.IsEnabled = !AddPhotoButton.IsEnabled;
-            DeleteInputPhotosButton.IsEnabled = !DeleteInputPhotosButton.IsEnabled;
-            EditPhotosOrder.IsEnabled = !EditPhotosOrder.IsEnabled;
-            IntervalBetweenPhotos.IsEnabled = !IntervalBetweenPhotos.IsEnabled;
-            CreationTimeCheckBox.IsEnabled = !CreationTimeCheckBox.IsEnabled;
-            MainMenuBar.IsEnabled = !MainMenuBar.IsEnabled;
-            ChangeReferenceLine.IsEnabled = !ChangeReferenceLine.IsEnabled;
-            DeleteButton.IsEnabled = !DeleteButton.IsEnabled;
-            ChooseReferenceButton.IsEnabled = !ChooseReferenceButton.IsEnabled;
-            //PixelsInMillimeterTextBox.IsEnabled = !PixelsInMillimeterTextBox.IsEnabled;
-        }
-
-        private async void IntervalBetweenPhotos_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            var intervalBetweenPhotosTextBox = sender as TextBox;
-
-            if (CurrentSeries != null)
-            {
-                if (int.TryParse(intervalBetweenPhotosTextBox?.Text, out int intervalBetweenPhotos))
-                {
-                    try
-                    {
-                        ProgressBar.IsIndeterminate = true;
-                        ToggleUiPhotosTableOperations();
-
-                        var seriesId = CurrentSeries.SeriesId;
-                        await Task.Run(() => _dDropRepository.UpdateSeriesIntervalBetweenPhotos(intervalBetweenPhotos, seriesId));
-
-                        CurrentSeries.IntervalBetweenPhotos = intervalBetweenPhotos;
-                    }
-                    catch
-                    {
-                        _notifier.ShowError("Не удалось сохранить результаты новый временной интервал между снимками. Не удалось установить подключение. Проверьте интернет соединение.");
-                    }
-
-                    ProgressBar.IsIndeterminate = false;
-                    ToggleUiPhotosTableOperations();
-                }                   
-                else
-                {
-                    CurrentSeries.IntervalBetweenPhotos = 0;
-                    _notifier.ShowInformation("Некорректное значение для интервала между снимками. Укажите интервал между снимками в секундах.");
-                }
-            }
         }
 
         private async void Photos_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
@@ -1151,7 +1208,6 @@ namespace DDrop
             if (CurrentSeries != null)
             {
                 CurrentSeries.UseCreationDateTime = true;
-                IntervalBetweenPhotos.IsEnabled = false;
 
                 try
                 {
@@ -1174,7 +1230,6 @@ namespace DDrop
         {
             if (CurrentSeries != null)
             {
-                IntervalBetweenPhotos.IsEnabled = true;
                 CurrentSeries.UseCreationDateTime = false;
                 try
                 {
@@ -1536,7 +1591,7 @@ namespace DDrop
             {
                 MainTabControl.SelectedIndex = 0;
 
-                if (MainWindowPixelDrawer.CanDrawing.Children != null)
+                if (MainWindowPixelDrawer.CanDrawing.Children != null && CurrentSeries?.ReferencePhotoForSeries?.Line != null)
                 {
                     MainWindowPixelDrawer.CanDrawing.Children.Remove(CurrentSeries.ReferencePhotoForSeries.Line);
                 }
@@ -1625,6 +1680,127 @@ namespace DDrop
         {
             Information information = new Information();
             information.ShowDialog();
+        }
+
+        #endregion
+
+        private void EditIntervalBetweenPhotos_Click(object sender, RoutedEventArgs e)
+        {
+            SaveIntervalBetweenPhotos.Visibility = Visibility.Visible;
+            EditIntervalBetweenPhotos.Visibility = Visibility.Hidden;
+            IntervalBetweenPhotos.IsEnabled = true;
+        }
+
+        private async void SaveIntervalBetweenPhotos_Click(object sender, RoutedEventArgs e)
+        {
+            await SaveIntervalBetweenPhotosAsync();
+        }
+
+        private async Task SaveIntervalBetweenPhotosAsync()
+        {
+            if (CurrentSeries != null)
+            {
+                if (int.TryParse(IntervalBetweenPhotos?.Text, out int intervalBetweenPhotos))
+                {
+                    try
+                    {
+                        SaveIntervalBetweenPhotos.Visibility = Visibility.Hidden;
+                        EditIntervalBetweenPhotos.Visibility = Visibility.Visible;
+                        IntervalBetweenPhotos.IsEnabled = false;
+                        ProgressBar.IsIndeterminate = true;
+                        ToggleUiPhotosTableOperations();
+
+                        var seriesId = CurrentSeries.SeriesId;
+                        await Task.Run(() => _dDropRepository.UpdateSeriesIntervalBetweenPhotos(intervalBetweenPhotos, seriesId));
+
+                        CurrentSeries.IntervalBetweenPhotos = intervalBetweenPhotos;
+                    }
+                    catch
+                    {
+                        _notifier.ShowError("Не удалось сохранить результаты новый временной интервал между снимками. Не удалось установить подключение. Проверьте интернет соединение.");
+                        IntervalBetweenPhotos.Text = CurrentSeries.IntervalBetweenPhotos.ToString();
+                    }
+
+                    ProgressBar.IsIndeterminate = false;
+                    ToggleUiPhotosTableOperations();
+                }
+                else
+                {
+                    CurrentSeries.IntervalBetweenPhotos = 0;
+                    _notifier.ShowInformation("Некорректное значение для интервала между снимками. Укажите интервал между снимками в секундах.");
+                }
+            }
+        }
+
+        #region Utility
+
+        private void PrepareLines(DropPhoto selectedPhoto, out Line horizontalLine, out Line verticalLine)
+        {
+            if (selectedPhoto.HorizontalLine != null)
+                horizontalLine = new Line
+                {
+                    X1 = selectedPhoto.HorizontalLine.X1,
+                    X2 = selectedPhoto.HorizontalLine.X2,
+                    Y1 = selectedPhoto.HorizontalLine.Y1,
+                    Y2 = selectedPhoto.HorizontalLine.Y2,
+                    StrokeThickness = 2,
+                    Stroke = Brushes.DeepPink
+                };
+            else
+                horizontalLine = null;
+
+            if(selectedPhoto.VerticalLine != null)
+                verticalLine = new Line
+                {
+                    X1 = selectedPhoto.VerticalLine.X1,
+                    X2 = selectedPhoto.VerticalLine.X2,
+                    Y1 = selectedPhoto.VerticalLine.Y1,
+                    Y2 = selectedPhoto.VerticalLine.Y2,
+                    StrokeThickness = 2,
+                    Stroke = Brushes.Green
+                };
+            else
+                verticalLine = null;
+        }
+
+        private void ToggleSeriesManagerUiBlocking(bool blockSeriesTable = true)
+        {
+            SeriesManager.IsEnabled = !SeriesManager.IsEnabled;
+            if (blockSeriesTable)
+                SeriesDataGrid.IsEnabled = !SeriesDataGrid.IsEnabled;
+            MainMenuBar.IsEnabled = !MainMenuBar.IsEnabled;
+            AddSeriesButton.IsEnabled = !AddSeriesButton.IsEnabled;
+            OneLineSetterValue.IsEnabled = !OneLineSetterValue.IsEnabled;
+            ExportSeriesLocal.IsEnabled = !ExportSeriesLocal.IsEnabled;
+            ImportLocalSeries.IsEnabled = !ImportLocalSeries.IsEnabled;
+            ExportSeriesButton.IsEnabled = !ExportSeriesButton.IsEnabled;
+            DeleteSeriesButton.IsEnabled = !DeleteSeriesButton.IsEnabled;
+        }
+
+        private async void ToggleUiPhotosTableOperations(bool disablePhotos = true)
+        {
+            if (CurrentSeries != null)
+                CurrentSeries.Loaded = !CurrentSeries.Loaded;
+            if (disablePhotos)
+                Photos.IsEnabled = !Photos.IsEnabled;
+            PhotosTab.IsEnabled = !PhotosTab.IsEnabled;
+            SeriesManager.IsEnabled = !SeriesManager.IsEnabled;
+            ReferenceTab.IsEnabled = !ReferenceTab.IsEnabled;
+            AddPhotoButton.IsEnabled = !AddPhotoButton.IsEnabled;
+            DeleteInputPhotosButton.IsEnabled = !DeleteInputPhotosButton.IsEnabled;
+            EditPhotosOrder.IsEnabled = !EditPhotosOrder.IsEnabled;
+
+            if (IntervalBetweenPhotos.IsEnabled)
+            {
+                await SaveIntervalBetweenPhotosAsync();
+                IntervalBetweenPhotos.IsEnabled = false;
+            }
+
+            CreationTimeCheckBox.IsEnabled = !CreationTimeCheckBox.IsEnabled;
+            MainMenuBar.IsEnabled = !MainMenuBar.IsEnabled;
+            ChangeReferenceLine.IsEnabled = !ChangeReferenceLine.IsEnabled;
+            DeleteButton.IsEnabled = !DeleteButton.IsEnabled;
+            ChooseReferenceButton.IsEnabled = !ChooseReferenceButton.IsEnabled;
         }
 
         #endregion

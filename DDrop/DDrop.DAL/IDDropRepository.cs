@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using DDrop.Db.DbEntities;
 
@@ -22,7 +23,7 @@ namespace DDrop.DAL
         Task UpdateDropPhoto(DbDropPhoto dropPhoto);
         Task DeleteDropPhoto(Guid dropPhotoId);
         Task UpdateDropPhotoName(string newName, Guid dropPhotoId);
-        Task<byte[]> GetDropPhotoContent(Guid dropPhotoId);
+        Task<byte[]> GetDropPhotoContent(Guid dropPhotoId, CancellationToken cancellationToken);
         Task UpdatePhotosOrderInSeries(List<DbDropPhoto> newDbDropPhotos);
         Task DeleteReferencePhoto(Guid dbReferencePhotoId);
         Task UpdateReferencePhoto(DbReferencePhoto referencePhoto);

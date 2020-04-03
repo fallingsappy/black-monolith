@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Data.Entity.Infrastructure;
+using System.Threading;
 
 namespace DDrop.DAL
 {
@@ -587,13 +588,21 @@ namespace DDrop.DAL
             }
         }
 
-        public async Task<byte[]> GetDropPhotoContent(Guid dropPhotoId)
+        public async Task<byte[]> GetDropPhotoContent(Guid dropPhotoId, CancellationToken cancellationToken)
         {
             using (var context = new DDropContext())
             {
                 try
                 {
-                    return await context.DropPhotos.Where(x => x.DropPhotoId == dropPhotoId).Select(z => z.Content).FirstOrDefaultAsync();
+                    byte[] content = await context.DropPhotos.Where(x => x.DropPhotoId == dropPhotoId).Select(z => z.Content).FirstOrDefaultAsync().ConfigureAwait(true);
+
+                    cancellationToken.ThrowIfCancellationRequested();
+
+                    return content;                    
+                }
+                catch (OperationCanceledException ex)
+                {
+                    throw;
                 }
                 catch (ArgumentNullException e)
                 {

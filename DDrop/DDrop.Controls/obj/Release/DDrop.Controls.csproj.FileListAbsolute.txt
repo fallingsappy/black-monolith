@@ -27,5 +27,3 @@ E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Controls\obj\Release\DDro
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Controls\obj\Release\DDrop.Controls.dll
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Controls\obj\Release\DDrop.Controls.pdb
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Controls\obj\Release\DDrop.Controls.csproj.CoreCompileInputs.cache
-E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Controls\bin\Release\DDrop.Controls.dll.CodeAnalysisLog.xml
-E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Controls\bin\Release\DDrop.Controls.dll.lastcodeanalysissucceeded
