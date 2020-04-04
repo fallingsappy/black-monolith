@@ -12,6 +12,9 @@ using DDrop.DAL;
 using DDrop.Utility.Mappers;
 using ToastNotifications;
 using ToastNotifications.Messages;
+using System.Windows.Controls;
+using System.Reflection;
+using DDrop.Utility.SeriesLocalStorageOperations;
 
 namespace DDrop
 {
@@ -20,6 +23,13 @@ namespace DDrop
     /// </summary>
     public partial class Login : Window
     {
+        public static readonly DependencyProperty LocalStoredUsersProperty = DependencyProperty.Register("LocalStoredUsers", typeof(LocalStoredUsers), typeof(Login));
+        public LocalStoredUsers LocalStoredUsers
+        {
+            get => (LocalStoredUsers)GetValue(LocalStoredUsersProperty);
+            set => SetValue(LocalStoredUsersProperty, value);
+        }
+        
         public static readonly DependencyProperty UserLoginProperty = DependencyProperty.Register("UserLogin", typeof(User), typeof(Login));
         private IDDropRepository _dDropRepository;
         private readonly Notifier _notifier;
@@ -37,7 +47,16 @@ namespace DDrop
         {
             _dDropRepository = dDropRepository;
             _notifier = notifier;
+
+            if (!string.IsNullOrEmpty(Properties.Settings.Default.StoredUsers))
+            {
+                LocalStoredUsers = JsonSerializeProvider.DeserializeFromString<LocalStoredUsers>(Properties.Settings.Default.StoredUsers);
+            }
+            
             InitializeComponent();
+
+            //LocalUsersCombobox.ItemsSource = LocalStoredUsers.Users;
+
             DataContext = this;
         }
 
@@ -60,34 +79,90 @@ namespace DDrop
                 var email = TextBoxEmail.Text;
                 var password = LoginPasswordBox.Password;
 
-                try
+                await TryLogin(email, password, true);
+            }
+        }
+
+        private async Task TryLogin(string email, string password, bool shouldRemember)
+        {
+            try
+            {
+                LoginWindowLoading();
+                var user = await Task.Run(() => _dDropRepository.GetUserByLogin(email));
+
+                if (user != null && PasswordOperations.PasswordsMatch(password, user.Password))
                 {
-                    LoginWindowLoading();
-                    var user = await Task.Run( () => _dDropRepository.GetUserByLogin(email));
+                    UserLogin = DDropDbEntitiesMapper.DbUserToUser(user);
+                    UserLogin.UserSeries = DDropDbEntitiesMapper.DbSeriesToSeries(user.UserSeries, UserLogin);
 
-                    if (user != null && PasswordOperations.PasswordsMatch(password, user.Password))
+                    LoginSucceeded = true;
+
+                    if (RememberMe.IsChecked == true && shouldRemember)
                     {
-
-                        UserLogin = DDropDbEntitiesMapper.DbUserToUser(user);
-                        UserLogin.UserSeries = DDropDbEntitiesMapper.DbSeriesToSeries(user.UserSeries, UserLogin);
-
-                        LoginSucceeded = true;
-                        _notifier.ShowSuccess($"Пользователь {user.Email} авторизован.");
-                        LoginWindowLoading();
-                        Close();
+                        StoreUserLocal(email, password);
                     }
-                    else
+
+                    _notifier.ShowSuccess($"Пользователь {user.Email} авторизован.");
+                    LoginWindowLoading();
+                    Close();
+                }
+                else
+                {
+                    ErrorMessage.Text = "Неверный логин или пароль.";
+                    LoginSucceeded = false;
+                    LoginWindowLoading();
+                }
+            }
+            catch
+            {
+                LoginWindowLoading();
+                _notifier.ShowError("Не удалось установить соединение. Проверьте интернет подключение.");
+            }
+        }
+
+        private void StoreUserLocal(string email, string password)
+        {
+            bool newUser = true;
+
+            if (LocalStoredUsers?.Users != null)
+            {
+                foreach (var localUser in LocalStoredUsers.Users)
+                {
+                    if (localUser.Login == email)
                     {
-                        ErrorMessage.Text = "Неверный логин или пароль.";
-                        LoginSucceeded = false;
-                        LoginWindowLoading();
+                        newUser = false;
+
+                        if (localUser.Password != PasswordOperations.HashPassword(password))
+                        {
+                            localUser.Password = password;
+
+                            Properties.Settings.Default.StoredUsers = JsonSerializeProvider.SerializeToString<LocalStoredUsers>(LocalStoredUsers);
+
+                            Properties.Settings.Default.Save();
+                        }
+
+
+                        break;
                     }
                 }
-                catch
+            }
+            else
+            {
+                LocalStoredUsers = new LocalStoredUsers();
+                LocalStoredUsers.Users = new System.Collections.ObjectModel.ObservableCollection<LocalStoredUser>();
+            }
+
+            if (newUser)
+            {
+                LocalStoredUsers.Users.Add(new LocalStoredUser
                 {
-                    LoginWindowLoading();
-                    _notifier.ShowError("Не удалось установить соединение. Проверьте интернет подключение.");
-                }
+                    Login = email,
+                    Password = password
+                });
+
+                Properties.Settings.Default.StoredUsers = JsonSerializeProvider.SerializeToString<LocalStoredUsers>(LocalStoredUsers);
+
+                Properties.Settings.Default.Save();
             }
         }
 
@@ -155,6 +230,61 @@ namespace DDrop
             LoginSucceeded = true;
 
             Close();
+        }
+
+        private void LoginPasswordBox_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Space)
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void PasswordUnmask_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Space)
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void SetSelection(PasswordBox passwordBox, int start, int length)
+        {
+            passwordBox.GetType().GetMethod("Select", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(passwordBox, new object[] { start, length });
+        }
+
+        private void LoginPasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (sender is PasswordBox passwordBox1)
+            {
+                ErrorMessage.Text = "";
+
+                if (string.IsNullOrWhiteSpace(passwordBox1.Password.Trim()))
+                {
+                    PasswordUnmask.Text = passwordBox1.Password;
+                    SetSelection(passwordBox1, passwordBox1.Password.Length, passwordBox1.Password.Length);
+                }
+            }
+        }
+
+        private void PasswordUnmask_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            ErrorMessage.Text = "";
+
+            var textBox1 = sender as TextBox;
+            LoginPasswordBox.Password = textBox1?.Text != null ? textBox1.Text : "";
+        }
+
+        private async void LocalUsersCombobox_DropDownClosed(object sender, EventArgs e)
+        {
+            var comboBox = (ComboBox)sender;
+
+            if (comboBox.SelectedIndex > -1)
+            {
+                var storedUser = (LocalStoredUser)comboBox.SelectedItem;
+
+                await TryLogin(storedUser.Login, storedUser.Password, false);
+            }
         }
     }
 }

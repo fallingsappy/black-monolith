@@ -76,3 +76,4 @@ E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BE\obj\Debug\DDrop.BE.csp
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BE\obj\Debug\DDrop.BE.dll
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BE\obj\Debug\DDrop.BE.pdb
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BE\obj\Debug\DDrop.BE.csprojAssemblyReference.cache
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BE\obj\Debug\DDrop.BE.csproj.CoreCompileInputs.cache

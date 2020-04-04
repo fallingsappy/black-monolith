@@ -1,4 +1,6 @@
 ﻿using DDrop.BE.Enums.Options;
+using DDrop.BE.Models;
+using DDrop.Utility.SeriesLocalStorageOperations;
 using Microsoft.Win32;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
@@ -12,16 +14,33 @@ namespace DDrop
     /// </summary>
     public partial class Options : Window
     {
+        public bool ShowLinesOnPreviewIsChanged = false;
+
+        public static readonly DependencyProperty LocalStoredUsersProperty = DependencyProperty.Register("LocalStoredUsers", typeof(LocalStoredUsers), typeof(Options));
+        public LocalStoredUsers LocalStoredUsers
+        {
+            get => (LocalStoredUsers)GetValue(LocalStoredUsersProperty);
+            set => SetValue(LocalStoredUsersProperty, value);
+        }
+
         public Options()
         {
             InitializeComponent();
             InitializePaths();
+
+            if (!string.IsNullOrEmpty(Properties.Settings.Default.StoredUsers))
+            {
+                LocalStoredUsers = JsonSerializeProvider.DeserializeFromString<LocalStoredUsers>(Properties.Settings.Default.StoredUsers);
+            }
+
+            StoredUsers.ItemsSource = LocalStoredUsers.Users;
         }
 
         private void InitializePaths()
         {
             InterpreterTextBox.Text = Properties.Settings.Default.Interpreter;
             ScriptToRunTextBox.Text = Properties.Settings.Default.ScriptToRun;
+            ShowLinesOnPreview.IsChecked = Properties.Settings.Default.ShowLinesOnPreview;
         }
 
         private void ChooseFilePath_OnClick(object sender, RoutedEventArgs e)
@@ -33,7 +52,7 @@ namespace DDrop
 
             if (openFileDialog.ShowDialog() == true)
             {
-                UpdateOptionsPath((OptionsEnum)Enum.Parse(typeof(OptionsEnum), button.Name), openFileDialog.FileName);
+                UpdateOptions((OptionsEnum)Enum.Parse(typeof(OptionsEnum), button.Name), openFileDialog.FileName);
             }
         }
         private void ChooseFolderPath_OnClick(object sender, RoutedEventArgs e)
@@ -43,27 +62,53 @@ namespace DDrop
             dialog.IsFolderPicker = true;
             if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
-                UpdateOptionsPath((OptionsEnum)Enum.Parse(typeof(OptionsEnum), button.Name), dialog.FileName);
+                UpdateOptions((OptionsEnum)Enum.Parse(typeof(OptionsEnum), button.Name), dialog.FileName);
             }
         }
 
-        private void UpdateOptionsPath(OptionsEnum option, string path)
+        private void UpdateOptions(OptionsEnum option, object value)
         {
             switch (option)
             {
                 case OptionsEnum.Interpreter:
-                    Properties.Settings.Default.Interpreter = path;
+                    Properties.Settings.Default.Interpreter = (string)value;
                     Properties.Settings.Default.Save();
-                    InterpreterTextBox.Text = path;
+                    InterpreterTextBox.Text = (string)value;
                     break;
                 case OptionsEnum.ScriptToRun:
-                    Properties.Settings.Default.ScriptToRun = path;
+                    Properties.Settings.Default.ScriptToRun = (string)value;
                     Properties.Settings.Default.Save();
-                    ScriptToRunTextBox.Text = path;
+                    ScriptToRunTextBox.Text = (string)value;
+                    break;
+                case OptionsEnum.ShowLinesOnPreview:
+                    Properties.Settings.Default.ShowLinesOnPreview = (bool)value;
+                    Properties.Settings.Default.Save();
+                    ShowLinesOnPreviewIsChanged = true;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(option), option, null);
             }
+        }
+
+        private void ShowLinesOnPreview_Checked(object sender, RoutedEventArgs e)
+        {
+            CheckBox checkBox = (CheckBox)sender;
+            UpdateOptions(OptionsEnum.ShowLinesOnPreview, checkBox.IsChecked);
+        }
+
+        private void ShowLinesOnPreview_Unchecked(object sender, RoutedEventArgs e)
+        {
+            CheckBox checkBox = (CheckBox)sender;
+            UpdateOptions(OptionsEnum.ShowLinesOnPreview, checkBox.IsChecked);
+        }
+
+        private void DeleteLocalUser_Click(object sender, RoutedEventArgs e)
+        {
+            LocalStoredUsers.Users.RemoveAt(StoredUsers.SelectedIndex);
+
+            Properties.Settings.Default.StoredUsers = JsonSerializeProvider.SerializeToString<LocalStoredUsers>(LocalStoredUsers);
+
+            Properties.Settings.Default.Save();
         }
     }
 }

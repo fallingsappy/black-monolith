@@ -14,7 +14,7 @@ namespace DDrop.Utility.Mappers
     {
         public static async Task<DbSeries> ImportLocalSeriesAsync(string fileName, DbUser user)
         {
-            var series = await Task.Run(() => LocalSeriesProvider.DeserializeAsync<DbSeries>(fileName));
+            var series = await Task.Run(() => JsonSerializeProvider.DeserializeFromFileAsync<DbSeries>(fileName));
             series.CurrentUser = user;
             series.CurrentUserId = user.UserId;
             
@@ -23,7 +23,7 @@ namespace DDrop.Utility.Mappers
 
         public static async Task ExportSeriesLocalAsync(string fileName, DbSeries dbSeries)
         {
-            await Task.Run(() => LocalSeriesProvider.SerializeAsync(dbSeries, fileName));
+            await Task.Run(() => JsonSerializeProvider.SerializeToFileAsync(dbSeries, fileName));
         }
 
         public static DbUser UserToDbUser(User user)

@@ -5,6 +5,7 @@
         Interpreter,
         Reference,
         SaveTo,
-        ScriptToRun
+        ScriptToRun,
+        ShowLinesOnPreview
     }
 }

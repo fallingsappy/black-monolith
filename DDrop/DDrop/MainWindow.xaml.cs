@@ -47,6 +47,8 @@ namespace DDrop
         private readonly IDDropRepository _dDropRepository;
         readonly PythonProvider _pythonProvider = new PythonProvider();
 
+        private DropPhoto CurrentSeriesPreviewPhoto = new DropPhoto();
+
         public static readonly DependencyProperty CurrentSeriesProperty = DependencyProperty.Register("CurrentSeries", typeof(Series), typeof(MainWindow));
         public static readonly DependencyProperty CurrentDropPhotoProperty = DependencyProperty.Register("CurrentDropPhoto", typeof(DropPhoto), typeof(MainWindow));
         public static readonly DependencyProperty ReferenceImageProperty = DependencyProperty.Register("ReferenceImage", typeof(ImageSource), typeof(MainWindow));
@@ -354,6 +356,8 @@ namespace DDrop
             DropPhoto selectedPhoto = (DropPhoto)SeriesPreviewDataGrid.SelectedItem;
             if (selectedPhoto != null)
             {
+                CurrentSeriesPreviewPhoto = selectedPhoto;
+
                 PreviewCanvas.Children.Clear();
 
                 PreviewWindowLoading();
@@ -371,10 +375,12 @@ namespace DDrop
 
                     ProgressBar.IsIndeterminate = true;
 
-                    ImgPreview.Source = ImageInterpreter.LoadImage(await Task.Run(() =>
-                        _dDropRepository.GetDropPhotoContent(selectedPhoto.DropPhotoId, _tokenSource.Token)));
+                    CurrentSeriesPreviewPhoto.Content = await Task.Run(() =>
+                        _dDropRepository.GetDropPhotoContent(CurrentSeriesPreviewPhoto.DropPhotoId, _tokenSource.Token));
 
-                    PrepareLines(selectedPhoto, out HorizontalLineSeriesPreview, out VerticalLineSeriesPreview);
+                    ImgPreview.Source = ImageInterpreter.LoadImage(CurrentSeriesPreviewPhoto.Content);
+
+                    PrepareLines(CurrentSeriesPreviewPhoto, out HorizontalLineSeriesPreview, out VerticalLineSeriesPreview);
 
                 }
                 catch (OperationCanceledException ex)
@@ -383,7 +389,7 @@ namespace DDrop
                 }
                 catch (Exception)
                 {
-                    _notifier.ShowError($"Не удалось загрузить снимок {selectedPhoto.Name}. Не удалось установить подключение. Проверьте интернет соединение.");
+                    _notifier.ShowError($"Не удалось загрузить снимок {CurrentSeriesPreviewPhoto.Name}. Не удалось установить подключение. Проверьте интернет соединение.");
                 }
 
                 PreviewWindowLoading();
@@ -730,6 +736,30 @@ namespace DDrop
             SeriesLoading.IsAdornerVisible = !SeriesLoading.IsAdornerVisible;
         }
 
+        private void LoadSeriesPreviewPhoto(DropPhoto dropPhoto)
+        {
+            PreviewCanvas.Children.Clear();
+
+            ProgressBar.IsIndeterminate = true;
+            ImgPreview.Source = null;
+            CurrentSeriesImageLoadingWindow();
+
+            ImgPreview.Source = ImageInterpreter.LoadImage(CurrentSeriesPreviewPhoto.Content);
+
+            PrepareLines(dropPhoto, out HorizontalLineSeriesPreview, out VerticalLineSeriesPreview);
+
+            ProgressBar.IsIndeterminate = false;
+            CurrentSeriesImageLoadingWindow();
+
+            PreviewCanvas.Children.Clear();
+            if (ImgPreview != null)
+                PreviewCanvas.Children.Add(ImgPreview);
+            if (HorizontalLineSeriesPreview != null)
+                PreviewCanvas.Children.Add(HorizontalLineSeriesPreview);
+            if (VerticalLineSeriesPreview != null)
+                PreviewCanvas.Children.Add(VerticalLineSeriesPreview);
+        }
+
         #endregion
 
         #region Drop Photos
@@ -945,43 +975,20 @@ namespace DDrop
                 ImgCurrent.Source = null;
         }
 
-        private async void LoadPreviewPhoto(DropPhoto dropPhoto)
+        private void LoadPreviewPhoto(DropPhoto dropPhoto)
         {
-            try
-            {
-                PhotosPreviewCanvas.Children.Clear();
+            PhotosPreviewCanvas.Children.Clear();
 
-                ProgressBar.IsIndeterminate = true;
-                ImgCurrent.Source = null;
-                CurrentSeriesImageLoadingWindow();
-                SingleSeriesLoading(false);
+            ProgressBar.IsIndeterminate = true;
+            ImgCurrent.Source = null;
+            CurrentSeriesImageLoadingWindow();
 
-                if (_tokenSource != null)
-                {
-                    _tokenSource.Cancel();
-                }
+            ImgCurrent.Source = ImageInterpreter.LoadImage(CurrentDropPhoto.Content);
 
-                _tokenSource = new CancellationTokenSource();
-
-                CurrentDropPhoto = CurrentSeries.DropPhotosSeries[Photos.SelectedIndex];
-                CurrentDropPhoto.Content = await Task.Run(() => _dDropRepository.GetDropPhotoContent(dropPhoto.DropPhotoId, _tokenSource.Token));
-                ImgCurrent.Source = ImageInterpreter.LoadImage(CurrentDropPhoto.Content);
-
-                PrepareLines(dropPhoto, out HorizontalLinePhotosPreview, out VerticalLinePhotosPreview);
-            }
-            catch (OperationCanceledException ex)
-            {
-
-            }
-            catch (Exception)
-            {
-                _notifier.ShowError($"Не удалось загрузить снимок {dropPhoto.Name}. Не удалось установить подключение. Проверьте интернет соединение.");
-            }
-
+            PrepareLines(dropPhoto, out HorizontalLinePhotosPreview, out VerticalLinePhotosPreview);
 
             ProgressBar.IsIndeterminate = false;
             CurrentSeriesImageLoadingWindow();
-            SingleSeriesLoadingComplete(false);
 
             PhotosPreviewCanvas.Children.Clear();
             if(ImgCurrent != null)
@@ -1120,45 +1127,48 @@ namespace DDrop
                     ManualEdit manualEdit = new ManualEdit(CurrentDropPhoto);
                     manualEdit.ShowDialog();
 
-                    if (CurrentDropPhoto.XDiameterInPixels != 0 && CurrentDropPhoto.YDiameterInPixels != 0)
+                    if (manualEdit.SaveRequired)
                     {
-                        Drop tempDrop = new Drop
+                        if (CurrentDropPhoto.XDiameterInPixels != 0 && CurrentDropPhoto.YDiameterInPixels != 0)
                         {
-                            DropId = CurrentDropPhoto.Drop.DropId,
-                            DropPhoto = CurrentDropPhoto.Drop.DropPhoto,
-                            RadiusInMeters = CurrentDropPhoto.Drop.RadiusInMeters,
-                            Series = CurrentDropPhoto.Drop.Series,
-                            VolumeInCubicalMeters = CurrentDropPhoto.Drop.VolumeInCubicalMeters,
-                            XDiameterInMeters = CurrentDropPhoto.Drop.XDiameterInMeters,
-                            YDiameterInMeters = CurrentDropPhoto.Drop.YDiameterInMeters,
-                            ZDiameterInMeters = CurrentDropPhoto.Drop.ZDiameterInMeters
-                        };
+                            Drop tempDrop = new Drop
+                            {
+                                DropId = CurrentDropPhoto.Drop.DropId,
+                                DropPhoto = CurrentDropPhoto.Drop.DropPhoto,
+                                RadiusInMeters = CurrentDropPhoto.Drop.RadiusInMeters,
+                                Series = CurrentDropPhoto.Drop.Series,
+                                VolumeInCubicalMeters = CurrentDropPhoto.Drop.VolumeInCubicalMeters,
+                                XDiameterInMeters = CurrentDropPhoto.Drop.XDiameterInMeters,
+                                YDiameterInMeters = CurrentDropPhoto.Drop.YDiameterInMeters,
+                                ZDiameterInMeters = CurrentDropPhoto.Drop.ZDiameterInMeters
+                            };
 
-                        try
-                        {
+                            try
+                            {
+                                CurrentSeriesPhotoContentLoadingWindow();
+
+                                DropletSizeCalculator.PerformCalculation(
+                                    Convert.ToInt32(PixelsInMillimeterTextBox.Text), CurrentDropPhoto.XDiameterInPixels,
+                                    CurrentDropPhoto.YDiameterInPixels, CurrentDropPhoto);
+
+                                var dbPhoto = DDropDbEntitiesMapper.DropPhotoToDbDropPhoto(CurrentDropPhoto, CurrentSeries.SeriesId);
+
+                                await Task.Run(() => _dDropRepository.UpdateDropPhoto(dbPhoto));
+
+                                _notifier.ShowSuccess($"Расчет для снимка {CurrentDropPhoto.Name} выполнен.");
+                            }
+                            catch (Exception)
+                            {
+                                CurrentDropPhoto.Drop = tempDrop;
+                                _notifier.ShowError("Не удалось сохранить результаты расчета. Не удалось установить подключение. Проверьте интернет соединение.");
+                            }
+
                             CurrentSeriesPhotoContentLoadingWindow();
-
-                            DropletSizeCalculator.PerformCalculation(
-                                Convert.ToInt32(PixelsInMillimeterTextBox.Text), CurrentDropPhoto.XDiameterInPixels,
-                                CurrentDropPhoto.YDiameterInPixels, CurrentDropPhoto);
-
-                            var dbPhoto = DDropDbEntitiesMapper.DropPhotoToDbDropPhoto(CurrentDropPhoto, CurrentSeries.SeriesId);
-
-                            await Task.Run(() => _dDropRepository.UpdateDropPhoto(dbPhoto));
-
-                            _notifier.ShowSuccess($"Расчет для снимка {CurrentDropPhoto.Name} выполнен.");
                         }
-                        catch (Exception)
+                        else
                         {
-                            CurrentDropPhoto.Drop = tempDrop;
-                            _notifier.ShowError("Не удалось сохранить результаты расчета. Не удалось установить подключение. Проверьте интернет соединение.");
+                            _notifier.ShowInformation($"Не указан один из диаметров. Расчет для снимка {CurrentDropPhoto.Name} не выполнен.");
                         }
-
-                        CurrentSeriesPhotoContentLoadingWindow();
-                    }
-                    else
-                    {
-                        _notifier.ShowInformation($"Не указан один из диаметров. Расчет для снимка {CurrentDropPhoto.Name} не выполнен.");
                     }
                 }
                 else
@@ -1658,6 +1668,19 @@ namespace DDrop
         {
             Options options = new Options();
             options.ShowDialog();
+            
+            if(options.ShowLinesOnPreviewIsChanged)
+            {
+                if (CurrentSeries != null && CurrentDropPhoto != null)
+                {
+                    LoadPreviewPhoto(CurrentDropPhoto);
+                }
+
+                if (CurrentSeriesPreviewPhoto != null)
+                {
+                    LoadSeriesPreviewPhoto(CurrentSeriesPreviewPhoto);
+                }
+            }
         }
 
         private void AppMainWindow_Closing(object sender, CancelEventArgs e)
@@ -1718,7 +1741,7 @@ namespace DDrop
                     }
                     catch
                     {
-                        _notifier.ShowError("Не удалось сохранить результаты новый временной интервал между снимками. Не удалось установить подключение. Проверьте интернет соединение.");
+                        _notifier.ShowError("Не удалось сохранить новый временной интервал между снимками. Не удалось установить подключение. Проверьте интернет соединение.");
                         IntervalBetweenPhotos.Text = CurrentSeries.IntervalBetweenPhotos.ToString();
                     }
 
@@ -1736,7 +1759,7 @@ namespace DDrop
 
         private void PrepareLines(DropPhoto selectedPhoto, out Line horizontalLine, out Line verticalLine)
         {
-            if (selectedPhoto.HorizontalLine != null)
+            if (selectedPhoto.HorizontalLine != null && Properties.Settings.Default.ShowLinesOnPreview)
                 horizontalLine = new Line
                 {
                     X1 = selectedPhoto.HorizontalLine.X1,
@@ -1749,7 +1772,7 @@ namespace DDrop
             else
                 horizontalLine = null;
 
-            if(selectedPhoto.VerticalLine != null)
+            if(selectedPhoto.VerticalLine != null && Properties.Settings.Default.ShowLinesOnPreview)
                 verticalLine = new Line
                 {
                     X1 = selectedPhoto.VerticalLine.X1,
@@ -1836,14 +1859,15 @@ namespace DDrop
             if (IntervalBetweenPhotos.IsEnabled)
             {
                 await SaveIntervalBetweenPhotosAsync();
+                                
                 IntervalBetweenPhotos.IsEnabled = false;
             }
 
-            CreationTimeCheckBox.IsEnabled = !CreationTimeCheckBox.IsEnabled;
-            MainMenuBar.IsEnabled = !MainMenuBar.IsEnabled;
-            ChangeReferenceLine.IsEnabled = !ChangeReferenceLine.IsEnabled;
-            DeleteButton.IsEnabled = !DeleteButton.IsEnabled;
-            ChooseReferenceButton.IsEnabled = !ChooseReferenceButton.IsEnabled;
+            CreationTimeCheckBox.IsEnabled = true;
+            MainMenuBar.IsEnabled = true;
+            ChangeReferenceLine.IsEnabled = true;
+            DeleteButton.IsEnabled = true;
+            ChooseReferenceButton.IsEnabled = true;
         }
 
         #endregion

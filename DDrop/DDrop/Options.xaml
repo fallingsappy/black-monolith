@@ -9,7 +9,25 @@
         <TabControl>
             <TabItem Header="Общие">
                 <Grid>
-
+                    <CheckBox x:Name="ShowLinesOnPreview" Checked="ShowLinesOnPreview_Checked" Unchecked="ShowLinesOnPreview_Unchecked" Margin="10,10,0,0" Content="Отображать линии при предпросмотре снимков." Height="15" VerticalAlignment="Top"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Учетные записи">
+                <Grid>
+                    <DataGrid CanUserAddRows="false" IsReadOnly="True" AutoGenerateColumns="False" SelectionMode="Single" Margin="0" BorderThickness="0" ClipToBounds="True" ItemsSource="{Binding LocalStoredUsers.Users}" Name="StoredUsers">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn IsReadOnly="False" Header="Учетная запись" Binding="{Binding Login}"/>
+                            <DataGridTemplateColumn IsReadOnly="True" CanUserResize="False">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Name="DeleteLocalUser"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="27" Background="{x:Null}" BorderBrush="{x:Null}" Height="25" Click="DeleteLocalUser_Click">
+                                            <ContentControl Content="{StaticResource DeleteIcon}" Height="20"/>
+                                        </Button>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
                 </Grid>
             </TabItem>
             <TabItem Header="Расчет"></TabItem>
