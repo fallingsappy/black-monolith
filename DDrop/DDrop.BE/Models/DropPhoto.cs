@@ -289,6 +289,20 @@ namespace DDrop.BE.Models
             }
         }
 
+        private Contour _contour;
+        public Contour Contour
+        {
+            get
+            {
+                return _contour;
+            }
+            set
+            {
+                _contour = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("Contour"));
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged(PropertyChangedEventArgs e)
         {

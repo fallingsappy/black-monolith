@@ -17,9 +17,11 @@ namespace DDrop
         private int _initialYDiameterInPixels;
         public bool SaveRequired = false;
         public bool reCalculate = false;
+        public bool ChangesWereSaved = false;
 
         public static readonly DependencyProperty ImageForEditProperty = DependencyProperty.Register("ImageForEdit", typeof(ImageSource), typeof(ManualEdit));
         public static readonly DependencyProperty CurrentDropPhotoProperty = DependencyProperty.Register("CurrentDropPhoto", typeof(DropPhoto), typeof(ManualEdit));
+        private DropPhoto copiedDropPhoto;
 
         public DropPhoto CurrentDropPhoto
         {
@@ -41,6 +43,14 @@ namespace DDrop
 
         public ManualEdit(DropPhoto dropPhoto)
         {
+            copiedDropPhoto = new DropPhoto
+            {
+                HorizontalLine = dropPhoto.HorizontalLine,
+                VerticalLine = dropPhoto.VerticalLine,
+                SimpleHorizontalLine = dropPhoto.SimpleHorizontalLine,
+                SimpleVerticalLine = dropPhoto.SimpleVerticalLine,
+            };
+
             InitializeComponent();
             EditWindowPixelDrawer.TwoLineMode = true;
             PhotoForEdit.ItemsSource = new ObservableCollection<DropPhoto> { dropPhoto };
@@ -119,6 +129,13 @@ namespace DDrop
                 if (MessageBox.Show("Сохранить изменения?", "Предупреждение", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
                 {
                     SavePixelDiameters();
+                }
+                else
+                {
+                    CurrentDropPhoto.HorizontalLine = copiedDropPhoto.HorizontalLine;
+                    CurrentDropPhoto.VerticalLine = copiedDropPhoto.VerticalLine;
+                    CurrentDropPhoto.SimpleVerticalLine = copiedDropPhoto.SimpleVerticalLine;
+                    CurrentDropPhoto.SimpleHorizontalLine = copiedDropPhoto.SimpleHorizontalLine;
                 }
             }
 

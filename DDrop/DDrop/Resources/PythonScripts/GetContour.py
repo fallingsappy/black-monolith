@@ -4,12 +4,12 @@ import numpy as np
 from os.path import basename, splitext
 
 def main():
-    input_path = sys.argv[1]
-    ksize = sys.argv[2]
-    treshold1 = sys.argv[3]
-    treshold2 = sys.argv[4]
-    size1 = sys.argv[5]
-    size2 = sys.argv[6]
+	input_path = sys.argv[1]
+	ksize = sys.argv[2]
+	treshold1 = sys.argv[3]
+	treshold2 = sys.argv[4]
+	size1 = sys.argv[5]
+	size2 = sys.argv[6]
     contours = process_image(arr, ksize, treshold1, treshold2, size1, size2)
     return contours
 
@@ -34,6 +34,13 @@ def process_image(arr, ksize, treshold1, treshold2, size1, size2):
     contours = contour_list[0]
 
     return contours
+	
+def save_processed_image(image, output_path, image_name):
+	result_name = output_path + image_name + '_end.jpg'
+	try:
+		cv2.imwrite(result_name, image)
+	except cv2.error:
+		print ('image is null')
 
 main()
 

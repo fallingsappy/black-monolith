@@ -24,6 +24,13 @@ namespace DDrop.Utility.ImageOperations
             }         
         }
 
+        public static ImageFormat GetImageFormat(byte[] imageContent)
+        {
+            Stream stream = new MemoryStream(imageContent);
+
+            return GetImageFormat(stream);
+        }
+
         private static ImageFormat GetImageFormat(Stream stream)
         {
             var bmp = Encoding.ASCII.GetBytes("BM");     // BMP

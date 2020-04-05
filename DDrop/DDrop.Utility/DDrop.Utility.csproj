@@ -108,7 +108,6 @@
     <Compile Include="Mappers\DDropDbEntitiesMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PythonOperations\NamedPipe.cs" />
-    <Compile Include="PythonOperations\PythonProvider.cs" />
     <Compile Include="SeriesLocalStorageOperations\JsonSerializeProvider.cs" />
   </ItemGroup>
   <ItemGroup>

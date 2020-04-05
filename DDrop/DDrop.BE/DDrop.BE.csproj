@@ -54,6 +54,7 @@
   <ItemGroup>
     <Compile Include="Enums\Image\ImageFormat.cs" />
     <Compile Include="Enums\Options\OptionsEnum.cs" />
+    <Compile Include="Models\Contour.cs" />
     <Compile Include="Models\Drop.cs" />
     <Compile Include="Models\DropPhoto.cs" />
     <Compile Include="Models\LocalStoredUser.cs" />

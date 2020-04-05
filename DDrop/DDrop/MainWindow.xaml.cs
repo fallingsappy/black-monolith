@@ -25,6 +25,8 @@ using DDrop.Utility.Mappers;
 using System.Threading.Tasks;
 using Ookii.Dialogs.Wpf;
 using System.Threading;
+using DDrop.BL.ImageProcessing.CSharp;
+using DDrop.BL.ImageProcessing.Python;
 
 namespace DDrop
 {
@@ -45,7 +47,8 @@ namespace DDrop
         private readonly ISeriesBL _seriesBL;
         private readonly IDropPhotoBL _dropPhotoBL;
         private readonly IDDropRepository _dDropRepository;
-        readonly PythonProvider _pythonProvider = new PythonProvider();
+        private readonly IDropletImageProcessor _dropletImageProcessor;
+        private readonly IPythonProvider _pythonProvider;
 
         private DropPhoto CurrentSeriesPreviewPhoto = new DropPhoto();
 
@@ -113,18 +116,20 @@ namespace DDrop
 
         #endregion
 
-        public MainWindow(ISeriesBL seriesBL, IDropPhotoBL dropPhotoBL, IDDropRepository dDropRepository)
+        public MainWindow(ISeriesBL seriesBL, IDropPhotoBL dropPhotoBL, IDDropRepository dDropRepository, IDropletImageProcessor dropletImageProcessor, IPythonProvider pythonProvider)
         {
             InitializeComponent();
             _seriesBL = seriesBL;
             _dropPhotoBL = dropPhotoBL;
             _dDropRepository = dDropRepository;
+            _dropletImageProcessor = dropletImageProcessor;
+            _pythonProvider = pythonProvider;
+
             AppMainWindow.Show();
 
             ProgressBar.IsIndeterminate = true;
 
-            //DropletImageProcessor dropletImageProcessor = new DropletImageProcessor();
-            //dropletImageProcessor.GetDiameters();
+
             Login login = new Login(_dDropRepository, _notifier)
             {
                 Owner = AppMainWindow
@@ -758,6 +763,54 @@ namespace DDrop
                 PreviewCanvas.Children.Add(HorizontalLineSeriesPreview);
             if (VerticalLineSeriesPreview != null)
                 PreviewCanvas.Children.Add(VerticalLineSeriesPreview);
+        }
+
+        private void EditIntervalBetweenPhotos_Click(object sender, RoutedEventArgs e)
+        {
+            SaveIntervalBetweenPhotos.Visibility = Visibility.Visible;
+            EditIntervalBetweenPhotos.Visibility = Visibility.Hidden;
+            IntervalBetweenPhotos.IsEnabled = true;
+        }
+
+        private async void SaveIntervalBetweenPhotos_Click(object sender, RoutedEventArgs e)
+        {
+            SingleSeriesLoading();
+            await SaveIntervalBetweenPhotosAsync();
+            SingleSeriesLoadingComplete();
+        }
+
+        private async Task SaveIntervalBetweenPhotosAsync()
+        {
+            if (CurrentSeries != null)
+            {
+                if (int.TryParse(IntervalBetweenPhotos?.Text, out int intervalBetweenPhotos))
+                {
+                    try
+                    {
+                        SaveIntervalBetweenPhotos.Visibility = Visibility.Hidden;
+                        EditIntervalBetweenPhotos.Visibility = Visibility.Visible;
+                        IntervalBetweenPhotos.IsEnabled = false;
+                        ProgressBar.IsIndeterminate = true;
+
+                        var seriesId = CurrentSeries.SeriesId;
+                        await Task.Run(() => _dDropRepository.UpdateSeriesIntervalBetweenPhotos(intervalBetweenPhotos, seriesId));
+
+                        CurrentSeries.IntervalBetweenPhotos = intervalBetweenPhotos;
+                    }
+                    catch
+                    {
+                        _notifier.ShowError("Не удалось сохранить новый временной интервал между снимками. Не удалось установить подключение. Проверьте интернет соединение.");
+                        IntervalBetweenPhotos.Text = CurrentSeries.IntervalBetweenPhotos.ToString();
+                    }
+
+                    ProgressBar.IsIndeterminate = false;
+                }
+                else
+                {
+                    CurrentSeries.IntervalBetweenPhotos = 0;
+                    _notifier.ShowInformation("Некорректное значение для интервала между снимками. Укажите интервал между снимками в секундах.");
+                }
+            }
         }
 
         #endregion
@@ -1508,61 +1561,91 @@ namespace DDrop
 
         private void Calculate_OnClick(object sender, RoutedEventArgs e)
         {
-            _notifier.ShowInformation("Эта функция в разработке.");
-            if (false)
+            int checkedCount = CurrentSeries.DropPhotosSeries.Count(x => x.IsChecked);
+
+            if (CurrentSeries.DropPhotosSeries.Count > 0)
             {
-                bool interpreterAndScriptCheck = string.IsNullOrWhiteSpace(Properties.Settings.Default.ScriptToRun) || string.IsNullOrWhiteSpace(Properties.Settings.Default.Interpreter);
-                if (!interpreterAndScriptCheck)
+                for (int i = 0; i < CurrentSeries.DropPhotosSeries.Count; i++)
                 {
-                    if (CurrentSeries.DropPhotosSeries.Count > 0)
+
+                    if (checkedCount > 0 && !CurrentSeries.DropPhotosSeries[i].IsChecked)
                     {
-                        bool isAnyPhotoChecked = CurrentSeries.DropPhotosSeries.Any(x => x.IsChecked);
+                        continue;
+                    }
 
-                        if (isAnyPhotoChecked)
-                        {
-                            for (int i = 0; i < CurrentSeries.DropPhotosSeries.Count; i++)
-                            {
-                                if (CurrentSeries.DropPhotosSeries[i].IsChecked)
-                                {
-                                    string fs = _pythonProvider.RunScript(Properties.Settings.Default.ScriptToRun,
-                                        Properties.Settings.Default.Interpreter,
-                                        CurrentSeries.DropPhotosSeries[i].Content);
-                                    //CurrentSeries.DropPhotosSeries[i] = pythonProvider.RunScript(CurrentSeries.DropPhotosSeries[i].Path, @"C:\Users\FallingsappyPC\Desktop\",
-                                    //CurrentSeries.DropPhotosSeries[i], Properties.Settings.Default.ScriptToRun,
-                                    //             Properties.Settings.Default.Interpreter);
-                                    //DropletSizeCalculator.PerformCalculation(
-                                    //    Convert.ToInt32(PixelsInMillimeterTextBox.Text), CurrentSeries.DropPhotosSeries[i].XDiameterInPixels,
-                                    //    CurrentSeries.DropPhotosSeries[i].YDiameterInPixels, CurrentSeries, CurrentDropPhoto);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            for (int i = 0; i < CurrentSeries.DropPhotosSeries.Count; ++i)
-                            {
-                                //CurrentSeries.DropPhotosSeries[i] = pythonProvider.RunScript(CurrentSeries.DropPhotosSeries[i].Path, Properties.Settings.Default.SaveTo,
-                                //    CurrentSeries.DropPhotosSeries[i], Properties.Settings.Default.ScriptToRun,
-                                //                                         Properties.Settings.Default.Interpreter);
-                                //DropletSizeCalculator.PerformCalculation(
-                                //    Convert.ToInt32(PixelsInMillimeterTextBox.Text), CurrentSeries.DropPhotosSeries[i].XDiameterInPixels,
-                                //    CurrentSeries.DropPhotosSeries[i].YDiameterInPixels, CurrentSeries, CurrentDropPhoto);
-                            }
-                        }
+                    if (PythonMenuItem.IsChecked)
+                    {
+                        var points = CalculateWithPython(CurrentSeries.DropPhotosSeries[i]);
 
-                        _notifier.ShowSuccess("Расчет завершен.");
+                        DrawContour(CurrentSeries.DropPhotosSeries[i], points);
                     }
                     else
-                        _notifier.ShowInformation("Выберите фотографии для расчета.");
+                    {
+                        var points = _dropletImageProcessor.GetDiameters(CurrentSeries.DropPhotosSeries[i].Content);
+
+                        DrawContour(CurrentSeries.DropPhotosSeries[i], points);
+                    }
+                    foreach (var item in CurrentSeries.DropPhotosSeries[i].Contour.Lines)
+                    {
+                        PhotosPreviewCanvas.Children.Add(item);
+                    }                    
                 }
-                else
+               
+                _notifier.ShowSuccess("Расчет завершен.");
+            }
+            else
+                _notifier.ShowInformation("Нет фотографий для расчета.");
+        }
+
+        private void DrawContour(DropPhoto dropPhoto, System.Drawing.Point[] points)
+        {
+            for (int j = 0; j < points.Length; j++)
+            {
+                if (dropPhoto.Contour == null)
                 {
-                    _notifier.ShowInformation("Выберите интерпритатор python и исполняемый скрипт в меню \"Опции\"");
+                    dropPhoto.Contour = new Contour
+                    {
+                        ContourId = dropPhoto.DropPhotoId,
+                        CurrentDropPhoto = dropPhoto,
+                        SimpleLines = new ObservableCollection<SimpleLine>(),
+                        Lines = new ObservableCollection<Line>(),
+                    };
                 }
+
+                dropPhoto.Contour.SimpleLines.Add(new SimpleLine
+                {
+                    SimpleLineId = Guid.NewGuid(),
+                    X1 = points[j].X,
+                    X2 = j < points.Length - 1 ? points[j + 1].X : points[0].X,
+                    Y1 = points[j].Y,
+                    Y2 = j < points.Length - 1 ? points[j + 1].Y : points[0].Y
+                });
+
+                dropPhoto.Contour.Lines.Add(new Line
+                {
+                    X1 = points[j].X,
+                    X2 = j < points.Length - 1 ? points[j + 1].X : points[0].X,
+                    Y1 = points[j].Y,
+                    Y2 = j < points.Length - 1 ? points[j + 1].Y : points[0].Y,
+                    StrokeThickness = 2,
+                    Stroke = Brushes.Red
+                });
+            }
+        }
+
+        private System.Drawing.Point[] CalculateWithPython(DropPhoto dropPhoto)
+        {
+            bool interpreterAndScriptCheck = string.IsNullOrWhiteSpace(Properties.Settings.Default.ScriptToRun) || string.IsNullOrWhiteSpace(Properties.Settings.Default.Interpreter);
+            if (!interpreterAndScriptCheck)
+            {
+                return _pythonProvider.GetDiameters(dropPhoto.Content, dropPhoto.Name, Properties.Settings.Default.ScriptToRun, Properties.Settings.Default.Interpreter);
             }
             else
             {
-                _notifier.ShowInformation("Эта функция в разработке.");
-            }
+                _notifier.ShowInformation("Выберите интерпритатор python и исполняемый скрипт в меню \"Опции\"");
+
+                return null;
+            }            
         }
 
         private void PythonOption_OnClick(object sender, RoutedEventArgs e)
@@ -1734,54 +1817,6 @@ namespace DDrop
         }
 
         #endregion
-
-        private void EditIntervalBetweenPhotos_Click(object sender, RoutedEventArgs e)
-        {
-            SaveIntervalBetweenPhotos.Visibility = Visibility.Visible;
-            EditIntervalBetweenPhotos.Visibility = Visibility.Hidden;
-            IntervalBetweenPhotos.IsEnabled = true;
-        }
-
-        private async void SaveIntervalBetweenPhotos_Click(object sender, RoutedEventArgs e)
-        {
-            SingleSeriesLoading();
-            await SaveIntervalBetweenPhotosAsync();
-            SingleSeriesLoadingComplete();
-        }
-
-        private async Task SaveIntervalBetweenPhotosAsync()
-        {
-            if (CurrentSeries != null)
-            {
-                if (int.TryParse(IntervalBetweenPhotos?.Text, out int intervalBetweenPhotos))
-                {
-                    try
-                    {
-                        SaveIntervalBetweenPhotos.Visibility = Visibility.Hidden;
-                        EditIntervalBetweenPhotos.Visibility = Visibility.Visible;
-                        IntervalBetweenPhotos.IsEnabled = false;
-                        ProgressBar.IsIndeterminate = true;
-                        
-                        var seriesId = CurrentSeries.SeriesId;
-                        await Task.Run(() => _dDropRepository.UpdateSeriesIntervalBetweenPhotos(intervalBetweenPhotos, seriesId));
-
-                        CurrentSeries.IntervalBetweenPhotos = intervalBetweenPhotos;
-                    }
-                    catch
-                    {
-                        _notifier.ShowError("Не удалось сохранить новый временной интервал между снимками. Не удалось установить подключение. Проверьте интернет соединение.");
-                        IntervalBetweenPhotos.Text = CurrentSeries.IntervalBetweenPhotos.ToString();
-                    }
-
-                    ProgressBar.IsIndeterminate = false;                   
-                }
-                else
-                {
-                    CurrentSeries.IntervalBetweenPhotos = 0;
-                    _notifier.ShowInformation("Некорректное значение для интервала между снимками. Укажите интервал между снимками в секундах.");
-                }
-            }
-        }
 
         #region Utility
 

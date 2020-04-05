@@ -52,6 +52,9 @@
     <Compile Include="DropPhoto\DropPhotoBL.cs" />
     <Compile Include="DropPhoto\IDropPhotoBL.cs" />
     <Compile Include="ImageProcessing\CSharp\DropletImageProcessor.cs" />
+    <Compile Include="ImageProcessing\CSharp\IDropletImageProcessor.cs" />
+    <Compile Include="ImageProcessing\Python\IPythonProvider.cs" />
+    <Compile Include="ImageProcessing\Python\PythonProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Series\ISeriesBL.cs" />
     <Compile Include="Series\SeriesBL.cs" />
@@ -70,5 +73,6 @@
       <Name>DDrop.Utility</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -4,6 +4,8 @@ using System.Windows;
 using DDrop.DAL;
 using DDrop.Utility.ExceptionHandling.ExceptionHandling;
 using Unity;
+using DDrop.BL.ImageProcessing.CSharp;
+using DDrop.BL.ImageProcessing.Python;
 
 namespace DDrop
 {
@@ -27,6 +29,8 @@ namespace DDrop
             container.RegisterType<ISeriesBL, SeriesBL>();
             container.RegisterType<IDropPhotoBL, DropPhotoBL>();
             container.RegisterType<IDDropRepository, DDropRepository>();
+            container.RegisterType<IDropletImageProcessor, DropletImageProcessor>();
+            container.RegisterType<IPythonProvider, PythonProvider>();
 
             container.Resolve<MainWindow>();
         }

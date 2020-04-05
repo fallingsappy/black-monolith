@@ -8,6 +8,7 @@
         xmlns:scatterPlot="clr-namespace:DDrop.Controls.ScatterPlot;assembly=DDrop.Controls"
         xmlns:simpleSample="clr-namespace:SimpleSample;assembly=DDrop.Controls"
         xmlns:loadingSpinner="clr-namespace:DDrop.Controls.LoadingSpinner;assembly=DDrop.Controls"
+        UseLayoutRounding="True"
         mc:Ignorable="d"
         Title="DDrop" MinHeight="500" MinWidth="800" Height="768" Width="1152" Icon="Resources/Icons/MainIcon.png" WindowState="Maximized" x:Name="AppMainWindow" Closing="AppMainWindow_Closing" WindowStartupLocation="CenterScreen">
     <Grid>
@@ -41,6 +42,9 @@
                             </Button>
                             <Button ToolTip="Выгрузить серии на компьютер" Grid.Column="0" Grid.Row="0" x:Name="ExportSeriesLocal" BorderBrush="{x:Null}" Background="{x:Null}" Click="ExportSeriesLocal_ClickAsync" Margin="0,6,109,0" HorizontalAlignment="Right" Width="28" RenderTransformOrigin="-1.25,0.615" Height="26" VerticalAlignment="Top">
                                 <ContentControl Content="{StaticResource ExoportLocalSeries}" Height="22" Width="23"/>
+                            </Button>
+                            <Button ToolTip="Выгрузить серии на компьютер" Grid.Column="0" Grid.Row="0" x:Name="AutoCalculateSeriesButton" BorderBrush="{x:Null}" Background="{x:Null}" Click="Calculate_OnClick" Margin="0,6,142,0" HorizontalAlignment="Right" Width="28" RenderTransformOrigin="-1.25,0.615" Height="26" VerticalAlignment="Top">
+                                <ContentControl Content="{StaticResource Play}" Height="22" Width="23"/>
                             </Button>
                         </Grid>
                     </Border>
@@ -123,7 +127,7 @@
                         </loadingSpinner:AdornedControl.AdornerContent>
                         <zoomborder:ZoomBorder Grid.Row="0" Grid.Column="2" HorizontalAlignment="Stretch" x:Name="CgsImagePreviewViewer" ClipToBounds="True" Background="Gray" Margin="10" Grid.RowSpan="3">
                             <Canvas x:Name="PreviewCanvas">
-                                <Image x:Name="ImgPreview" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                                <Image x:Name="ImgPreview" VerticalAlignment="Center" HorizontalAlignment="Center" Width="{Binding Source.PixelWidth,RelativeSource={RelativeSource Self}}" Height="{Binding Source.PixelHeight,RelativeSource={RelativeSource Self}}" Stretch="Uniform"/>
                             </Canvas>
                         </zoomborder:ZoomBorder>
                     </loadingSpinner:AdornedControl>
@@ -152,6 +156,9 @@
                                         </Button>
                                         <Button Grid.Row="0"  Name="ReCalculate" HorizontalAlignment="Left" Margin="107,6,0,0" VerticalAlignment="Top" Width="27" Background="{x:Null}" BorderBrush="{x:Null}" Height="27" Click="ReCalculate_Click" ToolTip="Пересчитать параметры капель.">
                                             <ContentControl Content="{StaticResource ReCalculate}" Height="21"/>
+                                        </Button>
+                                        <Button Grid.Row="0"  Name="AutoCalculate" HorizontalAlignment="Left" Margin="139,6,0,0" VerticalAlignment="Top" Width="27" Background="{x:Null}" BorderBrush="{x:Null}" Height="27" Click="Calculate_OnClick" ToolTip="Начать автоматический расчет.">
+                                            <ContentControl Content="{StaticResource Play}" Height="22"/>
                                         </Button>
                                         <TextBox IsEnabled="False" x:Name="IntervalBetweenPhotos" Text="{Binding ElementName=AppMainWindow, Path=CurrentSeries.IntervalBetweenPhotos}" Height="20" Margin="0,10,42,0" TextWrapping="Wrap"  VerticalAlignment="Top" HorizontalAlignment="Right" Width="115"/>
                                         <Label Content="Интервал между снимками (c):" Margin="0,6,162,0" VerticalAlignment="Top" Height="27" Background="{x:Null}" HorizontalAlignment="Right" Width="180"/>
@@ -236,7 +243,7 @@
                                     </loadingSpinner:AdornedControl.AdornerContent>
                                     <zoomborder:ZoomBorder Grid.Row="2" HorizontalAlignment="Stretch" x:Name="CgsImageViewer" ClipToBounds="True" Background="Gray" Margin="10,10,13,10">
                                         <Canvas x:Name="PhotosPreviewCanvas">
-                                            <Image x:Name="ImgCurrent" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                                            <Image x:Name="ImgCurrent" VerticalAlignment="Center" HorizontalAlignment="Center" Width="{Binding Source.PixelWidth,RelativeSource={RelativeSource Self}}" Height="{Binding Source.PixelHeight,RelativeSource={RelativeSource Self}}" Stretch="Uniform" />
                                         </Canvas>
                                     </zoomborder:ZoomBorder>
                                 </loadingSpinner:AdornedControl>
@@ -320,15 +327,6 @@
                 <MenuItem Name="PythonMenuItem" Header="Python" IsCheckable="True" IsChecked="True" Click="PythonOption_OnClick"/>
                 <MenuItem Name="CSharpMenuItem" Header="C#" IsCheckable="True" Click="CSharpOption_OnClick"/>
             </MenuItem>
-            <MenuItem Click="Calculate_OnClick" Width="26">
-                <MenuItem.Icon>
-                    <Rectangle Fill="#34558b" Margin="2,1,0,1">
-                        <Rectangle.OpacityMask>
-                            <VisualBrush Visual="{StaticResource Play}" />
-                        </Rectangle.OpacityMask>
-                    </Rectangle>
-                </MenuItem.Icon>
-            </MenuItem>
             <MenuItem Header="Учетная запись" HorizontalAlignment="Right">
                 <MenuItem x:Name="AccountMenuItem" Visibility="Collapsed" Header="Аккаунт" Click="AccountMenuItem_Click">
                     <MenuItem.Icon>
@@ -361,6 +359,7 @@
         </Menu>
         <Grid Margin="10,0,10,10" Background="#FFF0F0F0" Height="32" VerticalAlignment="Bottom">
             <ProgressBar x:Name="ProgressBar" Margin="10,10,0,10" HorizontalAlignment="Left" Width="100"/>
+            <Label x:Name="InfoBar" Margin="115,0,0,0"/>
         </Grid>
     </Grid>
 </Window>

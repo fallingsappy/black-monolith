@@ -297,6 +297,7 @@ namespace DDrop.Controls.PixelDrawer
         {
             var points = new List<Point>();
             var handle = GCHandle.Alloc(points);
+            double distance = Math.Sqrt(Math.Pow(point2.X - point1.X, 2) + Math.Pow(point2.Y - point2.Y, 2));
 
             try
             {
