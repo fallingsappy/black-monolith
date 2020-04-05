@@ -1127,41 +1127,13 @@ namespace DDrop
                     ManualEdit manualEdit = new ManualEdit(CurrentDropPhoto);
                     manualEdit.ShowDialog();
 
-                    if (manualEdit.SaveRequired)
+                    if (manualEdit.reCalculate)
                     {
                         if (CurrentDropPhoto.XDiameterInPixels != 0 && CurrentDropPhoto.YDiameterInPixels != 0)
                         {
-                            Drop tempDrop = new Drop
-                            {
-                                DropId = CurrentDropPhoto.Drop.DropId,
-                                DropPhoto = CurrentDropPhoto.Drop.DropPhoto,
-                                RadiusInMeters = CurrentDropPhoto.Drop.RadiusInMeters,
-                                Series = CurrentDropPhoto.Drop.Series,
-                                VolumeInCubicalMeters = CurrentDropPhoto.Drop.VolumeInCubicalMeters,
-                                XDiameterInMeters = CurrentDropPhoto.Drop.XDiameterInMeters,
-                                YDiameterInMeters = CurrentDropPhoto.Drop.YDiameterInMeters,
-                                ZDiameterInMeters = CurrentDropPhoto.Drop.ZDiameterInMeters
-                            };
+                            CurrentSeriesPhotoContentLoadingWindow();
 
-                            try
-                            {
-                                CurrentSeriesPhotoContentLoadingWindow();
-
-                                DropletSizeCalculator.PerformCalculation(
-                                    Convert.ToInt32(PixelsInMillimeterTextBox.Text), CurrentDropPhoto.XDiameterInPixels,
-                                    CurrentDropPhoto.YDiameterInPixels, CurrentDropPhoto);
-
-                                var dbPhoto = DDropDbEntitiesMapper.DropPhotoToDbDropPhoto(CurrentDropPhoto, CurrentSeries.SeriesId);
-
-                                await Task.Run(() => _dDropRepository.UpdateDropPhoto(dbPhoto));
-
-                                _notifier.ShowSuccess($"Расчет для снимка {CurrentDropPhoto.Name} выполнен.");
-                            }
-                            catch (Exception)
-                            {
-                                CurrentDropPhoto.Drop = tempDrop;
-                                _notifier.ShowError("Не удалось сохранить результаты расчета. Не удалось установить подключение. Проверьте интернет соединение.");
-                            }
+                            await CalculateDropParameters(CurrentDropPhoto);
 
                             CurrentSeriesPhotoContentLoadingWindow();
                         }
@@ -1185,6 +1157,39 @@ namespace DDrop
 
             ProgressBar.IsIndeterminate = false;
             SingleSeriesLoadingComplete();
+        }
+
+        private async Task CalculateDropParameters(DropPhoto dropPhoto)
+        {
+            Drop tempDrop = new Drop
+            {
+                DropId = dropPhoto.Drop.DropId,
+                DropPhoto = dropPhoto.Drop.DropPhoto,
+                RadiusInMeters = dropPhoto.Drop.RadiusInMeters,
+                Series = dropPhoto.Drop.Series,
+                VolumeInCubicalMeters = dropPhoto.Drop.VolumeInCubicalMeters,
+                XDiameterInMeters = dropPhoto.Drop.XDiameterInMeters,
+                YDiameterInMeters = dropPhoto.Drop.YDiameterInMeters,
+                ZDiameterInMeters = dropPhoto.Drop.ZDiameterInMeters
+            };
+
+            try
+            {
+                DropletSizeCalculator.PerformCalculation(
+                    Convert.ToInt32(PixelsInMillimeterTextBox.Text), dropPhoto.XDiameterInPixels,
+                    dropPhoto.YDiameterInPixels, dropPhoto);
+
+                var dbPhoto = DDropDbEntitiesMapper.DropPhotoToDbDropPhoto(dropPhoto, CurrentSeries.SeriesId);
+
+                await Task.Run(() => _dDropRepository.UpdateDropPhoto(dbPhoto));
+
+                _notifier.ShowSuccess($"Расчет для снимка {dropPhoto.Name} выполнен.");
+            }
+            catch (Exception)
+            {
+                dropPhoto.Drop = tempDrop;
+                _notifier.ShowError("Не удалось сохранить результаты расчета. Не удалось установить подключение. Проверьте интернет соединение.");
+            }            
         }
 
         private async void Photos_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
@@ -1441,6 +1446,11 @@ namespace DDrop
                     await Task.Run(() => _dDropRepository.UpdateReferencePhoto(dbReferencePhoto));
 
                     _notifier.ShowSuccess("Сохранено новое референсное расстояние.");
+                    
+                    if (CurrentSeries.DropPhotosSeries.Any(x => x.XDiameterInPixels > 0 && x.YDiameterInPixels > 0))
+                    {
+                        await ReCalculateDropParameters();
+                    }
                 }
                 catch
                 {
@@ -1458,6 +1468,19 @@ namespace DDrop
                 SaveReferenceLine.Visibility = Visibility.Hidden;
                 _notifier.ShowInformation("Нет референсного референсного расстояния для сохранения.");
             }
+        }
+
+        private async Task ReCalculateDropParameters()
+        {
+            MessageBoxResult messageBoxResult = MessageBox.Show("Пересчитать параметры капель?", "Подтверждение", MessageBoxButton.YesNo);
+            if (messageBoxResult == MessageBoxResult.Yes)
+                foreach (var dropPhoto in CurrentSeries.DropPhotosSeries)
+                {
+                    if (dropPhoto.XDiameterInPixels > 0 && dropPhoto.YDiameterInPixels > 0)
+                    {
+                        await CalculateDropParameters(dropPhoto);
+                    }
+                }
         }
 
         private void ChangeReferenceLine_Click(object sender, RoutedEventArgs e)
@@ -1550,6 +1573,11 @@ namespace DDrop
         private void CSharpOption_OnClick(object sender, RoutedEventArgs e)
         {
             PythonMenuItem.IsChecked = false;
+        }
+
+        private async void ReCalculate_Click(object sender, RoutedEventArgs e)
+        {
+            await ReCalculateDropParameters();
         }
 
         #endregion

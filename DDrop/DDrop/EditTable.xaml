@@ -10,7 +10,7 @@
     <Grid>
         <Border Background="Gainsboro" BorderThickness="1" Height="29" Margin="10,10,10,0" VerticalAlignment="Top">
             <Grid>
-                <Button Visibility="Visible" Grid.Row="0" Name="SavePhotosOrder"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="27" Background="{x:Null}" BorderBrush="{x:Null}" Height="25" Click="SavePhotosOrder_OnClick">
+                <Button Visibility="Visible" Grid.Row="0" Name="SavePhotosOrder"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="27" Background="{x:Null}" BorderBrush="{x:Null}" Height="25" Click="SavePhotosOrder_OnClick" ToolTip="Сохранить изменения.">
                     <ContentControl Content="{StaticResource SaveIcon}" Height="21"/>
                 </Button>
             </Grid>

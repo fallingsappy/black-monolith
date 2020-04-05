@@ -22,14 +22,14 @@
                 <TextBlock Height="23" HorizontalAlignment="Left" Margin="216,78,0,0" x:Name="TextBlockEmailId" Text="Email:" VerticalAlignment="Top" Width="88" />
                 <TextBlock Height="23" HorizontalAlignment="Left" Margin="216,106,0,0" x:Name="TextBlockPassword" Text="Серий:" VerticalAlignment="Top" Width="88"  />
                 <TextBox IsEnabled="False" DataContext="{Binding ElementName=AccountInfo}" Height="23" HorizontalAlignment="Left" Margin="309,22,0,0" x:Name="TextBlockFirstnameValue" Text="{Binding Path=User.FirstName}" VerticalAlignment="Top" Width="210" />
-                <Button Name="ChangeFirstNameButton" Click="ChangeFirstNameButton_OnClick" HorizontalAlignment="Right" Margin="0,22,29,0" VerticalAlignment="Top" Width="25" Height="23" Background="{x:Null}" BorderBrush="{x:Null}">
+                <Button Name="ChangeFirstNameButton" Click="ChangeFirstNameButton_OnClick" HorizontalAlignment="Right" Margin="0,22,29,0" VerticalAlignment="Top" Width="25" Height="23" Background="{x:Null}" BorderBrush="{x:Null}" ToolTip="Редактировать имя.">
                     <Rectangle Fill="#34558b" RenderTransformOrigin="0.704,0.315" Height="19" Width="19">
                         <Rectangle.OpacityMask>
                             <VisualBrush Stretch="Fill" Visual="{StaticResource EditIcon}" />
                         </Rectangle.OpacityMask>
                     </Rectangle>
                 </Button>
-                <Button Visibility="Hidden" Name="SaveChangeFirstNameButton" Click="SaveChangeFirstNameButton_Click" HorizontalAlignment="Right" Margin="0,22,29,0" VerticalAlignment="Top" Width="25" Height="23" Background="{x:Null}" BorderBrush="{x:Null}">
+                <Button Visibility="Hidden" Name="SaveChangeFirstNameButton" Click="SaveChangeFirstNameButton_Click" HorizontalAlignment="Right" Margin="0,22,29,0" VerticalAlignment="Top" Width="25" Height="23" Background="{x:Null}" BorderBrush="{x:Null}" ToolTip="Сохранить имя.">
                     <Rectangle Fill="#34558b" RenderTransformOrigin="0.704,0.315" Height="19" Width="19">
                         <Rectangle.OpacityMask>
                             <VisualBrush Stretch="Fill" Visual="{StaticResource SaveIcon}" />
@@ -37,14 +37,14 @@
                     </Rectangle>
                 </Button>
                 <TextBox IsEnabled="False" DataContext="{Binding ElementName=AccountInfo}" Height="23" HorizontalAlignment="Left" Margin="309,50,0,0" x:Name="TextBlockLastNameValue" Text="{Binding Path=User.LastName}" VerticalAlignment="Top" Width="210" />
-                <Button Name="ChangeLastNameButton" Click="ChangeLastNameButton_OnClick" HorizontalAlignment="Right" Margin="0,50,29,0" VerticalAlignment="Top" Width="25" Height="23" Background="{x:Null}" BorderBrush="{x:Null}">
+                <Button Name="ChangeLastNameButton" Click="ChangeLastNameButton_OnClick" HorizontalAlignment="Right" Margin="0,50,29,0" VerticalAlignment="Top" Width="25" Height="23" Background="{x:Null}" BorderBrush="{x:Null}" ToolTip="Редактировать фамилию.">
                     <Rectangle Fill="#34558b" RenderTransformOrigin="0.704,0.315" Height="19" Width="19">
                         <Rectangle.OpacityMask>
                             <VisualBrush Stretch="Fill" Visual="{StaticResource EditIcon}" />
                         </Rectangle.OpacityMask>
                     </Rectangle>
                 </Button>
-                <Button Visibility="Hidden" Name="SaveChangeLastNameButton" Click="SaveChangeLastNameButton_Click" HorizontalAlignment="Right" Margin="0,50,29,0" VerticalAlignment="Top" Width="25" Height="23" Background="{x:Null}" BorderBrush="{x:Null}">
+                <Button Visibility="Hidden" Name="SaveChangeLastNameButton" Click="SaveChangeLastNameButton_Click" HorizontalAlignment="Right" Margin="0,50,29,0" VerticalAlignment="Top" Width="25" Height="23" Background="{x:Null}" BorderBrush="{x:Null}" ToolTip="Сохранить фамилию.">
                     <Rectangle Fill="#34558b" RenderTransformOrigin="0.704,0.315" Height="19" Width="19">
                         <Rectangle.OpacityMask>
                             <VisualBrush Stretch="Fill" Visual="{StaticResource SaveIcon}" />

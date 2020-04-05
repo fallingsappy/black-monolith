@@ -16,6 +16,7 @@ namespace DDrop
         private int _initialXDiameterInPixels;
         private int _initialYDiameterInPixels;
         public bool SaveRequired = false;
+        public bool reCalculate = false;
 
         public static readonly DependencyProperty ImageForEditProperty = DependencyProperty.Register("ImageForEdit", typeof(ImageSource), typeof(ManualEdit));
         public static readonly DependencyProperty CurrentDropPhotoProperty = DependencyProperty.Register("CurrentDropPhoto", typeof(DropPhoto), typeof(ManualEdit));
@@ -92,6 +93,7 @@ namespace DDrop
             }
 
             SaveRequired = false;
+            reCalculate = true;
         }
 
         private bool IsSaveRequired()
