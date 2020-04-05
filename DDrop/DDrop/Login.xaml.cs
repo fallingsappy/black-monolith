@@ -55,8 +55,6 @@ namespace DDrop
             
             InitializeComponent();
 
-            //LocalUsersCombobox.ItemsSource = LocalStoredUsers.Users;
-
             DataContext = this;
         }
 
@@ -282,6 +280,10 @@ namespace DDrop
             if (comboBox.SelectedIndex > -1)
             {
                 var storedUser = (LocalStoredUser)comboBox.SelectedItem;
+
+                LoginPasswordBox.Password = storedUser.Password;
+                TextBoxEmail.Text = storedUser.Login;
+                PasswordUnmask.Text = storedUser.Password;
 
                 await TryLogin(storedUser.Login, storedUser.Password, false);
             }

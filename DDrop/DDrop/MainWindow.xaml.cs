@@ -1185,6 +1185,7 @@ namespace DDrop
                         if (CurrentDropPhoto.XDiameterInPixels != 0 && CurrentDropPhoto.YDiameterInPixels != 0)
                         {
                             CurrentSeriesPhotoContentLoadingWindow();
+                            SingleSeriesLoading();
 
                             await CalculateDropParameters(CurrentDropPhoto);
 
@@ -1232,9 +1233,19 @@ namespace DDrop
                     Convert.ToInt32(PixelsInMillimeterTextBox.Text), dropPhoto.XDiameterInPixels,
                     dropPhoto.YDiameterInPixels, dropPhoto);
 
+                if (dropPhoto.Content == null)
+                {
+                    dropPhoto.Content = await _dDropRepository.GetDropPhotoContent(dropPhoto.DropPhotoId, CancellationToken.None);
+                }
+
                 var dbPhoto = DDropDbEntitiesMapper.DropPhotoToDbDropPhoto(dropPhoto, CurrentSeries.SeriesId);
 
                 await Task.Run(() => _dDropRepository.UpdateDropPhoto(dbPhoto));
+
+                if (CurrentDropPhoto != null && dropPhoto.DropPhotoId != CurrentDropPhoto.DropPhotoId)
+                {
+                    dropPhoto.Content = null;
+                }
 
                 _notifier.ShowSuccess($"Расчет для снимка {dropPhoto.Name} выполнен.");
             }
@@ -1861,6 +1872,7 @@ namespace DDrop
             ImportLocalSeries.IsEnabled = false;
             ExportSeriesButton.IsEnabled = false;
             DeleteSeriesButton.IsEnabled = false;
+            AutoCalculateSeriesButton.IsEnabled = false;
         }
 
         private void SeriesManagerLoadingComplete(bool blockSeriesTable = true)
@@ -1875,6 +1887,7 @@ namespace DDrop
             ImportLocalSeries.IsEnabled = true;
             ExportSeriesButton.IsEnabled = true;
             DeleteSeriesButton.IsEnabled = true;
+            AutoCalculateSeriesButton.IsEnabled = true;
         }
 
         private async void SingleSeriesLoading(bool disablePhotos = true)
@@ -1890,6 +1903,8 @@ namespace DDrop
             DeleteInputPhotosButton.IsEnabled = false;
             EditPhotosOrder.IsEnabled = false;
             EditIntervalBetweenPhotos.IsEnabled = false;
+            ReCalculate.IsEnabled = false;
+            AutoCalculate.IsEnabled = false;
 
             if (IntervalBetweenPhotos.IsEnabled)
             {
@@ -1918,6 +1933,8 @@ namespace DDrop
             DeleteInputPhotosButton.IsEnabled = true;
             EditPhotosOrder.IsEnabled = true;
             EditIntervalBetweenPhotos.IsEnabled = true;
+            ReCalculate.IsEnabled = true;
+            AutoCalculate.IsEnabled = true;
 
             if (IntervalBetweenPhotos.IsEnabled)
             {

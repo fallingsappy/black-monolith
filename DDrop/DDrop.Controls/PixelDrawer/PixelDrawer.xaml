@@ -20,7 +20,7 @@
         <Canvas Name="CanDrawing"
             MouseMove="canDrawing_MouseMove_NotDown"
             MouseRightButtonDown="canDrawing_MouseDown" x:FieldModifier="public">
-            <Image VerticalAlignment="Center" HorizontalAlignment="Center" Width="{Binding Source.PixelWidth,RelativeSource={RelativeSource Self}}" Height="{Binding Source.PixelHeight,RelativeSource={RelativeSource Self}}" Stretch="Uniform" Name="Image" Canvas.Left="0" Canvas.Top="0" Source="{Binding ElementName=pd, Path=ImageSource}"/>
+            <Image VerticalAlignment="Center" HorizontalAlignment="Center" Width="{Binding Source.PixelWidth,RelativeSource={RelativeSource Self}}" Height="{Binding Source.PixelHeight,RelativeSource={RelativeSource Self}}" Stretch="Uniform" Name="Image" Canvas.Left="0" Canvas.Top="0" Source="{Binding ElementName=pd, Path=ImageSource}" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
         </Canvas>
     </Grid>
 </UserControl>
