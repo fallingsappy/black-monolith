@@ -15,7 +15,7 @@
                 </Button>
             </Grid>
         </Border>
-        <DataGrid dataGrid:VisualHelper.EnableRowsMove="True" CanUserSortColumns="False" CanUserAddRows="false" AutoGenerateColumns="False" Grid.Row="0" HorizontalAlignment="Stretch" Name="Photos" Margin="10,44,10,10" SelectionMode="Single" IsReadOnly="False" ItemsSource="{Binding Series.DropPhotosSeries, ElementName=EditTableWindow,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+        <DataGrid dataGrid:VisualHelper.EnableRowsMove="True" CanUserSortColumns="False" CanUserAddRows="false" AutoGenerateColumns="False" Grid.Row="0" HorizontalAlignment="Stretch" Name="Photos" Margin="10,44,10,10" SelectionMode="Single" IsReadOnly="False" ItemsSource="{Binding OriginalSeries.DropPhotosSeries, ElementName=EditTableWindow,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
             <DataGrid.Columns>
                 <DataGridTextColumn IsReadOnly="False" Header="Имя файла" Binding="{Binding Name}"/>
                 <DataGridTextColumn IsReadOnly="True" Header="Горизонтальный диаметр, px" Binding="{Binding XDiameterInPixels}"/>

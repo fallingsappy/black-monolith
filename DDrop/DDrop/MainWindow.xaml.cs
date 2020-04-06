@@ -1185,11 +1185,13 @@ namespace DDrop
                         if (CurrentDropPhoto.XDiameterInPixels != 0 && CurrentDropPhoto.YDiameterInPixels != 0)
                         {
                             CurrentSeriesPhotoContentLoadingWindow();
+                            CurrentSeriesImageLoadingWindow();
                             SingleSeriesLoading();
 
                             await CalculateDropParameters(CurrentDropPhoto);
 
                             CurrentSeriesPhotoContentLoadingWindow();
+                            CurrentSeriesImageLoadingWindow();
                         }
                         else
                         {
@@ -1334,9 +1336,8 @@ namespace DDrop
             try
             {
                 editTableWindow.ShowDialog();
+                //CurrentSeries.DropPhotosSeries.OrderBy(x => x.PhotoOrderInSeries);
                 _notifier.ShowSuccess($"Порядок снимков для серии {CurrentSeries.Title} обновлен.");
-                Photos.ItemsSource = CurrentSeries.DropPhotosSeries;
-                SeriesPreviewDataGrid.ItemsSource = CurrentSeries.DropPhotosSeries;
             }
             catch
             {

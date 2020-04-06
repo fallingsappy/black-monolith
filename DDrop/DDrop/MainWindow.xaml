@@ -176,7 +176,7 @@
                                         <loadingSpinner:AdornedControl.AdornerContent>
                                             <simpleSample:LoadingWait></simpleSample:LoadingWait>
                                         </loadingSpinner:AdornedControl.AdornerContent>
-                                        <DataGrid CellEditEnding="Photos_CellEditEnding" CanUserSortColumns="False" CanUserAddRows="false" AutoGenerateColumns="False" HorizontalAlignment="Stretch" Name="Photos" Margin="10,57,10,10" SelectionMode="Single" SelectionChanged="Photos_SelectionChanged" IsReadOnly="False" ItemsSource="{Binding CurrentSeries.DropPhotosSeries}">
+                                        <DataGrid CellEditEnding="Photos_CellEditEnding" CanUserSortColumns="False" CanUserAddRows="false" AutoGenerateColumns="False" HorizontalAlignment="Stretch" Name="Photos" Margin="10,57,10,10" SelectionMode="Single" SelectionChanged="Photos_SelectionChanged" IsReadOnly="False" ItemsSource="{Binding CurrentSeries.DropPhotosSeries, ElementName=AppMainWindow,Mode=TwoWay,NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}">
                                             <DataGrid.Columns>
                                                 <DataGridCheckBoxColumn IsReadOnly="False" Binding="{Binding IsChecked, UpdateSourceTrigger=PropertyChanged}" CanUserResize="False">
                                                     <DataGridCheckBoxColumn.HeaderTemplate>

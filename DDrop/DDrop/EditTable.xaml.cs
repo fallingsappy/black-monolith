@@ -1,10 +1,12 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Windows;
 using DDrop.BE.Models;
 using DDrop.DAL;
 using DDrop.Utility.Mappers;
+using System.Linq;
+using System.Collections.ObjectModel;
 
 namespace DDrop
 {
@@ -13,38 +15,32 @@ namespace DDrop
     /// </summary>
     public partial class EditTable : Window
     {
-        public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register("Series", typeof(Series), typeof(EditTable));
+        public static readonly DependencyProperty OriginalSeriesProperty = DependencyProperty.Register("OriginalSeries", typeof(Series), typeof(EditTable));
 
-        public Series Series
+        public Series OriginalSeries
         {
-            get { return (Series)GetValue(SeriesProperty); }
+            get { return (Series)GetValue(OriginalSeriesProperty); }
             set
             {
-                SetValue(SeriesProperty, value);
+                SetValue(OriginalSeriesProperty, value);
             }
         }
 
-        private Series _originalSeries;
+        private Dictionary<Guid, int> _originalOrder;
         private readonly IDDropRepository _dDropRepository;
         public EditTable(Series originalSeries, IDDropRepository dDropRepository)
         {
             InitializeComponent();
 
-            var d = new ObservableCollection<DropPhoto>(originalSeries.DropPhotosSeries);
+            _originalOrder = new Dictionary<Guid, int>();
 
-            Series seriesForEditing = new Series()
+            foreach (var item in originalSeries.DropPhotosSeries)
             {
-                SeriesId = originalSeries.SeriesId,
-                CurrentUser = originalSeries.CurrentUser
-            };
-
-            foreach (var dropPhoto in originalSeries.DropPhotosSeries)
-            {
-                seriesForEditing.DropPhotosSeries.Add(dropPhoto);
+                _originalOrder.Add(item.DropPhotoId, item.PhotoOrderInSeries);
             }
 
-            Series = seriesForEditing;
-            _originalSeries = originalSeries;
+            OriginalSeries = originalSeries;
+
             _dDropRepository = dDropRepository;
         }
 
@@ -55,20 +51,45 @@ namespace DDrop
 
         private async void EditTable_OnClosing(object sender, CancelEventArgs e)
         {
-            if (!Series.DropPhotosSeries.SequenceEqual(_originalSeries.DropPhotosSeries))
+            bool orderChanged = false;
+
+            foreach (var dropPhoto in OriginalSeries.DropPhotosSeries)
+            {
+                if (_originalOrder[dropPhoto.DropPhotoId] != dropPhoto.PhotoOrderInSeries)
+                {
+                    orderChanged = true;
+                    break;
+                }                    
+            }           
+
+            if (orderChanged)
             {
                 MessageBoxResult messageBoxResult = MessageBox.Show("Сохранить новый порядок снимков?", "Подтверждение выхода", MessageBoxButton.YesNoCancel);
                 if (messageBoxResult == MessageBoxResult.Yes)
                 {
-                    await _dDropRepository.UpdatePhotosOrderInSeries(
-                        DDropDbEntitiesMapper.ListOfDropPhotosToListOfDbDropPhotos(Series.DropPhotosSeries,
-                            Series.SeriesId));
-                    _originalSeries.DropPhotosSeries.Clear();
-                    _originalSeries.DropPhotosSeries = Series.DropPhotosSeries;
+                    try
+                    {
+                        await _dDropRepository.UpdatePhotosOrderInSeries(
+                            DDropDbEntitiesMapper.ListOfDropPhotosToListOfDbDropPhotos(OriginalSeries.DropPhotosSeries,
+                                OriginalSeries.SeriesId));
+                    }
+                    catch (Exception)
+                    {
+                        throw;
+                    }
                 }
                 else if (messageBoxResult == MessageBoxResult.Cancel)
                 {
                     e.Cancel = true;
+                }
+                else
+                {
+                    foreach (var dropPhoto in OriginalSeries.DropPhotosSeries)
+                    {
+                        dropPhoto.PhotoOrderInSeries = _originalOrder[dropPhoto.DropPhotoId];
+                    }
+
+                    OriginalSeries.DropPhotosSeries = OrderByPhotoOrderInSeries(OriginalSeries.DropPhotosSeries);
                 }
             }
             else
@@ -79,6 +100,15 @@ namespace DDrop
                     e.Cancel = true;
                 }
             }
+        }
+
+        private static ObservableCollection<DropPhoto> OrderByPhotoOrderInSeries(ObservableCollection<DropPhoto> orderThoseGroups)
+        {
+            ObservableCollection<DropPhoto> temp;
+            temp = new ObservableCollection<DropPhoto>(orderThoseGroups.OrderBy(p => p.PhotoOrderInSeries));
+            orderThoseGroups.Clear();
+            foreach (DropPhoto j in temp) orderThoseGroups.Add(j);
+            return orderThoseGroups;
         }
     }
 }
