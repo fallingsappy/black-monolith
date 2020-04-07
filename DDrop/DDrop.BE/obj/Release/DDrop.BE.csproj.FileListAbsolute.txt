@@ -9,4 +9,3 @@ E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BE\obj\Release\DDrop.BE.c
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BE\obj\Release\DDrop.BE.csproj.CopyComplete
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BE\obj\Release\DDrop.BE.dll
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BE\obj\Release\DDrop.BE.pdb
-E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BE\obj\Release\DDrop.BE.csproj.CoreCompileInputs.cache

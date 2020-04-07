@@ -129,6 +129,7 @@ namespace DDrop
             AppMainWindow.Show();
 
             SeriesManagerIsLoading();
+            ProgressBar.IsIndeterminate = true;
 
             Login();
         }
@@ -148,6 +149,7 @@ namespace DDrop
                 SeriesDataGrid.ItemsSource = User.UserSeries;
 
                 SeriesManagerLoadingComplete();
+                ProgressBar.IsIndeterminate = false;
             }
 
             if (User == null)
@@ -1541,13 +1543,60 @@ namespace DDrop
         {
             MessageBoxResult messageBoxResult = MessageBox.Show("Пересчитать параметры капель?", "Подтверждение", MessageBoxButton.YesNo);
             if (messageBoxResult == MessageBoxResult.Yes)
+            {
+                ProgressBar.IsIndeterminate = false;
+
+                var pbuHandle1 = pbu.New(ProgressBar, 0, CurrentSeries.DropPhotosSeries.Count, 0);
+
                 foreach (var dropPhoto in CurrentSeries.DropPhotosSeries)
                 {
                     if (dropPhoto.XDiameterInPixels > 0 && dropPhoto.YDiameterInPixels > 0)
                     {
-                        await CalculateDropParameters(dropPhoto);
+                        await ReCalculateDropParameters(dropPhoto);
                     }
+
+                    pbu.CurValue[pbuHandle1] += 1;
                 }
+
+                pbu.ResetValue(pbuHandle1);
+                pbu.Remove(pbuHandle1);
+            }
+        }
+
+        private async Task ReCalculateDropParameters(DropPhoto dropPhoto)
+        {
+            {
+                Drop tempDrop = new Drop
+                {
+                    DropId = dropPhoto.Drop.DropId,
+                    DropPhoto = dropPhoto.Drop.DropPhoto,
+                    RadiusInMeters = dropPhoto.Drop.RadiusInMeters,
+                    Series = dropPhoto.Drop.Series,
+                    VolumeInCubicalMeters = dropPhoto.Drop.VolumeInCubicalMeters,
+                    XDiameterInMeters = dropPhoto.Drop.XDiameterInMeters,
+                    YDiameterInMeters = dropPhoto.Drop.YDiameterInMeters,
+                    ZDiameterInMeters = dropPhoto.Drop.ZDiameterInMeters
+                };
+
+                try
+                {
+                    DropletSizeCalculator.PerformCalculation(
+                        Convert.ToInt32(PixelsInMillimeterTextBox.Text), dropPhoto.XDiameterInPixels,
+                        dropPhoto.YDiameterInPixels, dropPhoto);
+
+                    var dbPhoto = DDropDbEntitiesMapper.DropPhotoToDbDropPhoto(dropPhoto, CurrentSeries.SeriesId);
+
+                    await Task.Run(() => _dDropRepository.UpdateDrop(dbPhoto.Drop));
+
+                    _notifier.ShowSuccess($"Расчет для снимка {dropPhoto.Name} выполнен.");
+                }
+                catch (Exception)
+                {
+                    dropPhoto.Drop = tempDrop;
+                    _notifier.ShowError(
+                        "Не удалось сохранить результаты расчета. Не удалось установить подключение. Проверьте интернет соединение.");
+                }
+            }
         }
 
         private void ChangeReferenceLine_Click(object sender, RoutedEventArgs e)
@@ -1684,6 +1733,7 @@ namespace DDrop
         private void LoginMenuItem_Click(object sender, RoutedEventArgs e)
         {
             SeriesManagerIsLoading();
+            ProgressBar.IsIndeterminate = true;
 
             Login();
         }
@@ -1723,6 +1773,7 @@ namespace DDrop
                 LogInMenuItem.Visibility = Visibility.Visible;
                 
                 SeriesManagerIsLoading();
+                ProgressBar.IsIndeterminate = true;
 
                 Login();
             }
@@ -1784,7 +1835,7 @@ namespace DDrop
 
         #region Utility
 
-        private void PrepareLines(DropPhoto selectedPhoto, out Line horizontalLine, out Line verticalLine)
+        private static void PrepareLines(DropPhoto selectedPhoto, out Line horizontalLine, out Line verticalLine)
         {
             if (selectedPhoto.HorizontalLine != null && Properties.Settings.Default.ShowLinesOnPreview)
                 horizontalLine = new Line

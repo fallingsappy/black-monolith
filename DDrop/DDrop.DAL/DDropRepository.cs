@@ -536,6 +536,27 @@ namespace DDrop.DAL
             }
         }
 
+        public async Task UpdateDrop(DbDrop drop)
+        {
+            using (var context = new DDropContext())
+            {
+                try
+                {
+                    context.Set<DbDrop>().AddOrUpdate(drop);
+
+                    await context.SaveChangesAsync();
+                }
+                catch (DbUpdateException e)
+                {
+                    throw new DbUpdateException(e.Message);
+                }
+                catch (InvalidOperationException e)
+                {
+                    throw new InvalidOperationException(e.Message);
+                }
+            }
+        }
+
         public async Task UpdateDropPhotoName(string newName, Guid dropPhotoId)
         {
             using (var context = new DDropContext())
