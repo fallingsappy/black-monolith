@@ -133,7 +133,18 @@
                     </loadingSpinner:AdornedControl>
                 </Grid>
             </TabItem>
-            <TabItem Name="SingleSeries" IsEnabled = "False" Header="Серия">
+            <TabItem Name="SingleSeries" IsEnabled = "False">
+                <TabItem.Style>
+                    <Style TargetType="{x:Type TabItem}">
+                        <Setter Property="Header" Value="{Binding ElementName=AppMainWindow, Path=CurrentSeries.Title}"/>
+                        <Setter Property="HeaderStringFormat" Value="Серия {0}"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=AppMainWindow, Path=CurrentSeries.Title.Length, FallbackValue=0, TargetNullValue=0}" Value="0">
+                                <Setter Property="Header" Value=""/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TabItem.Style>
                 <Grid>
                     <TabControl x:Name="SingleSeriesTabControl" Margin="10,10,10,5">
                         <TabItem x:Name="PhotosTab" Header="Фотографии">

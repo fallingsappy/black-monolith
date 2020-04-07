@@ -8,6 +8,7 @@ using Microsoft.Win32;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -127,9 +128,13 @@ namespace DDrop
 
             AppMainWindow.Show();
 
-            ProgressBar.IsIndeterminate = true;
+            SeriesManagerIsLoading();
 
+            Login();
+        }
 
+        private void Login()
+        {
             Login login = new Login(_dDropRepository, _notifier)
             {
                 Owner = AppMainWindow
@@ -139,10 +144,10 @@ namespace DDrop
             if (login.LoginSucceeded)
             {
                 User = login.UserLogin;
-
-                User.UserSeries = DDropDbEntitiesMapper.DbSeriesToSeries(_dDropRepository.GetSeriesByUserId(User.UserId), User);
-
+                
                 SeriesDataGrid.ItemsSource = User.UserSeries;
+
+                SeriesManagerLoadingComplete();
             }
 
             if (User == null)
@@ -155,8 +160,6 @@ namespace DDrop
                 LogInMenuItem.Visibility = Visibility.Collapsed;
                 LogOutMenuItem.Visibility = Visibility.Visible;
             }
-
-            ProgressBar.IsIndeterminate = false;
         }
 
         #region Series
@@ -388,7 +391,7 @@ namespace DDrop
                     PrepareLines(CurrentSeriesPreviewPhoto, out HorizontalLineSeriesPreview, out VerticalLineSeriesPreview);
 
                 }
-                catch (OperationCanceledException ex)
+                catch (OperationCanceledException)
                 {
                     
                 }
@@ -783,13 +786,13 @@ namespace DDrop
         {
             if (CurrentSeries != null)
             {
-                if (int.TryParse(IntervalBetweenPhotos?.Text, out int intervalBetweenPhotos))
+                if (int.TryParse(IntervalBetweenPhotos?.Text, out var intervalBetweenPhotos))
                 {
                     try
                     {
                         SaveIntervalBetweenPhotos.Visibility = Visibility.Hidden;
                         EditIntervalBetweenPhotos.Visibility = Visibility.Visible;
-                        IntervalBetweenPhotos.IsEnabled = false;
+                        if (IntervalBetweenPhotos != null) IntervalBetweenPhotos.IsEnabled = false;
                         ProgressBar.IsIndeterminate = true;
 
                         var seriesId = CurrentSeries.SeriesId;
@@ -800,7 +803,9 @@ namespace DDrop
                     catch
                     {
                         _notifier.ShowError("Не удалось сохранить новый временной интервал между снимками. Не удалось установить подключение. Проверьте интернет соединение.");
-                        IntervalBetweenPhotos.Text = CurrentSeries.IntervalBetweenPhotos.ToString();
+                        if (IntervalBetweenPhotos != null)
+                            IntervalBetweenPhotos.Text =
+                                CurrentSeries.IntervalBetweenPhotos.ToString(CultureInfo.InvariantCulture);
                     }
 
                     ProgressBar.IsIndeterminate = false;
@@ -926,7 +931,7 @@ namespace DDrop
                         AddedDate = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"),
                         CurrentSeries = CurrentSeries,
                         CurrentSeriesId = CurrentSeries.SeriesId,
-                        CreationDateTime = File.GetCreationTime(openFileDialog.FileNames[i]).ToString(),
+                        CreationDateTime = File.GetCreationTime(openFileDialog.FileNames[i]).ToString(CultureInfo.InvariantCulture),
                         PhotoOrderInSeries = CurrentSeries.DropPhotosSeries.Count
                     };
                     imageForAdding.Drop = new Drop()
@@ -1002,27 +1007,28 @@ namespace DDrop
                     ImgCurrent.Source = ImageInterpreter.LoadImage(CurrentDropPhoto.Content);
 
                     PrepareLines(selectedFile, out HorizontalLinePhotosPreview, out VerticalLinePhotosPreview);
-                }
-                catch (OperationCanceledException ex)
-                {
 
+                    PhotosPreviewCanvas.Children.Clear();
+                    PhotosPreviewCanvas.Children.Add(ImgCurrent);
+                    if (HorizontalLinePhotosPreview != null)
+                        PhotosPreviewCanvas.Children.Add(HorizontalLinePhotosPreview);
+                    if (VerticalLinePhotosPreview != null)
+                        PhotosPreviewCanvas.Children.Add(VerticalLinePhotosPreview);
+
+                    SingleSeriesLoadingComplete(false);
+                }
+                catch (OperationCanceledException)
+                {
+                    PhotosPreviewCanvas.Children.Clear();
                 }
                 catch (Exception)
                 {
                     _notifier.ShowError($"Не удалось загрузить снимок {selectedFile.Name}. Не удалось установить подключение. Проверьте интернет соединение.");
+                    SingleSeriesLoadingComplete(false);
                 }
-
 
                 ProgressBar.IsIndeterminate = false;
                 CurrentSeriesImageLoadingWindow();
-                SingleSeriesLoadingComplete(false);
-
-                PhotosPreviewCanvas.Children.Clear();
-                PhotosPreviewCanvas.Children.Add(ImgCurrent);
-                if (HorizontalLinePhotosPreview != null)
-                    PhotosPreviewCanvas.Children.Add(HorizontalLinePhotosPreview);
-                if (VerticalLinePhotosPreview != null)
-                    PhotosPreviewCanvas.Children.Add(VerticalLinePhotosPreview);
             }
             else
                 ImgCurrent.Source = null;
@@ -1153,10 +1159,7 @@ namespace DDrop
 
                 if (CurrentDropPhoto.Content == null)
                 {
-                    if (_tokenSource != null)
-                    {
-                        _tokenSource.Cancel();
-                    }
+                    _tokenSource?.Cancel();
 
                     _tokenSource = new CancellationTokenSource();
 
@@ -1165,13 +1168,13 @@ namespace DDrop
                     {
                         CurrentDropPhoto.Content = await Task.Run(() => _dDropRepository.GetDropPhotoContent(currentDropPhotoId, _tokenSource.Token));
                     }
-                    catch (OperationCanceledException ex)
+                    catch (OperationCanceledException)
                     {
 
                     }
                     catch (Exception)
                     {
-
+                        _notifier.ShowError($"Не удалось загрузить снимок {CurrentDropPhoto.Name}. Не удалось установить подключение. Проверьте интернет соединение.");
                     }                   
                 }
                 
@@ -1336,7 +1339,7 @@ namespace DDrop
             try
             {
                 editTableWindow.ShowDialog();
-                //CurrentSeries.DropPhotosSeries.OrderBy(x => x.PhotoOrderInSeries);
+
                 _notifier.ShowSuccess($"Порядок снимков для серии {CurrentSeries.Title} обновлен.");
             }
             catch
@@ -1505,7 +1508,6 @@ namespace DDrop
                     ChangeReferenceLine.Visibility = Visibility.Visible;
                     SaveReferenceLine.Visibility = Visibility.Hidden;
 
-                    var dbSeries = _dDropRepository.GetSeriesByUserId(User.UserId);
                     var dbReferencePhoto = DDropDbEntitiesMapper.ReferencePhotoToDbReferencePhoto(CurrentSeries.ReferencePhotoForSeries);
 
                     await Task.Run(() => _dDropRepository.UpdateReferencePhoto(dbReferencePhoto));
@@ -1681,34 +1683,9 @@ namespace DDrop
 
         private void LoginMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            Login login = new Login(_dDropRepository, _notifier)
-            {
-                Owner = this
-            };
-            login.ShowDialog();
-            if (login.LoginSucceeded)
-            {
-                User = login.UserLogin;
+            SeriesManagerIsLoading();
 
-                User.UserSeries = DDropDbEntitiesMapper.DbSeriesToSeries(_dDropRepository.GetSeriesByUserId(User.UserId), User);
-
-                SeriesDataGrid.ItemsSource = User.UserSeries;
-            }
-            else
-            {
-                ShowDialog();
-            }
-            if (User == null)
-            {
-                Close();
-            }
-
-            if (User.IsLoggedIn)
-            {
-                AccountMenuItem.Visibility = Visibility.Visible;
-                LogInMenuItem.Visibility = Visibility.Collapsed;
-                LogOutMenuItem.Visibility = Visibility.Visible;
-            }
+            Login();
         }
 
         private void AccountMenuItem_Click(object sender, RoutedEventArgs e)
@@ -1724,7 +1701,7 @@ namespace DDrop
             {
                 MainTabControl.SelectedIndex = 0;
 
-                if (MainWindowPixelDrawer.CanDrawing.Children != null && CurrentSeries?.ReferencePhotoForSeries?.Line != null)
+                if (CurrentSeries?.ReferencePhotoForSeries?.Line != null)
                 {
                     MainWindowPixelDrawer.CanDrawing.Children.Remove(CurrentSeries.ReferencePhotoForSeries.Line);
                 }
@@ -1744,35 +1721,10 @@ namespace DDrop
                 AccountMenuItem.Visibility = Visibility.Collapsed;
                 LogOutMenuItem.Visibility = Visibility.Collapsed;
                 LogInMenuItem.Visibility = Visibility.Visible;
-                Login login = new Login(_dDropRepository, _notifier)
-                {
-                    Owner = this
-                };
-                login.ShowDialog();
-                if (login.LoginSucceeded)
-                {
-                    User = login.UserLogin;
+                
+                SeriesManagerIsLoading();
 
-                    User.UserSeries = DDropDbEntitiesMapper.DbSeriesToSeries(_dDropRepository.GetSeriesByUserId(User.UserId), User);
-
-                    SeriesDataGrid.ItemsSource = User.UserSeries;
-                }
-                else
-                {
-                    ShowDialog();
-                }
-
-
-                if (User == null)
-                {
-                    Close();
-                }
-                else
-                {
-                    AccountMenuItem.Visibility = Visibility.Visible;
-                    LogInMenuItem.Visibility = Visibility.Collapsed;
-                    LogOutMenuItem.Visibility = Visibility.Visible;
-                }
+                Login();
             }
         }
 

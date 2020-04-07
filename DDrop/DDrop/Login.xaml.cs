@@ -91,18 +91,28 @@ namespace DDrop
                 if (user != null && PasswordOperations.PasswordsMatch(password, user.Password))
                 {
                     UserLogin = DDropDbEntitiesMapper.DbUserToUser(user);
-                    UserLogin.UserSeries = DDropDbEntitiesMapper.DbSeriesToSeries(user.UserSeries, UserLogin);
 
-                    LoginSucceeded = true;
-
-                    if (RememberMe.IsChecked == true && shouldRemember)
+                    try
                     {
-                        StoreUserLocal(email, password);
-                    }
+                        UserLogin.UserSeries = DDropDbEntitiesMapper.DbSeriesToSeries(await Task.Run(() => _dDropRepository.GetSeriesByUserId(user.UserId)), UserLogin);
 
-                    _notifier.ShowSuccess($"Пользователь {user.Email} авторизован.");
-                    LoginWindowLoading();
-                    Close();
+                        LoginSucceeded = true;
+
+                        if (RememberMe.IsChecked == true && shouldRemember)
+                        {
+                            StoreUserLocal(email, password);
+                        }
+
+                        _notifier.ShowSuccess($"Пользователь {user.Email} авторизован.");
+                        LoginWindowLoading();
+                        Close();
+                    }
+                    catch (Exception e)
+                    {
+                        _notifier.ShowError($"Не удалось получить список серий пользователя {UserLogin.Email}. Не удалось установить подключение. Проверьте интернет соединение.");
+                        LoginSucceeded = false;
+                        LoginWindowLoading();
+                    }
                 }
                 else
                 {

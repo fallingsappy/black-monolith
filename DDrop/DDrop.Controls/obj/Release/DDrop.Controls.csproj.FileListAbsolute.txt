@@ -26,4 +26,3 @@ E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Controls\obj\Release\DDro
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Controls\obj\Release\DDrop.Controls.csproj.CopyComplete
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Controls\obj\Release\DDrop.Controls.dll
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Controls\obj\Release\DDrop.Controls.pdb
-E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Controls\obj\Release\DDrop.Controls.csproj.CoreCompileInputs.cache
