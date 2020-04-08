@@ -31,9 +31,9 @@ namespace DDrop
             if (!string.IsNullOrEmpty(Properties.Settings.Default.StoredUsers))
             {
                 LocalStoredUsers = JsonSerializeProvider.DeserializeFromString<LocalStoredUsers>(Properties.Settings.Default.StoredUsers);
-            }
 
-            StoredUsers.ItemsSource = LocalStoredUsers.Users;
+                StoredUsers.ItemsSource = LocalStoredUsers.Users;
+            }
         }
 
         private void InitializePaths()
