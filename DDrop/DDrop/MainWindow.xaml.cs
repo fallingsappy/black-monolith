@@ -3,7 +3,6 @@ using DDrop.BL.Calculation.DropletSizeCalculator;
 using DDrop.BL.Series;
 using DDrop.Utility.ExcelOperations;
 using DDrop.Utility.ImageOperations;
-using DDrop.Utility.PythonOperations;
 using Microsoft.Win32;
 using System;
 using System.Collections.ObjectModel;
@@ -26,8 +25,11 @@ using DDrop.Utility.Mappers;
 using System.Threading.Tasks;
 using Ookii.Dialogs.Wpf;
 using System.Threading;
+using DDrop.BE.Enums.Options;
 using DDrop.BL.ImageProcessing.CSharp;
 using DDrop.BL.ImageProcessing.Python;
+using DDrop.Utility.Animation;
+using DDrop.Utility.Calculation;
 
 namespace DDrop
 {
@@ -41,17 +43,20 @@ namespace DDrop
         private bool? _allSelectedSeries = false;
         private bool _allSelectedPhotosChanging;
         private bool? _allSelectedPhotos = false;
-        private Line HorizontalLineSeriesPreview;
-        private Line VerticalLineSeriesPreview;
-        private Line HorizontalLinePhotosPreview;
-        private Line VerticalLinePhotosPreview;
+        private Line _horizontalLineSeriesPreview;
+        private Line _verticalLineSeriesPreview;
+        private Line _horizontalLinePhotosPreview;
+        private Line _verticalLinePhotosPreview;
+        private ObservableCollection<Line> _contourSeriesPreview;
+        private ObservableCollection<Line> _contourPhotosPreview;
         private readonly ISeriesBL _seriesBL;
         private readonly IDropPhotoBL _dropPhotoBL;
         private readonly IDDropRepository _dDropRepository;
         private readonly IDropletImageProcessor _dropletImageProcessor;
         private readonly IPythonProvider _pythonProvider;
 
-        private DropPhoto CurrentSeriesPreviewPhoto = new DropPhoto();
+        private DropPhoto _currentSeriesPreviewPhoto = new DropPhoto();
+        private ObservableCollection<DropPhoto> _storedDropPhotos;
 
         public static readonly DependencyProperty CurrentSeriesProperty = DependencyProperty.Register("CurrentSeries", typeof(Series), typeof(MainWindow));
         public static readonly DependencyProperty CurrentDropPhotoProperty = DependencyProperty.Register("CurrentDropPhoto", typeof(DropPhoto), typeof(MainWindow));
@@ -120,6 +125,7 @@ namespace DDrop
         public MainWindow(ISeriesBL seriesBL, IDropPhotoBL dropPhotoBL, IDDropRepository dDropRepository, IDropletImageProcessor dropletImageProcessor, IPythonProvider pythonProvider)
         {
             InitializeComponent();
+            InitializePaths();
             _seriesBL = seriesBL;
             _dropPhotoBL = dropPhotoBL;
             _dDropRepository = dDropRepository;
@@ -293,10 +299,10 @@ namespace DDrop
         {
             if (User.UserSeries.Count > 0 && SeriesDataGrid.SelectedItem != null)
             {
-                PreviewCanvas.Children.Remove(HorizontalLineSeriesPreview);
-                PreviewCanvas.Children.Remove(VerticalLineSeriesPreview);
-                PhotosPreviewCanvas.Children.Remove(HorizontalLinePhotosPreview);
-                PhotosPreviewCanvas.Children.Remove(VerticalLinePhotosPreview);
+                PreviewCanvas.Children.Remove(_horizontalLineSeriesPreview);
+                PreviewCanvas.Children.Remove(_verticalLineSeriesPreview);
+                PhotosPreviewCanvas.Children.Remove(_horizontalLinePhotosPreview);
+                PhotosPreviewCanvas.Children.Remove(_verticalLinePhotosPreview);
 
                 SingleSeries.IsEnabled = false;
                 ProgressBar.IsIndeterminate = true;
@@ -366,7 +372,7 @@ namespace DDrop
             DropPhoto selectedPhoto = (DropPhoto)SeriesPreviewDataGrid.SelectedItem;
             if (selectedPhoto != null)
             {
-                CurrentSeriesPreviewPhoto = selectedPhoto;
+                _currentSeriesPreviewPhoto = selectedPhoto;
 
                 PreviewCanvas.Children.Clear();
 
@@ -385,12 +391,14 @@ namespace DDrop
 
                     ProgressBar.IsIndeterminate = true;
 
-                    CurrentSeriesPreviewPhoto.Content = await Task.Run(() =>
-                        _dDropRepository.GetDropPhotoContent(CurrentSeriesPreviewPhoto.DropPhotoId, _tokenSource.Token));
+                    _currentSeriesPreviewPhoto.Content = await Task.Run(() =>
+                        _dDropRepository.GetDropPhotoContent(_currentSeriesPreviewPhoto.DropPhotoId, _tokenSource.Token));
 
-                    ImgPreview.Source = ImageInterpreter.LoadImage(CurrentSeriesPreviewPhoto.Content);
+                    ImgPreview.Source = ImageInterpreter.LoadImage(_currentSeriesPreviewPhoto.Content);
 
-                    PrepareLines(CurrentSeriesPreviewPhoto, out HorizontalLineSeriesPreview, out VerticalLineSeriesPreview);
+                    PrepareLines(_currentSeriesPreviewPhoto, out _horizontalLineSeriesPreview, out _verticalLineSeriesPreview);
+
+                    PrepareContour(_currentSeriesPreviewPhoto, out _contourSeriesPreview);
 
                 }
                 catch (OperationCanceledException)
@@ -399,18 +407,25 @@ namespace DDrop
                 }
                 catch (Exception)
                 {
-                    _notifier.ShowError($"Не удалось загрузить снимок {CurrentSeriesPreviewPhoto.Name}. Не удалось установить подключение. Проверьте интернет соединение.");
+                    _notifier.ShowError($"Не удалось загрузить снимок {_currentSeriesPreviewPhoto.Name}. Не удалось установить подключение. Проверьте интернет соединение.");
                 }
 
                 PreviewWindowLoading();
 
                 PreviewCanvas.Children.Clear();
                 PreviewCanvas.Children.Add(ImgPreview);
-                if (HorizontalLineSeriesPreview != null)
-                    PreviewCanvas.Children.Add(HorizontalLineSeriesPreview);
-                if (VerticalLineSeriesPreview != null)
-                    PreviewCanvas.Children.Add(VerticalLineSeriesPreview);
-                
+                if (_horizontalLineSeriesPreview != null)
+                    PreviewCanvas.Children.Add(_horizontalLineSeriesPreview);
+                if (_verticalLineSeriesPreview != null)
+                    PreviewCanvas.Children.Add(_verticalLineSeriesPreview);
+                if (_contourSeriesPreview != null)
+                {
+                    foreach (var line in _contourSeriesPreview)
+                    {
+                        PreviewCanvas.Children.Add(line);
+                    }
+                }
+
                 ProgressBar.IsIndeterminate = false;
             }
             else
@@ -571,19 +586,22 @@ namespace DDrop
             {
                 TabItem item = (TabItem)tc.SelectedItem;
 
-                if (item.Name == "SingleSeries")
+                if (item?.Name != null)
                 {
-                    Photos.ItemsSource = CurrentSeries.DropPhotosSeries;
-
-                    if (!CurrentSeries.CanDrawPlot && SingleSeriesTabControl.SelectedIndex == 2)
+                    if (item.Name == "SingleSeries")
                     {
-                        SingleSeriesTabControl.SelectedIndex = 0;
+                        Photos.ItemsSource = CurrentSeries.DropPhotosSeries;
+
+                        if (!CurrentSeries.CanDrawPlot && SingleSeriesTabControl.SelectedIndex == 2)
+                        {
+                            SingleSeriesTabControl.SelectedIndex = 0;
+                        }
                     }
-                }
-                else if (item.Name == "SeriesManager")
-                {
-                    if (SeriesDataGrid.SelectedItems.Count > 0 && CurrentSeries?.DropPhotosSeries != null)
-                        SeriesPreviewDataGrid.ItemsSource = CurrentSeries.DropPhotosSeries;
+                    else if (item.Name == "SeriesManager")
+                    {
+                        if (SeriesDataGrid.SelectedItems.Count > 0 && CurrentSeries?.DropPhotosSeries != null)
+                            SeriesPreviewDataGrid.ItemsSource = CurrentSeries.DropPhotosSeries;
+                    }
                 }
             }
         }
@@ -754,9 +772,10 @@ namespace DDrop
             ImgPreview.Source = null;
             CurrentSeriesImageLoadingWindow();
 
-            ImgPreview.Source = ImageInterpreter.LoadImage(CurrentSeriesPreviewPhoto.Content);
+            ImgPreview.Source = ImageInterpreter.LoadImage(_currentSeriesPreviewPhoto.Content);
 
-            PrepareLines(dropPhoto, out HorizontalLineSeriesPreview, out VerticalLineSeriesPreview);
+            PrepareLines(dropPhoto, out _horizontalLineSeriesPreview, out _verticalLineSeriesPreview);
+            PrepareContour(dropPhoto, out _contourSeriesPreview);
 
             ProgressBar.IsIndeterminate = false;
             CurrentSeriesImageLoadingWindow();
@@ -764,10 +783,17 @@ namespace DDrop
             PreviewCanvas.Children.Clear();
             if (ImgPreview != null)
                 PreviewCanvas.Children.Add(ImgPreview);
-            if (HorizontalLineSeriesPreview != null)
-                PreviewCanvas.Children.Add(HorizontalLineSeriesPreview);
-            if (VerticalLineSeriesPreview != null)
-                PreviewCanvas.Children.Add(VerticalLineSeriesPreview);
+            if (_horizontalLineSeriesPreview != null)
+                PreviewCanvas.Children.Add(_horizontalLineSeriesPreview);
+            if (_verticalLineSeriesPreview != null)
+                PreviewCanvas.Children.Add(_verticalLineSeriesPreview);
+            if (_contourSeriesPreview != null)
+            {
+                foreach (var line in _contourSeriesPreview)
+                {
+                    PreviewCanvas.Children.Add(line);
+                }
+            }
         }
 
         private void EditIntervalBetweenPhotos_Click(object sender, RoutedEventArgs e)
@@ -969,7 +995,7 @@ namespace DDrop
                 }
 
                 SeriesManagerLoadingComplete();
-                CurrentSeriesPhotoContentLoadingWindow();
+                CurrentSeriesPhotoContentLoadingWindowComplete();
                 _notifier.ShowSuccess($"Новые снимки успешно добавлены.");
                 pbu.ResetValue(pbuHandle1);
                 pbu.Remove(pbuHandle1);
@@ -997,10 +1023,7 @@ namespace DDrop
                             .Content = null;
                     }
 
-                    if (_tokenSource != null)
-                    {
-                        _tokenSource.Cancel();
-                    }
+                    _tokenSource?.Cancel();
 
                     _tokenSource = new CancellationTokenSource();
 
@@ -1008,14 +1031,7 @@ namespace DDrop
                     CurrentDropPhoto.Content = await Task.Run(() => _dDropRepository.GetDropPhotoContent(selectedFile.DropPhotoId, _tokenSource.Token));
                     ImgCurrent.Source = ImageInterpreter.LoadImage(CurrentDropPhoto.Content);
 
-                    PrepareLines(selectedFile, out HorizontalLinePhotosPreview, out VerticalLinePhotosPreview);
-
-                    PhotosPreviewCanvas.Children.Clear();
-                    PhotosPreviewCanvas.Children.Add(ImgCurrent);
-                    if (HorizontalLinePhotosPreview != null)
-                        PhotosPreviewCanvas.Children.Add(HorizontalLinePhotosPreview);
-                    if (VerticalLinePhotosPreview != null)
-                        PhotosPreviewCanvas.Children.Add(VerticalLinePhotosPreview);
+                    ShowLinesOnPhotosPreview(selectedFile);
 
                     SingleSeriesLoadingComplete(false);
                 }
@@ -1036,6 +1052,26 @@ namespace DDrop
                 ImgCurrent.Source = null;
         }
 
+        private void ShowLinesOnPhotosPreview(DropPhoto selectedFile)
+        {
+            PrepareLines(selectedFile, out _horizontalLinePhotosPreview, out _verticalLinePhotosPreview);
+            PrepareContour(selectedFile, out _contourPhotosPreview);
+
+            PhotosPreviewCanvas.Children.Clear();
+            PhotosPreviewCanvas.Children.Add(ImgCurrent);
+            if (_horizontalLinePhotosPreview != null)
+                PhotosPreviewCanvas.Children.Add(_horizontalLinePhotosPreview);
+            if (_verticalLinePhotosPreview != null)
+                PhotosPreviewCanvas.Children.Add(_verticalLinePhotosPreview);
+            if (_contourPhotosPreview != null)
+            {
+                foreach (var line in _contourPhotosPreview)
+                {
+                    PhotosPreviewCanvas.Children.Add(line);
+                }
+            }
+        }
+
         private void LoadPreviewPhoto(DropPhoto dropPhoto)
         {
             PhotosPreviewCanvas.Children.Clear();
@@ -1046,7 +1082,8 @@ namespace DDrop
 
             ImgCurrent.Source = ImageInterpreter.LoadImage(CurrentDropPhoto.Content);
 
-            PrepareLines(dropPhoto, out HorizontalLinePhotosPreview, out VerticalLinePhotosPreview);
+            PrepareLines(dropPhoto, out _horizontalLinePhotosPreview, out _verticalLinePhotosPreview);
+            PrepareContour(dropPhoto, out _contourPhotosPreview);
 
             ProgressBar.IsIndeterminate = false;
             CurrentSeriesImageLoadingWindow();
@@ -1054,15 +1091,27 @@ namespace DDrop
             PhotosPreviewCanvas.Children.Clear();
             if(ImgCurrent != null)
                 PhotosPreviewCanvas.Children.Add(ImgCurrent);
-            if (HorizontalLinePhotosPreview != null)
-                PhotosPreviewCanvas.Children.Add(HorizontalLinePhotosPreview);
-            if (VerticalLinePhotosPreview != null)
-                PhotosPreviewCanvas.Children.Add(VerticalLinePhotosPreview);
+            if (_horizontalLinePhotosPreview != null)
+                PhotosPreviewCanvas.Children.Add(_horizontalLinePhotosPreview);
+            if (_verticalLinePhotosPreview != null)
+                PhotosPreviewCanvas.Children.Add(_verticalLinePhotosPreview);
+            if (_contourPhotosPreview != null)
+            {
+                foreach (var line in _contourPhotosPreview)
+                {
+                    PhotosPreviewCanvas.Children.Add(line);
+                }
+            }
         }
 
         private void CurrentSeriesPhotoContentLoadingWindow()
         {
-            CurrentSeriesPhotoContentLoading.IsAdornerVisible = !CurrentSeriesPhotoContentLoading.IsAdornerVisible;
+            CurrentSeriesPhotoContentLoading.IsAdornerVisible = true;
+        }
+
+        private void CurrentSeriesPhotoContentLoadingWindowComplete()
+        {
+            CurrentSeriesPhotoContentLoading.IsAdornerVisible = false;
         }
 
         private void CurrentSeriesImageLoadingWindow()
@@ -1109,7 +1158,7 @@ namespace DDrop
                     pbu.ResetValue(pbuHandle1);
                     pbu.Remove(pbuHandle1);
 
-                    CurrentSeriesPhotoContentLoadingWindow();
+                    CurrentSeriesPhotoContentLoadingWindowComplete();
                     SingleSeriesLoadingComplete();
                 }
             }
@@ -1141,7 +1190,7 @@ namespace DDrop
                 }
 
                 ProgressBar.IsIndeterminate = false;
-                CurrentSeriesPhotoContentLoadingWindow();
+                CurrentSeriesPhotoContentLoadingWindowComplete();
                 SingleSeriesLoadingComplete();
             }
         }
@@ -1195,7 +1244,7 @@ namespace DDrop
 
                             await CalculateDropParameters(CurrentDropPhoto);
 
-                            CurrentSeriesPhotoContentLoadingWindow();
+                            CurrentSeriesPhotoContentLoadingWindowComplete();
                             CurrentSeriesImageLoadingWindow();
                         }
                         else
@@ -1349,6 +1398,11 @@ namespace DDrop
                 _notifier.ShowError(
                     $"Не удалось обновить порядок снимков для серии {CurrentSeries.Title}. Не удалось установить подключение. Проверьте интернет соединение.");
             }
+        }
+
+        private async void ReCalculate_Click(object sender, RoutedEventArgs e)
+        {
+            await ReCalculateDropParameters();
         }
 
         #endregion
@@ -1620,61 +1674,231 @@ namespace DDrop
 
         #endregion
 
-        #region Calculation
+        #region AutoCalculation
 
-        private void Calculate_OnClick(object sender, RoutedEventArgs e)
+        private bool _overrideLoadingBehaviour;
+        private async void StartAutoCalculate_OnClick(object sender, RoutedEventArgs e)
         {
-            int checkedCount = CurrentSeries.DropPhotosSeries.Count(x => x.IsChecked);
+            if (!string.IsNullOrWhiteSpace(PixelsInMillimeterTextBox.Text))
+            {
+                SeriesEditMenu.Visibility = Visibility.Hidden;
+                AutoCalculationMenu.Visibility = Visibility.Visible;
+                SingleSeriesLoading(false);
+                _overrideLoadingBehaviour = true;
+
+                _storedDropPhotos = new ObservableCollection<DropPhoto>();
+
+                foreach (var dropPhoto in CurrentSeries.DropPhotosSeries)
+                {
+                    _storedDropPhotos.Add(new DropPhoto()
+                    {
+                        SimpleHorizontalLine = dropPhoto.SimpleHorizontalLine,
+                        SimpleVerticalLine = dropPhoto.SimpleVerticalLine,
+                        Contour = dropPhoto.Contour
+                    });
+                }
+
+                await AnimationHelper.AnimateGridColumnExpandCollapseAsync(AutoCalculationColumn, true, 300, 0, AutoCalculationColumn.MinWidth, 0, 200);
+            }
+            else
+            {
+                _notifier.ShowInformation("Выберите референсное расстояние на референсном снимке.");
+            }
+        }
+
+        private async void Calculate_OnClick(object sender, RoutedEventArgs e)
+        {
+            CurrentSeriesImageLoadingWindow();
+            CurrentSeriesPhotoContentLoadingWindow();
+            await AnimationHelper.AnimateGridColumnExpandCollapseAsync(AutoCalculationColumn, false, 300, 0, AutoCalculationColumn.MinWidth, 0, 200);
+
+            var checkedCount = CurrentSeries.DropPhotosSeries.Count(x => x.IsChecked);
 
             if (CurrentSeries.DropPhotosSeries.Count > 0)
             {
-                for (int i = 0; i < CurrentSeries.DropPhotosSeries.Count; i++)
-                {
+                var pbuHandle1 = pbu.New(ProgressBar, 0, checkedCount > 0 ? checkedCount : CurrentSeries.DropPhotosSeries.Count, 0);
 
+                for (var i = 0; i < CurrentSeries.DropPhotosSeries.Count; i++)
+                {
                     if (checkedCount > 0 && !CurrentSeries.DropPhotosSeries[i].IsChecked)
                     {
                         continue;
                     }
 
-                    if (PythonMenuItem.IsChecked)
-                    {
-                        var points = CalculateWithPython(CurrentSeries.DropPhotosSeries[i]);
+                    System.Drawing.Point[] points;
 
-                        DrawContour(CurrentSeries.DropPhotosSeries[i], points);
+                    if (CurrentSeries.DropPhotosSeries[i].Content == null)
+                    {
+                        CurrentSeries.DropPhotosSeries[i].Content =
+                            await _dDropRepository.GetDropPhotoContent(
+                                CurrentSeries.DropPhotosSeries[i].DropPhotoId, CancellationToken.None);
+                    }
+
+                    if ((CalculationVariants)Properties.Settings.Default.AutoCalculationType == CalculationVariants.CalculateWithPython)
+                    {
+                        points = CalculateWithPython(CurrentSeries.DropPhotosSeries[i]);
+                    }
+                    else if ((CalculationVariants)Properties.Settings.Default.AutoCalculationType == CalculationVariants.CalculateWithCSharp)
+                    {
+                        points = _dropletImageProcessor.GetDiameters(CurrentSeries.DropPhotosSeries[i].Content);
                     }
                     else
                     {
-                        var points = _dropletImageProcessor.GetDiameters(CurrentSeries.DropPhotosSeries[i].Content);
-
-                        DrawContour(CurrentSeries.DropPhotosSeries[i], points);
+                        _notifier.ShowInformation("Не выбран обработчик для расчета.");
+                        break;
                     }
-                    foreach (var item in CurrentSeries.DropPhotosSeries[i].Contour.Lines)
+
+                    CreateContour(CurrentSeries.DropPhotosSeries[i], points);
+                    CreateDiameters(CurrentSeries.DropPhotosSeries[i], points);
+
+                    pbu.CurValue[pbuHandle1] += 1;
+
+                    if (CurrentDropPhoto != null && CurrentDropPhoto.DropPhotoId == CurrentSeries.DropPhotosSeries[i].DropPhotoId)
                     {
-                        PhotosPreviewCanvas.Children.Add(item);
-                    }                    
+                        ShowLinesOnPhotosPreview(CurrentSeries.DropPhotosSeries[i]);
+                    }
+
+                    ReCalculateAllParametersFromLines(CurrentSeries.DropPhotosSeries[i]);
                 }
-               
+
+                pbu.ResetValue(pbuHandle1);
+                pbu.Remove(pbuHandle1);
                 _notifier.ShowSuccess("Расчет завершен.");
+
+                await AnimationHelper.AnimateGridColumnExpandCollapseAsync(AutoCalculationColumn, true, 300, 0, AutoCalculationColumn.MinWidth, 0, 200);
+                CurrentSeriesPhotoContentLoadingWindowComplete();
+                Photos.IsEnabled = true;
+                CurrentSeriesImageLoadingWindow();
             }
             else
                 _notifier.ShowInformation("Нет фотографий для расчета.");
         }
 
-        private void DrawContour(DropPhoto dropPhoto, System.Drawing.Point[] points)
+        private void ReCalculateAllParametersFromLines(DropPhoto dropPhoto)
         {
+            var horizontalLineFirstPoint = new System.Drawing.Point(Convert.ToInt32(dropPhoto.SimpleHorizontalLine.X1), Convert.ToInt32(dropPhoto.SimpleHorizontalLine.Y1));
+            var horizontalLineSecondPoint = new System.Drawing.Point(Convert.ToInt32(dropPhoto.SimpleHorizontalLine.X2), Convert.ToInt32(dropPhoto.SimpleHorizontalLine.Y2));
+            dropPhoto.XDiameterInPixels = LineLengthHelper.GetPointsOnLine(horizontalLineFirstPoint, horizontalLineSecondPoint).Count;
+
+            var verticalLineFirstPoint = new System.Drawing.Point(Convert.ToInt32(dropPhoto.SimpleVerticalLine.X1), Convert.ToInt32(dropPhoto.SimpleVerticalLine.Y1));
+            var verticalLineSecondPoint = new System.Drawing.Point(Convert.ToInt32(dropPhoto.SimpleVerticalLine.X2), Convert.ToInt32(dropPhoto.SimpleVerticalLine.Y2));
+            dropPhoto.YDiameterInPixels = LineLengthHelper.GetPointsOnLine(verticalLineFirstPoint, verticalLineSecondPoint).Count;
+
+            DropletSizeCalculator.PerformCalculation(Convert.ToInt32(PixelsInMillimeterTextBox.Text), dropPhoto.XDiameterInPixels, dropPhoto.YDiameterInPixels, dropPhoto);
+        }
+
+        private void InitializePaths()
+        {
+            InterpreterTextBox.Text = Properties.Settings.Default.Interpreter;
+            ScriptToRunTextBox.Text = Properties.Settings.Default.ScriptToRun;
+        }
+
+        private void ChooseFilePath_OnClick(object sender, RoutedEventArgs e)
+        {
+            Button button = (Button)sender;
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                Multiselect = false,
+                AddExtension = true
+            };
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                UpdateOptions((OptionsEnum)Enum.Parse(typeof(OptionsEnum), button.Name), openFileDialog.FileName);
+            }
+        }
+
+        private void UpdateOptions(OptionsEnum option, object value)
+        {
+            switch (option)
+            {
+                case OptionsEnum.Interpreter:
+                    Properties.Settings.Default.Interpreter = (string)value;
+                    Properties.Settings.Default.Save();
+                    InterpreterTextBox.Text = (string)value;
+                    break;
+                case OptionsEnum.ScriptToRun:
+                    Properties.Settings.Default.ScriptToRun = (string)value;
+                    Properties.Settings.Default.Save();
+                    ScriptToRunTextBox.Text = (string)value;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(option), option, null);
+            }
+        }
+
+        private static void CreateDiameters(DropPhoto dropPhoto, System.Drawing.Point[] points)
+        {
+            var biggestHorizontalDistance = 0;
+            var biggestVerticalDistance = 0;
+            SimpleLine simpleHorizontalDiameter = new SimpleLine();
+            SimpleLine simpleVerticalDiameter = new SimpleLine();
+
+            for (int i = 0; i < points.Length; i++)
+            {
+                for (int j = i + 1; j < points.Length - 1; j++)
+                {
+                    var currentHorizontalDistance = Math.Abs(points[i].X - points[j].X);
+                    if (currentHorizontalDistance > biggestHorizontalDistance)
+                    {
+                        biggestHorizontalDistance = currentHorizontalDistance;
+
+                        simpleHorizontalDiameter.X1 = points[i].X;
+                        simpleHorizontalDiameter.Y1 = points[i].Y;
+
+                        simpleHorizontalDiameter.X2 = points[j].X;
+                        simpleHorizontalDiameter.Y2 = points[j].Y;
+                    }
+
+                    var currentVerticalDistance = Math.Abs(points[i].Y - points[j].Y);
+                    if (currentVerticalDistance > biggestVerticalDistance)
+                    {
+                        biggestVerticalDistance = currentVerticalDistance;
+
+                        simpleVerticalDiameter.X1 = points[i].X;
+                        simpleVerticalDiameter.Y1 = points[i].Y;
+
+                        simpleVerticalDiameter.X2 = points[j].X;
+                        simpleVerticalDiameter.Y2 = points[j].Y;
+                    }
+                }
+            }
+
+            dropPhoto.SimpleHorizontalLine = simpleHorizontalDiameter;
+            dropPhoto.HorizontalLine = new Line()
+            {
+                X1 = simpleHorizontalDiameter.X1,
+                X2 = simpleHorizontalDiameter.X2,
+                Y1 = simpleHorizontalDiameter.Y1,
+                Y2 = simpleHorizontalDiameter.Y1,
+                StrokeThickness = 2,
+                Stroke = Brushes.Orange
+            };
+
+            dropPhoto.SimpleVerticalLine = simpleVerticalDiameter;
+            dropPhoto.VerticalLine = new Line()
+            {
+                X1 = simpleVerticalDiameter.X1,
+                X2 = simpleVerticalDiameter.X1,
+                Y1 = simpleVerticalDiameter.Y1,
+                Y2 = simpleVerticalDiameter.Y2,
+                StrokeThickness = 2,
+                Stroke = Brushes.Black
+            };
+        }
+
+        private static void CreateContour(DropPhoto dropPhoto, System.Drawing.Point[] points)
+        {
+            dropPhoto.Contour = new Contour
+            {
+                ContourId = dropPhoto.DropPhotoId,
+                CurrentDropPhoto = dropPhoto,
+                SimpleLines = new ObservableCollection<SimpleLine>(),
+                Lines = new ObservableCollection<Line>(),
+            };
+
             for (int j = 0; j < points.Length; j++)
             {
-                if (dropPhoto.Contour == null)
-                {
-                    dropPhoto.Contour = new Contour
-                    {
-                        ContourId = dropPhoto.DropPhotoId,
-                        CurrentDropPhoto = dropPhoto,
-                        SimpleLines = new ObservableCollection<SimpleLine>(),
-                        Lines = new ObservableCollection<Line>(),
-                    };
-                }
-
                 dropPhoto.Contour.SimpleLines.Add(new SimpleLine
                 {
                     SimpleLineId = Guid.NewGuid(),
@@ -1703,27 +1927,29 @@ namespace DDrop
             {
                 return _pythonProvider.GetDiameters(dropPhoto.Content, dropPhoto.Name, Properties.Settings.Default.ScriptToRun, Properties.Settings.Default.Interpreter);
             }
-            else
-            {
-                _notifier.ShowInformation("Выберите интерпритатор python и исполняемый скрипт в меню \"Опции\"");
 
-                return null;
-            }            
+            _notifier.ShowInformation("Выберите интерпритатор python и исполняемый скрипт в меню \"Опции\"");
+
+            return null;
         }
 
-        private void PythonOption_OnClick(object sender, RoutedEventArgs e)
+        private async void SaveCalculationResults_OnClick(object sender, RoutedEventArgs e)
         {
-            CSharpMenuItem.IsChecked = false;
+            await AnimationHelper.AnimateGridColumnExpandCollapseAsync(AutoCalculationColumn, false, 300, 0, AutoCalculationColumn.MinWidth, 0, 200);
+            SeriesEditMenu.Visibility = Visibility.Visible;
+            AutoCalculationMenu.Visibility = Visibility.Hidden;
+            _overrideLoadingBehaviour = false;
+            SingleSeriesLoadingComplete(false);
         }
 
-        private void CSharpOption_OnClick(object sender, RoutedEventArgs e)
+        private async void DiscardCalculationResults_OnClick(object sender, RoutedEventArgs e)
         {
-            PythonMenuItem.IsChecked = false;
-        }
+            await AnimationHelper.AnimateGridColumnExpandCollapseAsync(AutoCalculationColumn, false, 300, 0, AutoCalculationColumn.MinWidth, 0, 200);
 
-        private async void ReCalculate_Click(object sender, RoutedEventArgs e)
-        {
-            await ReCalculateDropParameters();
+            SeriesEditMenu.Visibility = Visibility.Visible;
+            AutoCalculationMenu.Visibility = Visibility.Hidden;
+            _overrideLoadingBehaviour = false;
+            SingleSeriesLoadingComplete(false);
         }
 
         #endregion
@@ -1785,9 +2011,7 @@ namespace DDrop
 
         private void MenuItem_OnClick(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult messageBoxResult = MessageBox.Show("Закрыть приложение?", "Подтверждение выхода", MessageBoxButton.YesNo);
-            if (messageBoxResult == MessageBoxResult.Yes)
-                Close();
+            Close();
         }
 
         private void Options_OnClick(object sender, RoutedEventArgs e)
@@ -1802,9 +2026,9 @@ namespace DDrop
                     LoadPreviewPhoto(CurrentDropPhoto);
                 }
 
-                if (CurrentSeriesPreviewPhoto != null)
+                if (_currentSeriesPreviewPhoto != null)
                 {
-                    LoadSeriesPreviewPhoto(CurrentSeriesPreviewPhoto);
+                    LoadSeriesPreviewPhoto(_currentSeriesPreviewPhoto);
                 }
             }
         }
@@ -1864,6 +2088,33 @@ namespace DDrop
                 verticalLine = null;
         }
 
+        private static void PrepareContour(DropPhoto selectedPhoto, out ObservableCollection<Line> contour)
+        {
+            if (selectedPhoto.Contour?.Lines != null && Properties.Settings.Default.ShowLinesOnPreview)
+            {
+                contour = new ObservableCollection<Line>();
+
+                foreach (var item in selectedPhoto.Contour.Lines)
+                {
+                    var lineForAdd = new Line
+                    {
+                        X1 = item.X1,
+                        X2 = item.X2,
+                        Y1 = item.Y1,
+                        Y2 = item.Y2,
+                        Stroke = item.Stroke,
+                        Fill = item.Fill
+                    };
+
+                    contour.Add(lineForAdd);
+                }
+            }
+            else
+            {
+                contour = null;
+            }
+        }
+
         private void SeriesManagerIsLoading(bool blockSeriesTable = true)
         {
             SeriesManager.IsEnabled = false;
@@ -1876,7 +2127,6 @@ namespace DDrop
             ImportLocalSeries.IsEnabled = false;
             ExportSeriesButton.IsEnabled = false;
             DeleteSeriesButton.IsEnabled = false;
-            AutoCalculateSeriesButton.IsEnabled = false;
         }
 
         private void SeriesManagerLoadingComplete(bool blockSeriesTable = true)
@@ -1891,7 +2141,6 @@ namespace DDrop
             ImportLocalSeries.IsEnabled = true;
             ExportSeriesButton.IsEnabled = true;
             DeleteSeriesButton.IsEnabled = true;
-            AutoCalculateSeriesButton.IsEnabled = true;
         }
 
         private async void SingleSeriesLoading(bool disablePhotos = true)
@@ -1908,7 +2157,7 @@ namespace DDrop
             EditPhotosOrder.IsEnabled = false;
             EditIntervalBetweenPhotos.IsEnabled = false;
             ReCalculate.IsEnabled = false;
-            AutoCalculate.IsEnabled = false;
+            StartAutoCalculate.IsEnabled = false;
 
             if (IntervalBetweenPhotos.IsEnabled)
             {
@@ -1926,6 +2175,8 @@ namespace DDrop
 
         private async void SingleSeriesLoadingComplete(bool disablePhotos = true)
         {
+            if (_overrideLoadingBehaviour) return;
+
             if (CurrentSeries != null)
                 CurrentSeries.Loaded = true;
             if (disablePhotos)
@@ -1938,7 +2189,7 @@ namespace DDrop
             EditPhotosOrder.IsEnabled = true;
             EditIntervalBetweenPhotos.IsEnabled = true;
             ReCalculate.IsEnabled = true;
-            AutoCalculate.IsEnabled = true;
+            StartAutoCalculate.IsEnabled = true;
 
             if (IntervalBetweenPhotos.IsEnabled)
             {
@@ -1955,5 +2206,20 @@ namespace DDrop
         }
 
         #endregion
+
+        private void ComboBox_OnDropDownClosed(object sender, EventArgs e)
+        {
+            var comboBox = sender as ComboBox;
+
+            if (comboBox != null && comboBox.SelectedIndex == -1)
+            {
+                comboBox.SelectedIndex = Properties.Settings.Default.AutoCalculationType;
+            }
+            else
+            {
+                if (comboBox != null) Properties.Settings.Default.AutoCalculationType = comboBox.SelectedIndex;
+                Properties.Settings.Default.Save();
+            }
+        }
     }
 }

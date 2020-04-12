@@ -53,7 +53,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Enums\Image\ImageFormat.cs" />
+    <Compile Include="Enums\Options\CalculationVariants.cs" />
     <Compile Include="Enums\Options\OptionsEnum.cs" />
+    <Compile Include="Enums\PhotoStatus.cs" />
+    <Compile Include="Enums\SeriesStatus.cs" />
     <Compile Include="Models\Contour.cs" />
     <Compile Include="Models\Drop.cs" />
     <Compile Include="Models\DropPhoto.cs" />

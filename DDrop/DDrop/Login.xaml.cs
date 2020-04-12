@@ -48,6 +48,8 @@ namespace DDrop
             _dDropRepository = dDropRepository;
             _notifier = notifier;
 
+            LocalStoredUsers = new LocalStoredUsers();
+
             if (!string.IsNullOrEmpty(Properties.Settings.Default.StoredUsers))
             {
                 LocalStoredUsers = JsonSerializeProvider.DeserializeFromString<LocalStoredUsers>(Properties.Settings.Default.StoredUsers);
@@ -132,7 +134,7 @@ namespace DDrop
         {
             bool newUser = true;
 
-            if (LocalStoredUsers?.Users != null)
+            if (LocalStoredUsers.Users != null)
             {
                 foreach (var localUser in LocalStoredUsers.Users)
                 {
@@ -156,7 +158,6 @@ namespace DDrop
             }
             else
             {
-                LocalStoredUsers = new LocalStoredUsers();
                 LocalStoredUsers.Users = new System.Collections.ObjectModel.ObservableCollection<LocalStoredUser>();
             }
 

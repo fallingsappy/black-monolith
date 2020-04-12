@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using DDrop.Utility.Calculation;
 using Brushes = System.Windows.Media.Brushes;
 
 namespace DDrop.Controls.PixelDrawer
@@ -96,11 +97,6 @@ namespace DDrop.Controls.PixelDrawer
         private List<Line> _horizontalLines = new List<Line>();
 
         private List<Line> _verticalLines = new List<Line>();
-
-        [DllImport("gdi32.dll")]
-        private static extern bool LineDDA(int nXStart, int nYStart, int nXEnd, int nYEnd, LineDdaProc lpLineFunc, IntPtr lpData);
-
-        private delegate void LineDdaProc(int x, int y, IntPtr lpData);
 
         private void canDrawing_MouseMove_NotDown(object sender, MouseEventArgs e)
         {
@@ -201,7 +197,7 @@ namespace DDrop.Controls.PixelDrawer
                             CurrentDropPhoto.SimpleHorizontalLine = horizontalLineForAdd;
                         }
 
-                        PixelsInMillimeterHorizontal = GetPointsOnLine(point11, point22).Count.ToString();
+                        PixelsInMillimeterHorizontal = LineLengthHelper.GetPointsOnLine(point11, point22).Count.ToString();
                     }
                     else if (Math.Abs(_selectedLine.X1 - _selectedLine.X2) < Math.Abs(_selectedLine.Y1 - _selectedLine.Y2) && !_drawingHorizontalLine || _drawingVerticalLine)
                     {
@@ -236,7 +232,7 @@ namespace DDrop.Controls.PixelDrawer
                             CurrentDropPhoto.SimpleVerticalLine = verticalLineForAdd;
                         }
 
-                        PixelsInMillimeterVertical = GetPointsOnLine(point11, point22).Count.ToString();
+                        PixelsInMillimeterVertical = LineLengthHelper.GetPointsOnLine(point11, point22).Count.ToString();
                     }
                 }
                 else
@@ -266,7 +262,7 @@ namespace DDrop.Controls.PixelDrawer
                         CurrentSeries.ReferencePhotoForSeries.SimpleLine = simpleReferenceLineForAdd;                        
                     }
 
-                    CurrentSeries.ReferencePhotoForSeries.PixelsInMillimeter = GetPointsOnLine(point11, point22).Count;
+                    CurrentSeries.ReferencePhotoForSeries.PixelsInMillimeter = LineLengthHelper.GetPointsOnLine(point11, point22).Count;
                 }
             }
         }
@@ -292,30 +288,5 @@ namespace DDrop.Controls.PixelDrawer
         }
 
         #endregion
-
-        public static List<Point> GetPointsOnLine(System.Drawing.Point point1, System.Drawing.Point point2)
-        {
-            var points = new List<Point>();
-            var handle = GCHandle.Alloc(points);
-            double distance = Math.Sqrt(Math.Pow(point2.X - point1.X, 2) + Math.Pow(point2.Y - point2.Y, 2));
-
-            try
-            {
-                LineDDA(point1.X, point1.Y, point2.X, point2.Y, GetPointsOnLineCallback, GCHandle.ToIntPtr(handle));
-            }
-            finally
-            {
-                handle.Free();
-            }
-
-            return points;
-        }
-
-        private static void GetPointsOnLineCallback(int x, int y, IntPtr lpData)
-        {
-            var handle = GCHandle.FromIntPtr(lpData);
-            var points = (List<Point>)handle.Target;
-            points.Add(new Point(x, y));
-        }
     }
 }

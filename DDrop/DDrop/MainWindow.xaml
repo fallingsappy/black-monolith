@@ -8,9 +8,10 @@
         xmlns:scatterPlot="clr-namespace:DDrop.Controls.ScatterPlot;assembly=DDrop.Controls"
         xmlns:simpleSample="clr-namespace:SimpleSample;assembly=DDrop.Controls"
         xmlns:loadingSpinner="clr-namespace:DDrop.Controls.LoadingSpinner;assembly=DDrop.Controls"
+        xmlns:properties="clr-namespace:DDrop.Properties"
         UseLayoutRounding="True"
         mc:Ignorable="d"
-        Title="DDrop" MinHeight="500" MinWidth="800" Height="768" Width="1152" Icon="Resources/Icons/MainIcon.png" WindowState="Maximized" x:Name="AppMainWindow" Closing="AppMainWindow_Closing" WindowStartupLocation="CenterScreen">
+        Title="DDrop" MinHeight="500" MinWidth="870" Height="768" Width="1152" Icon="Resources/Icons/MainIcon.png" WindowState="Maximized" x:Name="AppMainWindow" Closing="AppMainWindow_Closing" WindowStartupLocation="CenterScreen">
     <Grid>
         <TabControl x:Name="MainTabControl" SelectionChanged="Selector_OnSelectionChanged" Margin="10,37,10,47">
             <TabItem Name="SeriesManager" Header="Менеджер Серий">
@@ -42,9 +43,6 @@
                             </Button>
                             <Button ToolTip="Выгрузить серии на компьютер" Grid.Column="0" Grid.Row="0" x:Name="ExportSeriesLocal" BorderBrush="{x:Null}" Background="{x:Null}" Click="ExportSeriesLocal_ClickAsync" Margin="0,6,109,0" HorizontalAlignment="Right" Width="28" RenderTransformOrigin="-1.25,0.615" Height="26" VerticalAlignment="Top">
                                 <ContentControl Content="{StaticResource ExoportLocalSeries}" Height="22" Width="23"/>
-                            </Button>
-                            <Button ToolTip="Выгрузить серии на компьютер" Grid.Column="0" Grid.Row="0" x:Name="AutoCalculateSeriesButton" BorderBrush="{x:Null}" Background="{x:Null}" Click="Calculate_OnClick" Margin="0,6,142,0" HorizontalAlignment="Right" Width="28" RenderTransformOrigin="-1.25,0.615" Height="26" VerticalAlignment="Top">
-                                <ContentControl Content="{StaticResource Play}" Height="22" Width="23"/>
                             </Button>
                         </Grid>
                     </Border>
@@ -149,6 +147,11 @@
                     <TabControl x:Name="SingleSeriesTabControl" Margin="10,10,10,5">
                         <TabItem x:Name="PhotosTab" Header="Фотографии">
                             <Grid Background="#FFE5E5E5" RenderTransformOrigin="0.56,0.503">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="0" MaxWidth="1500" x:Name="AutoCalculationColumn"/>
+                                </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*" />
                                     <RowDefinition Height="Auto" />
@@ -156,33 +159,46 @@
                                 </Grid.RowDefinitions>
                                 <Border Background="Gainsboro" BorderThickness="1" Height="42" Margin="10,10,10,0" VerticalAlignment="Top">
                                     <Grid>
-                                        <Button Grid.Row="0" Name="AddPhotoButton" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top" Width="28" BorderBrush="{x:Null}" Background="{x:Null}" Height="26" Click="MenuItemChoosePhotos_OnClick" ToolTip="Добавить фотографии для серии.">
-                                            <ContentControl Content="{StaticResource AddIcon}" Height="22" Width="24" />
-                                        </Button>
-                                        <Button Grid.Row="0"  Name="DeleteInputPhotosButton" HorizontalAlignment="Left" Margin="43,6,0,0" VerticalAlignment="Top" Width="27" Background="{x:Null}" BorderBrush="{x:Null}" Height="26" Click="DeleteInputPhotos_OnClick" ToolTip="Удалить фотографии для серии.">
-                                            <ContentControl Content="{StaticResource DeleteIcon}" Height="21" Width="23"/>
-                                        </Button>
-                                        <Button Grid.Row="0"  Name="EditPhotosOrder" HorizontalAlignment="Left" Margin="75,6,0,0" VerticalAlignment="Top" Width="27" Background="{x:Null}" BorderBrush="{x:Null}" Height="27" Click="EditPhotosOrder_OnClick" ToolTip="Редактировать порядок фотографий.">
-                                            <ContentControl Content="{StaticResource EditTable}" Height="21"/>
-                                        </Button>
-                                        <Button Grid.Row="0"  Name="ReCalculate" HorizontalAlignment="Left" Margin="107,6,0,0" VerticalAlignment="Top" Width="27" Background="{x:Null}" BorderBrush="{x:Null}" Height="27" Click="ReCalculate_Click" ToolTip="Пересчитать параметры капель.">
-                                            <ContentControl Content="{StaticResource ReCalculate}" Height="21"/>
-                                        </Button>
-                                        <Button Grid.Row="0"  Name="AutoCalculate" HorizontalAlignment="Left" Margin="139,6,0,0" VerticalAlignment="Top" Width="27" Background="{x:Null}" BorderBrush="{x:Null}" Height="27" Click="Calculate_OnClick" ToolTip="Начать автоматический расчет.">
-                                            <ContentControl Content="{StaticResource Play}" Height="22"/>
-                                        </Button>
-                                        <TextBox IsEnabled="False" x:Name="IntervalBetweenPhotos" Text="{Binding ElementName=AppMainWindow, Path=CurrentSeries.IntervalBetweenPhotos}" Height="20" Margin="0,10,42,0" TextWrapping="Wrap"  VerticalAlignment="Top" HorizontalAlignment="Right" Width="115"/>
-                                        <Label Content="Интервал между снимками (c):" Margin="0,6,162,0" VerticalAlignment="Top" Height="27" Background="{x:Null}" HorizontalAlignment="Right" Width="180"/>
-                                        <CheckBox Name="CreationTimeCheckBox" IsChecked="{Binding CurrentSeries.UseCreationDateTime, ElementName=AppMainWindow,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Checked="CreationTimeCheckBox_Checked" Unchecked="CreationTimeCheckBox_Unchecked" Content="Использовать время создания снимка" Margin="0,12,347,9" HorizontalAlignment="Right" Width="245"/>
-                                        <Button Grid.Row="0"  Name="EditIntervalBetweenPhotos" HorizontalAlignment="Right" Margin="0,6,10,0" VerticalAlignment="Top" Width="27" Background="{x:Null}" BorderBrush="{x:Null}" Height="26" Click="EditIntervalBetweenPhotos_Click" ToolTip="Редактировать интервал между снимками.">
-                                            <ContentControl Content="{StaticResource EditIcon}" Height="21" Width="23"/>
-                                        </Button>
-                                        <Button Visibility="Hidden" Grid.Row="0"  Name="SaveIntervalBetweenPhotos" HorizontalAlignment="Right" Margin="0,6,10,0" VerticalAlignment="Top" Width="27" Background="{x:Null}" BorderBrush="{x:Null}" Height="26" Click="SaveIntervalBetweenPhotos_Click" ToolTip="Сохранить интервал между снимками.">
-                                            <ContentControl Content="{StaticResource SaveIcon}" Height="21" Width="23"/>
-                                        </Button>
+                                        <Grid x:Name="SeriesEditMenu" Visibility="Visible">
+                                            <Button Grid.Row="0" Grid.Column="0" Name="AddPhotoButton" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top" Width="28" BorderBrush="{x:Null}" Background="{x:Null}" Height="26" Click="MenuItemChoosePhotos_OnClick" ToolTip="Добавить фотографии для серии.">
+                                                <ContentControl Content="{StaticResource AddIcon}" Height="22" Width="24" />
+                                            </Button>
+                                            <Button Grid.Row="0" Grid.Column="0"  Name="DeleteInputPhotosButton" HorizontalAlignment="Left" Margin="43,6,0,0" VerticalAlignment="Top" Width="27" Background="{x:Null}" BorderBrush="{x:Null}" Height="26" Click="DeleteInputPhotos_OnClick" ToolTip="Удалить фотографии для серии.">
+                                                <ContentControl Content="{StaticResource DeleteIcon}" Height="21" Width="23"/>
+                                            </Button>
+                                            <Button Grid.Row="0" Grid.Column="0" Name="EditPhotosOrder" HorizontalAlignment="Left" Margin="75,6,0,0" VerticalAlignment="Top" Width="27" Background="{x:Null}" BorderBrush="{x:Null}" Height="27" Click="EditPhotosOrder_OnClick" ToolTip="Редактировать порядок фотографий.">
+                                                <ContentControl Content="{StaticResource EditTable}" Height="21"/>
+                                            </Button>
+                                            <Button Grid.Row="0" Grid.Column="0" Name="ReCalculate" HorizontalAlignment="Left" Margin="107,6,0,0" VerticalAlignment="Top" Width="27" Background="{x:Null}" BorderBrush="{x:Null}" Height="27" Click="ReCalculate_Click" ToolTip="Пересчитать параметры капель.">
+                                                <ContentControl Content="{StaticResource ReCalculate}" Height="21"/>
+                                            </Button>
+                                            <Button Grid.Row="0" Grid.Column="0" Name="StartAutoCalculate" HorizontalAlignment="Left" Margin="139,6,0,0" VerticalAlignment="Top" Width="27" Background="{x:Null}" BorderBrush="{x:Null}" Height="27" Click="StartAutoCalculate_OnClick" ToolTip="Начать автоматический расчет.">
+                                                <ContentControl Content="{StaticResource Play}" Height="22"/>
+                                            </Button>
+                                            <TextBox IsEnabled="False" x:Name="IntervalBetweenPhotos" Text="{Binding ElementName=AppMainWindow, Path=CurrentSeries.IntervalBetweenPhotos}" Height="20" Margin="0,10,42,0" TextWrapping="Wrap"  VerticalAlignment="Top" HorizontalAlignment="Right" Width="115"/>
+                                            <Label Content="Интервал между снимками (c):" Margin="0,6,162,0" VerticalAlignment="Top" Height="27" Background="{x:Null}" HorizontalAlignment="Right" Width="180"/>
+                                            <CheckBox Name="CreationTimeCheckBox" IsChecked="{Binding CurrentSeries.UseCreationDateTime, ElementName=AppMainWindow,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Checked="CreationTimeCheckBox_Checked" Unchecked="CreationTimeCheckBox_Unchecked" Content="Использовать время создания снимка" Margin="0,12,347,9" HorizontalAlignment="Right" Width="245"/>
+                                            <Button Grid.Row="0" Grid.Column="0" Name="EditIntervalBetweenPhotos" HorizontalAlignment="Right" Margin="0,6,10,0" VerticalAlignment="Top" Width="27" Background="{x:Null}" BorderBrush="{x:Null}" Height="26" Click="EditIntervalBetweenPhotos_Click" ToolTip="Редактировать интервал между снимками.">
+                                                <ContentControl Content="{StaticResource EditIcon}" Height="21" Width="23"/>
+                                            </Button>
+                                            <Button Visibility="Hidden" Grid.Row="0" Grid.Column="0" Name="SaveIntervalBetweenPhotos" HorizontalAlignment="Right" Margin="0,6,10,0" VerticalAlignment="Top" Width="27" Background="{x:Null}" BorderBrush="{x:Null}" Height="26" Click="SaveIntervalBetweenPhotos_Click" ToolTip="Сохранить интервал между снимками.">
+                                                <ContentControl Content="{StaticResource SaveIcon}" Height="21" Width="23"/>
+                                            </Button>
+                                        </Grid>
+                                        <Grid x:Name="AutoCalculationMenu" Visibility="Hidden">
+                                            <Button Grid.Row="0" Grid.Column="0" Name="AutoCalculate" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top" Width="28" BorderBrush="{x:Null}" Background="{x:Null}" Height="26" Click="Calculate_OnClick" ToolTip="Рассчитать.">
+                                                <ContentControl Content="{StaticResource Play}" Height="22" Width="24" />
+                                            </Button>
+                                            <Button Grid.Row="0" Grid.Column="0" Name="SaveCalculationResults" HorizontalAlignment="Left" Margin="43,6,0,0" VerticalAlignment="Top" Width="28" BorderBrush="{x:Null}" Background="{x:Null}" Height="26" Click="SaveCalculationResults_OnClick" ToolTip="Сохранить результаты расчета.">
+                                                <ContentControl Content="{StaticResource SaveIcon}" Height="22" Width="24" />
+                                            </Button>
+                                            <Button Grid.Row="0" Grid.Column="0"  Name="DiscardCalculationResults" HorizontalAlignment="Left" Margin="75,6,0,0" VerticalAlignment="Top" Width="27" Background="{x:Null}" BorderBrush="{x:Null}" Height="26" Click="DiscardCalculationResults_OnClick" ToolTip="Отмена.">
+                                                <ContentControl Content="{StaticResource Cancel}" Height="22" Width="23"/>
+                                            </Button>
+                                        </Grid>
                                     </Grid>
                                 </Border>
-                                <Grid Grid.Row="0">
+                                <Grid Grid.Row="0" Grid.Column="0">
                                     <loadingSpinner:AdornedControl Name="CurrentSeriesPhotoContentLoading">
                                         <loadingSpinner:AdornedControl.AdornerContent>
                                             <simpleSample:LoadingWait></simpleSample:LoadingWait>
@@ -246,18 +262,95 @@
                                 </Grid>
                                 <GridSplitter HorizontalAlignment="Stretch" 
                                   VerticalAlignment="Center" 
-                                  Grid.Row="1" ResizeBehavior="PreviousAndNext"
+                                  Grid.Row="1" Grid.Column="0" ResizeBehavior="PreviousAndNext"
                                   Height="5"/>
-                                <loadingSpinner:AdornedControl Grid.Row="2" Name="CurrentSeriesImageLoading">
+                                <loadingSpinner:AdornedControl Grid.Column="0" Grid.Row="2" Name="CurrentSeriesImageLoading">
                                     <loadingSpinner:AdornedControl.AdornerContent>
                                         <simpleSample:LoadingWait></simpleSample:LoadingWait>
                                     </loadingSpinner:AdornedControl.AdornerContent>
-                                    <zoomborder:ZoomBorder Grid.Row="2" HorizontalAlignment="Stretch" x:Name="CgsImageViewer" ClipToBounds="True" Background="Gray" Margin="10,10,13,10">
+                                    <zoomborder:ZoomBorder HorizontalAlignment="Stretch" x:Name="CgsImageViewer" ClipToBounds="True" Background="Gray" Margin="10,10,13,10">
                                         <Canvas x:Name="PhotosPreviewCanvas">
                                             <Image x:Name="ImgCurrent" VerticalAlignment="Center" HorizontalAlignment="Center" Width="{Binding Source.PixelWidth,RelativeSource={RelativeSource Self}}" Height="{Binding Source.PixelHeight,RelativeSource={RelativeSource Self}}" Stretch="Uniform" />
                                         </Canvas>
                                     </zoomborder:ZoomBorder>
                                 </loadingSpinner:AdornedControl>
+                                <GridSplitter HorizontalAlignment="Center" 
+                                  VerticalAlignment="Stretch" 
+                                  Grid.Column="1"
+                                  Grid.Row="0"
+                                  Grid.RowSpan="3" ResizeBehavior="PreviousAndNext"
+                                  Width="5"/>
+                                <Grid x:Name="ToolBox" Grid.Column="2" Grid.Row="0" Grid.RowSpan="3">
+                                    <TabControl MinWidth="200">
+                                        <TabItem Header="Общие">
+                                            <Grid>
+                                                <Label Content="Параметры" HorizontalAlignment="Left" Margin="10,10,0,0" Height="26" VerticalAlignment="Top" FontWeight="Bold"/>
+                                                <ComboBox SelectedIndex="{Binding Source={x:Static properties:Settings.Default}, Path=AutoCalculationType}" Margin="10,41,10,0" Height="30" VerticalAlignment="Top" DropDownClosed="ComboBox_OnDropDownClosed">
+                                                    <ComboBoxItem Height="26">
+                                                        <Grid Width="160">
+                                                            <ContentControl Content="{StaticResource Csharp}" Height="20"/>
+                                                            <TextBlock Margin="30,3,0,0">Внутренний расчет</TextBlock>
+                                                        </Grid>
+                                                    </ComboBoxItem>
+                                                    <ComboBoxItem Height="26">
+                                                        <Grid Width="160">
+                                                            <ContentControl Content="{StaticResource Python}"/>
+                                                            <TextBlock Margin="30,3,0,0">Сторонний скрипт</TextBlock>
+                                                        </Grid>
+                                                    </ComboBoxItem>
+                                                </ComboBox>
+                                            </Grid>
+                                        </TabItem>
+                                        <TabItem Header="C# Расчет">
+                                            <Grid>
+                                                <Label Content="Параметры" HorizontalAlignment="Left" Margin="10,10,0,0" Height="26" VerticalAlignment="Top" FontWeight="Bold"/>
+                                                <Label Content="Размытие:" HorizontalAlignment="Left" Margin="10,41,0,0" Height="26" VerticalAlignment="Top"/>
+                                                <TextBox x:Name="CShrpKsize" Margin="113,44,62,0" TextWrapping="Wrap" IsEnabled="False" Height="23" VerticalAlignment="Top"/>
+                                                <Label Content="Порог (мин):" HorizontalAlignment="Left" Margin="10,72,0,0" Height="26" VerticalAlignment="Top"/>
+                                                <TextBox x:Name="CShrpThreshold1" Margin="113,75,62,0" TextWrapping="Wrap" IsEnabled="False" Height="23" VerticalAlignment="Top"/>
+                                                <Label Content="Порог (макс):" HorizontalAlignment="Left" Margin="10,103,0,0" Height="26" VerticalAlignment="Top"/>
+                                                <TextBox x:Name="CShrpThreshold2" Margin="113,106,62,0" TextWrapping="Wrap" IsEnabled="False" Height="23" VerticalAlignment="Top"/>
+                                                <Label Content="Высота контура:" HorizontalAlignment="Left" Margin="10,134,0,0" Height="26" VerticalAlignment="Top"/>
+                                                <TextBox x:Name="CShrpSize1" Margin="113,137,62,0" TextWrapping="Wrap" IsEnabled="False" Height="23" VerticalAlignment="Top"/>
+                                                <Label Content="Ширина контура:" HorizontalAlignment="Left" Margin="10,165,0,0" Height="26" VerticalAlignment="Top"/>
+                                                <TextBox x:Name="CShrpSize2" Margin="113,168,62,0" TextWrapping="Wrap" IsEnabled="False" Height="23" VerticalAlignment="Top"/>
+                                            </Grid>
+                                        </TabItem>
+                                        <TabItem Header="Python расчет">
+                                            <Grid>
+                                                <Label Content="Интерпритатор:" HorizontalAlignment="Left" Margin="10,0,0,41" Height="26" VerticalAlignment="Bottom"/>
+                                                <TextBox Name="InterpreterTextBox" Margin="113,0,62,38" TextWrapping="Wrap" IsEnabled="False" Height="23" VerticalAlignment="Bottom"/>
+                                                <Button Name="Interpreter" Click="ChooseFilePath_OnClick" HorizontalAlignment="Right" Margin="0,0,10,38" VerticalAlignment="Bottom" Width="47" Height="23" Background="{x:Null}" BorderBrush="{x:Null}" ToolTip="Выбрать python интерпритатор.">
+                                                    <Rectangle Fill="#34558b" RenderTransformOrigin="0.704,0.315" Height="19" Width="19">
+                                                        <Rectangle.OpacityMask>
+                                                            <VisualBrush Stretch="Fill" Visual="{StaticResource EditIcon}" />
+                                                        </Rectangle.OpacityMask>
+                                                    </Rectangle>
+                                                </Button>
+                                                <Label Content="Скрипт:" HorizontalAlignment="Left" Margin="10,0,0,10" Height="26" VerticalAlignment="Bottom"/>
+                                                <TextBox Name="ScriptToRunTextBox" Margin="113,0,62,10" TextWrapping="Wrap" IsEnabled="False" Height="23" VerticalAlignment="Bottom"/>
+                                                <Button Name="ScriptToRun" Click="ChooseFilePath_OnClick" Margin="0,0,10,10" VerticalAlignment="Bottom" Height="23" HorizontalAlignment="Right" Width="47" Background="{x:Null}" BorderBrush="{x:Null}" ToolTip="Выбрать скрипт для запуска.">
+                                                    <Rectangle Fill="#34558b" RenderTransformOrigin="0.704,0.315" Height="19" Width="19">
+                                                        <Rectangle.OpacityMask>
+                                                            <VisualBrush Stretch="Fill" Visual="{StaticResource EditIcon}" />
+                                                        </Rectangle.OpacityMask>
+                                                    </Rectangle>
+                                                </Button>
+                                                <Label Content="Параметры" HorizontalAlignment="Left" Margin="10,10,0,0" Height="26" VerticalAlignment="Top" FontWeight="Bold"/>
+                                                <Label Content="Размытие:" HorizontalAlignment="Left" Margin="10,41,0,0" Height="26" VerticalAlignment="Top"/>
+                                                <TextBox x:Name="Ksize" Margin="113,44,62,0" TextWrapping="Wrap" IsEnabled="False" Height="23" VerticalAlignment="Top"/>
+                                                <Label Content="Порог (мин):" HorizontalAlignment="Left" Margin="10,72,0,0" Height="26" VerticalAlignment="Top"/>
+                                                <TextBox x:Name="Threshold1" Margin="113,75,62,0" TextWrapping="Wrap" IsEnabled="False" Height="23" VerticalAlignment="Top"/>
+                                                <Label Content="Порог (макс):" HorizontalAlignment="Left" Margin="10,103,0,0" Height="26" VerticalAlignment="Top"/>
+                                                <TextBox x:Name="Threshold2" Margin="113,106,62,0" TextWrapping="Wrap" IsEnabled="False" Height="23" VerticalAlignment="Top"/>
+                                                <Label Content="Высота контура:" HorizontalAlignment="Left" Margin="10,134,0,0" Height="26" VerticalAlignment="Top"/>
+                                                <TextBox x:Name="Size1" Margin="113,137,62,0" TextWrapping="Wrap" IsEnabled="False" Height="23" VerticalAlignment="Top"/>
+                                                <Label Content="Ширина контура:" HorizontalAlignment="Left" Margin="10,165,0,0" Height="26" VerticalAlignment="Top"/>
+                                                <TextBox x:Name="Size2" Margin="113,168,62,0" TextWrapping="Wrap" IsEnabled="False" Height="23" VerticalAlignment="Top"/>
+                                            </Grid>
+                                        </TabItem>
+                                    </TabControl>
+                                </Grid>
                             </Grid>
                         </TabItem>
                         <TabItem x:Name="ReferenceTab" Header="Референс">
@@ -333,10 +426,6 @@
                     </MenuItem.Icon>
                 </MenuItem>
                 <MenuItem Header="Выйти" Click="MenuItem_OnClick"/>
-            </MenuItem>
-            <MenuItem Header="Расчет">
-                <MenuItem Name="PythonMenuItem" Header="Python" IsCheckable="True" IsChecked="True" Click="PythonOption_OnClick"/>
-                <MenuItem Name="CSharpMenuItem" Header="C#" IsCheckable="True" Click="CSharpOption_OnClick"/>
             </MenuItem>
             <MenuItem Header="Учетная запись" HorizontalAlignment="Right">
                 <MenuItem x:Name="AccountMenuItem" Visibility="Collapsed" Header="Аккаунт" Click="AccountMenuItem_Click">

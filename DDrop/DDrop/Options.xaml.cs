@@ -38,8 +38,6 @@ namespace DDrop
 
         private void InitializePaths()
         {
-            InterpreterTextBox.Text = Properties.Settings.Default.Interpreter;
-            ScriptToRunTextBox.Text = Properties.Settings.Default.ScriptToRun;
             ShowLinesOnPreview.IsChecked = Properties.Settings.Default.ShowLinesOnPreview;
         }
 
@@ -70,16 +68,6 @@ namespace DDrop
         {
             switch (option)
             {
-                case OptionsEnum.Interpreter:
-                    Properties.Settings.Default.Interpreter = (string)value;
-                    Properties.Settings.Default.Save();
-                    InterpreterTextBox.Text = (string)value;
-                    break;
-                case OptionsEnum.ScriptToRun:
-                    Properties.Settings.Default.ScriptToRun = (string)value;
-                    Properties.Settings.Default.Save();
-                    ScriptToRunTextBox.Text = (string)value;
-                    break;
                 case OptionsEnum.ShowLinesOnPreview:
                     Properties.Settings.Default.ShowLinesOnPreview = (bool)value;
                     Properties.Settings.Default.Save();

@@ -3,9 +3,7 @@
     public enum OptionsEnum
     {
         Interpreter,
-        Reference,
-        SaveTo,
         ScriptToRun,
-        ShowLinesOnPreview
+        ShowLinesOnPreview,
     }
 }

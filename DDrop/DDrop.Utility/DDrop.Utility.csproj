@@ -90,6 +90,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Animation\AnimationHelper.cs" />
+    <Compile Include="Animation\GridLengthAnimation.cs" />
+    <Compile Include="Calculation\LineLengthHelper.cs" />
     <Compile Include="Cryptography\PasswordOperations.cs" />
     <Compile Include="DataGrid\VisualHelper.cs" />
     <Compile Include="ExcelOperations\ExcelOperations.cs" />
@@ -101,6 +104,7 @@
     <Compile Include="ExceptionHandling\Windows\ExceptionWindow.xaml.cs">
       <DependentUpon>ExceptionWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Extensions\StoryboardExtensions.cs" />
     <Compile Include="ImageOperations\ImageInterpreter.cs" />
     <Compile Include="ImageOperations\ImageValidator.cs" />
     <Compile Include="Logger\ILogger.cs" />
