@@ -21,7 +21,7 @@ namespace DDrop.BL.ImageProcessing.Python
 
             System.Drawing.Point[] points = GetDiametersViaSystemIO(scriptToRun, interpreter, fullPath, ksize, treshold1, treshold2, size1, size2);
 
-            //File.Delete(fullPath);
+            File.Delete(fullPath);
 
             return points;
         }

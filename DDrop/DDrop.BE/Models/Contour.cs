@@ -64,6 +64,35 @@ namespace DDrop.BE.Models
             }
         }
 
+        private AutoCalculationParameters _pythonParameters;
+        public AutoCalculationParameters PythonParameters
+        {
+            get
+            {
+                return _pythonParameters;
+            }
+            set
+            {
+                _pythonParameters = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("PythonParameters"));
+            }
+        }
+
+        private AutoCalculationParameters _cSharParameters;
+        public AutoCalculationParameters CSharpParameters
+        {
+            get
+            {
+                return _cSharParameters;
+
+            }
+            set
+            {
+                _cSharParameters = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("CSharpParameters"));
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged(PropertyChangedEventArgs e)
         {

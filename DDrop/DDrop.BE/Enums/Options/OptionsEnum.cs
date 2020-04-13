@@ -5,5 +5,6 @@
         Interpreter,
         ScriptToRun,
         ShowLinesOnPreview,
+        ShowContourOnPreview
     }
 }

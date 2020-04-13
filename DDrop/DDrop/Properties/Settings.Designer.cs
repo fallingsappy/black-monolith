@@ -118,5 +118,29 @@ namespace DDrop.Properties {
                 this["AutoCalculationType"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string AutoCalculationTemplates {
+            get {
+                return ((string)(this["AutoCalculationTemplates"]));
+            }
+            set {
+                this["AutoCalculationTemplates"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ShowContourOnPreview {
+            get {
+                return ((bool)(this["ShowContourOnPreview"]));
+            }
+            set {
+                this["ShowContourOnPreview"] = value;
+            }
+        }
     }
 }

@@ -1,7 +1,7 @@
 ﻿<Application x:Class="DDrop.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             >
+             xmlns:valueConverters="clr-namespace:DDrop.Utility.ValueConverters;assembly=DDrop.Utility">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -13,6 +13,7 @@
                 <ResourceDictionary x:Name="IconsDictionary" Source="pack://application:,,,/Resources/Icons/Icons.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/ToastNotifications.Messages;component/Themes/Default.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <valueConverters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

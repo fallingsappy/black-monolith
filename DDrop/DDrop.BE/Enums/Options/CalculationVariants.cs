@@ -3,6 +3,7 @@
     public enum CalculationVariants
     {
         CalculateWithCSharp,
-        CalculateWithPython
+        CalculateWithPython,
+        Common
     }
 }

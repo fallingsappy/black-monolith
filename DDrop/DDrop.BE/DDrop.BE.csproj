@@ -57,6 +57,8 @@
     <Compile Include="Enums\Options\OptionsEnum.cs" />
     <Compile Include="Enums\PhotoStatus.cs" />
     <Compile Include="Enums\SeriesStatus.cs" />
+    <Compile Include="Models\AutoCalculationParameters.cs" />
+    <Compile Include="Models\AutoCalculationTemplate.cs" />
     <Compile Include="Models\Contour.cs" />
     <Compile Include="Models\Drop.cs" />
     <Compile Include="Models\DropPhoto.cs" />
