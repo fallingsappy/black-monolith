@@ -53,6 +53,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Enums\Image\ImageFormat.cs" />
+    <Compile Include="Enums\Logger\LogCategory.cs" />
+    <Compile Include="Enums\Logger\LogLevel.cs" />
     <Compile Include="Enums\Options\CalculationVariants.cs" />
     <Compile Include="Enums\Options\OptionsEnum.cs" />
     <Compile Include="Enums\PhotoStatus.cs" />
@@ -63,6 +65,7 @@
     <Compile Include="Models\Drop.cs" />
     <Compile Include="Models\DropPhoto.cs" />
     <Compile Include="Models\LocalStoredUser.cs" />
+    <Compile Include="Models\LogEntry.cs" />
     <Compile Include="Models\ReferencePhoto.cs" />
     <Compile Include="Models\SimpleLine.cs" />
     <Compile Include="Models\Series.cs" />

@@ -6,6 +6,9 @@ using DDrop.Utility.ExceptionHandling.ExceptionHandling;
 using Unity;
 using DDrop.BL.ImageProcessing.CSharp;
 using DDrop.BL.ImageProcessing.Python;
+using DDrop.Utility.Logger;
+using Unity.Injection;
+using Unity.Lifetime;
 
 namespace DDrop
 {
@@ -31,6 +34,10 @@ namespace DDrop
             container.RegisterType<IDDropRepository, DDropRepository>();
             container.RegisterType<IDropletImageProcessor, DropletImageProcessor>();
             container.RegisterType<IPythonProvider, PythonProvider>();
+            container.RegisterType<ILogger, Logger>(new ContainerControlledLifetimeManager(),
+                new InjectionConstructor(
+                    new ResolvedParameter<IDDropRepository>()
+                ));
 
             container.Resolve<MainWindow>();
         }

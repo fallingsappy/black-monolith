@@ -296,7 +296,7 @@
                                     <TabControl MinWidth="200">
                                         <TabItem Header="Общие">
                                             <Grid>
-                                                <Label Content="Параметры" HorizontalAlignment="Left" Margin="10,10,0,0" Height="26" VerticalAlignment="Top" FontWeight="Bold"/>
+                                                <Label Content="Обработчик" HorizontalAlignment="Left" Margin="10,10,0,0" Height="26" VerticalAlignment="Top" FontWeight="Bold"/>
                                                 <ComboBox SelectedIndex="{Binding Source={x:Static properties:Settings.Default}, Path=AutoCalculationType}" Margin="10,41,10,0" Height="30" VerticalAlignment="Top" DropDownClosed="ComboBox_OnDropDownClosed">
                                                     <ComboBoxItem Height="26">
                                                         <Grid Width="160">

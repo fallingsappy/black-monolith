@@ -40,9 +40,6 @@
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.1.1.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
-    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.7.0\lib\net45\NLog.dll</HintPath>
-    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -104,6 +101,7 @@
     <Compile Include="ExceptionHandling\Windows\ExceptionWindow.xaml.cs">
       <DependentUpon>ExceptionWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Extensions\EnumerationExtension.cs" />
     <Compile Include="Extensions\StoryboardExtensions.cs" />
     <Compile Include="ImageOperations\ImageInterpreter.cs" />
     <Compile Include="ImageOperations\ImageValidator.cs" />
@@ -113,12 +111,17 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PythonOperations\NamedPipe.cs" />
     <Compile Include="SeriesLocalStorageOperations\JsonSerializeProvider.cs" />
+    <Compile Include="ValueConverters\EnumToStringConverter.cs" />
     <Compile Include="ValueConverters\InverseBooleanConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DDrop.BE\DDrop.BE.csproj">
       <Project>{19d17b23-5ba3-4387-b0fa-f2c66c7ec5bc}</Project>
       <Name>DDrop.BE</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DDrop.DAL\DDrop.DAL.csproj">
+      <Project>{194BFFCC-08D1-4FCE-957E-2A0723DF61F9}</Project>
+      <Name>DDrop.DAL</Name>
     </ProjectReference>
     <ProjectReference Include="..\DDrop.Db\DDrop.Db.csproj">
       <Project>{8ce97b04-f51f-4350-a8ca-a82e40845793}</Project>

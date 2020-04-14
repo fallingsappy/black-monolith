@@ -199,7 +199,7 @@ namespace DDrop
         
         public bool ShowLinesOnPreviewIsChanged;
         public bool ShowContourOnPreviewIsChanged;
-
+        private AutoCalculationTemplate _currentAutoCalculationTemplate;
         private Notifier _notifier;
 
         public Options(Notifier notifier)
@@ -320,6 +320,10 @@ namespace DDrop
                 Title = AutoCalculationTemplateTitle.Text,
                 Parameters = new AutoCalculationParameters(),
             });
+
+            Properties.Settings.Default.AutoCalculationTemplates = JsonSerializeProvider.SerializeToString(UserAutoCalculationTemplates);
+
+            Properties.Settings.Default.Save();
         }
 
         private void DeleteSingleTemplate_OnClick(object sender, RoutedEventArgs e)
@@ -442,24 +446,7 @@ namespace DDrop
         private static readonly Regex _regex = new Regex("^[1-9]+[0-9]*$");
         private static bool IsTextAllowed(string text)
         {
-            return !_regex.IsMatch(text);
-        }
-
-        private void AutoCalculaionTemplates_OnRowEditEnding(object sender, DataGridRowEditEndingEventArgs e)
-        {
-            var row = sender as AutoCalculationTemplate;
-
-            if (row != null)
-            {
-                if (!IsTextAllowed(row.Parameters.Ksize.ToString()) || !IsTextAllowed(row.Parameters.Size1.ToString()) ||
-                    !IsTextAllowed(row.Parameters.Size2.ToString()) ||
-                    !IsTextAllowed(row.Parameters.Treshold1.ToString()) ||
-                    !IsTextAllowed(row.Parameters.Treshold2.ToString()))
-                {
-                    _notifier.ShowInformation("Введите целое число больше ноля.");
-                    e.Cancel = true;
-                }
-            }
+            return _regex.IsMatch(text);
         }
 
         private void OptionsIsLoading()
@@ -486,6 +473,49 @@ namespace DDrop
             ImportTemplate.IsEnabled = true;
             DeleteTemplateButton.IsEnabled = true;
             AutoCalculationTemplateLoading.IsAdornerVisible = false;
+        }
+
+        private void AutoCalculaionTemplates_OnCellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        {
+            if (e.EditingElement is TextBox t)
+            {
+                if (!string.IsNullOrWhiteSpace(t.Text))
+                {
+                    if (IsTextAllowed(t.Text))
+                    {
+                        Properties.Settings.Default.AutoCalculationTemplates = JsonSerializeProvider.SerializeToString(UserAutoCalculationTemplates);
+
+                        Properties.Settings.Default.Save();
+                    }
+                    else
+                    {
+                        _notifier.ShowInformation("Введите целое число больше ноля.");
+                        e.Cancel = true;
+                    }
+                }
+            }
+        }
+
+        private void AutoCalculationTypeCombo_OnDropDownClosed(object sender, EventArgs e)
+        {
+            var comboBox = sender as ComboBox;
+
+            if (comboBox != null && comboBox.SelectedIndex != -1)
+            {
+                _currentAutoCalculationTemplate.TemplateType = (CalculationVariants)comboBox.SelectedIndex;
+
+                Properties.Settings.Default.AutoCalculationTemplates = JsonSerializeProvider.SerializeToString(UserAutoCalculationTemplates);
+
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        private void AutoCalculaionTemplates_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var dataGrid = sender as DataGrid;
+
+            if (dataGrid != null)
+                _currentAutoCalculationTemplate = UserAutoCalculationTemplates[dataGrid.SelectedIndex];
         }
     }
 }

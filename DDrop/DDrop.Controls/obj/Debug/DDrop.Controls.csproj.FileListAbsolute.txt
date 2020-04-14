@@ -260,3 +260,10 @@ E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Controls\bin\Debug\System
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Controls\bin\Debug\System.Text.Encodings.Web.xml
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Controls\bin\Debug\System.Numerics.Vectors.xml
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Controls\bin\Debug\Microsoft.Bcl.AsyncInterfaces.xml
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Controls\bin\Debug\DDrop.Controls.dll.config
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Controls\bin\Debug\DDrop.DAL.dll
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Controls\bin\Debug\System.ValueTuple.dll
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Controls\bin\Debug\DDrop.DAL.pdb
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Controls\bin\Debug\DDrop.DAL.dll.config
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Controls\bin\Debug\System.ValueTuple.xml
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Controls\bin\Debug\System.Buffers.xml

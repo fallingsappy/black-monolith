@@ -9,8 +9,8 @@ namespace DDrop.Db.DbEntities
         [Key]
         public Guid ContourId { get; set; }
         public List<DbSimpleLine> SimpleLines { get; set; }
-        //public string CSharpParameters { get; set; }
-        //public string PythonParameters { get; set; }
+        public string CalculationParameters { get; set; }
+        public string CalculationProvider { get; set; }
 
         public virtual DbDropPhoto CurrentDropPhoto { get; set; }
     }

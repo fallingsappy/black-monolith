@@ -17,7 +17,7 @@ namespace DDrop.Db
         public DbSet<DbDrop> Drops { get; set; }
         public DbSet<DbReferencePhoto> ReferencePhotos { get; set; }
         public DbSet<DbSimpleLine> SimpleLines { get; set; }
-        public DbSet<DbLog> Logs { get; set; }
+        public DbSet<DbLogEntry> LogEntries { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

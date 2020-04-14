@@ -25,11 +25,13 @@ using DDrop.Utility.Mappers;
 using System.Threading.Tasks;
 using Ookii.Dialogs.Wpf;
 using System.Threading;
+using DDrop.BE.Enums.Logger;
 using DDrop.BE.Enums.Options;
 using DDrop.BL.ImageProcessing.CSharp;
 using DDrop.BL.ImageProcessing.Python;
 using DDrop.Utility.Animation;
 using DDrop.Utility.Calculation;
+using DDrop.Utility.Logger;
 
 namespace DDrop
 {
@@ -54,6 +56,7 @@ namespace DDrop
         private readonly IDDropRepository _dDropRepository;
         private readonly IDropletImageProcessor _dropletImageProcessor;
         private readonly IPythonProvider _pythonProvider;
+        private readonly ILogger _logger;
         private ObservableCollection<AutoCalculationTemplate> _autoCalculationDefaultTemplates = new ObservableCollection<AutoCalculationTemplate>();
         private ObservableCollection<AutoCalculationTemplate> _autoCalculationTemplates = new ObservableCollection<AutoCalculationTemplate>();
 
@@ -124,7 +127,7 @@ namespace DDrop
 
         #endregion
 
-        public MainWindow(ISeriesBL seriesBL, IDropPhotoBL dropPhotoBL, IDDropRepository dDropRepository, IDropletImageProcessor dropletImageProcessor, IPythonProvider pythonProvider)
+        public MainWindow(ISeriesBL seriesBL, IDropPhotoBL dropPhotoBL, IDDropRepository dDropRepository, IDropletImageProcessor dropletImageProcessor, IPythonProvider pythonProvider, ILogger logger)
         {
             InitializeComponent();
             InitializePaths();
@@ -137,6 +140,7 @@ namespace DDrop
             _dDropRepository = dDropRepository;
             _dropletImageProcessor = dropletImageProcessor;
             _pythonProvider = pythonProvider;
+            _logger = logger;
 
             AppMainWindow.Show();
 
@@ -192,6 +196,12 @@ namespace DDrop
 
             if (login.LoginSucceeded)
             {
+                _logger.LogInfo(new LogEntry()
+                {
+                    Username = login.UserLogin.Email,
+                    LogCategory = LogCategory.Authorization,
+                    Message = $"Пользователь {login.UserLogin.Email} успешно авторизован.",
+                });
                 User = login.UserLogin;
                 
                 SeriesDataGrid.ItemsSource = User.UserSeries;

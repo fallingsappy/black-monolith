@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Shapes;
+using DDrop.BE.Enums.Options;
 
 namespace DDrop.BE.Models
 {
@@ -64,32 +65,31 @@ namespace DDrop.BE.Models
             }
         }
 
-        private AutoCalculationParameters _pythonParameters;
-        public AutoCalculationParameters PythonParameters
+        private AutoCalculationParameters _parameters;
+        public AutoCalculationParameters Parameters
         {
             get
             {
-                return _pythonParameters;
+                return _parameters;
             }
             set
             {
-                _pythonParameters = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("PythonParameters"));
+                _parameters = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("Parameters"));
             }
         }
 
-        private AutoCalculationParameters _cSharParameters;
-        public AutoCalculationParameters CSharpParameters
+        private CalculationVariants _calculationVariants;
+        public CalculationVariants CalculationVariants
         {
             get
             {
-                return _cSharParameters;
-
+                return _calculationVariants;
             }
             set
             {
-                _cSharParameters = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("CSharpParameters"));
+                _calculationVariants = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("CalculationVariants"));
             }
         }
 

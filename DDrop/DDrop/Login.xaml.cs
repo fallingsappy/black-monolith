@@ -109,7 +109,7 @@ namespace DDrop
                         LoginWindowLoading();
                         Close();
                     }
-                    catch (Exception e)
+                    catch
                     {
                         _notifier.ShowError($"Не удалось получить список серий пользователя {UserLogin.Email}. Не удалось установить подключение. Проверьте интернет соединение.");
                         LoginSucceeded = false;

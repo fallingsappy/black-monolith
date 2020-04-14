@@ -53,7 +53,7 @@
     <Compile Include="DbEntities\DbContour.cs" />
     <Compile Include="DbEntities\DbDrop.cs" />
     <Compile Include="DbEntities\DbDropPhoto.cs" />
-    <Compile Include="DbEntities\DbLog.cs" />
+    <Compile Include="DbEntities\DbLogEntry.cs" />
     <Compile Include="DbEntities\DbReferencePhoto.cs" />
     <Compile Include="DbEntities\DbSeries.cs" />
     <Compile Include="DbEntities\DbSimpleLine.cs" />
@@ -79,6 +79,10 @@
     <Compile Include="Migrations\202003301909187_Contour.designer.cs">
       <DependentUpon>202003301909187_Contour.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202004140442599_LoggerAndContour.cs" />
+    <Compile Include="Migrations\202004140442599_LoggerAndContour.designer.cs">
+      <DependentUpon>202004140442599_LoggerAndContour.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -101,6 +105,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202003301909187_Contour.resx">
       <DependentUpon>202003301909187_Contour.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004140442599_LoggerAndContour.resx">
+      <DependentUpon>202004140442599_LoggerAndContour.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

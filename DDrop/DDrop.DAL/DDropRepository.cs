@@ -300,7 +300,7 @@ namespace DDrop.DAL
                     {
                         referencePhotoForAdd = new DbReferencePhoto
                         {
-                            Name = referencePhotoForSeries?.Name,
+                            Name = referencePhotoForSeries.Name,
                             PixelsInMillimeter = referencePhotoForSeries.PixelsInMillimeter,
                             Content = referencePhotoForSeries.Content,
                         };
@@ -729,6 +729,37 @@ namespace DDrop.DAL
                 catch (ArgumentNullException e)
                 {
                     throw new ArgumentNullException(e.Message);
+                }
+                catch (InvalidOperationException e)
+                {
+                    throw new InvalidOperationException(e.Message);
+                }
+            }
+        }
+
+        #endregion
+
+        #region Contour
+
+
+
+        #endregion
+
+        #region Logger
+
+        public async Task SaveLogEntry(DbLogEntry dbLogEntry)
+        {
+            using (var context = new DDropContext())
+            {
+                try
+                {
+                    context.LogEntries.Add(dbLogEntry);
+
+                    await context.SaveChangesAsync();
+                }
+                catch (DbUpdateException e)
+                {
+                    throw new DbUpdateException(e.Message);
                 }
                 catch (InvalidOperationException e)
                 {

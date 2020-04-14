@@ -29,5 +29,6 @@ namespace DDrop.DAL
         Task DeleteReferencePhoto(Guid dbReferencePhotoId);
         Task UpdateReferencePhoto(DbReferencePhoto referencePhoto);
         Task<byte[]> GetReferencePhotoContent(Guid referencePhotoId);
+        Task SaveLogEntry(DbLogEntry dbLogEntry);
     }
 }
