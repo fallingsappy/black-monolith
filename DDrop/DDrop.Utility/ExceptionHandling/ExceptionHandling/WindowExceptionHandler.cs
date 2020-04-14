@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Windows;
+using DDrop.BE.Enums.Logger;
+using DDrop.BE.Models;
 using DDrop.Utility.ExceptionHandling.ViewModels;
 using DDrop.Utility.ExceptionHandling.Windows;
+using DDrop.Utility.Logger;
 
 namespace DDrop.Utility.ExceptionHandling.ExceptionHandling
 {
@@ -9,7 +12,7 @@ namespace DDrop.Utility.ExceptionHandling.ExceptionHandling
     /// This ExceptionHandler implementation opens a new
     /// error window for every unhandled exception that occurs.
     /// </summary>
-    public class WindowExceptionHandler : GlobalExceptionHandlerBase
+    public class WindowExceptionHandler : GlobalExceptionHandlerBase, IGlobalExceptionHandler
     {
         /// <summary>
         /// This method opens a new ExceptionWindow with the
@@ -20,7 +23,7 @@ namespace DDrop.Utility.ExceptionHandling.ExceptionHandling
             Application.Current.Dispatcher.BeginInvoke(new Action(() => {
                 var exceptionWindow = new ExceptionWindow();
                 exceptionWindow.DataContext = new ExceptionWindowVM(e);
-                exceptionWindow.Show();
+                exceptionWindow.ShowDialog();
             }));
         } 
     }

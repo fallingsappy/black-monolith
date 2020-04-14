@@ -7,7 +7,7 @@ using DDrop.Utility.ExceptionHandling.Exceptions;
 
 namespace DDrop.Utility.ExceptionHandling.ExceptionHandling
 {
-    public abstract class GlobalExceptionHandlerBase
+    public abstract class GlobalExceptionHandlerBase : IGlobalExceptionHandler
     {
         public GlobalExceptionHandlerBase()
         {

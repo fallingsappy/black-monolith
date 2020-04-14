@@ -2,7 +2,7 @@
 
 namespace DDrop.Utility.ExceptionHandling.Windows
 {
-    public partial class ExceptionWindow : Window
+    public partial class ExceptionWindow
     {
         public ExceptionWindow()
         {

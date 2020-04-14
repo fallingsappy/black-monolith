@@ -7,13 +7,18 @@ using DDrop.DAL;
 using DDrop.Utility.Mappers;
 using System.Linq;
 using System.Collections.ObjectModel;
+using System.Data.Entity.Infrastructure;
+using DDrop.BE.Enums.Logger;
+using DDrop.Utility.Logger;
+using ToastNotifications;
+using ToastNotifications.Messages;
 
 namespace DDrop
 {
     /// <summary>
     /// Логика взаимодействия для EditTable.xaml
     /// </summary>
-    public partial class EditTable : Window
+    public partial class EditTable
     {
         public static readonly DependencyProperty OriginalSeriesProperty = DependencyProperty.Register("OriginalSeries", typeof(Series), typeof(EditTable));
 
@@ -28,11 +33,16 @@ namespace DDrop
 
         private Dictionary<Guid, int> _originalOrder;
         private readonly IDDropRepository _dDropRepository;
-        public EditTable(Series originalSeries, IDDropRepository dDropRepository)
+        private readonly ILogger _logger;
+        private readonly Notifier _notifier;
+
+        public EditTable(Series originalSeries, IDDropRepository dDropRepository, ILogger logger, Notifier notifier)
         {
             InitializeComponent();
 
             _originalOrder = new Dictionary<Guid, int>();
+            _logger = logger;
+            _notifier = notifier;
 
             foreach (var item in originalSeries.DropPhotosSeries)
             {
@@ -72,9 +82,31 @@ namespace DDrop
                         await _dDropRepository.UpdatePhotosOrderInSeries(
                             DDropDbEntitiesMapper.ListOfDropPhotosToListOfDbDropPhotos(OriginalSeries.DropPhotosSeries,
                                 OriginalSeries.SeriesId));
+
+                        _logger.LogInfo(new LogEntry()
+                        {
+                            Username = OriginalSeries.CurrentUser.Email,
+                            LogCategory = LogCategory.DropPhoto,
+                            Message = "Новый порядок снимков сохранен.",
+                        });
+                        _notifier.ShowSuccess("Новый порядок снимков сохранен.");
                     }
-                    catch (Exception)
+                    catch (TimeoutException)
                     {
+                        _notifier.ShowError("Не удалось сохранить новый порядок снимков. Проверьте интернет соединение.");
+                    }
+                    catch (Exception exception)
+                    {
+                        _logger.LogError(new LogEntry
+                        {
+                            Exception = exception.ToString(),
+                            LogCategory = LogCategory.Common,
+                            InnerException = exception.InnerException?.Message,
+                            Message = exception.Message,
+                            StackTrace = exception.StackTrace,
+                            Username = OriginalSeries.CurrentUser.Email,
+                            Details = exception.TargetSite.Name
+                        });
                         throw;
                     }
                 }
@@ -90,6 +122,14 @@ namespace DDrop
                     }
 
                     OriginalSeries.DropPhotosSeries = OrderByPhotoOrderInSeries(OriginalSeries.DropPhotosSeries);
+
+                    _logger.LogInfo(new LogEntry()
+                    {
+                        Username = OriginalSeries.CurrentUser.Email,
+                        LogCategory = LogCategory.DropPhoto,
+                        Message = "Cтарый порядок снимков восстановлен.",
+                    });
+                    _notifier.ShowInformation("Cтарый порядок снимков восстановлен.");
                 }
             }
             else

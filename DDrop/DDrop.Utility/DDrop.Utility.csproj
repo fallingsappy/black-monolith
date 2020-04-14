@@ -94,6 +94,7 @@
     <Compile Include="DataGrid\VisualHelper.cs" />
     <Compile Include="ExcelOperations\ExcelOperations.cs" />
     <Compile Include="ExceptionHandling\ExceptionHandling\GlobalExceptionHandlerBase.cs" />
+    <Compile Include="ExceptionHandling\ExceptionHandling\IGlobalExceptionHandler.cs" />
     <Compile Include="ExceptionHandling\ExceptionHandling\WindowExceptionHandler.cs" />
     <Compile Include="ExceptionHandling\Exceptions\SampleException.cs" />
     <Compile Include="ExceptionHandling\Exceptions\UnknownAppDomainException.cs" />

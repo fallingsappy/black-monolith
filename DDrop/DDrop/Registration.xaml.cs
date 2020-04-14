@@ -3,6 +3,7 @@ using DDrop.Utility.ImageOperations;
 using Microsoft.Win32;
 using System;
 using System.Collections.ObjectModel;
+using System.Data.Entity.Infrastructure;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -10,10 +11,12 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using DDrop.BE.Enums.Logger;
 using DDrop.DAL;
 using ToastNotifications;
 using ToastNotifications.Messages;
 using DDrop.Utility.Cryptography;
+using DDrop.Utility.Logger;
 using DDrop.Utility.Mappers;
 
 namespace DDrop
@@ -26,6 +29,7 @@ namespace DDrop
         public static readonly DependencyProperty UserLoginProperty = DependencyProperty.Register("UserLogin", typeof(User), typeof(Registration));
         private IDDropRepository _dDropRepository;
         private readonly Notifier _notifier;
+        private readonly ILogger _logger;
 
         public bool RegistrationSucceeded;
         public byte[] UserPhoto { get; set; }
@@ -39,8 +43,9 @@ namespace DDrop
             }
         }
 
-        public Registration(IDDropRepository dDropRepository, Notifier notifier)
+        public Registration(IDDropRepository dDropRepository, Notifier notifier, ILogger logger)
         {
+            _logger = logger;
             _notifier = notifier;
             _dDropRepository = dDropRepository;
             InitializeComponent();
@@ -137,43 +142,85 @@ namespace DDrop
             {
                 var emailToCheck = TextBoxEmail.Text;
                 RegistrationWindowLoading();
-                var userToRegister = await Task.Run(() => _dDropRepository.GetUserByLogin(emailToCheck));
-                if (userToRegister == null)
+                try
                 {
-                    try
+                    var userToRegister = await Task.Run(() => _dDropRepository.GetUserByLogin(emailToCheck));
+                    if (userToRegister == null)
                     {
-                        var user = new User()
+                        try
                         {
-                            Email = TextBoxEmail.Text.Trim(),
-                            UserSeries = new ObservableCollection<Series>(),
-                            FirstName = TextBoxFirstName.Text,
-                            LastName = TextBoxLastName.Text,
-                            IsLoggedIn = true,
-                            Password = PasswordOperations.HashPassword(PasswordBox1.Password),
-                            UserId = Guid.NewGuid(),
-                            UserPhoto = UserPhoto,
-                        };
+                            var user = new User()
+                            {
+                                Email = TextBoxEmail.Text.Trim(),
+                                UserSeries = new ObservableCollection<Series>(),
+                                FirstName = TextBoxFirstName.Text,
+                                LastName = TextBoxLastName.Text,
+                                IsLoggedIn = true,
+                                Password = PasswordOperations.HashPassword(PasswordBox1.Password),
+                                UserId = Guid.NewGuid(),
+                                UserPhoto = UserPhoto,
+                            };
 
-                        await Task.Run(() => _dDropRepository.CreateUserAsync(DDropDbEntitiesMapper.UserToDbUser(user)));
+                            await Task.Run(() => _dDropRepository.CreateUserAsync(DDropDbEntitiesMapper.UserToDbUser(user)));
 
-                        UserLogin = user;
+                            UserLogin = user;
 
-                        _notifier.ShowSuccess($"Пользователь {UserLogin.Email} успешно зарегистрирован.");
-                        RegistrationSucceeded = true;
-                        RegistrationWindowLoading();
-                        Close();
+                            _logger.LogInfo(new LogEntry()
+                            {
+                                Username = UserLogin.Email,
+                                LogCategory = LogCategory.Registration,
+                                Message = $"Пользователь {UserLogin.Email} успешно зарегистрирован.",
+                            });
+                            _notifier.ShowSuccess($"Пользователь {UserLogin.Email} успешно зарегистрирован.");
+                            RegistrationSucceeded = true;
+                            RegistrationWindowLoading();
+                            Close();
+                        }
+                        catch (TimeoutException)
+                        {
+                            RegistrationWindowLoading();
+                            _notifier.ShowError($"Не удалось зарегистрировать пользователя {emailToCheck}. Не удалось установить соединение. Проверьте интернет подключение.");
+                        }
+                        catch (Exception exception)
+                        {
+                            _logger.LogError(new LogEntry
+                            {
+                                Exception = exception.ToString(),
+                                LogCategory = LogCategory.Common,
+                                InnerException = exception.InnerException?.Message,
+                                Message = exception.Message,
+                                StackTrace = exception.StackTrace,
+                                Username = emailToCheck,
+                                Details = exception.TargetSite.Name
+                            });
+                            throw;
+                        }
                     }
-                    catch
+                    else
                     {
                         RegistrationWindowLoading();
-                        _notifier.ShowError("Не удалось установить соединение. Проверьте интернет подключение.");
+                        _notifier.ShowError("Пользователь с таким Email уже существует.");
+                        RegistrationSucceeded = false;
                     }
                 }
-                else
+                catch (TimeoutException)
                 {
                     RegistrationWindowLoading();
-                    _notifier.ShowError("Пользователь с таким Email уже существует.");
-                    RegistrationSucceeded = false;
+                    _notifier.ShowError($"Не удалось зарегистрировать пользователя {emailToCheck}. Не удалось установить соединение. Проверьте интернет подключение.");
+                }
+                catch (Exception exception)
+                {
+                    _logger.LogError(new LogEntry
+                    {
+                        Exception = exception.ToString(),
+                        LogCategory = LogCategory.Common,
+                        InnerException = exception.InnerException?.Message,
+                        Message = exception.Message,
+                        StackTrace = exception.StackTrace,
+                        Username = emailToCheck,
+                        Details = exception.TargetSite.Name
+                    });
+                    throw;
                 }
             }
         }

@@ -8,8 +8,11 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
+using DDrop.BE.Enums.Logger;
+using DDrop.Utility.Logger;
 using DDrop.Utility.Mappers;
 using Microsoft.Win32;
+using Newtonsoft.Json;
 using Ookii.Dialogs.Wpf;
 using ToastNotifications;
 using ToastNotifications.Messages;
@@ -201,10 +204,14 @@ namespace DDrop
         public bool ShowContourOnPreviewIsChanged;
         private AutoCalculationTemplate _currentAutoCalculationTemplate;
         private Notifier _notifier;
+        private ILogger _logger;
+        private User _user;
 
-        public Options(Notifier notifier)
+        public Options(Notifier notifier, ILogger logger, User user)
         {
             _notifier = notifier;
+            _logger = logger;
+            _user = user;
             InitializeComponent();
             InitializePaths();
             InitilizeUserTemplates();
@@ -377,9 +384,15 @@ namespace DDrop
 
                         UserAutoCalculationTemplates.Add(deserializedTemplate);
 
+                        _logger.LogInfo(new LogEntry()
+                        {
+                            Username = _user.Email,
+                            LogCategory = LogCategory.Options,
+                            Message = $"Шаблон авторасчета {deserializedTemplate.Title} добавлен.",
+                        });
                         _notifier.ShowSuccess($"Шаблон авторасчета {deserializedTemplate.Title} добавлен.");
                     }
-                    catch
+                    catch (JsonException)
                     {
                         _notifier.ShowError(
                             $"Не удалось десериализовать файл {fileName}. Файл не является файлом шаблона или поврежден.");
@@ -422,11 +435,18 @@ namespace DDrop
                             continue;
                         }
 
+
                         await JsonSerializeProvider.SerializeToFileAsync(autoCalculationTemplate,
                             $"{saveFileDialog.SelectedPath}\\{autoCalculationTemplate.Title}.dplate");
 
+                        _logger.LogInfo(new LogEntry()
+                        {
+                            Username = _user.Email,
+                            LogCategory = LogCategory.Options,
+                            Message = $"файл {autoCalculationTemplate.Title}.dplate сохранен на диске.",
+                        });
                         _notifier.ShowSuccess($"файл {autoCalculationTemplate.Title}.dplate сохранен на диске.");
-
+                        
                         pbu.CurValue[pbuHandle1] += 1;
                     }
 

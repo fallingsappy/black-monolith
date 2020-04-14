@@ -7,12 +7,14 @@ using System.Collections.Generic;
 using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Data.Entity.Infrastructure;
+using System.Data.SqlClient;
 using System.Threading;
 
 namespace DDrop.DAL
 {
     public class DDropRepository : IDDropRepository
     {
+        
         #region User
 
         public async Task CreateUserAsync(DbUser user)
@@ -25,13 +27,9 @@ namespace DDrop.DAL
 
                     await context.SaveChangesAsync();
                 }
-                catch (DbUpdateException e)
+                catch (SqlException e)
                 {
-                    throw new DbUpdateException(e.Message);
-                }
-                catch (InvalidOperationException e)
-                {
-                    throw new InvalidOperationException(e.Message);
+                    throw new TimeoutException(e.Message, e);
                 }
             }
         }
@@ -48,13 +46,9 @@ namespace DDrop.DAL
 
                     await context.SaveChangesAsync();
                 }
-                catch (DbUpdateException e)
+                catch (SqlException e)
                 {
-                    throw new DbUpdateException(e.Message);
-                }
-                catch (InvalidOperationException e)
-                {
-                    throw new InvalidOperationException(e.Message);
+                    throw new TimeoutException(e.Message, e);
                 }
             }
         }
@@ -67,13 +61,9 @@ namespace DDrop.DAL
                 {
                     return await context.Users.FirstOrDefaultAsync(x => x.Email == email);
                 }
-                catch (ArgumentNullException e)
+                catch (SqlException e)
                 {
-                    throw new ArgumentNullException(e.Message);
-                }
-                catch (InvalidOperationException e)
-                {
-                    throw new InvalidOperationException(e.Message);
+                    throw new TimeoutException(e.Message, e);
                 }
             }
         }
@@ -92,13 +82,9 @@ namespace DDrop.DAL
 
                     await context.SaveChangesAsync();
                 }
-                catch (DbUpdateException e)
+                catch (SqlException e)
                 {
-                    throw new DbUpdateException(e.Message);
-                }
-                catch (InvalidOperationException e)
-                {
-                    throw new InvalidOperationException(e.Message);
+                    throw new TimeoutException(e.Message, e);
                 }
             }
         }
@@ -203,9 +189,9 @@ namespace DDrop.DAL
 
                     return dbSeries;
                 }
-                catch (ArgumentNullException e)
+                catch (SqlException e)
                 {
-                    throw new ArgumentNullException(e.Message);
+                    throw new TimeoutException(e.Message, e);
                 }
             }
         }
@@ -328,9 +314,9 @@ namespace DDrop.DAL
                         DropPhotosSeries = dbDropPhotoForAdd.OrderBy(x => x.PhotoOrderInSeries).ToList()
                     };
                 }
-                catch (ArgumentNullException e)
+                catch (SqlException e)
                 {
-                    throw new ArgumentNullException(e.Message);
+                    throw new TimeoutException(e.Message, e);
                 }
             }
         }
@@ -381,13 +367,9 @@ namespace DDrop.DAL
 
                     await context.SaveChangesAsync();
                 }
-                catch (DbUpdateException e)
+                catch (SqlException e)
                 {
-                    throw new DbUpdateException(e.Message);
-                }
-                catch (InvalidOperationException e)
-                {
-                    throw new InvalidOperationException(e.Message);
+                    throw new TimeoutException(e.Message, e);
                 }
             }
         }
@@ -404,13 +386,9 @@ namespace DDrop.DAL
                     
                     await context.SaveChangesAsync();
                 }
-                catch (DbUpdateException e)
+                catch (SqlException e)
                 {
-                    throw new DbUpdateException(e.Message);
-                }
-                catch (InvalidOperationException e)
-                {
-                    throw new InvalidOperationException(e.Message);
+                    throw new TimeoutException(e.Message, e);
                 }
             }
         }
@@ -427,13 +405,9 @@ namespace DDrop.DAL
 
                     await context.SaveChangesAsync();
                 }
-                catch (DbUpdateException e)
+                catch (SqlException e)
                 {
-                    throw new DbUpdateException(e.Message);
-                }
-                catch (InvalidOperationException e)
-                {
-                    throw new InvalidOperationException(e.Message);
+                    throw new TimeoutException(e.Message, e);
                 }
             }
         }
@@ -450,13 +424,9 @@ namespace DDrop.DAL
 
                     await context.SaveChangesAsync();
                 }
-                catch (DbUpdateException e)
+                catch (SqlException e)
                 {
-                    throw new DbUpdateException(e.Message);
-                }
-                catch (InvalidOperationException e)
-                {
-                    throw new InvalidOperationException(e.Message);
+                    throw new TimeoutException(e.Message, e);
                 }
             }
         }
@@ -502,13 +472,9 @@ namespace DDrop.DAL
 
                     await context.SaveChangesAsync();
                 }
-                catch (DbUpdateException e)
+                catch (SqlException e)
                 {
-                    throw new DbUpdateException(e.Message);
-                }
-                catch (InvalidOperationException e)
-                {
-                    throw new InvalidOperationException(e.Message);
+                    throw new TimeoutException(e.Message, e);
                 }
             }
         }
@@ -525,13 +491,9 @@ namespace DDrop.DAL
                     context.Set<DbDrop>().AddOrUpdate(dropPhoto.Drop);
                     await context.SaveChangesAsync();
                 }
-                catch (DbUpdateException e)
+                catch (SqlException e)
                 {
-                    throw new DbUpdateException(e.Message);
-                }
-                catch (InvalidOperationException e)
-                {
-                    throw new InvalidOperationException(e.Message);
+                    throw new TimeoutException(e.Message, e);
                 }
             }
         }
@@ -546,13 +508,9 @@ namespace DDrop.DAL
 
                     await context.SaveChangesAsync();
                 }
-                catch (DbUpdateException e)
+                catch (SqlException e)
                 {
-                    throw new DbUpdateException(e.Message);
-                }
-                catch (InvalidOperationException e)
-                {
-                    throw new InvalidOperationException(e.Message);
+                    throw new TimeoutException(e.Message, e);
                 }
             }
         }
@@ -569,13 +527,9 @@ namespace DDrop.DAL
 
                     await context.SaveChangesAsync();
                 }
-                catch (DbUpdateException e)
+                catch (SqlException e)
                 {
-                    throw new DbUpdateException(e.Message);
-                }
-                catch (InvalidOperationException e)
-                {
-                    throw new InvalidOperationException(e.Message);
+                    throw new TimeoutException(e.Message, e);
                 }
             }
         }
@@ -598,13 +552,9 @@ namespace DDrop.DAL
 
                     await context.SaveChangesAsync();
                 }
-                catch (DbUpdateException e)
+                catch (SqlException e)
                 {
-                    throw new DbUpdateException(e.Message);
-                }
-                catch (InvalidOperationException e)
-                {
-                    throw new InvalidOperationException(e.Message);
+                    throw new TimeoutException(e.Message, e);
                 }
             }
         }
@@ -621,17 +571,9 @@ namespace DDrop.DAL
 
                     return content;                    
                 }
-                catch (OperationCanceledException ex)
+                catch (SqlException e)
                 {
-                    throw;
-                }
-                catch (ArgumentNullException e)
-                {
-                    throw new ArgumentNullException(e.Message);
-                }
-                catch (InvalidOperationException e)
-                {
-                    throw new InvalidOperationException(e.Message);
+                    throw new TimeoutException(e.Message, e);
                 }
             }
         }
@@ -650,13 +592,9 @@ namespace DDrop.DAL
 
                     await context.SaveChangesAsync();
                 }
-                catch (DbUpdateException e)
+                catch (SqlException e)
                 {
-                    throw new DbUpdateException(e.Message);
-                }
-                catch (InvalidOperationException e)
-                {
-                    throw new InvalidOperationException(e.Message);
+                    throw new TimeoutException(e.Message, e);
                 }
             }
         }
@@ -681,13 +619,9 @@ namespace DDrop.DAL
                     
                     await context.SaveChangesAsync();
                 }
-                catch (DbUpdateException e)
+                catch (SqlException e)
                 {
-                    throw new DbUpdateException(e.Message);
-                }
-                catch (InvalidOperationException e)
-                {
-                    throw new InvalidOperationException(e.Message);
+                    throw new TimeoutException(e.Message, e);
                 }
             }
         }
@@ -707,13 +641,9 @@ namespace DDrop.DAL
 
                     await context.SaveChangesAsync();
                 }
-                catch (DbUpdateException e)
+                catch (SqlException e)
                 {
-                    throw new DbUpdateException(e.Message);
-                }
-                catch (InvalidOperationException e)
-                {
-                    throw new InvalidOperationException(e.Message);
+                    throw new TimeoutException(e.Message, e);
                 }
             }
         }
@@ -726,13 +656,9 @@ namespace DDrop.DAL
                 {
                     return await context.ReferencePhotos.Where(x => x.ReferencePhotoId == referencePhotoId).Select(z => z.Content).FirstOrDefaultAsync();
                 }
-                catch (ArgumentNullException e)
+                catch (SqlException e)
                 {
-                    throw new ArgumentNullException(e.Message);
-                }
-                catch (InvalidOperationException e)
-                {
-                    throw new InvalidOperationException(e.Message);
+                    throw new TimeoutException(e.Message, e);
                 }
             }
         }
@@ -757,13 +683,9 @@ namespace DDrop.DAL
 
                     await context.SaveChangesAsync();
                 }
-                catch (DbUpdateException e)
+                catch (SqlException e)
                 {
-                    throw new DbUpdateException(e.Message);
-                }
-                catch (InvalidOperationException e)
-                {
-                    throw new InvalidOperationException(e.Message);
+                    throw new TimeoutException(e.Message, e);
                 }
             }
         }

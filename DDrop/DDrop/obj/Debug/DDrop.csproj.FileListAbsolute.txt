@@ -712,3 +712,5 @@ E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\EditTable.baml
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\bin\Debug\Ookii.Dialogs.Wpf.dll
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\bin\Debug\Ookii.Dialogs.Wpf.xml
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\bin\Debug\DDrop.Controls.dll.config
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\bin\Debug\Newtonsoft.Json.dll
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\bin\Debug\Newtonsoft.Json.xml

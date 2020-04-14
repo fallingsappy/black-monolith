@@ -10,6 +10,7 @@
         ReferencePhoto,
         AutoCalculation,
         Calculation,
-        Account
+        Account,
+        Options,
     }
 }

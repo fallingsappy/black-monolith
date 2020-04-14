@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Data.Entity;
-using System.Linq;
+using System.Data.Entity.Infrastructure;
 using System.Reflection;
 using System.Threading.Tasks;
 using DDrop.BE.Models;
@@ -10,11 +9,13 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using DDrop.BE.Enums.Logger;
 using DDrop.DAL;
 using DDrop.Utility.Mappers;
 using ToastNotifications;
 using ToastNotifications.Messages;
 using DDrop.Utility.Cryptography;
+using DDrop.Utility.Logger;
 
 namespace DDrop
 {
@@ -26,13 +27,14 @@ namespace DDrop
         public static readonly DependencyProperty UserProperty = DependencyProperty.Register("User", typeof(User), typeof(Account));
         private readonly Notifier _notifier;
         private IDDropRepository _dDropRepository;
+        private ILogger _logger;
         public User User
         {
             get { return (User)GetValue(UserProperty); }
             set { SetValue(UserProperty, value); }
         }
 
-        public Account(User user, Notifier notifier, IDDropRepository dDropRepository)
+        public Account(User user, Notifier notifier, IDDropRepository dDropRepository, ILogger logger)
         {
             InitializeComponent();
             if (!user.IsLoggedIn)
@@ -50,6 +52,7 @@ namespace DDrop
             }
             _dDropRepository = dDropRepository;
             _notifier = notifier;
+            _logger = logger;
             User = user;
 
             ProfilePicture.Source = ImageInterpreter.LoadImage(User.UserPhoto);
@@ -94,14 +97,35 @@ namespace DDrop
                                 await Task.Run(() =>
                                 {
                                     Dispatcher.InvokeAsync(() => _dDropRepository.UpdateUserAsync(
-                                            DDropDbEntitiesMapper.UserToDbUser(User)));
+                                        DDropDbEntitiesMapper.UserToDbUser(User)));
                                 });
                                 ProfilePicture.Source = ImageInterpreter.LoadImage(User.UserPhoto);
+
+                                _logger.LogInfo(new LogEntry()
+                                {
+                                    Username = User.Email,
+                                    LogCategory = LogCategory.Account,
+                                    Message = "Фотография обновлена.",
+                                });
                                 _notifier.ShowSuccess("Фотография обновлена.");
                             }
-                            catch
+                            catch (TimeoutException)
                             {
-                                _notifier.ShowError("Не удалось сохранить изменения. Проверьте интернет соединение.");
+                                _notifier.ShowError("Не удалось сохранить фотографию. Проверьте интернет соединение.");
+                            }
+                            catch (Exception exception)
+                            {
+                                _logger.LogError(new LogEntry
+                                {
+                                    Exception = exception.ToString(),
+                                    LogCategory = LogCategory.Common,
+                                    InnerException = exception.InnerException?.Message,
+                                    Message = exception.Message,
+                                    StackTrace = exception.StackTrace,
+                                    Username = User.Email,
+                                    Details = exception.TargetSite.Name
+                                });
+                                throw;
                             }
 
                             AccountLoadingWindow();
@@ -131,11 +155,31 @@ namespace DDrop
                 });
                 User.FirstName = TextBlockFirstnameValue.Text;
 
+                _logger.LogInfo(new LogEntry()
+                {
+                    Username = User.Email,
+                    LogCategory = LogCategory.Account,
+                    Message = "Имя обновлено.",
+                });
                 _notifier.ShowSuccess("Имя обновлено.");
             }
-            catch
+            catch (TimeoutException)
             {
-                _notifier.ShowError("Не удалось сохранить изменения. Проверьте интернет соединение.");
+                _notifier.ShowError("Не удалось сохранить имя. Проверьте интернет соединение.");
+            }
+            catch (Exception exception)
+            {
+                _logger.LogError(new LogEntry
+                {
+                    Exception = exception.ToString(),
+                    LogCategory = LogCategory.Common,
+                    InnerException = exception.InnerException?.Message,
+                    Message = exception.Message,
+                    StackTrace = exception.StackTrace,
+                    Username = User.Email,
+                    Details = exception.TargetSite.Name
+                });
+                throw;
             }
 
             AccountLoadingWindow();
@@ -162,11 +206,32 @@ namespace DDrop
                     Dispatcher.InvokeAsync(() => _dDropRepository.UpdateUserAsync(DDropDbEntitiesMapper.UserToDbUser(User)));
                 });
                 User.LastName = TextBlockLastNameValue.Text;
+
+                _logger.LogInfo(new LogEntry()
+                {
+                    Username = User.Email,
+                    LogCategory = LogCategory.Account,
+                    Message = "Фамилия обновлена.",
+                });
                 _notifier.ShowSuccess("Фамилия обновлена.");
             }
-            catch
+            catch (TimeoutException)
             {
-                _notifier.ShowError("Не удалось сохранить изменения. Проверьте интернет соединение.");
+                _notifier.ShowError("Не удалось сохранить фамилию. Проверьте интернет соединение.");
+            }
+            catch (Exception exception)
+            {
+                _logger.LogError(new LogEntry
+                {
+                    Exception = exception.ToString(),
+                    LogCategory = LogCategory.Common,
+                    InnerException = exception.InnerException?.Message,
+                    Message = exception.Message,
+                    StackTrace = exception.StackTrace,
+                    Username = User.Email,
+                    Details = exception.TargetSite.Name
+                });
+                throw;
             }
 
             AccountLoadingWindow();
@@ -207,7 +272,7 @@ namespace DDrop
 
         private void SetSelection(PasswordBox passwordBox, int start, int length)
         {
-            passwordBox.GetType().GetMethod("Select", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(passwordBox, new object[] { start, length });
+            passwordBox.GetType().GetMethod("Select", BindingFlags.Instance | BindingFlags.NonPublic)?.Invoke(passwordBox, new object[] { start, length });
         }
 
         private void CurrentPassword_OnPreviewKeyDown(object sender, KeyEventArgs e)
@@ -318,7 +383,14 @@ namespace DDrop
                         {
                             Dispatcher.InvokeAsync(() => _dDropRepository.UpdateUserAsync(DDropDbEntitiesMapper.UserToDbUser(User)));
                         });
-                        
+
+
+                        _logger.LogInfo(new LogEntry()
+                        {
+                            Username = User.Email,
+                            LogCategory = LogCategory.Account,
+                            Message = "Пароль успешно изменен.",
+                        });
                         _notifier.ShowSuccess("Пароль успешно изменен.");
                         NewPasswordConfirm.Password = "";
                         NewPassword.Password = "";
@@ -326,11 +398,25 @@ namespace DDrop
                         
                         AccountLoadingWindow();
                     }
-                    catch
+                    catch (TimeoutException)
                     {
-                        _notifier.ShowError("Не удалось сохранить изменения. Проверьте интернет соединение.");
+                        _notifier.ShowError("Не удалось сохранить пароль. Проверьте интернет соединение.");
 
                         AccountLoadingWindow();
+                    }
+                    catch (Exception exception)
+                    {
+                        _logger.LogError(new LogEntry
+                        {
+                            Exception = exception.ToString(),
+                            LogCategory = LogCategory.Common,
+                            InnerException = exception.InnerException?.Message,
+                            Message = exception.Message,
+                            StackTrace = exception.StackTrace,
+                            Username = User.Email,
+                            Details = exception.TargetSite.Name
+                        });
+                        throw;
                     }
                 }
                 else
