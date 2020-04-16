@@ -9,6 +9,7 @@
         xmlns:simpleSample="clr-namespace:SimpleSample;assembly=DDrop.Controls"
         xmlns:loadingSpinner="clr-namespace:DDrop.Controls.LoadingSpinner;assembly=DDrop.Controls"
         xmlns:properties="clr-namespace:DDrop.Properties"
+        xmlns:dataGrid="clr-namespace:DDrop.Utility.DataGrid;assembly=DDrop.Utility"
         UseLayoutRounding="True"
         mc:Ignorable="d"
         Title="DDrop" MinHeight="500" MinWidth="870" Height="768" Width="1152" Icon="Resources/Icons/MainIcon.png" WindowState="Maximized" x:Name="AppMainWindow" Closing="AppMainWindow_Closing" WindowStartupLocation="CenterScreen">
@@ -155,7 +156,7 @@
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*" />
                                     <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" x:Name="PhotosPreviewRow"/>
                                 </Grid.RowDefinitions>
                                 <Border Background="Gainsboro" BorderThickness="1" Height="42" Margin="10,10,10,0" VerticalAlignment="Top">
                                     <Grid>
@@ -184,9 +185,6 @@
                                             <Button Visibility="Hidden" Grid.Row="0" Grid.Column="0" Name="SaveIntervalBetweenPhotos" HorizontalAlignment="Right" Margin="0,6,10,0" VerticalAlignment="Top" Width="27" Background="{x:Null}" BorderBrush="{x:Null}" Height="26" Click="SaveIntervalBetweenPhotos_Click" ToolTip="Сохранить интервал между снимками.">
                                                 <ContentControl Content="{StaticResource SaveIcon}" Height="21" Width="23"/>
                                             </Button>
-                                            <Button Grid.Row="0" Grid.Column="0" Name="UndoCalculate" HorizontalAlignment="Left" Margin="107,6,0,0" VerticalAlignment="Top" Width="27" Background="{x:Null}" BorderBrush="{x:Null}" Height="27" Click="UndoCalculate_OnClick" ToolTip="Отменить результаты расчета.">
-                                                <ContentControl Content="{StaticResource UndoIcon}" Height="21"/>
-                                            </Button>
                                         </Grid>
                                         <Grid x:Name="AutoCalculationMenu" Visibility="Hidden">
                                             <Button Grid.Row="0" Grid.Column="0" Name="AutoCalculate" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top" Width="28" BorderBrush="{x:Null}" Background="{x:Null}" Height="26" Click="Calculate_OnClick" ToolTip="Рассчитать.">
@@ -195,7 +193,18 @@
                                             <Button Grid.Row="0" Grid.Column="0" Name="SaveCalculationResults" HorizontalAlignment="Left" Margin="43,6,0,0" VerticalAlignment="Top" Width="28" BorderBrush="{x:Null}" Background="{x:Null}" Height="26" Click="SaveCalculationResults_OnClick" ToolTip="Сохранить результаты расчета.">
                                                 <ContentControl Content="{StaticResource SaveIcon}" Height="22" Width="24" />
                                             </Button>
-                                            <Button Grid.Row="0" Grid.Column="0"  Name="DiscardCalculationResults" HorizontalAlignment="Left" Margin="75,6,0,0" VerticalAlignment="Top" Width="27" Background="{x:Null}" BorderBrush="{x:Null}" Height="26" Click="DiscardCalculationResults_OnClick" ToolTip="Отмена.">
+                                            <Button Grid.Row="0" Grid.Column="0"  Name="DiscardCalculationResults" HorizontalAlignment="Left" Margin="75,6,0,0" VerticalAlignment="Top" Width="27" Background="{x:Null}" BorderBrush="{x:Null}" Height="26" Click="DiscardCalculationResults_OnClick" ToolTip="Закончить расчет">
+                                                <ContentControl Content="{StaticResource Cancel}" Height="22" Width="23"/>
+                                            </Button>
+                                            <Button Grid.Row="0" Grid.Column="0" Name="UndoCalculate" HorizontalAlignment="Left" Margin="107,6,0,0" VerticalAlignment="Top" Width="27" Background="{x:Null}" BorderBrush="{x:Null}" Height="27" Click="UndoCalculate_OnClick" ToolTip="Отменить результаты расчета.">
+                                                <ContentControl Content="{StaticResource UndoIcon}" Height="21"/>
+                                            </Button>
+                                        </Grid>
+                                        <Grid x:Name="SavePhotoOrderMenu" Visibility="Hidden">
+                                            <Button Visibility="Visible" Grid.Row="0" Name="SavePhotosOrder"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="27" Background="{x:Null}" BorderBrush="{x:Null}" Height="25" Click="SavePhotosOrder_OnClick" ToolTip="Сохранить изменения." Margin="10,6,0,0">
+                                                <ContentControl Content="{StaticResource SaveIcon}" Height="21"/>
+                                            </Button>
+                                            <Button Grid.Row="0" Grid.Column="0"  Name="DiscardPhotosReOrder" HorizontalAlignment="Left" Margin="75,6,0,0" VerticalAlignment="Top" Width="27" Background="{x:Null}" BorderBrush="{x:Null}" Height="26" Click="DiscardPhotosReOrder_OnClick" ToolTip="Закончить изменение порядка снимков.">
                                                 <ContentControl Content="{StaticResource Cancel}" Height="22" Width="23"/>
                                             </Button>
                                         </Grid>
@@ -206,9 +215,9 @@
                                         <loadingSpinner:AdornedControl.AdornerContent>
                                             <simpleSample:LoadingWait></simpleSample:LoadingWait>
                                         </loadingSpinner:AdornedControl.AdornerContent>
-                                        <DataGrid CellEditEnding="Photos_CellEditEnding" CanUserSortColumns="False" CanUserAddRows="false" AutoGenerateColumns="False" HorizontalAlignment="Stretch" Name="Photos" Margin="10,57,10,10" SelectionMode="Single" SelectionChanged="Photos_SelectionChanged" IsReadOnly="False" ItemsSource="{Binding CurrentSeries.DropPhotosSeries, ElementName=AppMainWindow,Mode=TwoWay,NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}">
+                                        <DataGrid dataGrid:VisualHelper.EnableRowsMove="False" CellEditEnding="Photos_CellEditEnding" CanUserSortColumns="False" CanUserAddRows="false" AutoGenerateColumns="False" HorizontalAlignment="Stretch" Name="Photos" Margin="10,57,10,10" SelectionMode="Single" SelectionChanged="Photos_SelectionChanged" IsReadOnly="False" ItemsSource="{Binding CurrentSeries.DropPhotosSeries, ElementName=AppMainWindow,Mode=TwoWay,NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}">
                                             <DataGrid.Columns>
-                                                <DataGridCheckBoxColumn IsReadOnly="False" Binding="{Binding IsChecked, UpdateSourceTrigger=PropertyChanged}" CanUserResize="False">
+                                                <DataGridCheckBoxColumn x:Name="PhotosCheckedColumn" IsReadOnly="False" Binding="{Binding IsChecked, UpdateSourceTrigger=PropertyChanged}" CanUserResize="False">
                                                     <DataGridCheckBoxColumn.HeaderTemplate>
                                                         <DataTemplate>
                                                             <CheckBox IsChecked="{Binding ElementName=AppMainWindow, Path=AllSelectedPhotos}" x:Name="ChooseAllSeries" Height="15" />
@@ -272,7 +281,10 @@
                                         </DataGrid>
                                     </loadingSpinner:AdornedControl>
                                 </Grid>
-                                <GridSplitter HorizontalAlignment="Stretch" 
+                                <GridSplitter
+                                  IsEnabled="True"
+                                  x:Name="PhotosPreviewGridSplitter"
+                                  HorizontalAlignment="Stretch" 
                                   VerticalAlignment="Center" 
                                   Grid.Row="1" Grid.Column="0" ResizeBehavior="PreviousAndNext"
                                   Height="5"/>
@@ -286,12 +298,15 @@
                                         </Canvas>
                                     </zoomborder:ZoomBorder>
                                 </loadingSpinner:AdornedControl>
-                                <GridSplitter HorizontalAlignment="Center" 
+                                <GridSplitter 
+                                  x:Name="AutoCalculationGridSplitter"
+                                  HorizontalAlignment="Center" 
                                   VerticalAlignment="Stretch" 
                                   Grid.Column="1"
                                   Grid.Row="0"
                                   Grid.RowSpan="3" ResizeBehavior="PreviousAndNext"
-                                  Width="5"/>
+                                  Width="5"
+                                  IsEnabled="False"/>
                                 <Grid x:Name="ToolBox" Grid.Column="2" Grid.Row="0" Grid.RowSpan="3">
                                     <TabControl MinWidth="200">
                                         <TabItem Header="Общие">

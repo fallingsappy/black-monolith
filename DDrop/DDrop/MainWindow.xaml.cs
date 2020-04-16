@@ -5,6 +5,7 @@ using DDrop.Utility.ExcelOperations;
 using DDrop.Utility.ImageOperations;
 using Microsoft.Win32;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
@@ -31,6 +32,7 @@ using DDrop.BL.ImageProcessing.CSharp;
 using DDrop.BL.ImageProcessing.Python;
 using DDrop.Utility.Animation;
 using DDrop.Utility.Calculation;
+using DDrop.Utility.DataGrid;
 using DDrop.Utility.Logger;
 using Newtonsoft.Json;
 
@@ -1301,8 +1303,12 @@ namespace DDrop
                     _tokenSource = new CancellationTokenSource();
 
                     CurrentDropPhoto = CurrentSeries.DropPhotosSeries[Photos.SelectedIndex];
-                    CurrentDropPhoto.Content = await Task.Run(() => _dDropRepository.GetDropPhotoContent(selectedFile.DropPhotoId, _tokenSource.Token));
-                    ImgCurrent.Source = ImageInterpreter.LoadImage(CurrentDropPhoto.Content);
+
+                    if (_loadPhotosContent)
+                    {
+                        CurrentDropPhoto.Content = await Task.Run(() => _dDropRepository.GetDropPhotoContent(selectedFile.DropPhotoId, _tokenSource.Token));
+                        ImgCurrent.Source = ImageInterpreter.LoadImage(CurrentDropPhoto.Content);
+                    }
 
                     ShowLinesOnPhotosPreview(selectedFile);
 
@@ -1809,26 +1815,194 @@ namespace DDrop
             }
         }
 
-        private void EditPhotosOrder_OnClick(object sender, RoutedEventArgs e)
-        {
-            EditTable editTableWindow = new EditTable(CurrentSeries, _dDropRepository, _logger, _notifier);
-
-            try
-            {
-                editTableWindow.ShowDialog();
-
-                _notifier.ShowSuccess($"Порядок снимков для серии {CurrentSeries.Title} обновлен.");
-            }
-            catch
-            {
-                _notifier.ShowError(
-                    $"Не удалось обновить порядок снимков для серии {CurrentSeries.Title}. Не удалось установить подключение. Проверьте интернет соединение.");
-            }
-        }
-
         private async void ReCalculate_Click(object sender, RoutedEventArgs e)
         {
             await ReCalculateDropParameters(true);
+        }
+
+        private Dictionary<Guid, int> _originalOrder;
+        private bool _loadPhotosContent = true;
+
+        private async void EditPhotosOrder_OnClick(object sender, RoutedEventArgs e)
+        {
+            await PhotosReOrderModeOn();
+
+            _originalOrder = new Dictionary<Guid, int>();
+
+            foreach (var item in CurrentSeries.DropPhotosSeries)
+            {
+                _originalOrder.Add(item.DropPhotoId, item.PhotoOrderInSeries);
+            }
+
+            //EditTable editTableWindow = new EditTable(CurrentSeries, _dDropRepository, _logger, _notifier);
+
+            //try
+            //{
+            //    editTableWindow.ShowDialog();
+
+            //    _notifier.ShowSuccess($"Порядок снимков для серии {CurrentSeries.Title} обновлен.");
+            //}
+            //catch
+            //{
+            //    _notifier.ShowError(
+            //        $"Не удалось обновить порядок снимков для серии {CurrentSeries.Title}. Не удалось установить подключение. Проверьте интернет соединение.");
+            //}
+        }
+
+        private async Task PhotosReOrderModeOn()
+        {
+            SeriesEditMenu.Visibility = Visibility.Hidden;
+            EditPhotosColumn.Visibility = Visibility.Hidden;
+            DeletePhotosColumn.Visibility = Visibility.Hidden;
+            PhotosCheckedColumn.Visibility = Visibility.Hidden;
+            PhotosPreviewGridSplitter.IsEnabled = false;
+            VisualHelper.SetEnableRowsMove(Photos, true);
+            await AnimationHelper.AnimateGridRowExpandCollapse(PhotosPreviewRow, false, 300, 0, 0, 0, 200);
+            SavePhotoOrderMenu.Visibility = Visibility.Visible;
+
+            _overrideLoadingBehaviour = true;
+            SingleSeriesLoading(false);
+            _loadPhotosContent = false;
+        }
+
+        public async Task PhotosReOrderModeOff()
+        {
+            SeriesEditMenu.Visibility = Visibility.Visible;
+            EditPhotosColumn.Visibility = Visibility.Visible;
+            DeletePhotosColumn.Visibility = Visibility.Visible;
+            PhotosCheckedColumn.Visibility = Visibility.Visible;
+            PhotosPreviewGridSplitter.IsEnabled = true;
+            VisualHelper.SetEnableRowsMove(Photos, false);
+            await AnimationHelper.AnimateGridRowExpandCollapse(PhotosPreviewRow, true, 300, 0, 0, 0, 200);
+            SavePhotoOrderMenu.Visibility = Visibility.Hidden;
+
+            _overrideLoadingBehaviour = false;
+            SingleSeriesLoadingComplete(false);
+            _loadPhotosContent = true;
+        }
+
+        private async void SavePhotosOrder_OnClick(object sender, RoutedEventArgs e)
+        {
+            var orderChanged = OrderChanged();
+
+            if (orderChanged)
+            {
+                MessageBoxResult messageBoxResult = MessageBox.Show("Сохранить новый порядок снимков?", "Подтверждение выхода", MessageBoxButton.YesNoCancel);
+                if (messageBoxResult == MessageBoxResult.Yes)
+                {
+                    try
+                    {
+                        await _dDropRepository.UpdatePhotosOrderInSeries(
+                            DDropDbEntitiesMapper.ListOfDropPhotosToListOfDbDropPhotos(CurrentSeries.DropPhotosSeries,
+                                CurrentSeries.SeriesId));
+
+                        _logger.LogInfo(new LogEntry()
+                        {
+                            Username = CurrentSeries.CurrentUser.Email,
+                            LogCategory = LogCategory.DropPhoto,
+                            Message = "Новый порядок снимков сохранен.",
+                        });
+
+                        await PhotosReOrderModeOff();
+                        _notifier.ShowSuccess("Новый порядок снимков сохранен.");
+                    }
+                    catch (TimeoutException)
+                    {
+                        _notifier.ShowError("Не удалось сохранить новый порядок снимков. Проверьте интернет соединение.");
+                        DiscardNewPhotosOrder();
+                        await PhotosReOrderModeOff();
+                    }
+                    catch (Exception exception)
+                    {
+                        _logger.LogError(new LogEntry
+                        {
+                            Exception = exception.ToString(),
+                            LogCategory = LogCategory.Common,
+                            InnerException = exception.InnerException?.Message,
+                            Message = exception.Message,
+                            StackTrace = exception.StackTrace,
+                            Username = CurrentSeries.CurrentUser.Email,
+                            Details = exception.TargetSite.Name
+                        });
+                        throw;
+                    }
+                }
+                else if (messageBoxResult == MessageBoxResult.No)
+                {
+                    DiscardNewPhotosOrder();
+
+                    _logger.LogInfo(new LogEntry()
+                    {
+                        Username = CurrentSeries.CurrentUser.Email,
+                        LogCategory = LogCategory.DropPhoto,
+                        Message = "Cтарый порядок снимков восстановлен.",
+                    });
+
+                    await PhotosReOrderModeOff();
+                }
+            }
+            else
+            {
+                MessageBoxResult messageBoxResult = MessageBox.Show("Закончить редактирование порядка снимков", "Подтверждение выхода", MessageBoxButton.YesNo);
+                if (messageBoxResult == MessageBoxResult.Yes)
+                {
+                    await PhotosReOrderModeOff();
+                }
+            }
+        }
+
+        private bool OrderChanged()
+        {
+            bool orderChanged = false;
+
+            foreach (var dropPhoto in CurrentSeries.DropPhotosSeries)
+            {
+                if (_originalOrder[dropPhoto.DropPhotoId] != dropPhoto.PhotoOrderInSeries)
+                {
+                    orderChanged = true;
+                    break;
+                }
+            }
+
+            return orderChanged;
+        }
+
+        private void DiscardNewPhotosOrder()
+        {
+            foreach (var dropPhoto in CurrentSeries.DropPhotosSeries)
+            {
+                dropPhoto.PhotoOrderInSeries = _originalOrder[dropPhoto.DropPhotoId];
+            }
+
+            CurrentSeries.DropPhotosSeries = OrderByPhotoOrderInSeries(CurrentSeries.DropPhotosSeries);
+            _notifier.ShowInformation("Cтарый порядок снимков восстановлен.");
+        }
+
+        private async void DiscardPhotosReOrder_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (OrderChanged())
+            {
+                MessageBoxResult messageBoxResult = MessageBox.Show("Отменить изменение порядка снимков?", "Подтверждение", MessageBoxButton.YesNo);
+                if (messageBoxResult == MessageBoxResult.Yes)
+                {
+                    DiscardNewPhotosOrder();
+                    await PhotosReOrderModeOff();
+                }
+            }
+            else
+            {
+                _notifier.ShowInformation("Порядок снимков остался без изменений.");
+                await PhotosReOrderModeOff();
+            }
+        }
+
+        private static ObservableCollection<DropPhoto> OrderByPhotoOrderInSeries(ObservableCollection<DropPhoto> orderThoseGroups)
+        {
+            ObservableCollection<DropPhoto> temp;
+            temp = new ObservableCollection<DropPhoto>(orderThoseGroups.OrderBy(p => p.PhotoOrderInSeries));
+            orderThoseGroups.Clear();
+            foreach (DropPhoto j in temp) orderThoseGroups.Add(j);
+            return orderThoseGroups;
         }
 
         #endregion
@@ -2191,7 +2365,7 @@ namespace DDrop
         #region AutoCalculation
 
         private bool _overrideLoadingBehaviour;
-        private bool _requireSaving;
+
         private async void StartAutoCalculate_OnClick(object sender, RoutedEventArgs e)
         {
             if (!string.IsNullOrWhiteSpace(PixelsInMillimeterTextBox.Text))
@@ -2199,6 +2373,7 @@ namespace DDrop
                 SeriesEditMenu.Visibility = Visibility.Hidden;
                 EditPhotosColumn.Visibility = Visibility.Hidden;
                 DeletePhotosColumn.Visibility = Visibility.Hidden;
+                AutoCalculationGridSplitter.IsEnabled = true;
 
                 AutoCalculationMenu.Visibility = Visibility.Visible;
                 
@@ -2228,8 +2403,6 @@ namespace DDrop
 
         private async void Calculate_OnClick(object sender, RoutedEventArgs e)
         {
-            _requireSaving = true;
-
             CurrentSeriesImageLoadingWindow();
             CurrentSeriesPhotoContentLoadingWindow();
             await AnimationHelper.AnimateGridColumnExpandCollapseAsync(AutoCalculationColumn, false, 300, 0, AutoCalculationColumn.MinWidth, 0, 200);
@@ -2246,6 +2419,8 @@ namespace DDrop
                     {
                         continue;
                     }
+
+                    CurrentSeries.DropPhotosSeries[i].RequireSaving = true;
 
                     System.Drawing.Point[] points;
                     try
@@ -2316,6 +2491,26 @@ namespace DDrop
             }
             else
                 _notifier.ShowInformation("Нет фотографий для расчета.");
+        }
+
+        private void ComboBox_OnDropDownClosed(object sender, EventArgs e)
+        {
+            var comboBox = sender as ComboBox;
+
+            if (comboBox != null && comboBox.SelectedIndex == -1)
+            {
+                comboBox.SelectedIndex = Properties.Settings.Default.AutoCalculationType;
+            }
+            else
+            {
+                if (comboBox != null) Properties.Settings.Default.AutoCalculationType = comboBox.SelectedIndex;
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        private void UndoCalculate_OnClick(object sender, RoutedEventArgs e)
+        {
+            DiscardAutoCalculationChanges();
         }
 
         private void ReCalculateAllParametersFromLines(DropPhoto dropPhoto)
@@ -2491,70 +2686,111 @@ namespace DDrop
 
         private async void DiscardCalculationResults_OnClick(object sender, RoutedEventArgs e)
         {
-            bool discard = true;
-
-            if (_requireSaving)
+            if (CurrentSeries.DropPhotosSeries.Any(x => x.RequireSaving))
             {
                 MessageBoxResult messageBoxResult = MessageBox.Show("Закончить авторасчет без сохранения?", "Подтверждение", MessageBoxButton.YesNo);
                 if (messageBoxResult == MessageBoxResult.Yes)
                 {
-                    foreach (var dropPhoto in CurrentSeries.DropPhotosSeries)
-                    {
-                        DiscardAutoCalculationChanges(dropPhoto);
-                    }
-                }
-                else
-                {
-                    discard = false;
+                    DiscardAutoCalculationChanges(true);
+
+                    await AutoCalculationModeOff();
                 }
             }
+            else
+            {
+                await AutoCalculationModeOff();
+            }
+        }
 
-            if (!discard) return;
-
-            await AnimationHelper.AnimateGridColumnExpandCollapseAsync(AutoCalculationColumn, false, 300, 0, AutoCalculationColumn.MinWidth, 0, 200);
-
+        private async Task AutoCalculationModeOff()
+        {
             SeriesEditMenu.Visibility = Visibility.Visible;
             EditPhotosColumn.Visibility = Visibility.Visible;
             DeletePhotosColumn.Visibility = Visibility.Visible;
+            AutoCalculationGridSplitter.IsEnabled = false;
 
             AutoCalculationMenu.Visibility = Visibility.Hidden;
 
+            await AnimationHelper.AnimateGridColumnExpandCollapseAsync(AutoCalculationColumn, false, 300, 0, AutoCalculationColumn.MinWidth, 0, 200);
             _overrideLoadingBehaviour = false;
             SingleSeriesLoadingComplete(false);
         }
 
-        private void DiscardAutoCalculationChanges(DropPhoto dropPhoto)
+        private void DiscardAutoCalculationChanges(bool discardAll = false)
         {
-            var storedPhoto = _storedDropPhotos.FirstOrDefault(x => x.DropPhotoId == dropPhoto.DropPhotoId);
+            var checkedCount = CurrentSeries.DropPhotosSeries.Count(x => x.IsChecked);
 
-            dropPhoto.SimpleHorizontalLine = storedPhoto.SimpleHorizontalLine;
-            dropPhoto.HorizontalLine = new Line
+            var message = GetDiscardMessage(checkedCount);
+            
+            if (CurrentSeries.DropPhotosSeries.Any(x => x.RequireSaving))
             {
-                X1 = dropPhoto.SimpleHorizontalLine.X1,
-                X2 = dropPhoto.SimpleHorizontalLine.X2,
-                Y1 = dropPhoto.SimpleHorizontalLine.Y1,
-                Y2 = dropPhoto.SimpleHorizontalLine.Y2,
-                StrokeThickness = 2,
-                Stroke = Brushes.DeepPink
-            };
+                MessageBoxResult messageBoxResult = MessageBox.Show(message, "Подтверждение", MessageBoxButton.YesNo);
+                if (messageBoxResult == MessageBoxResult.Yes)
+                {
+                    foreach (var dropPhoto in CurrentSeries.DropPhotosSeries)
+                    {
+                        if (checkedCount > 0 && !dropPhoto.IsChecked && discardAll == false)
+                        {
+                            continue;
+                        }
 
-            dropPhoto.SimpleVerticalLine = storedPhoto.SimpleVerticalLine;
-            dropPhoto.VerticalLine = new Line
+                        if (dropPhoto.RequireSaving == false)
+                        {
+                            _notifier.ShowInformation($"Нет изменений для снимка {dropPhoto.Name}.");
+                        }
+
+                        dropPhoto.RequireSaving = false;
+
+                        var storedPhoto = _storedDropPhotos.FirstOrDefault(x => x.DropPhotoId == dropPhoto.DropPhotoId);
+
+                        if (storedPhoto != null)
+                        {
+                            dropPhoto.SimpleHorizontalLine = storedPhoto.SimpleHorizontalLine;
+                            dropPhoto.HorizontalLine = new Line
+                            {
+                                X1 = dropPhoto.SimpleHorizontalLine.X1,
+                                X2 = dropPhoto.SimpleHorizontalLine.X2,
+                                Y1 = dropPhoto.SimpleHorizontalLine.Y1,
+                                Y2 = dropPhoto.SimpleHorizontalLine.Y2,
+                                StrokeThickness = 2,
+                                Stroke = Brushes.DeepPink
+                            };
+
+                            dropPhoto.SimpleVerticalLine = storedPhoto.SimpleVerticalLine;
+                            dropPhoto.VerticalLine = new Line
+                            {
+                                X1 = dropPhoto.SimpleVerticalLine.X1,
+                                X2 = dropPhoto.SimpleVerticalLine.X2,
+                                Y1 = dropPhoto.SimpleVerticalLine.Y1,
+                                Y2 = dropPhoto.SimpleVerticalLine.Y2,
+                                StrokeThickness = 2,
+                                Stroke = Brushes.Green
+                            };
+
+                            dropPhoto.Contour = storedPhoto.Contour;
+                        }
+
+                        ReCalculateAllParametersFromLines(dropPhoto);
+
+                        if (dropPhoto.DropPhotoId == CurrentDropPhoto.DropPhotoId)
+                            ShowLinesOnPhotosPreview(dropPhoto);
+                    }
+
+                    Photos.IsEnabled = true;
+                }
+
+                _notifier.ShowInformation($"Нет изменений для серии {CurrentSeries.Title}.");
+            }
+        }
+
+        private static string GetDiscardMessage(int checkedCount)
+        {
+            if (checkedCount > 0)
             {
-                X1 = dropPhoto.SimpleVerticalLine.X1,
-                X2 = dropPhoto.SimpleVerticalLine.X2,
-                Y1 = dropPhoto.SimpleVerticalLine.Y1,
-                Y2 = dropPhoto.SimpleVerticalLine.Y2,
-                StrokeThickness = 2,
-                Stroke = Brushes.Green
-            };
+                return "Отменить изменения для выбранных снимков?";
+            }
 
-            dropPhoto.Contour = storedPhoto.Contour;
-
-            ReCalculateAllParametersFromLines(dropPhoto);
-
-            if (dropPhoto.DropPhotoId == CurrentDropPhoto.DropPhotoId)
-                ShowLinesOnPhotosPreview(dropPhoto);
+            return "Отменить все изменения?";
         }
 
         #endregion
@@ -2780,8 +3016,12 @@ namespace DDrop
 
         private async void SingleSeriesLoadingComplete(bool disablePhotos = true)
         {
-            if (_overrideLoadingBehaviour) return;
-
+            if (_overrideLoadingBehaviour)
+            {
+                Photos.IsEnabled = true;
+                return;
+            }
+            
             if (CurrentSeries != null)
                 CurrentSeries.Loaded = true;
             if (disablePhotos)
@@ -2812,24 +3052,5 @@ namespace DDrop
 
         #endregion
 
-        private void ComboBox_OnDropDownClosed(object sender, EventArgs e)
-        {
-            var comboBox = sender as ComboBox;
-
-            if (comboBox != null && comboBox.SelectedIndex == -1)
-            {
-                comboBox.SelectedIndex = Properties.Settings.Default.AutoCalculationType;
-            }
-            else
-            {
-                if (comboBox != null) Properties.Settings.Default.AutoCalculationType = comboBox.SelectedIndex;
-                Properties.Settings.Default.Save();
-            }
-        }
-
-        private void UndoCalculate_OnClick(object sender, RoutedEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

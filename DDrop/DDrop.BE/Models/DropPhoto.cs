@@ -274,8 +274,21 @@ namespace DDrop.BE.Models
             }
         }
 
-        private int _photoOrderInSeries;
+        private bool _requireSaving;
+        public bool RequireSaving
+        {
+            get
+            {
+                return _requireSaving;
+            }
+            set
+            {
+                _requireSaving = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("RequireSaving"));
+            }
+        }
 
+        private int _photoOrderInSeries;
         public int PhotoOrderInSeries
         {
             get

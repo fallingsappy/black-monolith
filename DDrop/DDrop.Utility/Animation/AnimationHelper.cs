@@ -71,7 +71,7 @@ namespace DDrop.Utility.Animation
         /// <param name="milliseconds">The milliseconds component of the duration.</param>
         /// <param name="seconds">The seconds component of the duration.</param>
         /// <param name="expand">If true, expand, otherwise collapse.</param>
-        public static void AnimateGridRowExpandCollapse(RowDefinition gridRow, bool expand, double expandedHeight, double collapsedHeight, double minHeight, int seconds, int milliseconds)
+        public static async System.Threading.Tasks.Task AnimateGridRowExpandCollapse(RowDefinition gridRow, bool expand, double expandedHeight, double collapsedHeight, double minHeight, int seconds, int milliseconds)
         {
             if (expand && gridRow.ActualHeight >= expandedHeight)
                 // It's as high as it needs to be.
@@ -108,7 +108,7 @@ namespace DDrop.Utility.Animation
             storyBoard.Children.Add(animation);
 
             // Begin the animation.
-            storyBoard.Begin();
+            await storyBoard.BeginAsync();
         }
     }
 }
