@@ -21,8 +21,18 @@ namespace DDrop.Controls.PixelDrawer
         public static readonly DependencyProperty PixelsInMillimeterVerticalProperty = DependencyProperty.Register("PixelsInMillimeterVertical", typeof(string), typeof(PixelDrawer));
         public static readonly DependencyProperty PixelsInMillimeterHorizontalProperty = DependencyProperty.Register("PixelsInMillimeterHorizontal", typeof(string), typeof(PixelDrawer));
         public static readonly DependencyProperty ImageSourceProperty = DependencyProperty.Register("ImageSource", typeof(ImageSource), typeof(PixelDrawer));
-        public static readonly DependencyProperty CurrentSeriesProperty = DependencyProperty.Register("CurrentSeries", typeof(BE.Models.Series), typeof(PixelDrawer));
-        public static readonly DependencyProperty CurrentDropPhotoProperty = DependencyProperty.Register("CurrentDropPhoto", typeof(BE.Models.DropPhoto), typeof(PixelDrawer));
+        public static readonly DependencyProperty CurrentSeriesProperty = DependencyProperty.Register("CurrentSeries", typeof(Series), typeof(PixelDrawer));
+        public static readonly DependencyProperty CurrentDropPhotoProperty = DependencyProperty.Register("CurrentDropPhoto", typeof(DropPhoto), typeof(PixelDrawer));
+        public static readonly DependencyProperty DrawningIsEnabledProperty = DependencyProperty.Register("DrawningIsEnabled", typeof(bool), typeof(PixelDrawer));
+
+        public bool DrawningIsEnabled
+        {
+            get { return (bool) GetValue(DrawningIsEnabledProperty); }
+            set
+            {
+                SetValue(DrawningIsEnabledProperty, value);
+            }
+        }
 
         public DropPhoto CurrentDropPhoto
         {
@@ -121,22 +131,25 @@ namespace DDrop.Controls.PixelDrawer
 
         private void canDrawing_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            CanDrawing.MouseMove -= canDrawing_MouseMove_NotDown;
-            CanDrawing.MouseMove += canDrawing_MouseMove_Drawing;
-            CanDrawing.MouseUp += canDrawing_MouseUp_Drawing;
-            CanDrawing.MouseLeave += ReferenceImage_NewSegmentDrawingMouseLeave;
-            Application.Current.Deactivated += ReferenceImage_NewSegmentDrawingLostFocus;
-
-            _selectedLine = new Line
+            if (DrawningIsEnabled)
             {
-                Stroke = Brushes.Yellow,
-                X1 = e.GetPosition(Image).X,
-                Y1 = e.GetPosition(Image).Y,
-                X2 = e.GetPosition(Image).X,
-                Y2 = e.GetPosition(Image).Y
-            };
+                CanDrawing.MouseMove -= canDrawing_MouseMove_NotDown;
+                CanDrawing.MouseMove += canDrawing_MouseMove_Drawing;
+                CanDrawing.MouseUp += canDrawing_MouseUp_Drawing;
+                CanDrawing.MouseLeave += ReferenceImage_NewSegmentDrawingMouseLeave;
+                Application.Current.Deactivated += ReferenceImage_NewSegmentDrawingLostFocus;
 
-            CanDrawing.Children.Add(_selectedLine);
+                _selectedLine = new Line
+                {
+                    Stroke = Brushes.Yellow,
+                    X1 = e.GetPosition(Image).X,
+                    Y1 = e.GetPosition(Image).Y,
+                    X2 = e.GetPosition(Image).X,
+                    Y2 = e.GetPosition(Image).Y
+                };
+
+                CanDrawing.Children.Add(_selectedLine);
+            }
         }
 
         #region Drawing

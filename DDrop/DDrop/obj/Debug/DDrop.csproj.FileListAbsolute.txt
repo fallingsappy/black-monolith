@@ -681,7 +681,6 @@ E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\bin\Debug\System.Buffers.
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\DDrop.csprojAssemblyReference.cache
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\Account.baml
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\Login.baml
-E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\ManualEdit.baml
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\Options.baml
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\Registration.baml
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\Resources\Icons\Icons.baml
@@ -691,7 +690,6 @@ E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\CropPhoto.g.cs
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\Information.g.cs
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\Login.g.cs
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\MainWindow.g.cs
-E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\ManualEdit.g.cs
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\Options.g.cs
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\Registration.g.cs
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\App.g.cs
