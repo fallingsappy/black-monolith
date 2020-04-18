@@ -1349,16 +1349,16 @@ namespace DDrop
                 ImageForEdit = null;
         }
 
-        private void ShowLinesOnPhotosPreview(DropPhoto selectedFile)
+        private void ShowLinesOnPhotosPreview(DropPhoto selectedFile, bool showLines = false)
         {
             ImgCurrent.CanDrawing.Children.Remove(CurrentDropPhoto.HorizontalLine);
             ImgCurrent.CanDrawing.Children.Remove(CurrentDropPhoto.VerticalLine);
 
             PrepareContour(selectedFile, out _contourPhotosPreview);
 
-            if (CurrentDropPhoto.HorizontalLine != null && Properties.Settings.Default.ShowLinesOnPreview)
+            if (CurrentDropPhoto.HorizontalLine != null && Properties.Settings.Default.ShowLinesOnPreview || CurrentDropPhoto.HorizontalLine != null && showLines)
                 ImgCurrent.CanDrawing.Children.Add(CurrentDropPhoto.HorizontalLine);
-            if (CurrentDropPhoto.VerticalLine != null && Properties.Settings.Default.ShowLinesOnPreview)
+            if (CurrentDropPhoto.VerticalLine != null && Properties.Settings.Default.ShowLinesOnPreview || CurrentDropPhoto.VerticalLine != null && showLines)
                 ImgCurrent.CanDrawing.Children.Add(CurrentDropPhoto.VerticalLine);
             if (_contourPhotosPreview != null)
             {
@@ -1506,6 +1506,8 @@ namespace DDrop
         {
             await PhotoEditModeOn();
 
+            ShowLinesOnPhotosPreview(CurrentDropPhoto, true);
+
             if (!string.IsNullOrWhiteSpace(PixelsInMillimeterTextBox.Text) && PixelsInMillimeterTextBox.Text != "0")
             {                
                 if (CurrentDropPhoto.HorizontalLine == null)
@@ -1549,7 +1551,7 @@ namespace DDrop
             ManualEditMenu.Visibility = Visibility.Visible;
 
             _overrideLoadingBehaviour = true;
-            SingleSeriesLoading(false);
+            SingleSeriesLoading();
             _loadPhotosContent = false;
         }
 
@@ -1567,7 +1569,7 @@ namespace DDrop
 
             Photos.ItemsSource = CurrentSeries.DropPhotosSeries;
             _overrideLoadingBehaviour = false;
-            SingleSeriesLoadingComplete(false);
+            SingleSeriesLoadingComplete();
             _loadPhotosContent = true;
         }
 
@@ -3151,6 +3153,7 @@ namespace DDrop
                 await SavePixelDiameters();
             }
 
+            ShowLinesOnPhotosPreview(CurrentDropPhoto);
             await PhotoEditModeOff();
         }
 
@@ -3234,6 +3237,7 @@ namespace DDrop
                 }
             }
 
+            ShowLinesOnPhotosPreview(CurrentDropPhoto);
             await PhotoEditModeOff();
         }
     }
