@@ -53,9 +53,20 @@
                                 <simpleSample:LoadingWait></simpleSample:LoadingWait>
                             </loadingSpinner:AdornedControl.AdornerContent>
 
-                            <DataGrid CellEditEnding="SeriesDataGrid_CellEditEnding" CanUserAddRows="false" IsReadOnly="False" AutoGenerateColumns="False" SelectionMode="Single" Margin="0" BorderThickness="0" ClipToBounds="True" ItemsSource="{Binding User.UserSeries}" SelectionChanged="SeriesDataGrid_OnSelectionChanged" Name="SeriesDataGrid">
+                            <DataGrid ColumnWidth="*" CellEditEnding="SeriesDataGrid_CellEditEnding" CanUserAddRows="false" IsReadOnly="False" AutoGenerateColumns="False" SelectionMode="Single" Margin="0" BorderThickness="0" ClipToBounds="True" ItemsSource="{Binding User.UserSeries}" SelectionChanged="SeriesDataGrid_OnSelectionChanged" Name="SeriesDataGrid">
+                                <DataGrid.RowStyle>
+                                    <Style TargetType="DataGridRow">
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver"
+                                                     Value="True">
+                                                <Setter Property="Background"
+                                                        Value="#dde0eb" />
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </DataGrid.RowStyle>
                                 <DataGrid.Columns>
-                                    <DataGridCheckBoxColumn IsReadOnly="False" Binding="{Binding IsChecked, UpdateSourceTrigger=PropertyChanged}" CanUserResize="False">
+                                    <DataGridCheckBoxColumn Width="25" IsReadOnly="False" Binding="{Binding IsChecked, UpdateSourceTrigger=PropertyChanged}" CanUserResize="False">
                                         <DataGridCheckBoxColumn.HeaderTemplate>
                                             <DataTemplate>
                                                 <CheckBox IsChecked="{Binding ElementName=AppMainWindow, Path=AllSelectedSeries}" x:Name="ChooseAllSeries" Height="15" />
@@ -66,7 +77,7 @@
                                     <DataGridTextColumn IsReadOnly="True" Header="Количество фотографий" Binding="{Binding DropPhotosSeries.Count}"/>
                                     <DataGridTextColumn IsReadOnly="True" Header="Интервал между снимками" Binding="{Binding IntervalBetweenPhotos}"/>
                                     <DataGridTextColumn IsReadOnly="True" Header="Время добавления" Binding="{Binding AddedDate}"/>
-                                    <DataGridTemplateColumn IsReadOnly="True" CanUserResize="False">
+                                    <DataGridTemplateColumn Width="35" IsReadOnly="True" CanUserResize="False">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
                                                 <Button Name="DeleteSingleInputPhotoButton"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="27" Background="{x:Null}" BorderBrush="{x:Null}" Height="25" Click="DeleteSingleSeriesButton_Click">
@@ -75,7 +86,7 @@
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
-                                    <DataGridTemplateColumn Header="Статус" IsReadOnly="True" CanUserResize="False">
+                                    <DataGridTemplateColumn Width="45" Header="Статус" IsReadOnly="True" CanUserResize="False">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
                                                 <Grid>
@@ -101,7 +112,18 @@
                                   Grid.Column="0"
                                   Grid.Row="1" ResizeBehavior="PreviousAndNext"
                                   Height="5"/>
-                    <DataGrid AutoGenerateColumns="False" IsReadOnly="True" Grid.Column="0" Grid.Row="2" Margin="10,11,10,10"  ItemsSource="{Binding User.UserSeries.PhotoSeries}" Name="SeriesPreviewDataGrid" SelectionChanged="SeriesPreviewDataGrid_SelectionChanged">
+                    <DataGrid ColumnWidth="*" AutoGenerateColumns="False" IsReadOnly="True" Grid.Column="0" Grid.Row="2" Margin="10,11,10,10"  ItemsSource="{Binding User.UserSeries.PhotoSeries}" Name="SeriesPreviewDataGrid" SelectionChanged="SeriesPreviewDataGrid_SelectionChanged">
+                        <DataGrid.RowStyle>
+                            <Style TargetType="DataGridRow">
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver"
+                                             Value="True">
+                                        <Setter Property="Background"
+                                                Value="#dde0eb" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.RowStyle>
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Имя файла" Binding="{Binding Name}"/>
                             <DataGridTextColumn Header="Горизонтальный диаметр, px" Binding="{Binding XDiameterInPixels}"/>
@@ -215,7 +237,7 @@
                                             <Button Grid.Row="0" Grid.Column="0"  Name="DiscardManualPhotoEdit" HorizontalAlignment="Left" Margin="75,6,0,0" VerticalAlignment="Top" Width="27" Background="{x:Null}" BorderBrush="{x:Null}" Height="26" Click="DiscardManualPhotoEdit_OnClick" ToolTip="Закончить изменение порядка снимков.">
                                                 <ContentControl Content="{StaticResource Cancel}" Height="22" Width="23"/>
                                             </Button>
-                                            <TextBox IsEnabled="False" Text="{Binding ElementName=ImgCurrent, Path=PixelsInMillimeterHorizontal}" Name="PixelsInMillimeterHorizontalTextBox" Height="20" Margin="0,10,131,0" TextWrapping="Wrap"  VerticalAlignment="Top" HorizontalAlignment="Right" Width="84"/>
+                                            <TextBox IsEnabled="False" Text="{Binding ElementName=AppMainWindow, Path=CurrentDropPhoto.XDiameterInPixels}" Name="PixelsInMillimeterHorizontalTextBox" Height="20" Margin="0,10,131,0" TextWrapping="Wrap"  VerticalAlignment="Top" HorizontalAlignment="Right" Width="84"/>
                                             <Label Content="Пикселей в миллиметре:" Margin="0,10,252,0" VerticalAlignment="Top" Height="20" Background="{x:Null}" FontSize="8" HorizontalAlignment="Right" Width="101"/>
                                             <ToggleButton Checked="HorizontalRulerToggleButton_Checked" Unchecked="HorizontalRulerToggleButton_Unchecked" x:Name="HorizontalRulerToggleButton" Grid.Row="0" Margin="0,7,220,0" VerticalAlignment="Top" Background="{x:Null}" BorderBrush="{x:Null}" ToolTip="Провести горизонтальную линию." Height="24" HorizontalAlignment="Right" Width="27">
                                                 <ContentControl Content="{StaticResource Rule}" Height="20" RenderTransformOrigin="0.5,0.5">
@@ -226,7 +248,7 @@
                                                     </ContentControl.RenderTransform>
                                                 </ContentControl>
                                             </ToggleButton>
-                                            <TextBox IsEnabled="False" Text="{Binding ElementName=ImgCurrent, Path=PixelsInMillimeterVertical}" x:Name="PixelsInMillimeterVerticalTextBox" Height="20" Margin="0,10,10,0" TextWrapping="Wrap"  VerticalAlignment="Top" HorizontalAlignment="Right" Width="84"/>
+                                            <TextBox IsEnabled="False" Text="{Binding ElementName=AppMainWindow, Path=CurrentDropPhoto.YDiameterInPixels}" x:Name="PixelsInMillimeterVerticalTextBox" Height="20" Margin="0,10,10,0" TextWrapping="Wrap"  VerticalAlignment="Top" HorizontalAlignment="Right" Width="84"/>
                                             <ToggleButton Checked="VerticalRulerToggleButton_Checked" Unchecked="VerticalRulerToggleButton_Unchecked" x:Name="VerticalRulerToggleButton" Grid.Row="0" Margin="0,7,89,0" VerticalAlignment="Top" Background="{x:Null}" BorderBrush="{x:Null}" Height="25" ToolTip="Провести вертикальную линию." HorizontalAlignment="Right" Width="27">
                                                 <ContentControl  Content="{StaticResource Rule}" Height="21" RenderTransformOrigin="0.5,0.5">
                                                     <ContentControl.RenderTransform>
@@ -244,9 +266,20 @@
                                         <loadingSpinner:AdornedControl.AdornerContent>
                                             <simpleSample:LoadingWait></simpleSample:LoadingWait>
                                         </loadingSpinner:AdornedControl.AdornerContent>
-                                        <DataGrid dataGrid:VisualHelper.EnableRowsMove="False" CellEditEnding="Photos_CellEditEnding" CanUserSortColumns="False" CanUserAddRows="false" AutoGenerateColumns="False" HorizontalAlignment="Stretch" Name="Photos" Margin="10,0,10,10" SelectionMode="Single" SelectionChanged="Photos_SelectionChanged" IsReadOnly="False" ItemsSource="{Binding CurrentSeries.DropPhotosSeries, ElementName=AppMainWindow,Mode=TwoWay,NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}">
+                                        <DataGrid ColumnWidth="*" dataGrid:VisualHelper.EnableRowsMove="False" CellEditEnding="Photos_CellEditEnding" CanUserSortColumns="False" CanUserAddRows="false" AutoGenerateColumns="False" HorizontalAlignment="Stretch" Name="Photos" Margin="10,0,10,10" SelectionMode="Single" SelectionChanged="Photos_SelectionChanged" IsReadOnly="False" ItemsSource="{Binding CurrentSeries.DropPhotosSeries, ElementName=AppMainWindow,Mode=TwoWay,NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}">
+                                            <DataGrid.RowStyle>
+                                                <Style TargetType="DataGridRow">
+                                                    <Style.Triggers>
+                                                        <Trigger Property="IsMouseOver"
+                                                                 Value="True">
+                                                            <Setter Property="Background"
+                                                                    Value="#dde0eb" />
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </DataGrid.RowStyle>
                                             <DataGrid.Columns>
-                                                <DataGridCheckBoxColumn x:Name="PhotosCheckedColumn" IsReadOnly="False" Binding="{Binding IsChecked, UpdateSourceTrigger=PropertyChanged}" CanUserResize="False">
+                                                <DataGridCheckBoxColumn Width="25" x:Name="PhotosCheckedColumn" IsReadOnly="False" Binding="{Binding IsChecked, UpdateSourceTrigger=PropertyChanged}" CanUserResize="False">
                                                     <DataGridCheckBoxColumn.HeaderTemplate>
                                                         <DataTemplate>
                                                             <CheckBox IsChecked="{Binding ElementName=AppMainWindow, Path=AllSelectedPhotos}" x:Name="ChooseAllSeries" Height="15" />
@@ -262,7 +295,7 @@
                                                 <DataGridTextColumn IsReadOnly="True" Header="Объем, кубические метры" Binding="{Binding Drop.VolumeInCubicalMeters}"/>
                                                 <DataGridTextColumn IsReadOnly="True" Header="Время добавления" Binding="{Binding AddedDate}"/>
                                                 <DataGridTextColumn IsReadOnly="True" Header="Время создания" Binding="{Binding CreationDateTime}"/>
-                                                <DataGridTemplateColumn x:Name="EditPhotosColumn" IsReadOnly="True" CanUserResize="False">
+                                                <DataGridTemplateColumn Width="30" x:Name="EditPhotosColumn" IsReadOnly="True" CanUserResize="False">
                                                     <DataGridTemplateColumn.CellTemplate>
                                                         <DataTemplate>
                                                             <Button Name="EditInputPhotoButton"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="27" Background="{x:Null}" BorderBrush="{x:Null}" Height="25" Click="EditInputPhotoButton_Click">
@@ -271,7 +304,7 @@
                                                         </DataTemplate>
                                                     </DataGridTemplateColumn.CellTemplate>
                                                 </DataGridTemplateColumn>
-                                                <DataGridTemplateColumn x:Name="DeletePhotosColumn" IsReadOnly="True" CanUserResize="False">
+                                                <DataGridTemplateColumn Width="30" x:Name="DeletePhotosColumn" IsReadOnly="True" CanUserResize="False">
                                                     <DataGridTemplateColumn.CellTemplate>
                                                         <DataTemplate>
                                                             <Button Name="DeleteSingleInputPhotoButton"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="27" Background="{x:Null}" BorderBrush="{x:Null}" Height="25" Click="DeleteSingleInputPhotoButton_Click">
@@ -280,7 +313,7 @@
                                                         </DataTemplate>
                                                     </DataGridTemplateColumn.CellTemplate>
                                                 </DataGridTemplateColumn>
-                                                <DataGridTemplateColumn Header="Статус" IsReadOnly="True" CanUserResize="False">
+                                                <DataGridTemplateColumn Width="45" Header="Статус" IsReadOnly="True" CanUserResize="False">
                                                     <DataGridTemplateColumn.CellTemplate>
                                                         <DataTemplate>
                                                             <Grid>

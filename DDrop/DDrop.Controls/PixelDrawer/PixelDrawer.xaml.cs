@@ -211,6 +211,7 @@ namespace DDrop.Controls.PixelDrawer
                         }
 
                         PixelsInMillimeterHorizontal = LineLengthHelper.GetPointsOnLine(point11, point22).Count.ToString();
+                        CurrentDropPhoto.XDiameterInPixels = Convert.ToInt32(PixelsInMillimeterHorizontal);
                     }
                     else if (Math.Abs(_selectedLine.X1 - _selectedLine.X2) < Math.Abs(_selectedLine.Y1 - _selectedLine.Y2) && !_drawingHorizontalLine || _drawingVerticalLine)
                     {
@@ -246,6 +247,7 @@ namespace DDrop.Controls.PixelDrawer
                         }
 
                         PixelsInMillimeterVertical = LineLengthHelper.GetPointsOnLine(point11, point22).Count.ToString();
+                        CurrentDropPhoto.YDiameterInPixels = Convert.ToInt32(PixelsInMillimeterVertical);
                     }
                 }
                 else
