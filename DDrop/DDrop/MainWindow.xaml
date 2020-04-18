@@ -146,7 +146,7 @@
                         <loadingSpinner:AdornedControl.AdornerContent>
                             <simpleSample:LoadingWait></simpleSample:LoadingWait>
                         </loadingSpinner:AdornedControl.AdornerContent>
-                        <zoomborder:ZoomBorder Grid.Row="0" Grid.Column="2" HorizontalAlignment="Stretch" x:Name="CgsImagePreviewViewer" ClipToBounds="True" Background="Gray" Margin="10" Grid.RowSpan="3">
+                        <zoomborder:ZoomBorder HorizontalAlignment="Stretch" x:Name="CgsImagePreviewViewer" ClipToBounds="True" Background="Gray" Margin="10" Grid.RowSpan="3">
                             <Canvas x:Name="PreviewCanvas">
                                 <Image x:Name="ImgPreview" VerticalAlignment="Center" HorizontalAlignment="Center" Width="{Binding Source.PixelWidth,RelativeSource={RelativeSource Self}}" Height="{Binding Source.PixelHeight,RelativeSource={RelativeSource Self}}" Stretch="Uniform"/>
                             </Canvas>
@@ -384,15 +384,23 @@
                                                 <Label Content="Параметры" HorizontalAlignment="Left" Margin="10,10,0,0" Height="26" VerticalAlignment="Top" FontWeight="Bold"/>
                                                 <CheckBox Margin="113,16,10,498" x:Name="UseCSharpDefault" IsChecked="True" Content="По умолчанию"/>
                                                 <Label Content="Размытие:" HorizontalAlignment="Left" Margin="10,41,0,0" Height="26" VerticalAlignment="Top"/>
-                                                <TextBox x:Name="CShrpKsize" Margin="113,44,62,0" TextWrapping="Wrap" IsEnabled="{Binding ElementName=UseCSharpDefault, Path=IsChecked, Converter={StaticResource InverseBooleanConverter}}" Height="23" VerticalAlignment="Top"/>
+                                                <TextBox x:Name="CShrpKsize" Margin="113,44,10,0" TextWrapping="Wrap" Text="{Binding ElementName=AppMainWindow, Path=СurrentCSharpAutoCalculationTemplate.Parameters.Ksize}" IsEnabled="{Binding ElementName=UseCSharpDefault, Path=IsChecked, Converter={StaticResource InverseBooleanConverter}}" Height="23" VerticalAlignment="Top"/>
                                                 <Label Content="Порог (мин):" HorizontalAlignment="Left" Margin="10,72,0,0" Height="26" VerticalAlignment="Top"/>
-                                                <TextBox x:Name="CShrpThreshold1" Margin="113,75,62,0" TextWrapping="Wrap" IsEnabled="{Binding ElementName=UseCSharpDefault, Path=IsChecked, Converter={StaticResource InverseBooleanConverter}}" Height="23" VerticalAlignment="Top"/>
+                                                <TextBox x:Name="CShrpThreshold1" Margin="113,75,10,0" TextWrapping="Wrap" Text="{Binding ElementName=AppMainWindow, Path=СurrentCSharpAutoCalculationTemplate.Parameters.Treshold1}" IsEnabled="{Binding ElementName=UseCSharpDefault, Path=IsChecked, Converter={StaticResource InverseBooleanConverter}}" Height="23" VerticalAlignment="Top"/>
                                                 <Label Content="Порог (макс):" HorizontalAlignment="Left" Margin="10,103,0,0" Height="26" VerticalAlignment="Top"/>
-                                                <TextBox x:Name="CShrpThreshold2" Margin="113,106,62,0" TextWrapping="Wrap" IsEnabled="{Binding ElementName=UseCSharpDefault, Path=IsChecked, Converter={StaticResource InverseBooleanConverter}}" Height="23" VerticalAlignment="Top"/>
+                                                <TextBox x:Name="CShrpThreshold2" Margin="113,106,10,0" TextWrapping="Wrap" Text="{Binding ElementName=AppMainWindow, Path=СurrentCSharpAutoCalculationTemplate.Parameters.Treshold2}" IsEnabled="{Binding ElementName=UseCSharpDefault, Path=IsChecked, Converter={StaticResource InverseBooleanConverter}}" Height="23" VerticalAlignment="Top"/>
                                                 <Label Content="Высота контура:" HorizontalAlignment="Left" Margin="10,134,0,0" Height="26" VerticalAlignment="Top"/>
-                                                <TextBox x:Name="CShrpSize1" Margin="113,137,62,0" TextWrapping="Wrap" IsEnabled="{Binding ElementName=UseCSharpDefault, Path=IsChecked, Converter={StaticResource InverseBooleanConverter}}" Height="23" VerticalAlignment="Top"/>
+                                                <TextBox x:Name="CShrpSize1" Margin="113,137,10,0" TextWrapping="Wrap" Text="{Binding ElementName=AppMainWindow, Path=СurrentCSharpAutoCalculationTemplate.Parameters.Size1}" IsEnabled="{Binding ElementName=UseCSharpDefault, Path=IsChecked, Converter={StaticResource InverseBooleanConverter}}" Height="23" VerticalAlignment="Top"/>
                                                 <Label Content="Ширина контура:" HorizontalAlignment="Left" Margin="10,165,0,0" Height="26" VerticalAlignment="Top"/>
-                                                <TextBox x:Name="CShrpSize2" Margin="113,168,62,0" TextWrapping="Wrap" IsEnabled="{Binding ElementName=UseCSharpDefault, Path=IsChecked, Converter={StaticResource InverseBooleanConverter}}" Height="23" VerticalAlignment="Top"/>
+                                                <TextBox x:Name="CShrpSize2" Margin="113,168,10,0" TextWrapping="Wrap" Text="{Binding ElementName=AppMainWindow, Path=СurrentCSharpAutoCalculationTemplate.Parameters.Size2}" IsEnabled="{Binding ElementName=UseCSharpDefault, Path=IsChecked, Converter={StaticResource InverseBooleanConverter}}" Height="23" VerticalAlignment="Top"/>
+                                                <Label Content="Выбрать шаблон:" HorizontalAlignment="Left" Margin="10,196,0,0" Height="26" VerticalAlignment="Top"/>
+                                                <ComboBox x:Name="CSharpTemplatesCombobox" Margin="113,199,42,0" IsEnabled="{Binding ElementName=UseCSharpDefault, Path=IsChecked, Converter={StaticResource InverseBooleanConverter}}" Height="23" VerticalAlignment="Top"
+                                                          ItemsSource="{Binding ElementName=AppMainWindow, Path=CSharpAutoCalculationTemplate}"
+                                                          DisplayMemberPath="Title"
+                                                          DropDownClosed="CSharpTemplatesCombobox_OnDropDownClosed"/>
+                                                <Button Visibility="Visible" Grid.Row="0" Name="SaveCSharpTemplate" VerticalAlignment="Top" Background="{x:Null}" BorderBrush="{x:Null}" Height="25" Click="SaveCSharpTemplate_OnClick" ToolTip="Сохранить изменения." Margin="0,199,10,0" HorizontalAlignment="Right" Width="27">
+                                                    <ContentControl Content="{StaticResource SaveIcon}" Height="21"/>
+                                                </Button>
                                             </Grid>
                                         </TabItem>
                                         <TabItem Header="Python расчет">
@@ -418,15 +426,23 @@
                                                 <Label Content="Параметры" HorizontalAlignment="Left" Margin="10,10,0,0" Height="26" VerticalAlignment="Top" FontWeight="Bold"/>
                                                 <CheckBox Margin="113,16,10,498" x:Name="UsePythonDefault" IsChecked="True" Content="По умолчанию"/>
                                                 <Label Content="Размытие:" HorizontalAlignment="Left" Margin="10,41,0,0" Height="26" VerticalAlignment="Top"/>
-                                                <TextBox x:Name="Ksize" Margin="113,44,62,0" TextWrapping="Wrap" IsEnabled="{Binding ElementName=UsePythonDefault, Path=IsChecked, Converter={StaticResource InverseBooleanConverter}}" Height="23" VerticalAlignment="Top"/>
+                                                <TextBox x:Name="Ksize" Margin="113,44,62,0" TextWrapping="Wrap" Text="{Binding ElementName=AppMainWindow, Path=СurrentPythonAutoCalculationTemplate.Parameters.Ksize}" IsEnabled="{Binding ElementName=UsePythonDefault, Path=IsChecked, Converter={StaticResource InverseBooleanConverter}}" Height="23" VerticalAlignment="Top"/>
                                                 <Label Content="Порог (мин):" HorizontalAlignment="Left" Margin="10,72,0,0" Height="26" VerticalAlignment="Top"/>
-                                                <TextBox x:Name="Threshold1" Margin="113,75,62,0" TextWrapping="Wrap" IsEnabled="{Binding ElementName=UsePythonDefault, Path=IsChecked, Converter={StaticResource InverseBooleanConverter}}" Height="23" VerticalAlignment="Top"/>
+                                                <TextBox x:Name="Threshold1" Margin="113,75,62,0" TextWrapping="Wrap" Text="{Binding ElementName=AppMainWindow, Path=СurrentPythonAutoCalculationTemplate.Parameters.Treshold1}" IsEnabled="{Binding ElementName=UsePythonDefault, Path=IsChecked, Converter={StaticResource InverseBooleanConverter}}" Height="23" VerticalAlignment="Top"/>
                                                 <Label Content="Порог (макс):" HorizontalAlignment="Left" Margin="10,103,0,0" Height="26" VerticalAlignment="Top"/>
-                                                <TextBox x:Name="Threshold2" Margin="113,106,62,0" TextWrapping="Wrap" IsEnabled="{Binding ElementName=UsePythonDefault, Path=IsChecked, Converter={StaticResource InverseBooleanConverter}}" Height="23" VerticalAlignment="Top"/>
+                                                <TextBox x:Name="Threshold2" Margin="113,106,62,0" TextWrapping="Wrap" Text="{Binding ElementName=AppMainWindow, Path=СurrentPythonAutoCalculationTemplate.Parameters.Treshold2}" IsEnabled="{Binding ElementName=UsePythonDefault, Path=IsChecked, Converter={StaticResource InverseBooleanConverter}}" Height="23" VerticalAlignment="Top"/>
                                                 <Label Content="Высота контура:" HorizontalAlignment="Left" Margin="10,134,0,0" Height="26" VerticalAlignment="Top"/>
-                                                <TextBox x:Name="Size1" Margin="113,137,62,0" TextWrapping="Wrap" IsEnabled="{Binding ElementName=UsePythonDefault, Path=IsChecked, Converter={StaticResource InverseBooleanConverter}}" Height="23" VerticalAlignment="Top"/>
+                                                <TextBox x:Name="Size1" Margin="113,137,62,0" TextWrapping="Wrap" Text="{Binding ElementName=AppMainWindow, Path=СurrentPythonAutoCalculationTemplate.Parameters.Size1}" IsEnabled="{Binding ElementName=UsePythonDefault, Path=IsChecked, Converter={StaticResource InverseBooleanConverter}}" Height="23" VerticalAlignment="Top"/>
                                                 <Label Content="Ширина контура:" HorizontalAlignment="Left" Margin="10,165,0,0" Height="26" VerticalAlignment="Top"/>
-                                                <TextBox x:Name="Size2" Margin="113,168,62,0" TextWrapping="Wrap" IsEnabled="{Binding ElementName=UsePythonDefault, Path=IsChecked, Converter={StaticResource InverseBooleanConverter}}" Height="23" VerticalAlignment="Top"/>
+                                                <TextBox x:Name="Size2" Margin="113,168,62,0" TextWrapping="Wrap" Text="{Binding ElementName=AppMainWindow, Path=СurrentPythonAutoCalculationTemplate.Parameters.Size2}" IsEnabled="{Binding ElementName=UsePythonDefault, Path=IsChecked, Converter={StaticResource InverseBooleanConverter}}" Height="23" VerticalAlignment="Top"/>
+                                                <Label Content="Выбрать шаблон:" HorizontalAlignment="Left" Margin="10,196,0,0" Height="26" VerticalAlignment="Top"/>
+                                                <ComboBox x:Name="PythonTemplatesCombobox" Margin="113,199,42,0" IsEnabled="{Binding ElementName=UsePythonDefault, Path=IsChecked, Converter={StaticResource InverseBooleanConverter}}" Height="23" VerticalAlignment="Top"
+                                                          ItemsSource="{Binding ElementName=AppMainWindow, Path=PythonAutoCalculationTemplate}"
+                                                          DisplayMemberPath="Title"
+                                                          DropDownClosed="PythonTemplatesCombobox_OnDropDownClosed"/>
+                                                <Button Visibility="Visible" Grid.Row="0" Name="SavePythonTemplate" VerticalAlignment="Top" Background="{x:Null}" BorderBrush="{x:Null}" Height="25" Click="SavePythonTemplate_OnClick" ToolTip="Сохранить изменения." Margin="0,199,10,0" HorizontalAlignment="Right" Width="27">
+                                                    <ContentControl Content="{StaticResource SaveIcon}" Height="21"/>
+                                                </Button>
                                             </Grid>
                                         </TabItem>
                                     </TabControl>
@@ -441,7 +457,7 @@
                                             <loadingSpinner:AdornedControl.AdornerContent>
                                                 <simpleSample:LoadingWait></simpleSample:LoadingWait>
                                             </loadingSpinner:AdornedControl.AdornerContent>
-                                            <zoomborder:ZoomBorder x:Name="border" ClipToBounds="True" Background="Gray">
+                                            <zoomborder:ZoomBorder x:Name="ReferenceBorder" ClipToBounds="True" Background="Gray">
                                                 <pixelDrawer:PixelDrawer IsEnabled="False" CurrentSeries="{Binding ElementName=AppMainWindow, Path=CurrentSeries}" ImageSource="{Binding ReferenceImage, ElementName=AppMainWindow}" x:Name="MainWindowPixelDrawer"/>
                                             </zoomborder:ZoomBorder>
                                         </loadingSpinner:AdornedControl>

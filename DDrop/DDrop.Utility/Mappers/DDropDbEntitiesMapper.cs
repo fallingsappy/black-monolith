@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using DDrop.BE.Enums.Options;
 using DDrop.BE.Models;
 using DDrop.Db.DbEntities;
 using DDrop.Utility.SeriesLocalStorageOperations;
@@ -132,7 +133,6 @@ namespace DDrop.Utility.Mappers
                     newDbDropPhoto.SimpleVerticalLineId = newVerticalDbSimpleLine.SimpleLineId;
                 }
 
-
                 DbDrop newDbDrop = new DbDrop()
                 {
                     DropId = dropPhoto.Drop.DropId,
@@ -144,6 +144,36 @@ namespace DDrop.Utility.Mappers
                     DropPhoto = newDbDropPhoto,
                 };
 
+                if (dropPhoto.Contour != null)
+                {
+                    DbContour newDbContour = new DbContour
+                    {
+                        CurrentDropPhoto = newDbDropPhoto,
+                        CalculationParameters = JsonSerializeProvider.SerializeToString(dropPhoto.Contour.Parameters),
+                        CalculationProvider = dropPhoto.Contour.CalculationVariants.ToString(),
+                        ContourId = dropPhoto.Contour.ContourId
+                    };
+
+                    List<DbSimpleLine> newDbSimpleLines = new List<DbSimpleLine>();
+
+                    foreach (var contourSimpleLine in dropPhoto.Contour.SimpleLines)
+                    {
+                        newDbSimpleLines.Add(new DbSimpleLine()
+                        {
+                            SimpleLineId = contourSimpleLine.SimpleLineId,
+                            X1 = contourSimpleLine.X1,
+                            X2 = contourSimpleLine.X2,
+                            Y1 = contourSimpleLine.Y1,
+                            Y2 = contourSimpleLine.Y2,
+                            ContourId = contourSimpleLine.ContourId
+                        });
+                    }
+
+                    newDbContour.SimpleLines = newDbSimpleLines;
+
+                    newDbDropPhoto.Contour = newDbContour;
+                }
+               
                 newDbDropPhoto.Drop = newDbDrop;
                                 
                 dropPhotosSeries.Add(newDbDropPhoto);
@@ -254,7 +284,7 @@ namespace DDrop.Utility.Mappers
                             SimpleLineId = deserialization ? Guid.NewGuid() : dropPhoto.SimpleVerticalLine.SimpleLineId
                         };
                         userDropPhoto.SimpleVerticalLine = newSimpleVerticalLine;
-                        userDropPhoto.SimpleVerticalLineId = dropPhoto.SimpleHorizontalLineId ?? Guid.NewGuid();
+                        userDropPhoto.SimpleVerticalLineId = newSimpleVerticalLine.SimpleLineId;
                     }
 
                     if (dropPhoto.SimpleHorizontalLine != null)
@@ -296,6 +326,47 @@ namespace DDrop.Utility.Mappers
                         };
 
                         userDropPhoto.Drop = userDrop;
+                    }
+
+                    if (dropPhoto.Contour != null)
+                    {
+                        Contour userContour = new Contour
+                        {
+                            CurrentDropPhoto = userDropPhoto,
+                            Parameters = JsonSerializeProvider.DeserializeFromString<AutoCalculationParameters>(dropPhoto.Contour.CalculationParameters),
+                            CalculationVariants = (CalculationVariants) Enum.Parse(typeof(CalculationVariants), dropPhoto.Contour.CalculationProvider, true),
+                            ContourId = dropPhoto.Contour.ContourId
+                        };
+
+                        ObservableCollection<SimpleLine> userSimpleLines = new ObservableCollection<SimpleLine>();
+                        ObservableCollection<Line> userLines = new ObservableCollection<Line>();
+
+                        foreach (var contourSimpleLine in dropPhoto.Contour.SimpleLines)
+                        {
+                            if (contourSimpleLine.ContourId != null)
+                                userSimpleLines.Add(new SimpleLine()
+                                {
+                                    SimpleLineId = contourSimpleLine.SimpleLineId,
+                                    X1 = contourSimpleLine.X1,
+                                    X2 = contourSimpleLine.X2,
+                                    Y1 = contourSimpleLine.Y1,
+                                    Y2 = contourSimpleLine.Y2,
+                                    ContourId = contourSimpleLine.ContourId.Value
+                                });
+
+                            userLines.Add(new Line()
+                            {
+                                X1 = contourSimpleLine.X1,
+                                X2 = contourSimpleLine.X2,
+                                Y1 = contourSimpleLine.Y1,
+                                Y2 = contourSimpleLine.Y2,
+                                Stroke = Brushes.Red,
+                                StrokeThickness = 2
+                            });
+                        }
+
+                        userContour.Lines = userLines;
+                        userContour.SimpleLines = userSimpleLines;
                     }
 
                     addSingleSeriesViewModel.DropPhotosSeries.Add(userDropPhoto);
@@ -415,7 +486,37 @@ namespace DDrop.Utility.Mappers
                 dbDropPhoto.SimpleVerticalLineId = newDbSimpleVerticalLine.SimpleLineId;
                 dbDropPhoto.SimpleVerticalLine = newDbSimpleVerticalLine;
             }
-           
+
+            if (dropPhotoViewModel.Contour != null)
+            {
+                DbContour newDbContour = new DbContour
+                {
+                    CurrentDropPhoto = dbDropPhoto,
+                    CalculationParameters = JsonSerializeProvider.SerializeToString(dropPhotoViewModel.Contour.Parameters),
+                    CalculationProvider = dropPhotoViewModel.Contour.CalculationVariants.ToString(),
+                    ContourId = dropPhotoViewModel.Contour.ContourId
+                };
+
+                List<DbSimpleLine> newDbSimpleLines = new List<DbSimpleLine>();
+
+                foreach (var contourSimpleLine in dropPhotoViewModel.Contour.SimpleLines)
+                {
+                    newDbSimpleLines.Add(new DbSimpleLine()
+                    {
+                        SimpleLineId = contourSimpleLine.SimpleLineId,
+                        X1 = contourSimpleLine.X1,
+                        X2 = contourSimpleLine.X2,
+                        Y1 = contourSimpleLine.Y1,
+                        Y2 = contourSimpleLine.Y2,
+                        ContourId = contourSimpleLine.ContourId
+                    });
+                }
+
+                newDbContour.SimpleLines = newDbSimpleLines;
+
+                dbDropPhoto.Contour = newDbContour;
+            }
+
             return dbDropPhoto;
         }
 

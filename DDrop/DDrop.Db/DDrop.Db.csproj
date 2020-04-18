@@ -83,6 +83,10 @@
     <Compile Include="Migrations\202004140442599_LoggerAndContour.designer.cs">
       <DependentUpon>202004140442599_LoggerAndContour.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202004181349412_ContourId.cs" />
+    <Compile Include="Migrations\202004181349412_ContourId.designer.cs">
+      <DependentUpon>202004181349412_ContourId.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -108,6 +112,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202004140442599_LoggerAndContour.resx">
       <DependentUpon>202004140442599_LoggerAndContour.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004181349412_ContourId.resx">
+      <DependentUpon>202004181349412_ContourId.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

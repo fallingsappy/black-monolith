@@ -34,6 +34,7 @@ using DDrop.Utility.Animation;
 using DDrop.Utility.Calculation;
 using DDrop.Utility.DataGrid;
 using DDrop.Utility.Logger;
+using DDrop.Utility.SeriesLocalStorageOperations;
 using Newtonsoft.Json;
 
 namespace DDrop
@@ -53,7 +54,7 @@ namespace DDrop
         private Line _verticalLineSeriesPreview;
 
         private ObservableCollection<Line> _contourSeriesPreview;
-        private ObservableCollection<Line> _contourPhotosPreview;
+
         private readonly ISeriesBL _seriesBL;
         private readonly IDropPhotoBL _dropPhotoBL;
         private readonly IDDropRepository _dDropRepository;
@@ -63,9 +64,13 @@ namespace DDrop
 
         private ObservableCollection<AutoCalculationTemplate> _autoCalculationDefaultTemplates =
             new ObservableCollection<AutoCalculationTemplate>();
-
-        private ObservableCollection<AutoCalculationTemplate> _autoCalculationTemplates =
+        private ObservableCollection<AutoCalculationTemplate> _userAutoCalculationTemplates =
             new ObservableCollection<AutoCalculationTemplate>();
+
+        private AutoCalculationTemplate _currentPhotoAutoCalculationTemplate = new AutoCalculationTemplate()
+        {
+            Title = "sfsfs"
+        };
 
         private DropPhoto _currentSeriesPreviewPhoto = new DropPhoto();
         private ObservableCollection<DropPhoto> _storedDropPhotos;
@@ -75,9 +80,21 @@ namespace DDrop
         public bool SaveRequired;
         private DropPhoto _copiedDropPhoto;
 
+        public static readonly DependencyProperty СurrentPythonAutoCalculationTemplateProperty =
+            DependencyProperty.Register("СurrentPythonAutoCalculationTemplate", typeof(AutoCalculationTemplate), typeof(MainWindow));
+
+        public static readonly DependencyProperty СurrentCSharpAutoCalculationTemplateProperty =
+            DependencyProperty.Register("СurrentCSharpAutoCalculationTemplate", typeof(AutoCalculationTemplate), typeof(MainWindow));
+
+        public static readonly DependencyProperty PythonAutoCalculationTemplateProperty =
+            DependencyProperty.Register("PythonAutoCalculationTemplate", typeof(ObservableCollection<AutoCalculationTemplate>), typeof(MainWindow));
+        
+        public static readonly DependencyProperty CSharpAutoCalculationTemplateProperty =
+            DependencyProperty.Register("CSharpAutoCalculationTemplate", typeof(ObservableCollection<AutoCalculationTemplate>), typeof(MainWindow));
+        
         public static readonly DependencyProperty ImageForEditProperty =
             DependencyProperty.Register("ImageForEdit", typeof(ImageSource), typeof(MainWindow));
-
+       
         public static readonly DependencyProperty CurrentSeriesProperty =
             DependencyProperty.Register("CurrentSeries", typeof(Series), typeof(MainWindow));
 
@@ -111,6 +128,30 @@ namespace DDrop
         #endregion
 
         #region Properties
+
+        public AutoCalculationTemplate СurrentPythonAutoCalculationTemplate
+        {
+            get => (AutoCalculationTemplate)GetValue(СurrentPythonAutoCalculationTemplateProperty);
+            set => SetValue(СurrentPythonAutoCalculationTemplateProperty, value);
+        }
+
+        public AutoCalculationTemplate СurrentCSharpAutoCalculationTemplate
+        {
+            get => (AutoCalculationTemplate)GetValue(СurrentCSharpAutoCalculationTemplateProperty);
+            set => SetValue(СurrentCSharpAutoCalculationTemplateProperty, value);
+        }
+
+        public ObservableCollection<AutoCalculationTemplate> PythonAutoCalculationTemplate
+        {
+            get => (ObservableCollection<AutoCalculationTemplate>)GetValue(PythonAutoCalculationTemplateProperty);
+            set => SetValue(PythonAutoCalculationTemplateProperty, value);
+        }
+
+        public ObservableCollection<AutoCalculationTemplate> CSharpAutoCalculationTemplate
+        {
+            get => (ObservableCollection<AutoCalculationTemplate>)GetValue(CSharpAutoCalculationTemplateProperty);
+            set => SetValue(CSharpAutoCalculationTemplateProperty, value);
+        }
 
         public ImageSource ImageForEdit
         {
@@ -167,9 +208,6 @@ namespace DDrop
             InitializeComponent();
             InitializePaths();
 
-            InitilizeUserTemplates();
-            InitilizeDefaultTemplates();
-
             _seriesBL = seriesBL;
             _dropPhotoBL = dropPhotoBL;
             _dDropRepository = dDropRepository;
@@ -185,41 +223,7 @@ namespace DDrop
             Login();
         }
 
-        private void InitilizeUserTemplates()
-        {
-            //throw new NotImplementedException();
-        }
-
-        private void InitilizeDefaultTemplates()
-        {
-            _autoCalculationDefaultTemplates.Add(new AutoCalculationTemplate
-            {
-                Title = "Default",
-                Parameters = new AutoCalculationParameters
-                {
-                    Ksize = 9,
-                    Size1 = 100,
-                    Size2 = 250,
-                    Treshold1 = 50,
-                    Treshold2 = 100,
-                },
-                TemplateType = CalculationVariants.CalculateWithCSharp
-            });
-
-            _autoCalculationDefaultTemplates.Add(new AutoCalculationTemplate
-            {
-                Title = "Default",
-                Parameters = new AutoCalculationParameters
-                {
-                    Ksize = 9,
-                    Size1 = 100,
-                    Size2 = 250,
-                    Treshold1 = 50,
-                    Treshold2 = 5,
-                },
-                TemplateType = CalculationVariants.CalculateWithPython
-            });
-        }
+        #region Authorization
 
         private void Login()
         {
@@ -250,6 +254,8 @@ namespace DDrop
                 LogOutMenuItem.Visibility = Visibility.Visible;
             }
         }
+
+        #endregion
 
         #region Series
 
@@ -1253,7 +1259,7 @@ namespace DDrop
             {
                 var pbuHandle1 = pbu.New(ProgressBar, 0, openFileDialog.FileNames.Length, 0);
 
-                SeriesManagerIsLoading();
+                SingleSeriesLoading();
                 CurrentSeriesPhotoContentLoadingWindow();
 
                 for (int i = 0; i < openFileDialog.FileNames.Length; ++i)
@@ -1334,7 +1340,7 @@ namespace DDrop
                     }
                 }
 
-                SeriesManagerLoadingComplete();
+                SingleSeriesLoadingComplete();
                 CurrentSeriesPhotoContentLoadingWindowComplete();
                 _notifier.ShowSuccess($"Новые снимки успешно добавлены.");
                 pbu.ResetValue(pbuHandle1);
@@ -1351,6 +1357,15 @@ namespace DDrop
                 {
                     ImgCurrent.CanDrawing.Children.Remove(CurrentDropPhoto?.HorizontalLine);
                     ImgCurrent.CanDrawing.Children.Remove(CurrentDropPhoto?.VerticalLine);
+
+                    if (CurrentDropPhoto?.Contour != null)
+                    {
+                        foreach (var line in CurrentDropPhoto.Contour.Lines)
+                        {
+                            ImgCurrent.CanDrawing.Children.Remove(line);
+                        }
+                    }
+
 
                     ProgressBar.IsIndeterminate = true;
                     ImageForEdit = null;
@@ -1423,7 +1438,13 @@ namespace DDrop
             ImgCurrent.CanDrawing.Children.Remove(CurrentDropPhoto.HorizontalLine);
             ImgCurrent.CanDrawing.Children.Remove(CurrentDropPhoto.VerticalLine);
 
-            PrepareContour(selectedFile, out _contourPhotosPreview);
+            if (CurrentDropPhoto.Contour != null)
+            {
+                foreach (var line in CurrentDropPhoto.Contour.Lines)
+                {
+                    ImgCurrent.CanDrawing.Children.Remove(line);
+                }
+            }
 
             if (CurrentDropPhoto.HorizontalLine != null && Properties.Settings.Default.ShowLinesOnPreview ||
                 CurrentDropPhoto.HorizontalLine != null && _photoEditModeOn)
@@ -1431,9 +1452,9 @@ namespace DDrop
             if (CurrentDropPhoto.VerticalLine != null && Properties.Settings.Default.ShowLinesOnPreview ||
                 CurrentDropPhoto.VerticalLine != null && _photoEditModeOn)
                 ImgCurrent.CanDrawing.Children.Add(CurrentDropPhoto.VerticalLine);
-            if (_contourPhotosPreview != null)
+            if (CurrentDropPhoto.Contour != null && Properties.Settings.Default.ShowContourOnPreview)
             {
-                foreach (var line in _contourPhotosPreview)
+                foreach (var line in CurrentDropPhoto.Contour.Lines)
                 {
                     ImgCurrent.CanDrawing.Children.Add(line);
                 }
@@ -1583,12 +1604,12 @@ namespace DDrop
 
         private async void EditInputPhotoButton_Click(object sender, RoutedEventArgs e)
         {
-            await PhotoEditModeOn();
-
-            ShowLinesOnPhotosPreview(CurrentDropPhoto);
-
             if (!string.IsNullOrWhiteSpace(PixelsInMillimeterTextBox.Text) && PixelsInMillimeterTextBox.Text != "0")
             {
+                await PhotoEditModeOn();
+
+                ShowLinesOnPhotosPreview(CurrentDropPhoto);
+                
                 if (CurrentDropPhoto.HorizontalLine == null)
                     CurrentDropPhoto.HorizontalLine = new Line();
 
@@ -2658,6 +2679,10 @@ namespace DDrop
         {
             if (!string.IsNullOrWhiteSpace(PixelsInMillimeterTextBox.Text))
             {
+                InitilizeUserTemplates();
+                InitilizeDefaultTemplates();
+                BuildTemplates();
+
                 SeriesEditMenu.Visibility = Visibility.Hidden;
                 EditPhotosColumn.Visibility = Visibility.Hidden;
                 DeletePhotosColumn.Visibility = Visibility.Hidden;
@@ -2887,7 +2912,7 @@ namespace DDrop
 
                         simpleHorizontalDiameter.X1 = points[i].X;
                         simpleHorizontalDiameter.Y1 = points[i].Y;
-
+                        simpleHorizontalDiameter.SimpleLineId = dropPhoto.SimpleHorizontalLineId ?? Guid.NewGuid();
                         simpleHorizontalDiameter.X2 = points[j].X;
                         simpleHorizontalDiameter.Y2 = points[j].Y;
                     }
@@ -2899,34 +2924,50 @@ namespace DDrop
 
                         simpleVerticalDiameter.X1 = points[i].X;
                         simpleVerticalDiameter.Y1 = points[i].Y;
-
+                        simpleVerticalDiameter.SimpleLineId = dropPhoto.SimpleVerticalLineId ?? Guid.NewGuid();
                         simpleVerticalDiameter.X2 = points[j].X;
                         simpleVerticalDiameter.Y2 = points[j].Y;
                     }
                 }
             }
 
-            dropPhoto.SimpleHorizontalLine = simpleHorizontalDiameter;
-            dropPhoto.HorizontalLine = new Line()
-            {
-                X1 = simpleHorizontalDiameter.X1,
-                X2 = simpleHorizontalDiameter.X2,
-                Y1 = simpleHorizontalDiameter.Y1,
-                Y2 = simpleHorizontalDiameter.Y1,
-                StrokeThickness = 2,
-                Stroke = Brushes.DeepPink
-            };
+            if (dropPhoto.SimpleHorizontalLine == null)
+                dropPhoto.SimpleHorizontalLine = new SimpleLine();
 
-            dropPhoto.SimpleVerticalLine = simpleVerticalDiameter;
-            dropPhoto.VerticalLine = new Line()
-            {
-                X1 = simpleVerticalDiameter.X1,
-                X2 = simpleVerticalDiameter.X1,
-                Y1 = simpleVerticalDiameter.Y1,
-                Y2 = simpleVerticalDiameter.Y2,
-                StrokeThickness = 2,
-                Stroke = Brushes.Green
-            };
+            dropPhoto.SimpleHorizontalLine.X1 = simpleHorizontalDiameter.X1;
+            dropPhoto.SimpleHorizontalLine.X2 = simpleHorizontalDiameter.X2;
+            dropPhoto.SimpleHorizontalLine.Y1 = simpleHorizontalDiameter.Y1;
+            dropPhoto.SimpleHorizontalLine.Y2 = simpleHorizontalDiameter.Y1;
+            dropPhoto.SimpleHorizontalLine.SimpleLineId = simpleHorizontalDiameter.SimpleLineId;
+
+            if (dropPhoto.HorizontalLine == null)
+                dropPhoto.HorizontalLine = new Line();
+
+            dropPhoto.HorizontalLine.X1 = simpleHorizontalDiameter.X1;
+            dropPhoto.HorizontalLine.X2 = simpleHorizontalDiameter.X2;
+            dropPhoto.HorizontalLine.Y1 = simpleHorizontalDiameter.Y1;
+            dropPhoto.HorizontalLine.Y2 = simpleHorizontalDiameter.Y1;
+            dropPhoto.HorizontalLine.StrokeThickness = 2;
+            dropPhoto.HorizontalLine.Stroke = Brushes.DeepPink;
+
+            if (dropPhoto.SimpleVerticalLine == null)
+                dropPhoto.SimpleVerticalLine = new SimpleLine();
+
+            dropPhoto.SimpleVerticalLine.X1 = simpleVerticalDiameter.X1;
+            dropPhoto.SimpleVerticalLine.X2 = simpleVerticalDiameter.X1;
+            dropPhoto.SimpleVerticalLine.Y1 = simpleVerticalDiameter.Y1;
+            dropPhoto.SimpleVerticalLine.Y2 = simpleVerticalDiameter.Y2;
+            dropPhoto.SimpleVerticalLine.SimpleLineId = simpleVerticalDiameter.SimpleLineId;
+
+            if (dropPhoto.VerticalLine == null)
+                dropPhoto.VerticalLine = new Line();
+
+            dropPhoto.VerticalLine.X1 = simpleVerticalDiameter.X1;
+            dropPhoto.VerticalLine.X2 = simpleVerticalDiameter.X1;
+            dropPhoto.VerticalLine.Y1 = simpleVerticalDiameter.Y1;
+            dropPhoto.VerticalLine.Y2 = simpleVerticalDiameter.Y2;
+            dropPhoto.VerticalLine.StrokeThickness = 2;
+            dropPhoto.VerticalLine.Stroke = Brushes.Green;
         }
 
         private static void CreateContour(DropPhoto dropPhoto, System.Drawing.Point[] points)
@@ -2943,6 +2984,7 @@ namespace DDrop
             {
                 dropPhoto.Contour.SimpleLines.Add(new SimpleLine
                 {
+                    ContourId = dropPhoto.Contour.ContourId,
                     SimpleLineId = Guid.NewGuid(),
                     X1 = points[j].X,
                     X2 = j < points.Length - 1 ? points[j + 1].X : points[0].X,
@@ -3099,6 +3141,131 @@ namespace DDrop
             }
 
             return "Отменить все изменения?";
+        }
+
+        private void InitilizeUserTemplates()
+        {
+            if (!string.IsNullOrEmpty(Properties.Settings.Default.AutoCalculationTemplates))
+            {
+                _userAutoCalculationTemplates = JsonSerializeProvider.DeserializeFromString<ObservableCollection<AutoCalculationTemplate>>(Properties.Settings.Default.AutoCalculationTemplates);
+            }
+            else
+            {
+                _userAutoCalculationTemplates = new ObservableCollection<AutoCalculationTemplate>();
+            }
+
+        }
+
+        private void InitilizeDefaultTemplates()
+        {
+            _autoCalculationDefaultTemplates.Add(new AutoCalculationTemplate
+            {
+                Title = "Default",
+                Parameters = new AutoCalculationParameters
+                {
+                    Ksize = 9,
+                    Size1 = 100,
+                    Size2 = 250,
+                    Treshold1 = 50,
+                    Treshold2 = 100,
+                },
+                TemplateType = CalculationVariants.CalculateWithCSharp
+            });
+
+            _autoCalculationDefaultTemplates.Add(new AutoCalculationTemplate
+            {
+                Title = "Default",
+                Parameters = new AutoCalculationParameters
+                {
+                    Ksize = 9,
+                    Size1 = 100,
+                    Size2 = 250,
+                    Treshold1 = 50,
+                    Treshold2 = 5,
+                },
+                TemplateType = CalculationVariants.CalculateWithPython
+            });
+        }
+
+        private void BuildTemplates()
+        {
+            PythonAutoCalculationTemplate = new ObservableCollection<AutoCalculationTemplate>();
+            CSharpAutoCalculationTemplate = new ObservableCollection<AutoCalculationTemplate>();
+
+            foreach (var autoCalculationDefaultTemplate in _autoCalculationDefaultTemplates)
+            {
+                if (autoCalculationDefaultTemplate.TemplateType == CalculationVariants.CalculateWithPython)
+                    PythonAutoCalculationTemplate.Add(autoCalculationDefaultTemplate);
+                if (autoCalculationDefaultTemplate.TemplateType == CalculationVariants.CalculateWithCSharp)
+                    CSharpAutoCalculationTemplate.Add(autoCalculationDefaultTemplate);
+            }
+
+            foreach (var userAutoCalculationTemplate in _userAutoCalculationTemplates)
+            {
+                switch (userAutoCalculationTemplate.TemplateType)
+                {
+                    case CalculationVariants.CalculateWithPython:
+                        PythonAutoCalculationTemplate.Add(userAutoCalculationTemplate);
+                        break;
+                    case CalculationVariants.CalculateWithCSharp:
+                        CSharpAutoCalculationTemplate.Add(userAutoCalculationTemplate);
+                        break;
+                    case CalculationVariants.Common:
+                        CSharpAutoCalculationTemplate.Add(userAutoCalculationTemplate);
+                        PythonAutoCalculationTemplate.Add(userAutoCalculationTemplate);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+
+            if (_currentPhotoAutoCalculationTemplate != null)
+            {
+                if (_currentPhotoAutoCalculationTemplate.TemplateType == CalculationVariants.CalculateWithCSharp)
+                {
+                    CSharpAutoCalculationTemplate.Add(_currentPhotoAutoCalculationTemplate);
+                    CSharpTemplatesCombobox.SelectedIndex = CSharpAutoCalculationTemplate.Count - 1;
+                }
+                else
+                {
+                    PythonAutoCalculationTemplate.Add(_currentPhotoAutoCalculationTemplate);
+                    CSharpTemplatesCombobox.SelectedItem = PythonAutoCalculationTemplate.Count - 1;
+                }    
+            }
+        }
+
+        private void SavePythonTemplate_OnClick(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void SaveCSharpTemplate_OnClick(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void PythonTemplatesCombobox_OnDropDownClosed(object sender, EventArgs e)
+        {
+            var combobox = sender as ComboBox;
+
+            СurrentPythonAutoCalculationTemplate = new AutoCalculationTemplate();
+
+            if (combobox != null && combobox.SelectedIndex != -1)
+                СurrentPythonAutoCalculationTemplate = PythonAutoCalculationTemplate[combobox.SelectedIndex];
+            else
+                СurrentPythonAutoCalculationTemplate = null;
+        }
+
+        private void CSharpTemplatesCombobox_OnDropDownClosed(object sender, EventArgs e)
+        {
+            var combobox = sender as ComboBox;
+
+            СurrentCSharpAutoCalculationTemplate = new AutoCalculationTemplate();
+
+            if (combobox != null && combobox.SelectedIndex != -1)
+                СurrentCSharpAutoCalculationTemplate = CSharpAutoCalculationTemplate[combobox.SelectedIndex];
+            else
+                СurrentCSharpAutoCalculationTemplate = null;
         }
 
         #endregion

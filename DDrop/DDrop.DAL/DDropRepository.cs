@@ -489,6 +489,7 @@ namespace DDrop.DAL
                     context.Set<DbSimpleLine>().AddOrUpdate(dropPhoto.SimpleVerticalLine);
                     context.Set<DbDropPhoto>().AddOrUpdate(dropPhoto);
                     context.Set<DbDrop>().AddOrUpdate(dropPhoto.Drop);
+                    //context.Set<DbContour>().AddOrUpdate(dropPhoto.Contour);
                     await context.SaveChangesAsync();
                 }
                 catch (SqlException e)
@@ -662,12 +663,6 @@ namespace DDrop.DAL
                 }
             }
         }
-
-        #endregion
-
-        #region Contour
-
-
 
         #endregion
 
