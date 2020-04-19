@@ -16,7 +16,7 @@
             VerticalAlignment="Center">
         <Grid x:Name="LayoutRoot" 
                 Background="Transparent"
-                ToolTip="Searching...."
+                ToolTip="Loading...."
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center">
             <Canvas RenderTransformOrigin="0.5,0.5"

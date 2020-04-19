@@ -26,6 +26,7 @@ using DDrop.Utility.Mappers;
 using System.Threading.Tasks;
 using Ookii.Dialogs.Wpf;
 using System.Threading;
+using System.Windows.Input;
 using DDrop.BE.Enums.Logger;
 using DDrop.BE.Enums.Options;
 using DDrop.BL.ImageProcessing.CSharp;
@@ -35,7 +36,9 @@ using DDrop.Utility.Calculation;
 using DDrop.Utility.DataGrid;
 using DDrop.Utility.Logger;
 using DDrop.Utility.SeriesLocalStorageOperations;
+using DDrop.Utility.Validation;
 using Newtonsoft.Json;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
 namespace DDrop
 {
@@ -67,10 +70,7 @@ namespace DDrop
         private ObservableCollection<AutoCalculationTemplate> _userAutoCalculationTemplates =
             new ObservableCollection<AutoCalculationTemplate>();
 
-        private AutoCalculationTemplate _currentPhotoAutoCalculationTemplate = new AutoCalculationTemplate()
-        {
-            Title = "sfsfs"
-        };
+        private AutoCalculationTemplate _currentPhotoAutoCalculationTemplate;
 
         private DropPhoto _currentSeriesPreviewPhoto = new DropPhoto();
         private ObservableCollection<DropPhoto> _storedDropPhotos;
@@ -1393,7 +1393,7 @@ namespace DDrop
                         ImageForEdit = ImageInterpreter.LoadImage(CurrentDropPhoto.Content);
                     }
 
-                    ShowLinesOnPhotosPreview(selectedFile);
+                    ShowLinesOnPhotosPreview();
 
                     SingleSeriesLoadingComplete(false);
                 }
@@ -1433,7 +1433,7 @@ namespace DDrop
                 ImageForEdit = null;
         }
 
-        private void ShowLinesOnPhotosPreview(DropPhoto selectedFile)
+        private void ShowLinesOnPhotosPreview()
         {
             ImgCurrent.CanDrawing.Children.Remove(CurrentDropPhoto.HorizontalLine);
             ImgCurrent.CanDrawing.Children.Remove(CurrentDropPhoto.VerticalLine);
@@ -1608,7 +1608,7 @@ namespace DDrop
             {
                 await PhotoEditModeOn();
 
-                ShowLinesOnPhotosPreview(CurrentDropPhoto);
+                ShowLinesOnPhotosPreview();
                 
                 if (CurrentDropPhoto.HorizontalLine == null)
                     CurrentDropPhoto.HorizontalLine = new Line();
@@ -1711,7 +1711,7 @@ namespace DDrop
             }
 
             await PhotoEditModeOff();
-            ShowLinesOnPhotosPreview(CurrentDropPhoto);
+            ShowLinesOnPhotosPreview();
         }
 
         private async Task SavePixelDiameters()
@@ -1796,12 +1796,12 @@ namespace DDrop
                     CurrentDropPhoto.XDiameterInPixels = _initialXDiameterInPixels;
                     CurrentDropPhoto.YDiameterInPixels = _initialYDiameterInPixels;
 
-                    ShowLinesOnPhotosPreview(CurrentDropPhoto);
+                    ShowLinesOnPhotosPreview();
                 }
             }
 
             await PhotoEditModeOff();
-            ShowLinesOnPhotosPreview(CurrentDropPhoto);
+            ShowLinesOnPhotosPreview();
         }
         
         private async Task CalculateDropParameters(DropPhoto dropPhoto)
@@ -2677,7 +2677,7 @@ namespace DDrop
 
         private async void StartAutoCalculate_OnClick(object sender, RoutedEventArgs e)
         {
-            if (!string.IsNullOrWhiteSpace(PixelsInMillimeterTextBox.Text))
+            if (!string.IsNullOrWhiteSpace(PixelsInMillimeterTextBox.Text) && PixelsInMillimeterTextBox.Text != "0")
             {
                 InitilizeUserTemplates();
                 InitilizeDefaultTemplates();
@@ -2700,10 +2700,59 @@ namespace DDrop
                     _storedDropPhotos.Add(new DropPhoto()
                     {
                         DropPhotoId = dropPhoto.DropPhotoId,
-                        SimpleHorizontalLine = dropPhoto.SimpleHorizontalLine,
-                        SimpleVerticalLine = dropPhoto.SimpleVerticalLine,
-                        Contour = dropPhoto.Contour
+                        SimpleHorizontalLine = new SimpleLine()
+                        {
+                            X1 = dropPhoto.SimpleHorizontalLine.X1,
+                            X2 = dropPhoto.SimpleHorizontalLine.X2,
+                            Y1 = dropPhoto.SimpleHorizontalLine.Y1,
+                            Y2 = dropPhoto.SimpleHorizontalLine.Y2,
+                            SimpleLineId = dropPhoto.SimpleHorizontalLineId.GetValueOrDefault()
+                        },
+                        SimpleVerticalLine = new SimpleLine()
+                        {
+                            X1 = dropPhoto.SimpleVerticalLine.X1,
+                            X2 = dropPhoto.SimpleVerticalLine.X2,
+                            Y1 = dropPhoto.SimpleVerticalLine.Y1,
+                            Y2 = dropPhoto.SimpleVerticalLine.Y2,
+                            SimpleLineId = dropPhoto.SimpleVerticalLineId.GetValueOrDefault()
+                        },
                     });
+
+                    if (dropPhoto.Contour != null)
+                    {
+                        var storedContour = new Contour
+                        {
+                            CalculationVariants = dropPhoto.Contour.CalculationVariants,
+                            Parameters = new AutoCalculationParameters
+                            {
+                                Ksize = dropPhoto.Contour.Parameters.Ksize,
+                                Size1 = dropPhoto.Contour.Parameters.Size1,
+                                Size2 = dropPhoto.Contour.Parameters.Size2,
+                                Treshold1 = dropPhoto.Contour.Parameters.Treshold1,
+                                Treshold2 = dropPhoto.Contour.Parameters.Treshold2
+                            }, 
+                            SimpleLines = new ObservableCollection<SimpleLine>()
+                        };
+
+                        foreach (var line in dropPhoto.Contour.SimpleLines)
+                        {
+                            storedContour.SimpleLines.Add(new SimpleLine
+                            {
+                                X1 = line.X1,
+                                X2 = line.X2,
+                                Y1 = line.Y1,
+                                Y2 = line.Y2,
+                                SimpleLineId = line.SimpleLineId,
+                                ContourId = line.ContourId
+                            });
+                        }
+
+                        _storedDropPhotos[_storedDropPhotos.Count - 1].Contour = storedContour;
+                    }
+                    else
+                    {
+                        _storedDropPhotos[_storedDropPhotos.Count - 1].Contour = null;
+                    }
                 }
 
                 await AnimationHelper.AnimateGridColumnExpandCollapseAsync(AutoCalculationColumn, true, 300, 0,
@@ -2723,6 +2772,7 @@ namespace DDrop
                 AutoCalculationColumn.MinWidth, 0, 200);
 
             var checkedCount = CurrentSeries.DropPhotosSeries.Count(x => x.IsChecked);
+            CalculationVariants calculationVariant;
 
             if (CurrentSeries.DropPhotosSeries.Count > 0)
             {
@@ -2753,11 +2803,13 @@ namespace DDrop
                             CalculationVariants.CalculateWithPython)
                         {
                             points = CalculateWithPython(CurrentSeries.DropPhotosSeries[i]);
+                            calculationVariant = CalculationVariants.CalculateWithPython;
                         }
                         else if ((CalculationVariants) Properties.Settings.Default.AutoCalculationType ==
                                  CalculationVariants.CalculateWithCSharp)
                         {
                             points = _dropletImageProcessor.GetDiameters(CurrentSeries.DropPhotosSeries[i].Content);
+                            calculationVariant = CalculationVariants.CalculateWithCSharp;
                         }
                         else
                         {
@@ -2765,7 +2817,12 @@ namespace DDrop
                             break;
                         }
 
-                        CreateContour(CurrentSeries.DropPhotosSeries[i], points);
+                        if (CurrentSeries.DropPhotosSeries[i] != CurrentDropPhoto)
+                        {
+                            CurrentSeries.DropPhotosSeries[i].Content = null;
+                        }
+
+                        CreateContour(CurrentSeries.DropPhotosSeries[i], points, calculationVariant);
                         CreateDiameters(CurrentSeries.DropPhotosSeries[i], points);
                     }
                     catch (TimeoutException)
@@ -2794,7 +2851,7 @@ namespace DDrop
                     if (CurrentDropPhoto != null &&
                         CurrentDropPhoto.DropPhotoId == CurrentSeries.DropPhotosSeries[i].DropPhotoId)
                     {
-                        ShowLinesOnPhotosPreview(CurrentSeries.DropPhotosSeries[i]);
+                        ShowLinesOnPhotosPreview();
                     }
 
                     ReCalculateAllParametersFromLines(CurrentSeries.DropPhotosSeries[i]);
@@ -2831,7 +2888,13 @@ namespace DDrop
 
         private void UndoCalculate_OnClick(object sender, RoutedEventArgs e)
         {
-            DiscardAutoCalculationChanges();
+            var checkedCount = CurrentSeries.DropPhotosSeries.Count(x => x.IsChecked);
+            var message = GetDiscardMessage(checkedCount);
+            MessageBoxResult messageBoxResult = MessageBox.Show(message, "Подтверждение", MessageBoxButton.YesNo);
+            if (messageBoxResult == MessageBoxResult.Yes)
+            {
+                DiscardAutoCalculationChanges(false, checkedCount);
+            }
         }
 
         private void ReCalculateAllParametersFromLines(DropPhoto dropPhoto)
@@ -2970,15 +3033,56 @@ namespace DDrop
             dropPhoto.VerticalLine.Stroke = Brushes.Green;
         }
 
-        private static void CreateContour(DropPhoto dropPhoto, System.Drawing.Point[] points)
+        private void CreateContour(DropPhoto dropPhoto, System.Drawing.Point[] points, CalculationVariants calculationVariant)
         {
-            dropPhoto.Contour = new Contour
+            if (dropPhoto.Contour == null)
             {
-                ContourId = dropPhoto.DropPhotoId,
-                CurrentDropPhoto = dropPhoto,
-                SimpleLines = new ObservableCollection<SimpleLine>(),
-                Lines = new ObservableCollection<Line>(),
-            };
+                dropPhoto.Contour = new Contour
+                {
+                    ContourId = dropPhoto.DropPhotoId,
+                    CurrentDropPhoto = dropPhoto,
+                    SimpleLines = new ObservableCollection<SimpleLine>(),
+                    Lines = new ObservableCollection<Line>(),
+                };
+            }
+            else
+            {
+                if (dropPhoto.Contour != null && dropPhoto == CurrentDropPhoto)
+                {
+                    foreach (var line in dropPhoto.Contour.Lines)
+                    {
+                        ImgCurrent.CanDrawing.Children.Remove(line);
+                    }
+                }
+
+                dropPhoto.Contour.SimpleLines.Clear();
+                dropPhoto.Contour.Lines.Clear();
+            }
+
+            dropPhoto.Contour.CalculationVariants = calculationVariant;
+
+            if (calculationVariant == CalculationVariants.CalculateWithCSharp)
+            {
+                dropPhoto.Contour.Parameters = new AutoCalculationParameters
+                {
+                    Ksize = Convert.ToInt32(CShrpKsize.Text),
+                    Size1 = Convert.ToInt32(CShrpSize1.Text),
+                    Size2 = Convert.ToInt32(CShrpSize2.Text),
+                    Treshold1 = Convert.ToInt32(CShrpThreshold1.Text),
+                    Treshold2 = Convert.ToInt32(CShrpThreshold2.Text),
+                };
+            }
+            else
+            {
+                dropPhoto.Contour.Parameters = new AutoCalculationParameters
+                {
+                    Ksize = Convert.ToInt32(Ksize.Text),
+                    Size1 = Convert.ToInt32(Size1.Text),
+                    Size2 = Convert.ToInt32(Size2.Text),
+                    Treshold1 = Convert.ToInt32(Threshold1.Text),
+                    Treshold2 = Convert.ToInt32(Threshold2.Text),
+                };
+            }
 
             for (int j = 0; j < points.Length; j++)
             {
@@ -3021,15 +3125,87 @@ namespace DDrop
 
         private async void SaveCalculationResults_OnClick(object sender, RoutedEventArgs e)
         {
-            await AnimationHelper.AnimateGridColumnExpandCollapseAsync(AutoCalculationColumn, false, 300, 0,
-                AutoCalculationColumn.MinWidth, 0, 200);
-            SeriesEditMenu.Visibility = Visibility.Visible;
-            EditPhotosColumn.Visibility = Visibility.Visible;
-            DeletePhotosColumn.Visibility = Visibility.Visible;
+            if (CurrentSeries.DropPhotosSeries.Any(x => x.RequireSaving))
+            {
+                int checkedCount = CurrentSeries.DropPhotosSeries.Count(x => x.IsChecked);
 
-            AutoCalculationMenu.Visibility = Visibility.Hidden;
-            _overrideLoadingBehaviour = false;
-            SingleSeriesLoadingComplete(false);
+                MessageBoxResult messageBoxResult =
+                    MessageBox.Show(checkedCount > 0 ? "Сохранить результаты расчета для выбранных снимков?" : "Сохранить результаты расчета ? ",
+                        "Подтверждение удаления", MessageBoxButton.YesNo);
+                if (messageBoxResult == MessageBoxResult.Yes)
+                {
+                    var pbuHandle1 = pbu.New(ProgressBar, 0,
+                        checkedCount > 0 ? checkedCount : CurrentSeries.DropPhotosSeries.Count, 0);
+
+                    CurrentSeriesImageLoadingWindow();
+                    CurrentSeriesPhotoContentLoadingWindow();
+
+                    for (int i = CurrentSeries.DropPhotosSeries.Count - 1; i >= 0; i--)
+                    {
+                        try
+                        {
+                            if (checkedCount > 0 && CurrentSeries.DropPhotosSeries[i].RequireSaving &&
+                                !CurrentSeries.DropPhotosSeries[i].IsChecked)
+                            {
+                                DiscardAutoCalculationChange(CurrentSeries.DropPhotosSeries[i]);
+                                continue;
+                            }
+
+                            if (checkedCount > 0 && !CurrentSeries.DropPhotosSeries[i].IsChecked)
+                            {
+                                continue;
+                            }
+
+                            var dbPhoto = DDropDbEntitiesMapper.DropPhotoToDbDropPhoto(CurrentSeries.DropPhotosSeries[0], CurrentSeries.SeriesId);
+                            await Task.Run(() => _dDropRepository.UpdateDropPhoto(dbPhoto));
+
+                            _notifier.ShowSuccess($"Результаты авторасчета для {CurrentSeries.DropPhotosSeries[i].Name} успешно сохранены.");
+                            _logger.LogInfo(new LogEntry()
+                            {
+                                Username = User.Email,
+                                LogCategory = LogCategory.AutoCalculation,
+                                Message = $"Результаты авторасчета для {CurrentSeries.DropPhotosSeries[i].Name} успешно сохранены.",
+                            });
+                        }
+                        catch (TimeoutException)
+                        {
+                            DiscardAutoCalculationChange(CurrentSeries.DropPhotosSeries[i]);
+                            _notifier.ShowError(
+                                $"Не удалось сохранить результаты авторасчета для {CurrentSeries.DropPhotosSeries[i].Name}. Не удалось установить подключение. Проверьте интернет соединение. Результаты авторасчета отменены.");
+                        }
+                        catch (Exception exception)
+                        {
+                            _logger.LogError(new LogEntry
+                            {
+                                Exception = exception.ToString(),
+                                LogCategory = LogCategory.Common,
+                                InnerException = exception.InnerException?.Message,
+                                Message = exception.Message,
+                                StackTrace = exception.StackTrace,
+                                Username = User.Email,
+                                Details = exception.TargetSite.Name
+                            });
+                            throw;
+                        }
+
+                        pbu.CurValue[pbuHandle1] += 1;
+                    }
+
+                    pbu.ResetValue(pbuHandle1);
+                    pbu.Remove(pbuHandle1);
+
+                    CurrentSeriesImageLoadingWindow();
+                    CurrentSeriesPhotoContentLoadingWindowComplete();
+
+                    await AutoCalculationModeOff();
+
+                    SingleSeriesLoadingComplete(false);
+                }
+            }
+            else
+            {
+                _notifier.ShowInformation("Нет изменений для сохранения.");
+            }
         }
 
         private async void DiscardCalculationResults_OnClick(object sender, RoutedEventArgs e)
@@ -3066,71 +3242,90 @@ namespace DDrop
             SingleSeriesLoadingComplete(false);
         }
 
-        private void DiscardAutoCalculationChanges(bool discardAll = false)
+        private void DiscardAutoCalculationChanges(bool discardAll = false, int checkedCount = 0)
         {
-            var checkedCount = CurrentSeries.DropPhotosSeries.Count(x => x.IsChecked);
-
-            var message = GetDiscardMessage(checkedCount);
-
             if (CurrentSeries.DropPhotosSeries.Any(x => x.RequireSaving))
             {
-                MessageBoxResult messageBoxResult = MessageBox.Show(message, "Подтверждение", MessageBoxButton.YesNo);
-                if (messageBoxResult == MessageBoxResult.Yes)
+                foreach (var dropPhoto in CurrentSeries.DropPhotosSeries)
                 {
-                    foreach (var dropPhoto in CurrentSeries.DropPhotosSeries)
+                    if (checkedCount > 0 && !dropPhoto.IsChecked && discardAll == false)
                     {
-                        if (checkedCount > 0 && !dropPhoto.IsChecked && discardAll == false)
-                        {
-                            continue;
-                        }
-
-                        if (dropPhoto.RequireSaving == false)
-                        {
-                            _notifier.ShowInformation($"Нет изменений для снимка {dropPhoto.Name}.");
-                        }
-
-                        dropPhoto.RequireSaving = false;
-
-                        var storedPhoto = _storedDropPhotos.FirstOrDefault(x => x.DropPhotoId == dropPhoto.DropPhotoId);
-
-                        if (storedPhoto != null)
-                        {
-                            dropPhoto.SimpleHorizontalLine = storedPhoto.SimpleHorizontalLine;
-                            dropPhoto.HorizontalLine = new Line
-                            {
-                                X1 = dropPhoto.SimpleHorizontalLine.X1,
-                                X2 = dropPhoto.SimpleHorizontalLine.X2,
-                                Y1 = dropPhoto.SimpleHorizontalLine.Y1,
-                                Y2 = dropPhoto.SimpleHorizontalLine.Y2,
-                                StrokeThickness = 2,
-                                Stroke = Brushes.DeepPink
-                            };
-
-                            dropPhoto.SimpleVerticalLine = storedPhoto.SimpleVerticalLine;
-                            dropPhoto.VerticalLine = new Line
-                            {
-                                X1 = dropPhoto.SimpleVerticalLine.X1,
-                                X2 = dropPhoto.SimpleVerticalLine.X2,
-                                Y1 = dropPhoto.SimpleVerticalLine.Y1,
-                                Y2 = dropPhoto.SimpleVerticalLine.Y2,
-                                StrokeThickness = 2,
-                                Stroke = Brushes.Green
-                            };
-
-                            dropPhoto.Contour = storedPhoto.Contour;
-                        }
-
-                        ReCalculateAllParametersFromLines(dropPhoto);
-
-                        if (dropPhoto.DropPhotoId == CurrentDropPhoto.DropPhotoId)
-                            ShowLinesOnPhotosPreview(dropPhoto);
+                        continue;
                     }
 
-                    Photos.IsEnabled = true;
+                    if (dropPhoto.RequireSaving == false && dropPhoto.IsChecked)
+                    {
+                        _notifier.ShowInformation($"Нет изменений для снимка {dropPhoto.Name}.");
+                        continue;
+                    }
+
+                    DiscardAutoCalculationChange(dropPhoto);
                 }
 
+                Photos.IsEnabled = true;
+                _notifier.ShowSuccess("Изменения успешно отменены.");
+            }
+            else
+            {
                 _notifier.ShowInformation($"Нет изменений для серии {CurrentSeries.Title}.");
             }
+        }
+
+        private void DiscardAutoCalculationChange(DropPhoto dropPhoto)
+        {
+            dropPhoto.RequireSaving = false;
+
+            var storedPhoto = _storedDropPhotos.FirstOrDefault(x => x.DropPhotoId == dropPhoto.DropPhotoId);
+
+            if (storedPhoto != null)
+            {
+                dropPhoto.SimpleHorizontalLine.X1 = storedPhoto.SimpleHorizontalLine.X1;
+                dropPhoto.SimpleHorizontalLine.X2 = storedPhoto.SimpleHorizontalLine.X2;
+                dropPhoto.SimpleHorizontalLine.Y1 = storedPhoto.SimpleHorizontalLine.Y1;
+                dropPhoto.SimpleHorizontalLine.Y2 = storedPhoto.SimpleHorizontalLine.Y2;
+                dropPhoto.SimpleHorizontalLine.SimpleLineId = storedPhoto.SimpleHorizontalLine.SimpleLineId;
+
+                dropPhoto.HorizontalLine.X1 = dropPhoto.SimpleHorizontalLine.X1;
+                dropPhoto.HorizontalLine.X2 = dropPhoto.SimpleHorizontalLine.X2;
+                dropPhoto.HorizontalLine.Y1 = dropPhoto.SimpleHorizontalLine.Y1;
+                dropPhoto.HorizontalLine.Y2 = dropPhoto.SimpleHorizontalLine.Y2;
+
+                dropPhoto.SimpleVerticalLine.X1 = storedPhoto.SimpleVerticalLine.X1;
+                dropPhoto.SimpleVerticalLine.X2 = storedPhoto.SimpleVerticalLine.X2;
+                dropPhoto.SimpleVerticalLine.Y1 = storedPhoto.SimpleVerticalLine.Y1;
+                dropPhoto.SimpleVerticalLine.Y2 = storedPhoto.SimpleVerticalLine.Y2;
+                dropPhoto.SimpleVerticalLine.SimpleLineId = storedPhoto.SimpleVerticalLine.SimpleLineId;
+
+                dropPhoto.VerticalLine.X1 = dropPhoto.SimpleVerticalLine.X1;
+                dropPhoto.VerticalLine.X2 = dropPhoto.SimpleVerticalLine.X2;
+                dropPhoto.VerticalLine.Y1 = dropPhoto.SimpleVerticalLine.Y1;
+                dropPhoto.VerticalLine.Y2 = dropPhoto.SimpleVerticalLine.Y2;
+
+                if (storedPhoto.Contour != null)
+                {
+                    dropPhoto.Contour.ContourId = storedPhoto.Contour.ContourId;
+                    dropPhoto.Contour.CalculationVariants = storedPhoto.Contour.CalculationVariants;
+                    dropPhoto.Contour.Parameters = storedPhoto.Contour.Parameters;
+                    dropPhoto.Contour.SimpleLines = storedPhoto.Contour.SimpleLines;
+                }
+                else
+                {
+                    if (dropPhoto.Contour != null && dropPhoto == CurrentDropPhoto)
+                    {
+                        foreach (var line in dropPhoto.Contour.Lines)
+                        {
+                            ImgCurrent.CanDrawing.Children.Remove(line);
+                        }
+                    }
+
+                    dropPhoto.Contour = null;
+                }
+            }
+
+            ReCalculateAllParametersFromLines(dropPhoto);
+
+            if (dropPhoto.DropPhotoId == CurrentDropPhoto?.DropPhotoId)
+                ShowLinesOnPhotosPreview();
         }
 
         private static string GetDiscardMessage(int checkedCount)
@@ -3340,7 +3535,7 @@ namespace DDrop
             {
                 if (CurrentSeries != null && CurrentDropPhoto != null)
                 {
-                    ShowLinesOnPhotosPreview(CurrentDropPhoto);
+                    ShowLinesOnPhotosPreview();
                 }
 
                 if (_currentSeriesPreviewPhoto != null)

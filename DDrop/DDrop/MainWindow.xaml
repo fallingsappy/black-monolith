@@ -226,7 +226,7 @@
                                             <Button Visibility="Visible" Grid.Row="0" Name="SavePhotosOrder"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="27" Background="{x:Null}" BorderBrush="{x:Null}" Height="25" Click="SavePhotosOrder_OnClick" ToolTip="Сохранить изменения." Margin="10,6,0,0">
                                                 <ContentControl Content="{StaticResource SaveIcon}" Height="21"/>
                                             </Button>
-                                            <Button Grid.Row="0" Grid.Column="0"  Name="DiscardPhotosReOrder" HorizontalAlignment="Left" Margin="75,6,0,0" VerticalAlignment="Top" Width="27" Background="{x:Null}" BorderBrush="{x:Null}" Height="26" Click="DiscardPhotosReOrder_OnClick" ToolTip="Закончить изменение порядка снимков.">
+                                            <Button Grid.Row="0" Grid.Column="0"  Name="DiscardPhotosReOrder" HorizontalAlignment="Left" Margin="43,6,0,0" VerticalAlignment="Top" Width="27" Background="{x:Null}" BorderBrush="{x:Null}" Height="26" Click="DiscardPhotosReOrder_OnClick" ToolTip="Закончить изменение порядка снимков.">
                                                 <ContentControl Content="{StaticResource Cancel}" Height="22" Width="23"/>
                                             </Button>
                                         </Grid>
@@ -234,7 +234,7 @@
                                             <Button Grid.Row="0"  Name="SaveInputPhotoEditButton"  HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top" Width="27" Background="{x:Null}" BorderBrush="{x:Null}" Height="25" Click="SaveInputPhotoEditButton_Click" ToolTip="Сохранить изменения.">
                                                 <ContentControl Content="{StaticResource SaveIcon}" Height="21"/>
                                             </Button>
-                                            <Button Grid.Row="0" Grid.Column="0"  Name="DiscardManualPhotoEdit" HorizontalAlignment="Left" Margin="75,6,0,0" VerticalAlignment="Top" Width="27" Background="{x:Null}" BorderBrush="{x:Null}" Height="26" Click="DiscardManualPhotoEdit_OnClick" ToolTip="Закончить изменение порядка снимков.">
+                                            <Button Grid.Row="0" Grid.Column="0"  Name="DiscardManualPhotoEdit" HorizontalAlignment="Left" Margin="43,6,0,0" VerticalAlignment="Top" Width="27" Background="{x:Null}" BorderBrush="{x:Null}" Height="26" Click="DiscardManualPhotoEdit_OnClick" ToolTip="Закончить изменение порядка снимков.">
                                                 <ContentControl Content="{StaticResource Cancel}" Height="22" Width="23"/>
                                             </Button>
                                             <TextBox IsEnabled="False" Text="{Binding ElementName=AppMainWindow, Path=CurrentDropPhoto.XDiameterInPixels}" Name="PixelsInMillimeterHorizontalTextBox" Height="20" Margin="0,10,131,0" TextWrapping="Wrap"  VerticalAlignment="Top" HorizontalAlignment="Right" Width="84"/>
@@ -483,7 +483,7 @@
                                 <Button Name="DeleteButton"  HorizontalAlignment="Left" Margin="154,7,0,0" VerticalAlignment="Top" Width="27" Background="{x:Null}" BorderBrush="{x:Null}" Height="25" Click="DeleteReferencePhotoButton_Click" ToolTip="Удалить референсный снимок.">
                                     <ContentControl Content="{StaticResource DeleteIcon}" Height="21" Width="23"/>
                                 </Button>
-                                <Button Name="CancelReferencePhotoEditing" Visibility="Hidden" HorizontalAlignment="Left" Margin="186,7,0,0" VerticalAlignment="Top" Width="27" Background="{x:Null}" BorderBrush="{x:Null}" Height="27" Click="CancelReferencePhotoEditing_OnClick" ToolTip="Удалить референсный снимок.">
+                                <Button Name="CancelReferencePhotoEditing" Visibility="Hidden" HorizontalAlignment="Left" Margin="186,7,0,0" VerticalAlignment="Top" Width="27" Background="{x:Null}" BorderBrush="{x:Null}" Height="27" Click="CancelReferencePhotoEditing_OnClick" ToolTip="Отменить изменения референсного расстояния.">
                                     <ContentControl Content="{StaticResource Cancel}" Height="23" Width="23"/>
                                 </Button>
                             </Grid>

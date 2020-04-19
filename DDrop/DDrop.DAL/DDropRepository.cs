@@ -138,13 +138,20 @@ namespace DDrop.DAL
                                 x.ZDiameterInPixels,
                                 x.AddedDate,
                                 x.CreationDateTime,
-                                x.PhotoOrderInSeries
+                                x.PhotoOrderInSeries,
+                                x.Contour
                             }).ToList();
 
                         List<DbDropPhoto> dbDropPhotoForAdd = new List<DbDropPhoto>();
 
                         foreach (var dropPhoto in dropPhotoForSeries)
                         {
+                            if (dropPhoto.Contour != null)
+                            {
+                                dropPhoto.Contour.SimpleLines = context.SimpleLines
+                                    .Where(x => x.ContourId == dropPhoto.Contour.ContourId).ToList();
+                            }
+
                             dbDropPhotoForAdd.Add(new DbDropPhoto
                             {
                                 AddedDate = dropPhoto.AddedDate,
@@ -162,6 +169,7 @@ namespace DDrop.DAL
                                 ZDiameterInPixels = dropPhoto.ZDiameterInPixels,
                                 CreationDateTime = dropPhoto.CreationDateTime,
                                 PhotoOrderInSeries = dropPhoto.PhotoOrderInSeries,
+                                Contour = dropPhoto.Contour
                             });
                         }
 
@@ -485,11 +493,33 @@ namespace DDrop.DAL
             {
                 try
                 {
+                    var contour = await context.Contours.Include(p => p.SimpleLines).FirstOrDefaultAsync(x => x.ContourId == dropPhoto.DropPhotoId);
+                    
+                    if (contour != null && dropPhoto.Contour != null)
+                    {
+                        contour.SimpleLines = dropPhoto.Contour.SimpleLines;
+                        contour.CalculationParameters = dropPhoto.Contour.CalculationParameters;
+                        contour.CalculationProvider = dropPhoto.Contour.CalculationProvider;
+
+                        context.Set<DbContour>().AddOrUpdate(dropPhoto.Contour);
+                        context.Set<DbSimpleLine>().AddRange(dropPhoto.Contour.SimpleLines);
+                    }
+                    else if (dropPhoto.Contour != null)
+                    {
+                        context.Set<DbContour>().AddOrUpdate(dropPhoto.Contour);
+                        context.Set<DbSimpleLine>().AddRange(dropPhoto.Contour.SimpleLines);
+                    }
+                    else if (contour != null && dropPhoto.Contour == null)
+                    {
+                        context.Contours.Remove(contour);
+                        context.SimpleLines.RemoveRange(contour.SimpleLines);
+                    }
+
                     context.Set<DbSimpleLine>().AddOrUpdate(dropPhoto.SimpleHorizontalLine);
                     context.Set<DbSimpleLine>().AddOrUpdate(dropPhoto.SimpleVerticalLine);
                     context.Set<DbDropPhoto>().AddOrUpdate(dropPhoto);
                     context.Set<DbDrop>().AddOrUpdate(dropPhoto.Drop);
-                    //context.Set<DbContour>().AddOrUpdate(dropPhoto.Contour);
+                    
                     await context.SaveChangesAsync();
                 }
                 catch (SqlException e)
@@ -542,12 +572,18 @@ namespace DDrop.DAL
                 try
                 {
                     var dropPhoto = await context.DropPhotos.FirstOrDefaultAsync(x => x.DropPhotoId == dropPhotoId);
+                    var contour = await context.Contours.Include(p => p.SimpleLines).FirstOrDefaultAsync(x => x.ContourId == dropPhoto.DropPhotoId);
 
                     context.DropPhotos.Attach(dropPhoto ?? throw new InvalidOperationException());
                     if (dropPhoto.SimpleVerticalLine != null)
                         context.SimpleLines.Remove(dropPhoto.SimpleVerticalLine);
                     if (dropPhoto.SimpleHorizontalLine != null)
                         context.SimpleLines.Remove(dropPhoto.SimpleHorizontalLine);
+                    if (contour != null)
+                    {
+                        context.Contours.Remove(contour);
+                        context.SimpleLines.RemoveRange(contour.SimpleLines);
+                    }
                     context.Drops.Remove(dropPhoto.Drop);
                     context.DropPhotos.Remove(dropPhoto);
 

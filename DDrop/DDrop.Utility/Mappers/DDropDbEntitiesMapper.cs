@@ -367,6 +367,7 @@ namespace DDrop.Utility.Mappers
 
                         userContour.Lines = userLines;
                         userContour.SimpleLines = userSimpleLines;
+                        userDropPhoto.Contour = userContour;
                     }
 
                     addSingleSeriesViewModel.DropPhotosSeries.Add(userDropPhoto);
@@ -491,7 +492,7 @@ namespace DDrop.Utility.Mappers
             {
                 DbContour newDbContour = new DbContour
                 {
-                    CurrentDropPhoto = dbDropPhoto,
+                    CurrentDropPhoto = null,
                     CalculationParameters = JsonSerializeProvider.SerializeToString(dropPhotoViewModel.Contour.Parameters),
                     CalculationProvider = dropPhotoViewModel.Contour.CalculationVariants.ToString(),
                     ContourId = dropPhotoViewModel.Contour.ContourId

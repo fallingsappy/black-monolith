@@ -11,6 +11,7 @@ using System.Windows.Controls;
 using DDrop.BE.Enums.Logger;
 using DDrop.Utility.Logger;
 using DDrop.Utility.Mappers;
+using DDrop.Utility.Validation;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 using Ookii.Dialogs.Wpf;
@@ -462,13 +463,6 @@ namespace DDrop
             }
         }
         
-
-        private static readonly Regex _regex = new Regex("^[1-9]+[0-9]*$");
-        private static bool IsTextAllowed(string text)
-        {
-            return _regex.IsMatch(text);
-        }
-
         private void OptionsIsLoading()
         {
             GeneralSettings.IsEnabled = false;
@@ -501,7 +495,7 @@ namespace DDrop
             {
                 if (!string.IsNullOrWhiteSpace(t.Text))
                 {
-                    if (IsTextAllowed(t.Text))
+                    if (ValidationHelper.IsTextAllowed(t.Text))
                     {
                         Properties.Settings.Default.AutoCalculationTemplates = JsonSerializeProvider.SerializeToString(UserAutoCalculationTemplates);
 

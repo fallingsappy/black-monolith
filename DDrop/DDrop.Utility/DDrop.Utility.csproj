@@ -112,6 +112,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PythonOperations\NamedPipe.cs" />
     <Compile Include="SeriesLocalStorageOperations\JsonSerializeProvider.cs" />
+    <Compile Include="Validation\ValidationHelper.cs" />
     <Compile Include="ValueConverters\EnumToStringConverter.cs" />
     <Compile Include="ValueConverters\InverseBooleanConverter.cs" />
   </ItemGroup>
