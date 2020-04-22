@@ -1,6 +1,9 @@
 ﻿using DDrop.BL.DropPhoto;
 using DDrop.BL.Series;
 using System.Windows;
+using DDrop.BL.AppStateBL;
+using DDrop.BL.Calculation;
+using DDrop.BL.GeometryBL;
 using DDrop.DAL;
 using DDrop.Utility.ExceptionHandling.ExceptionHandling;
 using Unity;
@@ -30,7 +33,11 @@ namespace DDrop
 
             IUnityContainer container = new UnityContainer();
             container.RegisterType<ISeriesBL, SeriesBL>();
+            container.RegisterType<IGeometryBL, GeometryBL>();
             container.RegisterType<IDropPhotoBL, DropPhotoBL>();
+            container.RegisterType<ICalculationBL, CalculationBL>(new InjectionConstructor(
+                new ResolvedParameter<IDDropRepository>()));
+            container.RegisterType<IAppStateBL, AppStateBL>();
             container.RegisterType<IDDropRepository, DDropRepository>();
             container.RegisterType<IDropletImageProcessor, DropletImageProcessor>();
             container.RegisterType<IPythonProvider, PythonProvider>();

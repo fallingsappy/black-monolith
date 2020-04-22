@@ -45,12 +45,18 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppStateBL\AppStateBL.cs" />
+    <Compile Include="AppStateBL\IAppStateBL.cs" />
     <Compile Include="Calculation\CalculationBL.cs" />
     <Compile Include="Calculation\DropletSizeCalculator\DropletSizeCalculator.cs" />
+    <Compile Include="Calculation\ICalculationBL.cs" />
     <Compile Include="DropPhoto\DropPhotoBL.cs" />
     <Compile Include="DropPhoto\IDropPhotoBL.cs" />
+    <Compile Include="GeometryBL\GeometryBL.cs" />
+    <Compile Include="GeometryBL\IGeometryBL.cs" />
     <Compile Include="ImageProcessing\CSharp\DropletImageProcessor.cs" />
     <Compile Include="ImageProcessing\CSharp\IDropletImageProcessor.cs" />
     <Compile Include="ImageProcessing\Python\IPythonProvider.cs" />
@@ -67,6 +73,18 @@
     <ProjectReference Include="..\DDrop.BE\DDrop.BE.csproj">
       <Project>{19d17b23-5ba3-4387-b0fa-f2c66c7ec5bc}</Project>
       <Name>DDrop.BE</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DDrop.Controls\DDrop.Controls.csproj">
+      <Project>{14B83D99-1C16-4591-A785-13A7D9C1A59E}</Project>
+      <Name>DDrop.Controls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DDrop.DAL\DDrop.DAL.csproj">
+      <Project>{194BFFCC-08D1-4FCE-957E-2A0723DF61F9}</Project>
+      <Name>DDrop.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DDrop.Db\DDrop.Db.csproj">
+      <Project>{8CE97B04-F51F-4350-A8CA-A82E40845793}</Project>
+      <Name>DDrop.Db</Name>
     </ProjectReference>
     <ProjectReference Include="..\DDrop.Utility\DDrop.Utility.csproj">
       <Project>{85478E42-C1EA-4839-87E1-7CAAB53CF4C8}</Project>

@@ -156,3 +156,12 @@ E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\obj\Debug\DDrop.BL.pdb
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\bin\Debug\DDrop.DAL.dll
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\bin\Debug\DDrop.DAL.pdb
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\bin\Debug\DDrop.DAL.dll.config
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\bin\Debug\DDrop.Controls.dll
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\bin\Debug\LiveCharts.dll
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\bin\Debug\LiveCharts.Wpf.dll
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\bin\Debug\DDrop.Controls.pdb
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\bin\Debug\DDrop.Controls.dll.config
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\bin\Debug\LiveCharts.pdb
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\bin\Debug\LiveCharts.xml
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\bin\Debug\LiveCharts.Wpf.pdb
+E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\bin\Debug\LiveCharts.Wpf.xml

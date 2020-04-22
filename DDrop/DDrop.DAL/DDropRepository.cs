@@ -501,8 +501,8 @@ namespace DDrop.DAL
                         contour.CalculationParameters = dropPhoto.Contour.CalculationParameters;
                         contour.CalculationProvider = dropPhoto.Contour.CalculationProvider;
 
-                        context.Set<DbContour>().AddOrUpdate(dropPhoto.Contour);
-                        context.Set<DbSimpleLine>().AddRange(dropPhoto.Contour.SimpleLines);
+                        context.Set<DbContour>().AddOrUpdate(contour);
+                        context.Set<DbSimpleLine>().AddRange(contour.SimpleLines);
                     }
                     else if (dropPhoto.Contour != null)
                     {

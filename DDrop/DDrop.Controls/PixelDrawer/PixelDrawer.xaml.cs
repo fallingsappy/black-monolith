@@ -183,6 +183,19 @@ namespace DDrop.Controls.PixelDrawer
 
                         CanDrawing.Children.Remove(CurrentDropPhoto.HorizontalLine);
 
+                        if (CurrentDropPhoto.Contour != null)
+                        {
+                            foreach (var line in CurrentDropPhoto.Contour.Lines)
+                            {
+                                CanDrawing.Children.Remove(line);
+                            }
+
+                            CurrentDropPhoto.Contour.SimpleLines.Clear();
+                            CurrentDropPhoto.Contour.Lines.Clear();
+
+                            CurrentDropPhoto.Contour = null;
+                        }
+
                         if (_horizontalLines.Count > 0)
                         {
                             CanDrawing.Children.Remove(_horizontalLines[_horizontalLines.Count - 1]);
@@ -218,6 +231,19 @@ namespace DDrop.Controls.PixelDrawer
                         _selectedLine.Stroke = Brushes.Green;
 
                         CanDrawing.Children.Remove(CurrentDropPhoto.VerticalLine);
+
+                        if (CurrentDropPhoto.Contour != null)
+                        {
+                            foreach (var line in CurrentDropPhoto.Contour.Lines)
+                            {
+                                CanDrawing.Children.Remove(line);
+                            }
+
+                            CurrentDropPhoto.Contour.SimpleLines.Clear();
+                            CurrentDropPhoto.Contour.Lines.Clear();
+
+                            CurrentDropPhoto.Contour = null;
+                        }
 
                         if (_verticalLines.Count > 0)
                         {
