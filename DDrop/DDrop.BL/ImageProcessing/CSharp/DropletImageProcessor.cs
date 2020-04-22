@@ -1,4 +1,5 @@
-﻿using Emgu.CV;
+﻿using System;
+using Emgu.CV;
 using Emgu.CV.Structure;
 using Emgu.CV.Util;
 
@@ -27,7 +28,7 @@ namespace DDrop.BL.ImageProcessing.CSharp
             CvInvoke.MorphologyEx(edgedImage, closedImage, Emgu.CV.CvEnum.MorphOp.Close, kernel, new System.Drawing.Point(-1, -1), 0, Emgu.CV.CvEnum.BorderType.Default, new MCvScalar());
 
             Image<Bgr, byte> imageOut = imageInput;
-            VectorOfVectorOfPoint rescontours1 = new VectorOfVectorOfPoint();
+            VectorOfVectorOfPoint resultingContour = new VectorOfVectorOfPoint();
             using (VectorOfVectorOfPoint contours = new VectorOfVectorOfPoint())
             {
                 Mat dilate = new Mat();
@@ -43,6 +44,9 @@ namespace DDrop.BL.ImageProcessing.CSharp
 
                 int count = contours.Size;
 
+                if (count == 0)
+                    throw new InvalidOperationException("Не удалось построить контур.");
+
                 for (int i = 0; i < count; i++)
                 {
                     using (VectorOfPoint contour = contours[i])
@@ -53,13 +57,12 @@ namespace DDrop.BL.ImageProcessing.CSharp
                         }
                 }
 
-                rescontours1.Push(contours[index]);
+                resultingContour.Push(contours[index]);
 
-                CvInvoke.DrawContours(imageOut, rescontours1, -1, color, 2);
-
+                CvInvoke.DrawContours(imageOut, resultingContour, -1, color, 2);
             }
             
-            var arr = rescontours1.ToArrayOfArray();
+            var arr = resultingContour.ToArrayOfArray();
 
             return arr[0];
         }

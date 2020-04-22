@@ -40,6 +40,10 @@ namespace DDrop.BL.ImageProcessing.Python
                 StreamReader streamReader = process.StandardOutput;
 
                 string output = streamReader.ReadToEnd();
+
+                if (string.IsNullOrWhiteSpace(output))
+                    throw new InvalidOperationException("Не удалось построить контур");
+
                 string[] outputAsArray = output.Split(new[] { "\r\n\r\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
                 System.Drawing.Point[] points = new System.Drawing.Point[outputAsArray.Length];
 

@@ -1,5 +1,4 @@
 ﻿using DDrop.BE.Models;
-using DDrop.BL.Calculation.DropletSizeCalculator;
 using DDrop.BL.Series;
 using DDrop.Utility.ExcelOperations;
 using DDrop.Utility.ImageOperations;
@@ -26,6 +25,7 @@ using DDrop.Utility.Mappers;
 using System.Threading.Tasks;
 using Ookii.Dialogs.Wpf;
 using System.Threading;
+using System.Windows.Input;
 using DDrop.BE.Enums.Logger;
 using DDrop.BE.Enums.Options;
 using DDrop.BL.AppStateBL;
@@ -2635,9 +2635,7 @@ namespace DDrop
         {
             if (!string.IsNullOrWhiteSpace(PixelsInMillimeterTextBox.Text) && PixelsInMillimeterTextBox.Text != "0")
             {
-                InitilizeUserTemplates();
-                InitilizeDefaultTemplates();
-                BuildTemplates();
+                InitilizeTemplates();
 
                 SeriesEditMenu.Visibility = Visibility.Hidden;
                 EditPhotosColumn.Visibility = Visibility.Hidden;
@@ -2663,6 +2661,13 @@ namespace DDrop
             {
                 _notifier.ShowInformation("Выберите референсное расстояние на референсном снимке.");
             }
+        }
+
+        private void InitilizeTemplates()
+        {
+            InitilizeUserTemplates();
+            InitilizeDefaultTemplates();
+            BuildTemplates();
         }
 
         private void StoreDropPhoto(DropPhoto dropPhoto, ObservableCollection<DropPhoto> storeTo)
@@ -2733,14 +2738,29 @@ namespace DDrop
                         if ((CalculationVariants) Properties.Settings.Default.AutoCalculationType ==
                             CalculationVariants.CalculateWithPython)
                         {
-                            points = CalculateWithPython(CurrentSeries.DropPhotosSeries[i]);
-                            calculationVariant = CalculationVariants.CalculateWithPython;
+                            try
+                            {
+                                points = CalculateWithPython(CurrentSeries.DropPhotosSeries[i]);
+                                calculationVariant = CalculationVariants.CalculateWithPython;
+                            }
+                            catch (InvalidOperationException exception)
+                            {
+                                _notifier.ShowError($"{exception.Message} для снимка {CurrentSeries.DropPhotosSeries[i].Name}.");
+                                continue;
+                            }
                         }
-                        else if ((CalculationVariants) Properties.Settings.Default.AutoCalculationType ==
-                                 CalculationVariants.CalculateWithCSharp)
+                        else if ((CalculationVariants) Properties.Settings.Default.AutoCalculationType == CalculationVariants.CalculateWithCSharp)
                         {
-                            points = _dropletImageProcessor.GetDiameters(CurrentSeries.DropPhotosSeries[i].Content);
-                            calculationVariant = CalculationVariants.CalculateWithCSharp;
+                            try
+                            {
+                                points = _dropletImageProcessor.GetDiameters(CurrentSeries.DropPhotosSeries[i].Content);
+                                calculationVariant = CalculationVariants.CalculateWithCSharp;
+                            }
+                            catch (InvalidOperationException exception)
+                            {
+                                _notifier.ShowError($"{exception.Message} для снимка {CurrentSeries.DropPhotosSeries[i].Name}. Попробуйте изменить параметры расчета.");
+                                continue;
+                            }
                         }
                         else
                         {
@@ -3173,16 +3193,6 @@ namespace DDrop
             }
         }
 
-        private void SavePythonTemplate_OnClick(object sender, RoutedEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void SaveCSharpTemplate_OnClick(object sender, RoutedEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
         private void PythonTemplatesCombobox_OnDropDownClosed(object sender, EventArgs e)
         {
             var combobox = sender as ComboBox;
@@ -3423,5 +3433,94 @@ namespace DDrop
 
         #endregion
 
+        private void SavePythonTemplate_OnClick(object sender, RoutedEventArgs e)
+        {
+            EndPythonTemplateAdding();
+        }
+
+        private void EndPythonTemplateAdding()
+        {
+            PythonTemplateName.Visibility = Visibility.Hidden;
+            TextBoxPythonTemplateName.Visibility = Visibility.Hidden;
+            SavePythonTemplate.Visibility = Visibility.Hidden;
+            CancelPythonTemplateAdding.Visibility = Visibility.Hidden;
+
+            AddPythonTemplate.Visibility = Visibility.Visible;
+            PythonTemplatesCombobox.Visibility = Visibility.Visible;
+            ChoosePythonTemplate.Visibility = Visibility.Visible;
+        }
+
+        private void SaveCSharpTemplate_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(TextBoxCSharpTemplateName.Text))
+            {
+                Properties.Settings.Default.AutoCalculationTemplates = JsonSerializeProvider.SerializeToString(_userAutoCalculationTemplates);
+
+                Properties.Settings.Default.Save();
+                InitilizeTemplates();
+
+                EndCSharpTemplateAdding();
+            }
+        }
+
+        private void EndCSharpTemplateAdding()
+        {
+            CSharpTemplateName.Visibility = Visibility.Hidden;
+            TextBoxCSharpTemplateName.Visibility = Visibility.Hidden;
+            SaveCSharpTemplate.Visibility = Visibility.Hidden;
+            CancelCSharpTemplateAdding.Visibility = Visibility.Hidden;
+
+            AddCSharpTemplate.Visibility = Visibility.Visible;
+            CSharpTemplatesCombobox.Visibility = Visibility.Visible;
+            ChooseCSharpTemplate.Visibility = Visibility.Visible;
+        }
+
+        private void AddPythonTemplate_OnClick(object sender, RoutedEventArgs e)
+        {
+            PythonTemplateName.Visibility = Visibility.Visible;
+            TextBoxPythonTemplateName.Visibility = Visibility.Visible;
+            SavePythonTemplate.Visibility = Visibility.Visible;
+            CancelPythonTemplateAdding.Visibility = Visibility.Visible;
+
+            AddPythonTemplate.Visibility = Visibility.Hidden;
+            PythonTemplatesCombobox.Visibility = Visibility.Hidden;
+            ChoosePythonTemplate.Visibility = Visibility.Hidden;
+        }
+
+        private void AddCSharpTemplate_OnClick(object sender, RoutedEventArgs e)
+        {
+            CSharpTemplateName.Visibility = Visibility.Visible;
+            TextBoxCSharpTemplateName.Visibility = Visibility.Visible;
+            SaveCSharpTemplate.Visibility = Visibility.Visible;
+            CancelCSharpTemplateAdding.Visibility = Visibility.Visible;
+
+            AddCSharpTemplate.Visibility = Visibility.Hidden;
+            CSharpTemplatesCombobox.Visibility = Visibility.Hidden;
+            ChooseCSharpTemplate.Visibility = Visibility.Hidden;
+        }
+
+        private void CancelPythonTemplateAdding_OnClick(object sender, RoutedEventArgs e)
+        {
+            EndPythonTemplateAdding();
+        }
+
+        private void CancelCSharpTemplateAdding_OnClick(object sender, RoutedEventArgs e)
+        {
+            EndCSharpTemplateAdding();
+        }
+
+        private void Ksize_OnTextInput(object sender, TextCompositionEventArgs e)
+        {
+
+        }
+
+        private void Ksize_OnPreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (Convert.ToInt32(e.Key) % 2 == 0)
+            {
+                Ksize.Text = "";
+                _notifier.ShowInformation("Введите нечетное число.");
+            }
+        }
     }
 }

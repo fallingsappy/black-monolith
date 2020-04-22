@@ -7,6 +7,7 @@
         xmlns:loadingSpinner="clr-namespace:DDrop.Controls.LoadingSpinner;assembly=DDrop.Controls"
         xmlns:simpleSample="clr-namespace:SimpleSample;assembly=DDrop.Controls"
         xmlns:options="clr-namespace:DDrop.BE.Enums.Options;assembly=DDrop.BE"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
         Title="Опции" Height="367" Width="800" MinWidth="400" MinHeight="50" x:Name="AppOptionsWindow" Icon="Resources/Icons/MainIcon.png" WindowStartupLocation="CenterScreen" Topmost="True" ResizeMode="NoResize">
     <Grid>
@@ -82,7 +83,13 @@
                                 </DataGridCheckBoxColumn.HeaderTemplate>
                             </DataGridCheckBoxColumn>
                             <DataGridTextColumn IsReadOnly="False" Header="Название" Binding="{Binding Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                            <DataGridTextColumn IsReadOnly="False" Header="Размытие" Binding="{Binding Parameters.Ksize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <DataGridTemplateColumn Header="Размытие">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                            <xctk:IntegerUpDown Minimum="1" Increment="2" AllowTextInput="False" Value="{Binding Parameters.Ksize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
                             <DataGridTextColumn IsReadOnly="False" Header="Порог (мин)" Binding="{Binding Parameters.Treshold1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                             <DataGridTextColumn IsReadOnly="False" Header="Порог (макс)" Binding="{Binding Parameters.Treshold2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                             <DataGridTextColumn IsReadOnly="False" Header="Высота контура" Binding="{Binding Parameters.Size1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
