@@ -1390,6 +1390,10 @@ namespace DDrop
                     else
                     {
                         _currentPhotoAutoCalculationTemplate = null;
+                        CSharpTemplatesCombobox.SelectedIndex = 0;
+                        PythonTemplatesCombobox.SelectedIndex = 0;
+                        СurrentCSharpAutoCalculationTemplate = _autoCalculationDefaultTemplates.FirstOrDefault(x => x.TemplateType == CalculationVariants.CalculateWithCSharp);
+                        СurrentPythonAutoCalculationTemplate = _autoCalculationDefaultTemplates.FirstOrDefault(x => x.TemplateType == CalculationVariants.CalculateWithPython);
                     }
 
                     BuildTemplates();
@@ -2636,6 +2640,8 @@ namespace DDrop
             if (!string.IsNullOrWhiteSpace(PixelsInMillimeterTextBox.Text) && PixelsInMillimeterTextBox.Text != "0")
             {
                 InitilizeTemplates();
+                EndPythonTemplateAdding();
+                EndCSharpTemplateAdding();
 
                 SeriesEditMenu.Visibility = Visibility.Hidden;
                 EditPhotosColumn.Visibility = Visibility.Hidden;
@@ -2665,6 +2671,9 @@ namespace DDrop
 
         private void InitilizeTemplates()
         {
+            _autoCalculationDefaultTemplates.Clear();
+            _userAutoCalculationTemplates.Clear();
+
             InitilizeUserTemplates();
             InitilizeDefaultTemplates();
             BuildTemplates();
@@ -3178,18 +3187,26 @@ namespace DDrop
                     CSharpAutoCalculationTemplate.Add(_currentPhotoAutoCalculationTemplate);
                     CSharpTemplatesCombobox.SelectedIndex = CSharpAutoCalculationTemplate.Count - 1;
                     СurrentCSharpAutoCalculationTemplate = _currentPhotoAutoCalculationTemplate;
+
+                    СurrentPythonAutoCalculationTemplate = null;
+                    PythonTemplatesCombobox.SelectedIndex = -1;
                 }
                 else
                 {
                     PythonAutoCalculationTemplate.Add(_currentPhotoAutoCalculationTemplate);
-                    CSharpTemplatesCombobox.SelectedItem = PythonAutoCalculationTemplate.Count - 1;
+                    PythonTemplatesCombobox.SelectedIndex = PythonAutoCalculationTemplate.Count - 1;
                     СurrentPythonAutoCalculationTemplate = _currentPhotoAutoCalculationTemplate;
+
+                    СurrentCSharpAutoCalculationTemplate = null;
+                    CSharpTemplatesCombobox.SelectedIndex = -1;
                 }    
             }
             else
             {
-                СurrentCSharpAutoCalculationTemplate = null;
-                СurrentPythonAutoCalculationTemplate = null;
+                CSharpTemplatesCombobox.SelectedIndex = 0;
+                PythonTemplatesCombobox.SelectedIndex = 0;
+                СurrentCSharpAutoCalculationTemplate = _autoCalculationDefaultTemplates.FirstOrDefault(x => x.TemplateType == CalculationVariants.CalculateWithCSharp);
+                СurrentPythonAutoCalculationTemplate = _autoCalculationDefaultTemplates.FirstOrDefault(x => x.TemplateType == CalculationVariants.CalculateWithPython);
             }
         }
 
@@ -3435,7 +3452,34 @@ namespace DDrop
 
         private void SavePythonTemplate_OnClick(object sender, RoutedEventArgs e)
         {
-            EndPythonTemplateAdding();
+            if (!string.IsNullOrWhiteSpace(TextBoxPythonTemplateName.Text))
+            {
+                _userAutoCalculationTemplates.Add(new AutoCalculationTemplate
+                {
+                    Title = TextBoxPythonTemplateName.Text,
+                    Id = Guid.NewGuid(),
+                    TemplateType = CalculationVariants.CalculateWithPython,
+                    Parameters = new AutoCalculationParameters()
+                    {
+                        Ksize = Ksize.Value ?? 1,
+                        Size1 = Size1.Value ?? 1,
+                        Size2 = Size2.Value ?? 1,
+                        Treshold1 = Threshold1.Value ?? 1,
+                        Treshold2 = Threshold2.Value ?? 1
+                    }
+                });
+
+                Properties.Settings.Default.AutoCalculationTemplates = JsonSerializeProvider.SerializeToString(_userAutoCalculationTemplates);
+
+                Properties.Settings.Default.Save();
+                InitilizeTemplates();
+
+                EndPythonTemplateAdding();
+            }
+            else
+            {
+                _notifier.ShowInformation("Введите название для шаблона.");
+            }
         }
 
         private void EndPythonTemplateAdding()
@@ -3454,12 +3498,31 @@ namespace DDrop
         {
             if (!string.IsNullOrWhiteSpace(TextBoxCSharpTemplateName.Text))
             {
+                _userAutoCalculationTemplates.Add(new AutoCalculationTemplate
+                {
+                    Title = TextBoxCSharpTemplateName.Text,
+                    Id = Guid.NewGuid(),
+                    TemplateType = CalculationVariants.CalculateWithCSharp,
+                    Parameters = new AutoCalculationParameters()
+                    {
+                        Ksize = CShrpKsize.Value ?? 1,
+                        Size1 = CShrpSize1.Value ?? 1,
+                        Size2 = CShrpSize2.Value ?? 1,
+                        Treshold1 = CShrpThreshold1.Value ?? 1,
+                        Treshold2 = CShrpThreshold2.Value ?? 1
+                    }
+                });
+
                 Properties.Settings.Default.AutoCalculationTemplates = JsonSerializeProvider.SerializeToString(_userAutoCalculationTemplates);
 
                 Properties.Settings.Default.Save();
                 InitilizeTemplates();
 
                 EndCSharpTemplateAdding();
+            }
+            else
+            {
+                _notifier.ShowInformation("Введите название для шаблона.");
             }
         }
 
@@ -3507,20 +3570,6 @@ namespace DDrop
         private void CancelCSharpTemplateAdding_OnClick(object sender, RoutedEventArgs e)
         {
             EndCSharpTemplateAdding();
-        }
-
-        private void Ksize_OnTextInput(object sender, TextCompositionEventArgs e)
-        {
-
-        }
-
-        private void Ksize_OnPreviewKeyDown(object sender, KeyEventArgs e)
-        {
-            if (Convert.ToInt32(e.Key) % 2 == 0)
-            {
-                Ksize.Text = "";
-                _notifier.ShowInformation("Введите нечетное число.");
-            }
         }
     }
 }
