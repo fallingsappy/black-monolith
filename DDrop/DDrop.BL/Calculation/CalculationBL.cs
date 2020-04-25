@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Drawing;
 using System.Threading;
 using System.Threading.Tasks;
-using DDrop.BL.GeometryBL;
+using DDrop.BL.DropPhoto;
 using DDrop.DAL;
 using DDrop.Utility.Calculation;
 using DDrop.Utility.Mappers;
@@ -10,42 +11,32 @@ namespace DDrop.BL.Calculation
 {
     public class CalculationBL : ICalculationBL
     {
-        private readonly IDDropRepository _dDropRepository;
+        private readonly IDropPhotoBL _dropPhotoBL;
 
-        public CalculationBL(IDDropRepository dDropRepository)
+        public CalculationBL(IDropPhotoBL dropPhotoBL)
         {
-            _dDropRepository = dDropRepository;
+            _dropPhotoBL = dropPhotoBL;
         }
 
-        public async Task CalculateDropParameters(BE.Models.DropPhoto dropPhoto, string pixelsInMillimeter, Guid currentDropPhotoId)
+        public async Task CalculateDropParameters(BE.Models.DropPhoto dropPhoto, string pixelsInMillimeter,
+            Guid currentDropPhotoId)
         {
             DropletSizeCalculator.DropletSizeCalculator.PerformCalculation(
                 Convert.ToInt32(pixelsInMillimeter), dropPhoto.XDiameterInPixels,
                 dropPhoto.YDiameterInPixels, dropPhoto);
 
-            if (dropPhoto.Content == null)
-            {
-                dropPhoto.Content =
-                    await _dDropRepository.GetDropPhotoContent(dropPhoto.DropPhotoId, CancellationToken.None);
-            }
+            await _dropPhotoBL.UpdateDropPhoto(dropPhoto);
 
-            var dbPhoto = DDropDbEntitiesMapper.DropPhotoToDbDropPhoto(dropPhoto, dropPhoto.CurrentSeriesId);
-
-            await Task.Run(() => _dDropRepository.UpdateDropPhoto(dbPhoto));
-
-            if (dropPhoto.DropPhotoId != currentDropPhotoId)
-            {
-                dropPhoto.Content = null;
-            }
+            if (dropPhoto.DropPhotoId != currentDropPhotoId) dropPhoto.Content = null;
         }
 
         public void ReCalculateAllParametersFromLines(BE.Models.DropPhoto dropPhoto, string pixelsInMillimeterTextBox)
         {
             if (dropPhoto.SimpleHorizontalLine != null)
             {
-                var horizontalLineFirstPoint = new System.Drawing.Point(Convert.ToInt32(dropPhoto.SimpleHorizontalLine.X1),
+                var horizontalLineFirstPoint = new Point(Convert.ToInt32(dropPhoto.SimpleHorizontalLine.X1),
                     Convert.ToInt32(dropPhoto.SimpleHorizontalLine.Y1));
-                var horizontalLineSecondPoint = new System.Drawing.Point(Convert.ToInt32(dropPhoto.SimpleHorizontalLine.X2),
+                var horizontalLineSecondPoint = new Point(Convert.ToInt32(dropPhoto.SimpleHorizontalLine.X2),
                     Convert.ToInt32(dropPhoto.SimpleHorizontalLine.Y2));
                 dropPhoto.XDiameterInPixels =
                     LineLengthHelper.GetPointsOnLine(horizontalLineFirstPoint, horizontalLineSecondPoint).Count;
@@ -57,9 +48,9 @@ namespace DDrop.BL.Calculation
 
             if (dropPhoto.SimpleVerticalLine != null)
             {
-                var verticalLineFirstPoint = new System.Drawing.Point(Convert.ToInt32(dropPhoto.SimpleVerticalLine.X1),
+                var verticalLineFirstPoint = new Point(Convert.ToInt32(dropPhoto.SimpleVerticalLine.X1),
                     Convert.ToInt32(dropPhoto.SimpleVerticalLine.Y1));
-                var verticalLineSecondPoint = new System.Drawing.Point(Convert.ToInt32(dropPhoto.SimpleVerticalLine.X2),
+                var verticalLineSecondPoint = new Point(Convert.ToInt32(dropPhoto.SimpleVerticalLine.X2),
                     Convert.ToInt32(dropPhoto.SimpleVerticalLine.Y2));
                 dropPhoto.YDiameterInPixels =
                     LineLengthHelper.GetPointsOnLine(verticalLineFirstPoint, verticalLineSecondPoint).Count;

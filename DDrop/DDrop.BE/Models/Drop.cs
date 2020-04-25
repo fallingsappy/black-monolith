@@ -5,13 +5,21 @@ namespace DDrop.BE.Models
 {
     public class Drop : INotifyPropertyChanged
     {
+        private DropPhoto _dropPhoto;
+
+        private double? _radiusInMeters;
         private Series _series;
+
+        private double _volumeInCubicalMeters;
+        private double _xDiameterInMeters;
+
+        private double _yDiameterInMeters;
+
+        private double _zDiameterInMeters;
+
         public Series Series
         {
-            get
-            {
-                return _series;
-            }
+            get => _series;
             set
             {
                 _series = value;
@@ -19,13 +27,9 @@ namespace DDrop.BE.Models
             }
         }
 
-        private DropPhoto _dropPhoto;
         public DropPhoto DropPhoto
         {
-            get
-            {
-                return _dropPhoto;
-            }
+            get => _dropPhoto;
             set
             {
                 _dropPhoto = value;
@@ -34,13 +38,10 @@ namespace DDrop.BE.Models
         }
 
         public Guid DropId { get; set; }
-        private double _xDiameterInMeters;
+
         public double XDiameterInMeters
         {
-            get
-            {
-                return _xDiameterInMeters;
-            }
+            get => _xDiameterInMeters;
             set
             {
                 _xDiameterInMeters = value;
@@ -48,13 +49,9 @@ namespace DDrop.BE.Models
             }
         }
 
-        private double _yDiameterInMeters;
         public double YDiameterInMeters
         {
-            get
-            {
-                return _yDiameterInMeters;
-            }
+            get => _yDiameterInMeters;
             set
             {
                 _yDiameterInMeters = value;
@@ -62,13 +59,9 @@ namespace DDrop.BE.Models
             }
         }
 
-        private double _zDiameterInMeters;
         public double ZDiameterInMeters
         {
-            get
-            {
-                return _zDiameterInMeters;
-            }
+            get => _zDiameterInMeters;
             set
             {
                 _zDiameterInMeters = value;
@@ -76,13 +69,9 @@ namespace DDrop.BE.Models
             }
         }
 
-        private double _volumeInCubicalMeters;
         public double VolumeInCubicalMeters
         {
-            get
-            {
-                return _volumeInCubicalMeters;
-            }
+            get => _volumeInCubicalMeters;
             set
             {
                 _volumeInCubicalMeters = value;
@@ -90,13 +79,9 @@ namespace DDrop.BE.Models
             }
         }
 
-        private double? _radiusInMeters;
         public double? RadiusInMeters
         {
-            get
-            {
-                return _radiusInMeters;
-            }
+            get => _radiusInMeters;
             set
             {
                 _radiusInMeters = value;
@@ -109,6 +94,7 @@ namespace DDrop.BE.Models
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
         public void OnPropertyChanged(PropertyChangedEventArgs e)
         {
             PropertyChanged?.Invoke(this, e);

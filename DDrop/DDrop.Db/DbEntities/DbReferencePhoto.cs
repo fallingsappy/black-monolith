@@ -7,13 +7,15 @@ namespace DDrop.Db.DbEntities
     [Table("ReferencePhotos")]
     public class DbReferencePhoto
     {
-        [Key]
-        public Guid ReferencePhotoId { get; set; }
+        [Key] public Guid ReferencePhotoId { get; set; }
+
         public string Name { get; set; }
-        public byte[] Content { get; set; }        
+        public byte[] Content { get; set; }
         public Guid? SimpleReferencePhotoLineId { get; set; }
+
         [ForeignKey("SimpleReferencePhotoLineId")]
         public virtual DbSimpleLine SimpleReferencePhotoLine { get; set; }
+
         public int PixelsInMillimeter { get; set; }
         public virtual DbSeries Series { get; set; }
     }

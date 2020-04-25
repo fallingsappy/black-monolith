@@ -1,9 +1,5 @@
-﻿using DDrop.BE.Models;
-using DDrop.Utility.ImageOperations;
-using Microsoft.Win32;
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
-using System.Data.Entity.Infrastructure;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -12,36 +8,31 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using DDrop.BE.Enums.Logger;
+using DDrop.BE.Models;
 using DDrop.DAL;
-using ToastNotifications;
-using ToastNotifications.Messages;
 using DDrop.Utility.Cryptography;
+using DDrop.Utility.ImageOperations;
 using DDrop.Utility.Logger;
 using DDrop.Utility.Mappers;
+using Microsoft.Win32;
+using ToastNotifications;
+using ToastNotifications.Messages;
 
 namespace DDrop
 {
     /// <summary>
-    /// Логика взаимодействия для Registration.xaml
+    ///     Логика взаимодействия для Registration.xaml
     /// </summary>
     public partial class Registration
     {
-        public static readonly DependencyProperty UserLoginProperty = DependencyProperty.Register("UserLogin", typeof(User), typeof(Registration));
-        private IDDropRepository _dDropRepository;
-        private readonly Notifier _notifier;
+        public static readonly DependencyProperty UserLoginProperty =
+            DependencyProperty.Register("UserLogin", typeof(User), typeof(Registration));
+
         private readonly ILogger _logger;
+        private readonly Notifier _notifier;
+        private readonly IDDropRepository _dDropRepository;
 
         public bool RegistrationSucceeded;
-        public byte[] UserPhoto { get; set; }
-
-        public User UserLogin
-        {
-            get { return (User)GetValue(UserLoginProperty); }
-            set
-            {
-                SetValue(UserLoginProperty, value);
-            }
-        }
 
         public Registration(IDDropRepository dDropRepository, Notifier notifier, ILogger logger)
         {
@@ -49,6 +40,14 @@ namespace DDrop
             _notifier = notifier;
             _dDropRepository = dDropRepository;
             InitializeComponent();
+        }
+
+        public byte[] UserPhoto { get; set; }
+
+        public User UserLogin
+        {
+            get => (User) GetValue(UserLoginProperty);
+            set => SetValue(UserLoginProperty, value);
         }
 
         private void ToggleButton_OnUnchecked(object sender, RoutedEventArgs e)
@@ -75,7 +74,7 @@ namespace DDrop
 
         private void ChooseProfilePicture_OnClick(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog
+            var openFileDialog = new OpenFileDialog
             {
                 Filter = "Jpeg files (*.jpg)|*.jpg|All files (*.*)|*.*",
                 Multiselect = false,
@@ -83,15 +82,17 @@ namespace DDrop
             };
             if (openFileDialog.ShowDialog() == true)
             {
-                CropPhoto croppingWindow = new CropPhoto
+                var croppingWindow = new CropPhoto
                 {
                     Height = new BitmapImage(new Uri(openFileDialog.FileName)).Height,
                     Width = new BitmapImage(new Uri(openFileDialog.FileName)).Width,
                     Owner = this
                 };
                 croppingWindow.CroppingControl.SourceImage.Source = new BitmapImage(new Uri(openFileDialog.FileName));
-                croppingWindow.CroppingControl.SourceImage.Height = new BitmapImage(new Uri(openFileDialog.FileName)).Height;
-                croppingWindow.CroppingControl.SourceImage.Width = new BitmapImage(new Uri(openFileDialog.FileName)).Width;
+                croppingWindow.CroppingControl.SourceImage.Height =
+                    new BitmapImage(new Uri(openFileDialog.FileName)).Height;
+                croppingWindow.CroppingControl.SourceImage.Width =
+                    new BitmapImage(new Uri(openFileDialog.FileName)).Width;
 
                 if (SystemParameters.PrimaryScreenHeight < croppingWindow.CroppingControl.SourceImage.Height ||
                     SystemParameters.PrimaryScreenWidth < croppingWindow.CroppingControl.SourceImage.Width)
@@ -101,10 +102,8 @@ namespace DDrop
                 else
                 {
                     if (croppingWindow.ShowDialog() == true)
-                    {
                         if (croppingWindow.UserPhotoForCropp != null)
                             UserPhoto = croppingWindow.UserPhotoForCropp;
-                    }
                     ProfilePicture.Source = ImageInterpreter.LoadImage(UserPhoto);
                 }
             }
@@ -149,7 +148,7 @@ namespace DDrop
                     {
                         try
                         {
-                            var user = new User()
+                            var user = new User
                             {
                                 Email = TextBoxEmail.Text.Trim(),
                                 UserSeries = new ObservableCollection<Series>(),
@@ -158,18 +157,19 @@ namespace DDrop
                                 IsLoggedIn = true,
                                 Password = PasswordOperations.HashPassword(PasswordBox1.Password),
                                 UserId = Guid.NewGuid(),
-                                UserPhoto = UserPhoto,
+                                UserPhoto = UserPhoto
                             };
 
-                            await Task.Run(() => _dDropRepository.CreateUserAsync(DDropDbEntitiesMapper.UserToDbUser(user)));
+                            await Task.Run(() =>
+                                _dDropRepository.CreateUserAsync(DDropDbEntitiesMapper.UserToDbUser(user)));
 
                             UserLogin = user;
 
-                            _logger.LogInfo(new LogEntry()
+                            _logger.LogInfo(new LogEntry
                             {
                                 Username = UserLogin.Email,
                                 LogCategory = LogCategory.Registration,
-                                Message = $"Пользователь {UserLogin.Email} успешно зарегистрирован.",
+                                Message = $"Пользователь {UserLogin.Email} успешно зарегистрирован."
                             });
                             _notifier.ShowSuccess($"Пользователь {UserLogin.Email} успешно зарегистрирован.");
                             RegistrationSucceeded = true;
@@ -179,7 +179,8 @@ namespace DDrop
                         catch (TimeoutException)
                         {
                             RegistrationWindowLoading();
-                            _notifier.ShowError($"Не удалось зарегистрировать пользователя {emailToCheck}. Не удалось установить соединение. Проверьте интернет подключение.");
+                            _notifier.ShowError(
+                                $"Не удалось зарегистрировать пользователя {emailToCheck}. Не удалось установить соединение. Проверьте интернет подключение.");
                         }
                         catch (Exception exception)
                         {
@@ -206,7 +207,8 @@ namespace DDrop
                 catch (TimeoutException)
                 {
                     RegistrationWindowLoading();
-                    _notifier.ShowError($"Не удалось зарегистрировать пользователя {emailToCheck}. Не удалось установить соединение. Проверьте интернет подключение.");
+                    _notifier.ShowError(
+                        $"Не удалось зарегистрировать пользователя {emailToCheck}. Не удалось установить соединение. Проверьте интернет подключение.");
                 }
                 catch (Exception exception)
                 {
@@ -228,16 +230,15 @@ namespace DDrop
         private void PasswordBox1_OnPasswordChangedPasswordBox1_OnTextInput(object sender, RoutedEventArgs e)
         {
             if (sender is PasswordBox passwordBox1)
-            {
                 if (string.IsNullOrWhiteSpace(passwordBox1.Password.Trim()))
                 {
                     PasswordBox1Unmasked.Text = passwordBox1.Password;
                     SetSelection(passwordBox1, passwordBox1.Password.Length, passwordBox1.Password.Length);
                 }
-            }
         }
 
-        private void PasswordBox1Unmasked_OnTextChangedswordBox1Unmasked_OnTextInput(object sender, TextChangedEventArgs e)
+        private void PasswordBox1Unmasked_OnTextChangedswordBox1Unmasked_OnTextInput(object sender,
+            TextChangedEventArgs e)
         {
             var textBox1 = sender as TextBox;
             PasswordBox1.Password = textBox1?.Text != null ? textBox1.Text : "";
@@ -253,7 +254,8 @@ namespace DDrop
             }
         }
 
-        private void PasswordBoxConfirmUnmasked_OnTextChangedPasswordBoxConfirmUnmasked_OnTextInput(object sender, TextChangedEventArgs e)
+        private void PasswordBoxConfirmUnmasked_OnTextChangedPasswordBoxConfirmUnmasked_OnTextInput(object sender,
+            TextChangedEventArgs e)
         {
             var textBoxConfirm = sender as TextBox;
             PasswordBoxConfirm.Password = textBoxConfirm?.Text != null ? textBoxConfirm.Text : "";
@@ -261,47 +263,33 @@ namespace DDrop
 
         private void SetSelection(PasswordBox passwordBox, int start, int length)
         {
-            passwordBox.GetType().GetMethod("Select", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(passwordBox, new object[] { start, length });
+            passwordBox.GetType().GetMethod("Select", BindingFlags.Instance | BindingFlags.NonPublic)
+                .Invoke(passwordBox, new object[] {start, length});
         }
 
         private void PasswordBox1_OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Space)
-            {
-                e.Handled = true;
-            }
+            if (e.Key == Key.Space) e.Handled = true;
         }
 
         private void TextBoxEmail_OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Space)
-            {
-                e.Handled = true;
-            }
+            if (e.Key == Key.Space) e.Handled = true;
         }
 
         private void PasswordBox1Unmasked_OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Space)
-            {
-                e.Handled = true;
-            }
+            if (e.Key == Key.Space) e.Handled = true;
         }
 
         private void PasswordBoxConfirm_OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Space)
-            {
-                e.Handled = true;
-            }
+            if (e.Key == Key.Space) e.Handled = true;
         }
 
         private void PasswordBoxConfirmUnmasked_OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Space)
-            {
-                e.Handled = true;
-            }
+            if (e.Key == Key.Space) e.Handled = true;
         }
 
         private void RegistrationWindowLoading()

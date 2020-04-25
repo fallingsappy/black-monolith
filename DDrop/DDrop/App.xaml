@@ -6,12 +6,13 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary>
-                    <TextBlock x:Key="CursorRulerHorizontal" Cursor="Resources/Cursors/RulerHorizontalResize.cur"/>
-                    <TextBlock x:Key="CursorRulerVertical" Cursor="Resources/Cursors/RulerVerticalResize.cur"/>
-                    <TextBlock x:Key="CursorDrawing" Cursor="Resources/Cursors/Aero_Normal-Transparent.cur"/>
+                    <TextBlock x:Key="CursorRulerHorizontal" Cursor="Resources/Cursors/RulerHorizontalResize.cur" />
+                    <TextBlock x:Key="CursorRulerVertical" Cursor="Resources/Cursors/RulerVerticalResize.cur" />
+                    <TextBlock x:Key="CursorDrawing" Cursor="Resources/Cursors/Aero_Normal-Transparent.cur" />
                 </ResourceDictionary>
                 <ResourceDictionary x:Name="IconsDictionary" Source="pack://application:,,,/Resources/Icons/Icons.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/ToastNotifications.Messages;component/Themes/Default.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/ToastNotifications.Messages;component/Themes/Default.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <valueConverters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
         </ResourceDictionary>

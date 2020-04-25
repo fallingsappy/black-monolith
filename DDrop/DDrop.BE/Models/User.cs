@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -9,26 +9,33 @@ namespace DDrop.BE.Models
 {
     public class User : INotifyPropertyChanged
     {
+        private string _email;
+
+        private string _firstName;
+
+        private bool _isAnySelectedSeriesCantDrawPlot;
+
+        private bool _isLoggedIn;
+
+        private string _lastName;
+
+        private string _password;
+
+        private byte[] _userPhoto;
+
+        private ObservableCollection<Series> _userSeries;
+
         public User()
         {
             _userSeries = new ObservableCollection<Series>();
             _userSeries.CollectionChanged += _userSeries_CollectionChanged;
         }
 
-        private void _userSeries_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            OnPropertyChanged(new PropertyChangedEventArgs(nameof(IsAnySelectedSeriesCanDrawPlot)));
-        }
-
         public Guid UserId { get; set; }
 
-        private string _firstName;
         public string FirstName
         {
-            get
-            {
-                return _firstName;
-            }
+            get => _firstName;
             set
             {
                 _firstName = value;
@@ -36,13 +43,9 @@ namespace DDrop.BE.Models
             }
         }
 
-        private string _lastName;
         public string LastName
         {
-            get
-            {
-                return _lastName;
-            }
+            get => _lastName;
             set
             {
                 _lastName = value;
@@ -50,13 +53,9 @@ namespace DDrop.BE.Models
             }
         }
 
-        private byte[] _userPhoto;
         public byte[] UserPhoto
         {
-            get
-            {
-                return _userPhoto;
-            }
+            get => _userPhoto;
             set
             {
                 _userPhoto = value;
@@ -64,13 +63,9 @@ namespace DDrop.BE.Models
             }
         }
 
-        private string _password;
         public string Password
         {
-            get
-            {
-                return _password;
-            }
+            get => _password;
             set
             {
                 _password = value;
@@ -78,13 +73,9 @@ namespace DDrop.BE.Models
             }
         }
 
-        private string _email;
         public string Email
         {
-            get
-            {
-                return _email;
-            }
+            get => _email;
             set
             {
                 _email = value;
@@ -92,13 +83,9 @@ namespace DDrop.BE.Models
             }
         }
 
-        private ObservableCollection<Series> _userSeries;
         public ObservableCollection<Series> UserSeries
         {
-            get
-            {
-                return _userSeries;
-            }
+            get => _userSeries;
             set
             {
                 _userSeries = value;
@@ -106,17 +93,16 @@ namespace DDrop.BE.Models
             }
         }
 
-        private bool _isAnySelectedSeriesCantDrawPlot;
         [NotMapped]
         public bool IsAnySelectedSeriesCanDrawPlot
         {
             get
             {
-                List<Series> checkedSeries = _userSeries?.Where(x => x.IsChecked).ToList();
+                var checkedSeries = _userSeries?.Where(x => x.IsChecked).ToList();
 
                 if (checkedSeries?.Count != 0)
                 {
-                    bool isAnyCheckedCantDrawPlot = checkedSeries?.Where(x => x.CanDrawPlot != true).ToList().Count > 0;
+                    var isAnyCheckedCantDrawPlot = checkedSeries?.Where(x => x.CanDrawPlot != true).ToList().Count > 0;
 
                     if (isAnyCheckedCantDrawPlot)
                         return false;
@@ -133,13 +119,9 @@ namespace DDrop.BE.Models
             }
         }
 
-        private bool _isLoggedIn;
         public bool IsLoggedIn
         {
-            get
-            {
-                return _isLoggedIn;
-            }
+            get => _isLoggedIn;
             set
             {
                 _isLoggedIn = value;
@@ -148,6 +130,12 @@ namespace DDrop.BE.Models
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        private void _userSeries_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            OnPropertyChanged(new PropertyChangedEventArgs(nameof(IsAnySelectedSeriesCanDrawPlot)));
+        }
+
         public void OnPropertyChanged(PropertyChangedEventArgs e)
         {
             PropertyChanged?.Invoke(this, e);

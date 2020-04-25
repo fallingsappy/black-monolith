@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 
 namespace DDrop.Utility.ExceptionHandling.Windows
 {
@@ -17,7 +18,8 @@ namespace DDrop.Utility.ExceptionHandling.Windows
         {
             Application.Current.Shutdown();
         }
-        private void OnExceptionWindowClosed(object sender, System.EventArgs e)
+
+        private void OnExceptionWindowClosed(object sender, EventArgs e)
         {
             Application.Current.Shutdown();
         }

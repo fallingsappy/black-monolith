@@ -1,22 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace DDrop
 {
     /// <summary>
-    /// Interaction logic for Help.xaml
+    ///     Interaction logic for Help.xaml
     /// </summary>
     public partial class Information : Window
     {
@@ -45,16 +35,23 @@ namespace DDrop
             textRange.Load(new MemoryStream(Encoding.UTF8.GetBytes(Properties.Resources.Account)), DataFormats.Rtf);
 
             textRange = new TextRange(SeriesManagerRTB.Document.ContentStart, SeriesManagerRTB.Document.ContentEnd);
-            textRange.Load(new MemoryStream(Encoding.UTF8.GetBytes(Properties.Resources.SeriesManager)), DataFormats.Rtf);
+            textRange.Load(new MemoryStream(Encoding.UTF8.GetBytes(Properties.Resources.SeriesManager)),
+                DataFormats.Rtf);
 
-            textRange = new TextRange(CommonSeriesPlotRTB.Document.ContentStart, CommonSeriesPlotRTB.Document.ContentEnd);
-            textRange.Load(new MemoryStream(Encoding.UTF8.GetBytes(Properties.Resources.CommonSeriesPlot)), DataFormats.Rtf);
+            textRange = new TextRange(CommonSeriesPlotRTB.Document.ContentStart,
+                CommonSeriesPlotRTB.Document.ContentEnd);
+            textRange.Load(new MemoryStream(Encoding.UTF8.GetBytes(Properties.Resources.CommonSeriesPlot)),
+                DataFormats.Rtf);
 
-            textRange = new TextRange(CalculationModelRTB.Document.ContentStart, CalculationModelRTB.Document.ContentEnd);
-            textRange.Load(new MemoryStream(Encoding.UTF8.GetBytes(Properties.Resources.CalculationModel)), DataFormats.Rtf);
+            textRange = new TextRange(CalculationModelRTB.Document.ContentStart,
+                CalculationModelRTB.Document.ContentEnd);
+            textRange.Load(new MemoryStream(Encoding.UTF8.GetBytes(Properties.Resources.CalculationModel)),
+                DataFormats.Rtf);
 
-            textRange = new TextRange(CommonSeriesInformationRTB.Document.ContentStart, CommonSeriesInformationRTB.Document.ContentEnd);
-            textRange.Load(new MemoryStream(Encoding.UTF8.GetBytes(Properties.Resources.CommonSeriesInformation)), DataFormats.Rtf);
+            textRange = new TextRange(CommonSeriesInformationRTB.Document.ContentStart,
+                CommonSeriesInformationRTB.Document.ContentEnd);
+            textRange.Load(new MemoryStream(Encoding.UTF8.GetBytes(Properties.Resources.CommonSeriesInformation)),
+                DataFormats.Rtf);
 
             textRange = new TextRange(PhotosRTB.Document.ContentStart, PhotosRTB.Document.ContentEnd);
             textRange.Load(new MemoryStream(Encoding.UTF8.GetBytes(Properties.Resources.Photos)), DataFormats.Rtf);

@@ -6,41 +6,76 @@
         xmlns:loadingSpinner="clr-namespace:DDrop.Controls.LoadingSpinner;assembly=DDrop.Controls"
         xmlns:simpleSample="clr-namespace:SimpleSample;assembly=DDrop.Controls"
         mc:Ignorable="d"
-        Title="Регистрация" Height="330" Width="710" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Icon="Resources/Icons/MainIcon.png">
+        Title="Регистрация" Height="330" Width="710" WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
+        Icon="Resources/Icons/MainIcon.png">
     <Grid>
         <loadingSpinner:AdornedControl Name="RegistrationLoading">
             <loadingSpinner:AdornedControl.AdornerContent>
-                <simpleSample:LoadingWait></simpleSample:LoadingWait>
+                <simpleSample:LoadingWait />
             </loadingSpinner:AdornedControl.AdornerContent>
             <Grid Margin="10,10,10,10" Background="White">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="252*" />
                 </Grid.RowDefinitions>
-                <TextBlock Height="20" HorizontalAlignment="Left" Margin="67,0,0,0" x:Name ="ErrorMessage" VerticalAlignment="Top" Width="247"  OpacityMask="Crimson" Foreground="#FFE5572C" />
-                <TextBlock Height="23" HorizontalAlignment="Left" Margin="67,20,0,0" Name="TextBlockFirstname" Text="Имя:" VerticalAlignment="Top" Width="127" />
-                <TextBlock Height="23" HorizontalAlignment="Left" Margin="67,50,0,0" Name="TextBlockLastName" Text="Фамилия:" VerticalAlignment="Top" Width="127" />
-                <TextBlock Height="23" HorizontalAlignment="Left" Margin="67,80,0,0" Name="TextBlockEmailId" Text="Email:" VerticalAlignment="Top" Width="127" />
-                <TextBlock Height="23" HorizontalAlignment="Left" Margin="67,80,0,0" Name="TextBlockEmailIdStar" Text="          *" VerticalAlignment="Top" Width="127" Foreground="Red" />
-                <TextBlock Height="23" HorizontalAlignment="Left" Margin="67,107,0,0" Name="TextBlockPassword" Text="Пароль:" VerticalAlignment="Top" Width="127"  />
-                <TextBlock Height="23" HorizontalAlignment="Left" Margin="67,107,0,0" Name="TextBlockPasswordStar" Text="              *" VerticalAlignment="Top" Width="127" Foreground="Red"  />
-                <TextBlock Height="23" HorizontalAlignment="Left" Margin="67,136,0,0" Name="TextBlockConfirmPwd" Text="Подтвердите пароль:" VerticalAlignment="Top" Width="127" />
-                <TextBlock Height="23" HorizontalAlignment="Left" Margin="67,136,0,0" Name="TextBlockConfirmPwdStar" Text="                                    *" VerticalAlignment="Top" Width="127" Foreground="Red" />
-                <TextBox Height="23" HorizontalAlignment="Left" Margin="199,20,0,0" Name="TextBoxFirstName" VerticalAlignment="Top" Width="222" />
-                <TextBox Height="23" HorizontalAlignment="Left" Margin="199,50,0,0" Name="TextBoxLastName" VerticalAlignment="Top" Width="222" />
-                <TextBox Height="23" HorizontalAlignment="Left" Margin="199,80,0,0" Name="TextBoxEmail" VerticalAlignment="Top" Width="222" PreviewKeyDown="TextBoxEmail_OnPreviewKeyDown" />
-                <PasswordBox Height="23" HorizontalAlignment="Left" Margin="199,107,0,0" Name="PasswordBox1" VerticalAlignment="Top" Width="222" PasswordChanged="PasswordBox1_OnPasswordChangedPasswordBox1_OnTextInput" PreviewKeyDown="PasswordBox1_OnPreviewKeyDown"/>
-                <TextBox Visibility="Hidden" Height="23" HorizontalAlignment="Left" Margin="199,107,0,0" Name="PasswordBox1Unmasked" VerticalAlignment="Top" Width="222" TextChanged="PasswordBox1Unmasked_OnTextChangedswordBox1Unmasked_OnTextInput" PreviewKeyDown="PasswordBox1Unmasked_OnPreviewKeyDown"/>
-                <PasswordBox Height="23" HorizontalAlignment="Left" Margin="199,136,0,0" Name="PasswordBoxConfirm" VerticalAlignment="Top" Width="222" PasswordChanged="PasswordBoxConfirm_OnPasswordChangedsswordBoxConfirm_OnTextInput" PreviewKeyDown="PasswordBoxConfirm_OnPreviewKeyDown"/>
-                <TextBox Visibility="Hidden" Height="23" HorizontalAlignment="Left" Margin="199,136,0,0" Name="PasswordBoxConfirmUnmasked" VerticalAlignment="Top" Width="222" TextChanged="PasswordBoxConfirmUnmasked_OnTextChangedPasswordBoxConfirmUnmasked_OnTextInput" PreviewKeyDown="PasswordBoxConfirmUnmasked_OnPreviewKeyDown"/>
-                <Button Content="Отправить" Height="23" HorizontalAlignment="Left" Margin="199,232,0,0" Name="Submit" VerticalAlignment="Top" Width="70" Click="Submit_Click"/>
-                <Button x:Name="CancelRegistrationButton" Content="Отмена" Height="23" HorizontalAlignment="Left" Margin="351,232,0,0" Click="CancelRegistrationButton_Click" VerticalAlignment="Top" Width="70"/>
-                <CheckBox Unchecked="ToggleButton_OnUnchecked"  Checked="ToggleButton_OnChecked" Content="Показать символы" HorizontalAlignment="Left" Margin="199,192,0,0" VerticalAlignment="Top" Height="19" Width="150"/>
-                <Border Background="Gray" BorderThickness="1" BorderBrush="#34558b" Margin="439,20,0,0" Height="167" VerticalAlignment="Top" HorizontalAlignment="Left" Width="167">
-                    <Image Name="ProfilePicture" Margin="0"/>
+                <TextBlock Height="20" HorizontalAlignment="Left" Margin="67,0,0,0" x:Name="ErrorMessage"
+                           VerticalAlignment="Top" Width="247" OpacityMask="Crimson" Foreground="#FFE5572C" />
+                <TextBlock Height="23" HorizontalAlignment="Left" Margin="67,20,0,0" Name="TextBlockFirstname"
+                           Text="Имя:" VerticalAlignment="Top" Width="127" />
+                <TextBlock Height="23" HorizontalAlignment="Left" Margin="67,50,0,0" Name="TextBlockLastName"
+                           Text="Фамилия:" VerticalAlignment="Top" Width="127" />
+                <TextBlock Height="23" HorizontalAlignment="Left" Margin="67,80,0,0" Name="TextBlockEmailId"
+                           Text="Email:" VerticalAlignment="Top" Width="127" />
+                <TextBlock Height="23" HorizontalAlignment="Left" Margin="67,80,0,0" Name="TextBlockEmailIdStar"
+                           Text="          *" VerticalAlignment="Top" Width="127" Foreground="Red" />
+                <TextBlock Height="23" HorizontalAlignment="Left" Margin="67,107,0,0" Name="TextBlockPassword"
+                           Text="Пароль:" VerticalAlignment="Top" Width="127" />
+                <TextBlock Height="23" HorizontalAlignment="Left" Margin="67,107,0,0" Name="TextBlockPasswordStar"
+                           Text="              *" VerticalAlignment="Top" Width="127" Foreground="Red" />
+                <TextBlock Height="23" HorizontalAlignment="Left" Margin="67,136,0,0" Name="TextBlockConfirmPwd"
+                           Text="Подтвердите пароль:" VerticalAlignment="Top" Width="127" />
+                <TextBlock Height="23" HorizontalAlignment="Left" Margin="67,136,0,0" Name="TextBlockConfirmPwdStar"
+                           Text="                                    *" VerticalAlignment="Top" Width="127"
+                           Foreground="Red" />
+                <TextBox Height="23" HorizontalAlignment="Left" Margin="199,20,0,0" Name="TextBoxFirstName"
+                         VerticalAlignment="Top" Width="222" />
+                <TextBox Height="23" HorizontalAlignment="Left" Margin="199,50,0,0" Name="TextBoxLastName"
+                         VerticalAlignment="Top" Width="222" />
+                <TextBox Height="23" HorizontalAlignment="Left" Margin="199,80,0,0" Name="TextBoxEmail"
+                         VerticalAlignment="Top" Width="222" PreviewKeyDown="TextBoxEmail_OnPreviewKeyDown" />
+                <PasswordBox Height="23" HorizontalAlignment="Left" Margin="199,107,0,0" Name="PasswordBox1"
+                             VerticalAlignment="Top" Width="222"
+                             PasswordChanged="PasswordBox1_OnPasswordChangedPasswordBox1_OnTextInput"
+                             PreviewKeyDown="PasswordBox1_OnPreviewKeyDown" />
+                <TextBox Visibility="Hidden" Height="23" HorizontalAlignment="Left" Margin="199,107,0,0"
+                         Name="PasswordBox1Unmasked" VerticalAlignment="Top" Width="222"
+                         TextChanged="PasswordBox1Unmasked_OnTextChangedswordBox1Unmasked_OnTextInput"
+                         PreviewKeyDown="PasswordBox1Unmasked_OnPreviewKeyDown" />
+                <PasswordBox Height="23" HorizontalAlignment="Left" Margin="199,136,0,0" Name="PasswordBoxConfirm"
+                             VerticalAlignment="Top" Width="222"
+                             PasswordChanged="PasswordBoxConfirm_OnPasswordChangedsswordBoxConfirm_OnTextInput"
+                             PreviewKeyDown="PasswordBoxConfirm_OnPreviewKeyDown" />
+                <TextBox Visibility="Hidden" Height="23" HorizontalAlignment="Left" Margin="199,136,0,0"
+                         Name="PasswordBoxConfirmUnmasked" VerticalAlignment="Top" Width="222"
+                         TextChanged="PasswordBoxConfirmUnmasked_OnTextChangedPasswordBoxConfirmUnmasked_OnTextInput"
+                         PreviewKeyDown="PasswordBoxConfirmUnmasked_OnPreviewKeyDown" />
+                <Button Content="Отправить" Height="23" HorizontalAlignment="Left" Margin="199,232,0,0" Name="Submit"
+                        VerticalAlignment="Top" Width="70" Click="Submit_Click" />
+                <Button x:Name="CancelRegistrationButton" Content="Отмена" Height="23" HorizontalAlignment="Left"
+                        Margin="351,232,0,0" Click="CancelRegistrationButton_Click" VerticalAlignment="Top" Width="70" />
+                <CheckBox Unchecked="ToggleButton_OnUnchecked" Checked="ToggleButton_OnChecked"
+                          Content="Показать символы" HorizontalAlignment="Left" Margin="199,192,0,0"
+                          VerticalAlignment="Top" Height="19" Width="150" />
+                <Border Background="Gray" BorderThickness="1" BorderBrush="#34558b" Margin="439,20,0,0" Height="167"
+                        VerticalAlignment="Top" HorizontalAlignment="Left" Width="167">
+                    <Image Name="ProfilePicture" Margin="0" />
                 </Border>
-                <TextBox Height="23" HorizontalAlignment="Left" Margin="199,164,0,0" x:Name="PhotoPath" VerticalAlignment="Top" Width="147" />
-                <TextBlock Height="23" HorizontalAlignment="Left" Margin="67,164,0,0" x:Name="PhotoPathLabel" Text="Фотография:" VerticalAlignment="Top" Width="127" />
-                <Button Content="Обзор" Height="23" HorizontalAlignment="Left" Margin="351,164,0,0" x:Name="ChooseProfilePicture" Click="ChooseProfilePicture_OnClick" VerticalAlignment="Top" Width="70" />
+                <TextBox Height="23" HorizontalAlignment="Left" Margin="199,164,0,0" x:Name="PhotoPath"
+                         VerticalAlignment="Top" Width="147" />
+                <TextBlock Height="23" HorizontalAlignment="Left" Margin="67,164,0,0" x:Name="PhotoPathLabel"
+                           Text="Фотография:" VerticalAlignment="Top" Width="127" />
+                <Button Content="Обзор" Height="23" HorizontalAlignment="Left" Margin="351,164,0,0"
+                        x:Name="ChooseProfilePicture" Click="ChooseProfilePicture_OnClick" VerticalAlignment="Top"
+                        Width="70" />
             </Grid>
         </loadingSpinner:AdornedControl>
     </Grid>

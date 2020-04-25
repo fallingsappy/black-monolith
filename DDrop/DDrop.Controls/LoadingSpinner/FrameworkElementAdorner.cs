@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
@@ -19,95 +18,90 @@ namespace DDrop.Controls.LoadingSpinner
         //
         // The framework element that is the adorner. 
         //
-        private FrameworkElement child;
+        private readonly FrameworkElement child;
 
         //
         // Placement of the child.
         //
-        private AdornerPlacement horizontalAdornerPlacement = AdornerPlacement.Inside;
-        private AdornerPlacement verticalAdornerPlacement = AdornerPlacement.Inside;
+        private readonly AdornerPlacement horizontalAdornerPlacement = AdornerPlacement.Inside;
 
         //
         // Offset of the child.
         //
-        private double offsetX = 0.0;
-        private double offsetY = 0.0;
+        private readonly double offsetX;
+        private readonly double offsetY;
 
         //
         // Position of the child (when not set to NaN).
         //
-        private double positionX = Double.NaN;
-        private double positionY = Double.NaN;
+        private readonly AdornerPlacement verticalAdornerPlacement = AdornerPlacement.Inside;
 
         public FrameworkElementAdorner(FrameworkElement adornerChildElement, FrameworkElement adornedElement)
             : base(adornedElement)
         {
-            this.child = adornerChildElement;
+            child = adornerChildElement;
 
-            base.AddLogicalChild(adornerChildElement);
-            base.AddVisualChild(adornerChildElement);
+            AddLogicalChild(adornerChildElement);
+            AddVisualChild(adornerChildElement);
         }
 
         public FrameworkElementAdorner(FrameworkElement adornerChildElement, FrameworkElement adornedElement,
-                                       AdornerPlacement horizontalAdornerPlacement, AdornerPlacement verticalAdornerPlacement,
-                                       double offsetX, double offsetY)
+            AdornerPlacement horizontalAdornerPlacement, AdornerPlacement verticalAdornerPlacement,
+            double offsetX, double offsetY)
             : base(adornedElement)
         {
-            this.child = adornerChildElement;
+            child = adornerChildElement;
             this.horizontalAdornerPlacement = horizontalAdornerPlacement;
             this.verticalAdornerPlacement = verticalAdornerPlacement;
             this.offsetX = offsetX;
             this.offsetY = offsetY;
 
-            adornedElement.SizeChanged += new SizeChangedEventHandler(adornedElement_SizeChanged);
+            adornedElement.SizeChanged += adornedElement_SizeChanged;
 
-            base.AddLogicalChild(adornerChildElement);
-            base.AddVisualChild(adornerChildElement);
+            AddLogicalChild(adornerChildElement);
+            AddVisualChild(adornerChildElement);
+        }
+
+        //
+        // Position of the child (when not set to NaN).
+        //
+        public double PositionX { get; set; } = double.NaN;
+
+        public double PositionY { get; set; } = double.NaN;
+
+        protected override int VisualChildrenCount => 1;
+
+        protected override IEnumerator LogicalChildren
+        {
+            get
+            {
+                var list = new ArrayList();
+                list.Add(child);
+                return list.GetEnumerator();
+            }
         }
 
         /// <summary>
-        /// Event raised when the adorned control's size has changed.
+        ///     Override AdornedElement from base class for less type-checking.
+        /// </summary>
+        public new FrameworkElement AdornedElement => (FrameworkElement) base.AdornedElement;
+
+        /// <summary>
+        ///     Event raised when the adorned control's size has changed.
         /// </summary>
         private void adornedElement_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             InvalidateMeasure();
         }
 
-        //
-        // Position of the child (when not set to NaN).
-        //
-        public double PositionX
-        {
-            get
-            {
-                return positionX;
-            }
-            set
-            {
-                positionX = value;
-            }
-        }
-
-        public double PositionY
-        {
-            get
-            {
-                return positionY;
-            }
-            set
-            {
-                positionY = value;
-            }
-        }
-
         protected override Size MeasureOverride(Size constraint)
         {
-            this.child.Measure(constraint);
-            return this.child.DesiredSize;
+            child.Measure(constraint);
+            return child.DesiredSize;
         }
 
         /// <summary>
-        /// Determine the X coordinate of the child.
+        ///     Determine the X coordinate of the child.
         /// </summary>
         private double DetermineX()
         {
@@ -116,36 +110,34 @@ namespace DDrop.Controls.LoadingSpinner
                 case HorizontalAlignment.Left:
                 {
                     if (horizontalAdornerPlacement == AdornerPlacement.Outside)
-                    {
                         return -child.DesiredSize.Width + offsetX;
-                    }
-                    else
-                    {
-                        return offsetX;
-                    }
+                    return offsetX;
                 }
+
                 case HorizontalAlignment.Right:
                 {
                     if (horizontalAdornerPlacement == AdornerPlacement.Outside)
                     {
-                        double adornedWidth = AdornedElement.ActualWidth;
+                        var adornedWidth = AdornedElement.ActualWidth;
                         return adornedWidth + offsetX;
                     }
                     else
                     {
-                        double adornerWidth = this.child.DesiredSize.Width;
-                        double adornedWidth = AdornedElement.ActualWidth;
-                        double x = adornedWidth - adornerWidth;
+                        var adornerWidth = child.DesiredSize.Width;
+                        var adornedWidth = AdornedElement.ActualWidth;
+                        var x = adornedWidth - adornerWidth;
                         return x + offsetX;
                     }
                 }
+
                 case HorizontalAlignment.Center:
                 {
-                    double adornerWidth = this.child.DesiredSize.Width;
-                    double adornedWidth = AdornedElement.ActualWidth;
-                    double x = (adornedWidth / 2) - (adornerWidth / 2);
+                    var adornerWidth = child.DesiredSize.Width;
+                    var adornedWidth = AdornedElement.ActualWidth;
+                    var x = adornedWidth / 2 - adornerWidth / 2;
                     return x + offsetX;
                 }
+
                 case HorizontalAlignment.Stretch:
                 {
                     return 0.0;
@@ -156,7 +148,7 @@ namespace DDrop.Controls.LoadingSpinner
         }
 
         /// <summary>
-        /// Determine the Y coordinate of the child.
+        ///     Determine the Y coordinate of the child.
         /// </summary>
         private double DetermineY()
         {
@@ -165,36 +157,34 @@ namespace DDrop.Controls.LoadingSpinner
                 case VerticalAlignment.Top:
                 {
                     if (verticalAdornerPlacement == AdornerPlacement.Outside)
-                    {
                         return -child.DesiredSize.Height + offsetY;
-                    }
-                    else
-                    {
-                        return offsetY;
-                    }
+                    return offsetY;
                 }
+
                 case VerticalAlignment.Bottom:
                 {
                     if (verticalAdornerPlacement == AdornerPlacement.Outside)
                     {
-                        double adornedHeight = AdornedElement.ActualHeight;
+                        var adornedHeight = AdornedElement.ActualHeight;
                         return adornedHeight + offsetY;
                     }
                     else
                     {
-                        double adornerHeight = this.child.DesiredSize.Height;
-                        double adornedHeight = AdornedElement.ActualHeight;
-                        double x = adornedHeight - adornerHeight;
+                        var adornerHeight = child.DesiredSize.Height;
+                        var adornedHeight = AdornedElement.ActualHeight;
+                        var x = adornedHeight - adornerHeight;
                         return x + offsetY;
                     }
                 }
+
                 case VerticalAlignment.Center:
                 {
-                    double adornerHeight = this.child.DesiredSize.Height;
-                    double adornedHeight = AdornedElement.ActualHeight;
-                    double x = (adornedHeight / 2) - (adornerHeight / 2);
+                    var adornerHeight = child.DesiredSize.Height;
+                    var adornedHeight = AdornedElement.ActualHeight;
+                    var x = adornedHeight / 2 - adornerHeight / 2;
                     return x + offsetY;
                 }
+
                 case VerticalAlignment.Stretch:
                 {
                     return 0.0;
@@ -205,29 +195,29 @@ namespace DDrop.Controls.LoadingSpinner
         }
 
         /// <summary>
-        /// Determine the width of the child.
+        ///     Determine the width of the child.
         /// </summary>
         private double DetermineWidth()
         {
-            if (!Double.IsNaN(PositionX))
-            {
-                return this.child.DesiredSize.Width;
-            }
+            if (!double.IsNaN(PositionX)) return child.DesiredSize.Width;
 
             switch (child.HorizontalAlignment)
             {
                 case HorizontalAlignment.Left:
                 {
-                    return this.child.DesiredSize.Width;
+                    return child.DesiredSize.Width;
                 }
+
                 case HorizontalAlignment.Right:
                 {
-                    return this.child.DesiredSize.Width;
+                    return child.DesiredSize.Width;
                 }
+
                 case HorizontalAlignment.Center:
                 {
-                    return this.child.DesiredSize.Width;
+                    return child.DesiredSize.Width;
                 }
+
                 case HorizontalAlignment.Stretch:
                 {
                     return AdornedElement.ActualWidth;
@@ -238,29 +228,29 @@ namespace DDrop.Controls.LoadingSpinner
         }
 
         /// <summary>
-        /// Determine the height of the child.
+        ///     Determine the height of the child.
         /// </summary>
         private double DetermineHeight()
         {
-            if (!Double.IsNaN(PositionY))
-            {
-                return this.child.DesiredSize.Height;
-            }
+            if (!double.IsNaN(PositionY)) return child.DesiredSize.Height;
 
             switch (child.VerticalAlignment)
             {
                 case VerticalAlignment.Top:
                 {
-                    return this.child.DesiredSize.Height;
+                    return child.DesiredSize.Height;
                 }
+
                 case VerticalAlignment.Bottom:
                 {
-                    return this.child.DesiredSize.Height;
+                    return child.DesiredSize.Height;
                 }
+
                 case VerticalAlignment.Center:
                 {
-                    return this.child.DesiredSize.Height; 
+                    return child.DesiredSize.Height;
                 }
+
                 case VerticalAlignment.Stretch:
                 {
                     return AdornedElement.ActualHeight;
@@ -272,60 +262,28 @@ namespace DDrop.Controls.LoadingSpinner
 
         protected override Size ArrangeOverride(Size finalSize)
         {
-            double x = PositionX;
-            if (Double.IsNaN(x))
-            {
-                x = DetermineX();
-            }
-            double y = PositionY;
-            if (Double.IsNaN(y))
-            {
-                y = DetermineY();
-            }
-            double adornerWidth = DetermineWidth();
-            double adornerHeight = DetermineHeight();
-            this.child.Arrange(new Rect(x, y, adornerWidth, adornerHeight));
+            var x = PositionX;
+            if (double.IsNaN(x)) x = DetermineX();
+            var y = PositionY;
+            if (double.IsNaN(y)) y = DetermineY();
+            var adornerWidth = DetermineWidth();
+            var adornerHeight = DetermineHeight();
+            child.Arrange(new Rect(x, y, adornerWidth, adornerHeight));
             return finalSize;
         }
 
-        protected override Int32 VisualChildrenCount
+        protected override Visual GetVisualChild(int index)
         {
-            get { return 1; }
-        }
-
-        protected override Visual GetVisualChild(Int32 index)
-        {
-            return this.child;
-        }
-
-        protected override IEnumerator LogicalChildren
-        {
-            get
-            {
-                ArrayList list = new ArrayList();
-                list.Add(this.child);
-                return (IEnumerator)list.GetEnumerator();
-            }
+            return child;
         }
 
         /// <summary>
-        /// Disconnect the child element from the visual tree so that it may be reused later.
+        ///     Disconnect the child element from the visual tree so that it may be reused later.
         /// </summary>
         public void DisconnectChild()
         {
-            base.RemoveLogicalChild(child);
-            base.RemoveVisualChild(child);
-        }
-
-        /// <summary>
-        /// Override AdornedElement from base class for less type-checking.
-        /// </summary>
-        public new FrameworkElement AdornedElement
-        {
-            get
-            {
-                return (FrameworkElement)base.AdornedElement;
-            }
+            RemoveLogicalChild(child);
+            RemoveVisualChild(child);
         }
     }
 }

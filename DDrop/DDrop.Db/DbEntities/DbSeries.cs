@@ -8,8 +8,8 @@ namespace DDrop.Db.DbEntities
     [Table("Series")]
     public class DbSeries
     {
-        [Key]
-        public Guid SeriesId { get; set; }
+        [Key] public Guid SeriesId { get; set; }
+
         public string Title { get; set; }
         public List<DbDropPhoto> DropPhotosSeries { get; set; }
         public virtual DbReferencePhoto ReferencePhotoForSeries { get; set; }

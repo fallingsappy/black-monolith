@@ -1,17 +1,20 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Drawing;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using DDrop.BE.Enums.Options;
 using DDrop.BE.Models;
 using DDrop.Controls.PixelDrawer;
+using Brushes = System.Windows.Media.Brushes;
 
 namespace DDrop.BL.GeometryBL
 {
     public class GeometryBL : IGeometryBL
     {
-        public void PrepareLines(BE.Models.DropPhoto selectedPhoto, out Line horizontalLine, out Line verticalLine, bool showLinesOnPreview)
+        public void PrepareLines(BE.Models.DropPhoto selectedPhoto, out Line horizontalLine, out Line verticalLine,
+            bool showLinesOnPreview)
         {
             if (selectedPhoto.HorizontalLine != null && showLinesOnPreview)
                 horizontalLine = new Line
@@ -40,40 +43,38 @@ namespace DDrop.BL.GeometryBL
                 verticalLine = null;
         }
 
-        public void CreateDiameters(BE.Models.DropPhoto dropPhoto, System.Drawing.Point[] points)
+        public void CreateDiameters(BE.Models.DropPhoto dropPhoto, Point[] points)
         {
             var biggestHorizontalDistance = 0;
             var biggestVerticalDistance = 0;
-            SimpleLine simpleHorizontalDiameter = new SimpleLine();
-            SimpleLine simpleVerticalDiameter = new SimpleLine();
+            var simpleHorizontalDiameter = new SimpleLine();
+            var simpleVerticalDiameter = new SimpleLine();
 
-            for (int i = 0; i < points.Length; i++)
+            for (var i = 0; i < points.Length; i++)
+            for (var j = i + 1; j < points.Length - 1; j++)
             {
-                for (int j = i + 1; j < points.Length - 1; j++)
+                var currentHorizontalDistance = Math.Abs(points[i].X - points[j].X);
+                if (currentHorizontalDistance > biggestHorizontalDistance)
                 {
-                    var currentHorizontalDistance = Math.Abs(points[i].X - points[j].X);
-                    if (currentHorizontalDistance > biggestHorizontalDistance)
-                    {
-                        biggestHorizontalDistance = currentHorizontalDistance;
+                    biggestHorizontalDistance = currentHorizontalDistance;
 
-                        simpleHorizontalDiameter.X1 = points[i].X;
-                        simpleHorizontalDiameter.Y1 = points[i].Y;
-                        simpleHorizontalDiameter.SimpleLineId = dropPhoto.SimpleHorizontalLineId ?? Guid.NewGuid();
-                        simpleHorizontalDiameter.X2 = points[j].X;
-                        simpleHorizontalDiameter.Y2 = points[j].Y;
-                    }
+                    simpleHorizontalDiameter.X1 = points[i].X;
+                    simpleHorizontalDiameter.Y1 = points[i].Y;
+                    simpleHorizontalDiameter.SimpleLineId = dropPhoto.SimpleHorizontalLineId ?? Guid.NewGuid();
+                    simpleHorizontalDiameter.X2 = points[j].X;
+                    simpleHorizontalDiameter.Y2 = points[j].Y;
+                }
 
-                    var currentVerticalDistance = Math.Abs(points[i].Y - points[j].Y);
-                    if (currentVerticalDistance > biggestVerticalDistance)
-                    {
-                        biggestVerticalDistance = currentVerticalDistance;
+                var currentVerticalDistance = Math.Abs(points[i].Y - points[j].Y);
+                if (currentVerticalDistance > biggestVerticalDistance)
+                {
+                    biggestVerticalDistance = currentVerticalDistance;
 
-                        simpleVerticalDiameter.X1 = points[i].X;
-                        simpleVerticalDiameter.Y1 = points[i].Y;
-                        simpleVerticalDiameter.SimpleLineId = dropPhoto.SimpleVerticalLineId ?? Guid.NewGuid();
-                        simpleVerticalDiameter.X2 = points[j].X;
-                        simpleVerticalDiameter.Y2 = points[j].Y;
-                    }
+                    simpleVerticalDiameter.X1 = points[i].X;
+                    simpleVerticalDiameter.Y1 = points[i].Y;
+                    simpleVerticalDiameter.SimpleLineId = dropPhoto.SimpleVerticalLineId ?? Guid.NewGuid();
+                    simpleVerticalDiameter.X2 = points[j].X;
+                    simpleVerticalDiameter.Y2 = points[j].Y;
                 }
             }
 
@@ -159,7 +160,8 @@ namespace DDrop.BL.GeometryBL
             }
         }
 
-        public void PrepareContour(BE.Models.DropPhoto selectedPhoto, out ObservableCollection<Line> contour, bool showContourOnPreview)
+        public void PrepareContour(BE.Models.DropPhoto selectedPhoto, out ObservableCollection<Line> contour,
+            bool showContourOnPreview)
         {
             if (selectedPhoto.Contour?.Lines != null && showContourOnPreview)
             {
@@ -186,9 +188,10 @@ namespace DDrop.BL.GeometryBL
             }
         }
 
-        public void CreateContour(BE.Models.DropPhoto dropPhoto, System.Drawing.Point[] points,
+        public void CreateContour(BE.Models.DropPhoto dropPhoto, Point[] points,
             CalculationVariants calculationVariant, string cShrpKsize, string cShrpSize1, string cShrpSize2,
-            string cShrpThreshold1, string cShrpThreshold2, string pythonKSise, string pythonSize1, string pythonSize2, string pythonThreshold1,
+            string cShrpThreshold1, string cShrpThreshold2, string pythonKSise, string pythonSize1, string pythonSize2,
+            string pythonThreshold1,
             string pythonThreshold2, BE.Models.DropPhoto currentDropPhoto, PixelDrawer imgCurrent)
         {
             if (dropPhoto.Contour == null)
@@ -198,18 +201,14 @@ namespace DDrop.BL.GeometryBL
                     ContourId = dropPhoto.DropPhotoId,
                     CurrentDropPhoto = dropPhoto,
                     SimpleLines = new ObservableCollection<SimpleLine>(),
-                    Lines = new ObservableCollection<Line>(),
+                    Lines = new ObservableCollection<Line>()
                 };
             }
             else
             {
                 if (dropPhoto.Contour != null && dropPhoto == currentDropPhoto)
-                {
                     foreach (var line in dropPhoto.Contour.Lines)
-                    {
                         imgCurrent.CanDrawing.Children.Remove(line);
-                    }
-                }
 
                 dropPhoto.Contour.SimpleLines.Clear();
                 dropPhoto.Contour.Lines.Clear();
@@ -218,29 +217,25 @@ namespace DDrop.BL.GeometryBL
             dropPhoto.Contour.CalculationVariants = calculationVariant;
 
             if (calculationVariant == CalculationVariants.CalculateWithCSharp)
-            {
                 dropPhoto.Contour.Parameters = new AutoCalculationParameters
                 {
                     Ksize = Convert.ToInt32(cShrpKsize),
                     Size1 = Convert.ToInt32(cShrpSize1),
                     Size2 = Convert.ToInt32(cShrpSize2),
                     Treshold1 = Convert.ToInt32(cShrpThreshold1),
-                    Treshold2 = Convert.ToInt32(cShrpThreshold2),
+                    Treshold2 = Convert.ToInt32(cShrpThreshold2)
                 };
-            }
             else
-            {
                 dropPhoto.Contour.Parameters = new AutoCalculationParameters
                 {
                     Ksize = Convert.ToInt32(pythonKSise),
                     Size1 = Convert.ToInt32(pythonSize1),
                     Size2 = Convert.ToInt32(pythonSize2),
                     Treshold1 = Convert.ToInt32(pythonThreshold1),
-                    Treshold2 = Convert.ToInt32(pythonThreshold2),
+                    Treshold2 = Convert.ToInt32(pythonThreshold2)
                 };
-            }
 
-            for (int j = 0; j < points.Length; j++)
+            for (var j = 0; j < points.Length; j++)
             {
                 dropPhoto.Contour.SimpleLines.Add(new SimpleLine
                 {
@@ -284,7 +279,6 @@ namespace DDrop.BL.GeometryBL
                 };
 
                 foreach (var line in dropPhoto.Contour.SimpleLines)
-                {
                     storedContour.SimpleLines.Add(new SimpleLine
                     {
                         X1 = line.X1,
@@ -294,7 +288,6 @@ namespace DDrop.BL.GeometryBL
                         SimpleLineId = line.SimpleLineId,
                         ContourId = line.ContourId
                     });
-                }
 
                 storeTo.Contour = storedContour;
             }
@@ -304,7 +297,8 @@ namespace DDrop.BL.GeometryBL
             }
         }
 
-        public void RestoreOriginalContour(BE.Models.DropPhoto dropPhoto, BE.Models.DropPhoto storedPhoto, Canvas canvas, Guid currentDropPhotoId)
+        public void RestoreOriginalContour(BE.Models.DropPhoto dropPhoto, BE.Models.DropPhoto storedPhoto,
+            Canvas canvas, Guid currentDropPhotoId)
         {
             if (storedPhoto.Contour != null && dropPhoto.Contour != null)
             {
@@ -328,12 +322,8 @@ namespace DDrop.BL.GeometryBL
             else
             {
                 if (dropPhoto.Contour != null && dropPhoto.DropPhotoId == currentDropPhotoId)
-                {
                     foreach (var line in dropPhoto.Contour.Lines)
-                    {
                         canvas.Children.Remove(line);
-                    }
-                }
 
                 dropPhoto.Contour = null;
             }

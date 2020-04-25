@@ -11,6 +11,6 @@
         AutoCalculation,
         Calculation,
         Account,
-        Options,
+        Options
     }
 }

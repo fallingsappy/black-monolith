@@ -7,7 +7,6 @@ namespace DDrop.Db
     {
         public DDropContext() : base("DDropDataBase")
         {
-
         }
 
         public DbSet<DbUser> Users { get; set; }

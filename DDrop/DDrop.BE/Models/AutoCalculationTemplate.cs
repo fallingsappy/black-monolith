@@ -7,12 +7,18 @@ namespace DDrop.BE.Models
     public class AutoCalculationTemplate : INotifyPropertyChanged
     {
         private Guid _id;
+
+        private bool _isChecked;
+
+        private AutoCalculationParameters _parameters;
+
+        private CalculationVariants _templateType;
+
+        private string _title;
+
         public Guid Id
         {
-            get
-            {
-                return _id;
-            }
+            get => _id;
             set
             {
                 _id = value;
@@ -20,13 +26,9 @@ namespace DDrop.BE.Models
             }
         }
 
-        private string _title;
         public string Title
         {
-            get
-            {
-                return _title;
-            }
+            get => _title;
             set
             {
                 _title = value;
@@ -34,13 +36,9 @@ namespace DDrop.BE.Models
             }
         }
 
-        private AutoCalculationParameters _parameters;
         public AutoCalculationParameters Parameters
         {
-            get
-            {
-                return _parameters;
-            }
+            get => _parameters;
             set
             {
                 _parameters = value;
@@ -48,15 +46,9 @@ namespace DDrop.BE.Models
             }
         }
 
-        private CalculationVariants _templateType;
-
         public CalculationVariants TemplateType
         {
-            get
-            {
-                return _templateType;
-
-            }
+            get => _templateType;
             set
             {
                 _templateType = value;
@@ -64,13 +56,9 @@ namespace DDrop.BE.Models
             }
         }
 
-        private bool _isChecked;
         public bool IsChecked
         {
-            get
-            {
-                return _isChecked;
-            }
+            get => _isChecked;
             set
             {
                 _isChecked = value;
@@ -79,6 +67,7 @@ namespace DDrop.BE.Models
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
         public void OnPropertyChanged(PropertyChangedEventArgs e)
         {
             PropertyChanged?.Invoke(this, e);

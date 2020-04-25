@@ -6,27 +6,48 @@
         xmlns:loadingSpinner="clr-namespace:DDrop.Controls.LoadingSpinner;assembly=DDrop.Controls"
         xmlns:simpleSample="clr-namespace:SimpleSample;assembly=DDrop.Controls"
         mc:Ignorable="d"
-        Title="Login" Height="450" Width="500" ResizeMode="NoResize" Topmost="True" WindowStartupLocation="CenterScreen" Icon="Resources/Icons/MainIcon.png">
+        Title="Login" Height="450" Width="500" ResizeMode="NoResize" Topmost="True"
+        WindowStartupLocation="CenterScreen" Icon="Resources/Icons/MainIcon.png">
     <Grid>
         <loadingSpinner:AdornedControl Name="LoadingAdorner">
             <loadingSpinner:AdornedControl.AdornerContent>
-                <simpleSample:LoadingWait></simpleSample:LoadingWait>
+                <simpleSample:LoadingWait />
             </loadingSpinner:AdornedControl.AdornerContent>
             <Grid>
-                <Image Source="Resources/Icons/MainIcon.png" Margin="195,10,189,318"/>
-                <TextBlock TextWrapping="Wrap" TextAlignment="Center" Height="35" HorizontalAlignment="Left" x:Name ="ErrorMessage" VerticalAlignment="Top" Width="166" Margin="167,103,0,0"  OpacityMask="Crimson" Foreground="#FFE5572C"  />
-                <TextBox TextInput="TextBoxLogin_OnTextChanged" Name="TextBoxEmail" Margin="175,164,0,0" TextWrapping="Wrap" Height="25" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150"/>
-                <PasswordBox Name="LoginPasswordBox" PasswordChanged="LoginPasswordBox_PasswordChanged" Margin="175,218,0,0" PasswordChar="•" HorizontalAlignment="Left" Width="150" Height="25" VerticalAlignment="Top" PreviewKeyDown="LoginPasswordBox_PreviewKeyDown"/>
-                <TextBox x:Name="PasswordUnmask" Visibility="Hidden" TextInput="TextBoxLogin_OnTextChanged" TextChanged="PasswordUnmask_TextChanged" Margin="175,218,0,0" HorizontalAlignment="Left" Width="150" Height="25" VerticalAlignment="Top" PreviewKeyDown="PasswordUnmask_PreviewKeyDown"/>
-                <Label Content="Email" HorizontalAlignment="Left" Margin="175,138,0,0" VerticalAlignment="Top" Width="150"/>
-                <Label Content="Пароль" HorizontalAlignment="Left" Margin="175,192,0,0" VerticalAlignment="Top" Width="150"/>
-                <Button x:Name="LoginButton" Content="Войти" HorizontalAlignment="Left" Margin="250,296,0,0" VerticalAlignment="Top" Width="75" Click="LoginButton_Click" FontSize="11"/>
-                <CheckBox IsChecked="True" x:Name="RememberMe" Content="Запомнить меня" HorizontalAlignment="Left" Margin="175,272,0,0" VerticalAlignment="Top" Height="19" Width="150"/>
-                <Button x:Name="RegistrationButton" Content="Регистрация" HorizontalAlignment="Left" Margin="175,296,0,0" VerticalAlignment="Top" Width="70" Click="RegistrationButton_Click" FontSize="11"/>
-                <Button Visibility="Hidden" Content="Войти оффлайн" HorizontalAlignment="Left" Margin="380,375,0,0" VerticalAlignment="Top" Width="85" Click="LoginOfflineButton_Click" FontSize="11" Name="LoginOfflineButton"/>
-                <CheckBox Unchecked="ToggleButton_OnUnchecked"  Checked="ToggleButton_OnChecked" Content="Показать символы" HorizontalAlignment="Left" Margin="175,248,0,0" VerticalAlignment="Top" Height="19" Width="150"/>
+                <Image Source="Resources/Icons/MainIcon.png" Margin="195,10,189,318" />
+                <TextBlock TextWrapping="Wrap" TextAlignment="Center" Height="35" HorizontalAlignment="Left"
+                           x:Name="ErrorMessage" VerticalAlignment="Top" Width="166" Margin="167,103,0,0"
+                           OpacityMask="Crimson" Foreground="#FFE5572C" />
+                <TextBox TextInput="TextBoxLogin_OnTextChanged" Name="TextBoxEmail" Margin="175,164,0,0"
+                         TextWrapping="Wrap" Height="25" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150" />
+                <PasswordBox Name="LoginPasswordBox" PasswordChanged="LoginPasswordBox_PasswordChanged"
+                             Margin="175,218,0,0" PasswordChar="•" HorizontalAlignment="Left" Width="150" Height="25"
+                             VerticalAlignment="Top" PreviewKeyDown="LoginPasswordBox_PreviewKeyDown" />
+                <TextBox x:Name="PasswordUnmask" Visibility="Hidden" TextInput="TextBoxLogin_OnTextChanged"
+                         TextChanged="PasswordUnmask_TextChanged" Margin="175,218,0,0" HorizontalAlignment="Left"
+                         Width="150" Height="25" VerticalAlignment="Top" PreviewKeyDown="PasswordUnmask_PreviewKeyDown" />
+                <Label Content="Email" HorizontalAlignment="Left" Margin="175,138,0,0" VerticalAlignment="Top"
+                       Width="150" />
+                <Label Content="Пароль" HorizontalAlignment="Left" Margin="175,192,0,0" VerticalAlignment="Top"
+                       Width="150" />
+                <Button x:Name="LoginButton" Content="Войти" HorizontalAlignment="Left" Margin="250,296,0,0"
+                        VerticalAlignment="Top" Width="75" Click="LoginButton_Click" FontSize="11" />
+                <CheckBox IsChecked="True" x:Name="RememberMe" Content="Запомнить меня" HorizontalAlignment="Left"
+                          Margin="175,272,0,0" VerticalAlignment="Top" Height="19" Width="150" />
+                <Button x:Name="RegistrationButton" Content="Регистрация" HorizontalAlignment="Left"
+                        Margin="175,296,0,0" VerticalAlignment="Top" Width="70" Click="RegistrationButton_Click"
+                        FontSize="11" />
+                <Button Visibility="Hidden" Content="Войти оффлайн" HorizontalAlignment="Left" Margin="380,375,0,0"
+                        VerticalAlignment="Top" Width="85" Click="LoginOfflineButton_Click" FontSize="11"
+                        Name="LoginOfflineButton" />
+                <CheckBox Unchecked="ToggleButton_OnUnchecked" Checked="ToggleButton_OnChecked"
+                          Content="Показать символы" HorizontalAlignment="Left" Margin="175,248,0,0"
+                          VerticalAlignment="Top" Height="19" Width="150" />
                 <Label Content="Учетные записи:" Margin="175,320,169,0" Height="26" VerticalAlignment="Top" />
-                <ComboBox Name="LocalUsersCombobox" ItemsSource="{Binding LocalStoredUsers.Users}" IsEnabled="{Binding LocalStoredUsers.IsEnabled }" DropDownClosed="LocalUsersCombobox_DropDownClosed" HorizontalAlignment="Left" Margin="175,346,0,0" VerticalAlignment="Top" Width="150" DisplayMemberPath="Login"/>
+                <ComboBox Name="LocalUsersCombobox" ItemsSource="{Binding LocalStoredUsers.Users}"
+                          IsEnabled="{Binding LocalStoredUsers.IsEnabled }"
+                          DropDownClosed="LocalUsersCombobox_DropDownClosed" HorizontalAlignment="Left"
+                          Margin="175,346,0,0" VerticalAlignment="Top" Width="150" DisplayMemberPath="Login" />
             </Grid>
         </loadingSpinner:AdornedControl>
     </Grid>

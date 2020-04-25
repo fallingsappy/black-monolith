@@ -1,8 +1,7 @@
-﻿using DDrop.BE.Enums.Image;
-using System;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using System.Text;
+using DDrop.BE.Enums.Image;
 
 namespace DDrop.Utility.ImageOperations
 {
@@ -12,16 +11,11 @@ namespace DDrop.Utility.ImageOperations
         {
             Stream stream = new MemoryStream(imageContent);
 
-            ImageFormat imageFormat = GetImageFormat(stream);
+            var imageFormat = GetImageFormat(stream);
 
             if (imageFormat != ImageFormat.unknown)
-            {
                 return true;
-            }
-            else
-            {
-                return false;
-            }         
+            return false;
         }
 
         public static ImageFormat GetImageFormat(byte[] imageContent)
@@ -33,13 +27,13 @@ namespace DDrop.Utility.ImageOperations
 
         private static ImageFormat GetImageFormat(Stream stream)
         {
-            var bmp = Encoding.ASCII.GetBytes("BM");     // BMP
-            var gif = Encoding.ASCII.GetBytes("GIF");    // GIF
-            var png = new byte[] { 137, 80, 78, 71 };    // PNG
-            var tiff = new byte[] { 73, 73, 42 };         // TIFF
-            var tiff2 = new byte[] { 77, 77, 42 };         // TIFF
-            var jpeg = new byte[] { 255, 216, 255, 224 }; // jpeg
-            var jpeg2 = new byte[] { 255, 216, 255, 225 }; // jpeg canon
+            var bmp = Encoding.ASCII.GetBytes("BM"); // BMP
+            var gif = Encoding.ASCII.GetBytes("GIF"); // GIF
+            var png = new byte[] {137, 80, 78, 71}; // PNG
+            var tiff = new byte[] {73, 73, 42}; // TIFF
+            var tiff2 = new byte[] {77, 77, 42}; // TIFF
+            var jpeg = new byte[] {255, 216, 255, 224}; // jpeg
+            var jpeg2 = new byte[] {255, 216, 255, 225}; // jpeg canon
 
             var buffer = new byte[4];
             stream.Read(buffer, 0, buffer.Length);

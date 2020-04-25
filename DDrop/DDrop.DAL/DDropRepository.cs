@@ -1,26 +1,46 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
-using DDrop.Db.DbEntities;
+using System.Data.Entity.Infrastructure;
+using System.Data.Entity.Migrations;
+using System.Data.SqlClient;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using DDrop.Db;
-using System.Collections.Generic;
-using System.Data.Entity.Migrations;
-using System.Linq;
-using System.Data.Entity.Infrastructure;
-using System.Data.SqlClient;
-using System.Threading;
+using DDrop.Db.DbEntities;
 
 namespace DDrop.DAL
 {
     public class DDropRepository : IDDropRepository
     {
-        
+        #region Logger
+
+        public async Task SaveLogEntry(DbLogEntry dbLogEntry)
+        {
+            using (var context = new DDropContext())
+            {
+                try
+                {
+                    context.LogEntries.Add(dbLogEntry);
+
+                    await context.SaveChangesAsync();
+                }
+                catch (SqlException e)
+                {
+                    throw new TimeoutException(e.Message, e);
+                }
+            }
+        }
+
+        #endregion
+
         #region User
 
         public async Task CreateUserAsync(DbUser user)
         {
             using (var context = new DDropContext())
-            {               
+            {
                 try
                 {
                     context.Users.Add(user);
@@ -37,7 +57,7 @@ namespace DDrop.DAL
         public async Task UpdateUserAsync(DbUser user)
         {
             using (var context = new DDropContext())
-            {               
+            {
                 try
                 {
                     var userToUpdate = await context.Users.FirstOrDefaultAsync(x => x.UserId == user.UserId);
@@ -71,6 +91,7 @@ namespace DDrop.DAL
         #endregion
 
         #region Series
+
         public async Task CreateSeries(DbSeries series)
         {
             using (var context = new DDropContext())
@@ -96,21 +117,23 @@ namespace DDrop.DAL
                 try
                 {
                     var loadedSeries = context.Series.Where(x => x.CurrentUserId == dbUserId)
-                    .Select(x => new {
-                        x.Title,
-                        x.SeriesId,
-                        x.IntervalBetweenPhotos,
-                        x.AddedDate,
-                        x.CurrentUserId,
-                        x.CurrentUser,
-                        x.UseCreationDateTime,
-                    }).ToList();
+                        .Select(x => new
+                        {
+                            x.Title,
+                            x.SeriesId,
+                            x.IntervalBetweenPhotos,
+                            x.AddedDate,
+                            x.CurrentUserId,
+                            x.CurrentUser,
+                            x.UseCreationDateTime
+                        }).ToList();
 
-                    List<DbSeries> dbSeries = new List<DbSeries>();
+                    var dbSeries = new List<DbSeries>();
 
                     foreach (var series in loadedSeries)
                     {
-                        var referencePhotoForSeries = context.ReferencePhotos.Where(x => x.Series.SeriesId == series.SeriesId)
+                        var referencePhotoForSeries = context.ReferencePhotos
+                            .Where(x => x.Series.SeriesId == series.SeriesId)
                             .Select(x => new
                             {
                                 x.Name,
@@ -118,7 +141,7 @@ namespace DDrop.DAL
                                 x.SimpleReferencePhotoLine,
                                 x.SimpleReferencePhotoLineId,
                                 x.ReferencePhotoId,
-                                x.Series,
+                                x.Series
                             }).FirstOrDefault();
 
                         var dropPhotoForSeries = context.DropPhotos.Where(x => x.CurrentSeriesId == series.SeriesId)
@@ -142,15 +165,13 @@ namespace DDrop.DAL
                                 x.Contour
                             }).ToList();
 
-                        List<DbDropPhoto> dbDropPhotoForAdd = new List<DbDropPhoto>();
+                        var dbDropPhotoForAdd = new List<DbDropPhoto>();
 
                         foreach (var dropPhoto in dropPhotoForSeries)
                         {
                             if (dropPhoto.Contour != null)
-                            {
                                 dropPhoto.Contour.SimpleLines = context.SimpleLines
                                     .Where(x => x.ContourId == dropPhoto.Contour.ContourId).ToList();
-                            }
 
                             dbDropPhotoForAdd.Add(new DbDropPhoto
                             {
@@ -182,15 +203,17 @@ namespace DDrop.DAL
                             CurrentUserId = series.CurrentUserId,
                             IntervalBetweenPhotos = series.IntervalBetweenPhotos,
                             SeriesId = series.SeriesId,
-                            ReferencePhotoForSeries = referencePhotoForSeries != null ? new DbReferencePhoto
-                            {
-                                Name = referencePhotoForSeries.Name,
-                                PixelsInMillimeter = referencePhotoForSeries.PixelsInMillimeter,
-                                ReferencePhotoId = referencePhotoForSeries.ReferencePhotoId,
-                                SimpleReferencePhotoLine = referencePhotoForSeries.SimpleReferencePhotoLine,
-                                SimpleReferencePhotoLineId = referencePhotoForSeries.SimpleReferencePhotoLineId,
-                                Series = referencePhotoForSeries.Series
-                            } : null,
+                            ReferencePhotoForSeries = referencePhotoForSeries != null
+                                ? new DbReferencePhoto
+                                {
+                                    Name = referencePhotoForSeries.Name,
+                                    PixelsInMillimeter = referencePhotoForSeries.PixelsInMillimeter,
+                                    ReferencePhotoId = referencePhotoForSeries.ReferencePhotoId,
+                                    SimpleReferencePhotoLine = referencePhotoForSeries.SimpleReferencePhotoLine,
+                                    SimpleReferencePhotoLineId = referencePhotoForSeries.SimpleReferencePhotoLineId,
+                                    Series = referencePhotoForSeries.Series
+                                }
+                                : null,
                             DropPhotosSeries = dbDropPhotoForAdd.OrderBy(x => x.PhotoOrderInSeries).ToList()
                         });
                     }
@@ -211,11 +234,12 @@ namespace DDrop.DAL
                 try
                 {
                     var series = await context.Series.Where(x => x.SeriesId == seriesId)
-                    .Select(x => new {
-                        x.Title,
-                        x.IntervalBetweenPhotos,
-                        x.UseCreationDateTime
-                    }).FirstOrDefaultAsync();
+                        .Select(x => new
+                        {
+                            x.Title,
+                            x.IntervalBetweenPhotos,
+                            x.UseCreationDateTime
+                        }).FirstOrDefaultAsync();
 
                     var referencePhotoForSeries = context.ReferencePhotos.Where(x => x.Series.SeriesId == seriesId)
                         .Select(x => new
@@ -225,7 +249,7 @@ namespace DDrop.DAL
                             x.SimpleReferencePhotoLine,
                             x.Content
                         }).FirstOrDefault();
-                    
+
                     var dropPhotoForSeries = context.DropPhotos.Where(x => x.CurrentSeriesId == seriesId)
                         .Select(x => new
                         {
@@ -245,14 +269,15 @@ namespace DDrop.DAL
 
                     foreach (var dropPhoto in dropPhotoForSeries)
                     {
-                        var drop = await context.Drops.Where(x => x.DropPhoto.DropPhotoId == dropPhoto.DropPhotoId).Select(x => new
-                        {
-                            x.RadiusInMeters,
-                            x.VolumeInCubicalMeters,
-                            x.XDiameterInMeters,
-                            x.YDiameterInMeters,
-                            x.ZDiameterInMeters,                                
-                        }).FirstOrDefaultAsync();
+                        var drop = await context.Drops.Where(x => x.DropPhoto.DropPhotoId == dropPhoto.DropPhotoId)
+                            .Select(x => new
+                            {
+                                x.RadiusInMeters,
+                                x.VolumeInCubicalMeters,
+                                x.XDiameterInMeters,
+                                x.YDiameterInMeters,
+                                x.ZDiameterInMeters
+                            }).FirstOrDefaultAsync();
 
                         dbDropPhotoForAdd.Add(new DbDropPhoto
                         {
@@ -266,25 +291,29 @@ namespace DDrop.DAL
                             },
                             Content = dropPhoto.Content,
                             Name = dropPhoto.Name,
-                            SimpleHorizontalLine = dropPhoto.SimpleHorizontalLine != null ? new DbSimpleLine
-                            {
-                                X1 = dropPhoto.SimpleHorizontalLine.X1,
-                                Y1 = dropPhoto.SimpleHorizontalLine.Y1,
-                                Y2 = dropPhoto.SimpleHorizontalLine.X2,
-                                X2 = dropPhoto.SimpleHorizontalLine.Y2
-                            } : null,
-                            SimpleVerticalLine = dropPhoto.SimpleVerticalLine != null ? new DbSimpleLine
-                            {
-                                X1 = dropPhoto.SimpleVerticalLine.X1,
-                                Y1 = dropPhoto.SimpleVerticalLine.Y1,
-                                Y2 = dropPhoto.SimpleVerticalLine.Y2,
-                                X2 = dropPhoto.SimpleVerticalLine.X2
-                            } : null,
+                            SimpleHorizontalLine = dropPhoto.SimpleHorizontalLine != null
+                                ? new DbSimpleLine
+                                {
+                                    X1 = dropPhoto.SimpleHorizontalLine.X1,
+                                    Y1 = dropPhoto.SimpleHorizontalLine.Y1,
+                                    Y2 = dropPhoto.SimpleHorizontalLine.X2,
+                                    X2 = dropPhoto.SimpleHorizontalLine.Y2
+                                }
+                                : null,
+                            SimpleVerticalLine = dropPhoto.SimpleVerticalLine != null
+                                ? new DbSimpleLine
+                                {
+                                    X1 = dropPhoto.SimpleVerticalLine.X1,
+                                    Y1 = dropPhoto.SimpleVerticalLine.Y1,
+                                    Y2 = dropPhoto.SimpleVerticalLine.Y2,
+                                    X2 = dropPhoto.SimpleVerticalLine.X2
+                                }
+                                : null,
                             XDiameterInPixels = dropPhoto.XDiameterInPixels,
                             YDiameterInPixels = dropPhoto.YDiameterInPixels,
                             ZDiameterInPixels = dropPhoto.ZDiameterInPixels,
                             CreationDateTime = dropPhoto.CreationDateTime,
-                            PhotoOrderInSeries = dropPhoto.PhotoOrderInSeries,
+                            PhotoOrderInSeries = dropPhoto.PhotoOrderInSeries
                         });
                     }
 
@@ -296,7 +325,7 @@ namespace DDrop.DAL
                         {
                             Name = referencePhotoForSeries.Name,
                             PixelsInMillimeter = referencePhotoForSeries.PixelsInMillimeter,
-                            Content = referencePhotoForSeries.Content,
+                            Content = referencePhotoForSeries.Content
                         };
 
                         if (referencePhotoForSeries.SimpleReferencePhotoLine != null)
@@ -312,7 +341,7 @@ namespace DDrop.DAL
                             referencePhotoForAdd.SimpleReferencePhotoLine = simpleReferencePhotoLineForAdd;
                         }
                     }
-                    
+
                     return new DbSeries
                     {
                         Title = series?.Title,
@@ -366,9 +395,16 @@ namespace DDrop.DAL
 
                         if (dropPhoto.SimpleHorizontalLine != null)
                             context.SimpleLines.Remove(dropPhoto.SimpleHorizontalLine);
+
+                        if (dropPhoto.Contour != null)
+                        {
+                            context.SimpleLines.RemoveRange(dropPhoto.Contour.SimpleLines);
+                            context.Contours.Remove(dropPhoto.Contour);
+                        }
                     }
 
-                    if (series.ReferencePhotoForSeries != null && series.ReferencePhotoForSeries.SimpleReferencePhotoLine != null)
+                    if (series.ReferencePhotoForSeries != null &&
+                        series.ReferencePhotoForSeries.SimpleReferencePhotoLine != null)
                         context.SimpleLines.Remove(series.ReferencePhotoForSeries.SimpleReferencePhotoLine);
 
                     context.Series.Remove(series);
@@ -384,14 +420,14 @@ namespace DDrop.DAL
 
         public async Task UpdateSeriesName(string seriesName, Guid seriesId)
         {
-            using(var context = new DDropContext())
+            using (var context = new DDropContext())
             {
                 try
                 {
                     var series = await context.Series.FirstOrDefaultAsync(x => x.SeriesId == seriesId);
 
                     if (series != null) series.Title = seriesName;
-                    
+
                     await context.SaveChangesAsync();
                 }
                 catch (SqlException e)
@@ -473,7 +509,7 @@ namespace DDrop.DAL
                         YDiameterInPixels = dropPhoto.YDiameterInPixels,
                         ZDiameterInPixels = dropPhoto.ZDiameterInPixels,
                         CreationDateTime = dropPhoto.CreationDateTime,
-                        PhotoOrderInSeries = dropPhoto.PhotoOrderInSeries,
+                        PhotoOrderInSeries = dropPhoto.PhotoOrderInSeries
                     };
 
                     context.DropPhotos.Add(dbDropPhoto);
@@ -486,15 +522,16 @@ namespace DDrop.DAL
                 }
             }
         }
-        
+
         public async Task UpdateDropPhoto(DbDropPhoto dropPhoto)
         {
             using (var context = new DDropContext())
             {
                 try
                 {
-                    var contour = await context.Contours.Include(p => p.SimpleLines).FirstOrDefaultAsync(x => x.ContourId == dropPhoto.DropPhotoId);
-                    
+                    var contour = await context.Contours.Include(p => p.SimpleLines)
+                        .FirstOrDefaultAsync(x => x.ContourId == dropPhoto.DropPhotoId);
+
                     if (contour != null && dropPhoto.Contour != null)
                     {
                         contour.SimpleLines = dropPhoto.Contour.SimpleLines;
@@ -515,11 +552,14 @@ namespace DDrop.DAL
                         context.SimpleLines.RemoveRange(contour.SimpleLines);
                     }
 
-                    context.Set<DbSimpleLine>().AddOrUpdate(dropPhoto.SimpleHorizontalLine);
-                    context.Set<DbSimpleLine>().AddOrUpdate(dropPhoto.SimpleVerticalLine);
+                    if (dropPhoto.SimpleHorizontalLine != null)
+                        context.Set<DbSimpleLine>().AddOrUpdate(dropPhoto.SimpleHorizontalLine);
+
+                    if (dropPhoto.SimpleVerticalLine != null)
+                        context.Set<DbSimpleLine>().AddOrUpdate(dropPhoto.SimpleVerticalLine);
                     context.Set<DbDropPhoto>().AddOrUpdate(dropPhoto);
                     context.Set<DbDrop>().AddOrUpdate(dropPhoto.Drop);
-                    
+
                     await context.SaveChangesAsync();
                 }
                 catch (SqlException e)
@@ -572,7 +612,8 @@ namespace DDrop.DAL
                 try
                 {
                     var dropPhoto = await context.DropPhotos.FirstOrDefaultAsync(x => x.DropPhotoId == dropPhotoId);
-                    var contour = await context.Contours.Include(p => p.SimpleLines).FirstOrDefaultAsync(x => x.ContourId == dropPhoto.DropPhotoId);
+                    var contour = await context.Contours.Include(p => p.SimpleLines)
+                        .FirstOrDefaultAsync(x => x.ContourId == dropPhoto.DropPhotoId);
 
                     context.DropPhotos.Attach(dropPhoto ?? throw new InvalidOperationException());
                     if (dropPhoto.SimpleVerticalLine != null)
@@ -581,9 +622,10 @@ namespace DDrop.DAL
                         context.SimpleLines.Remove(dropPhoto.SimpleHorizontalLine);
                     if (contour != null)
                     {
-                        context.Contours.Remove(contour);
                         context.SimpleLines.RemoveRange(contour.SimpleLines);
+                        context.Contours.Remove(contour);
                     }
+
                     context.Drops.Remove(dropPhoto.Drop);
                     context.DropPhotos.Remove(dropPhoto);
 
@@ -602,11 +644,12 @@ namespace DDrop.DAL
             {
                 try
                 {
-                    byte[] content = await context.DropPhotos.Where(x => x.DropPhotoId == dropPhotoId).Select(z => z.Content).FirstOrDefaultAsync().ConfigureAwait(true);
+                    var content = await context.DropPhotos.Where(x => x.DropPhotoId == dropPhotoId)
+                        .Select(z => z.Content).FirstOrDefaultAsync().ConfigureAwait(true);
 
                     cancellationToken.ThrowIfCancellationRequested();
 
-                    return content;                    
+                    return content;
                 }
                 catch (SqlException e)
                 {
@@ -639,7 +682,7 @@ namespace DDrop.DAL
         #endregion
 
         #region Reference Photo
-       
+
         public async Task UpdateReferencePhoto(DbReferencePhoto referencePhoto)
         {
             using (var context = new DDropContext())
@@ -653,7 +696,7 @@ namespace DDrop.DAL
                     }
 
                     context.Set<DbReferencePhoto>().AddOrUpdate(referencePhoto);
-                    
+
                     await context.SaveChangesAsync();
                 }
                 catch (SqlException e)
@@ -669,7 +712,9 @@ namespace DDrop.DAL
             {
                 try
                 {
-                    var referencePhoto = await context.ReferencePhotos.FirstOrDefaultAsync(x => x.ReferencePhotoId == dbReferencePhotoId);
+                    var referencePhoto =
+                        await context.ReferencePhotos.FirstOrDefaultAsync(x =>
+                            x.ReferencePhotoId == dbReferencePhotoId);
 
                     context.ReferencePhotos.Attach(referencePhoto ?? throw new InvalidOperationException());
                     if (referencePhoto.SimpleReferencePhotoLine != null)
@@ -691,28 +736,8 @@ namespace DDrop.DAL
             {
                 try
                 {
-                    return await context.ReferencePhotos.Where(x => x.ReferencePhotoId == referencePhotoId).Select(z => z.Content).FirstOrDefaultAsync();
-                }
-                catch (SqlException e)
-                {
-                    throw new TimeoutException(e.Message, e);
-                }
-            }
-        }
-
-        #endregion
-
-        #region Logger
-
-        public async Task SaveLogEntry(DbLogEntry dbLogEntry)
-        {
-            using (var context = new DDropContext())
-            {
-                try
-                {
-                    context.LogEntries.Add(dbLogEntry);
-
-                    await context.SaveChangesAsync();
+                    return await context.ReferencePhotos.Where(x => x.ReferencePhotoId == referencePhotoId)
+                        .Select(z => z.Content).FirstOrDefaultAsync();
                 }
                 catch (SqlException e)
                 {

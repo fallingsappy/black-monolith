@@ -7,21 +7,20 @@ namespace DDrop.Db.DbEntities
     [Table("DropPhotos")]
     public class DbDropPhoto
     {
-        [Key]
-        public Guid DropPhotoId { get; set; }
+        [Key] public Guid DropPhotoId { get; set; }
+
         public string Name { get; set; }
         public int XDiameterInPixels { get; set; }
         public int YDiameterInPixels { get; set; }
         public int ZDiameterInPixels { get; set; }
 
         public Guid? SimpleHorizontalLineId { get; set; }
-        [ForeignKey("SimpleHorizontalLineId")]
-        public virtual DbSimpleLine SimpleHorizontalLine { get; set; }
+
+        [ForeignKey("SimpleHorizontalLineId")] public virtual DbSimpleLine SimpleHorizontalLine { get; set; }
 
         public Guid? SimpleVerticalLineId { get; set; }
 
-        [ForeignKey("SimpleVerticalLineId")]
-        public virtual DbSimpleLine SimpleVerticalLine { get; set; }
+        [ForeignKey("SimpleVerticalLineId")] public virtual DbSimpleLine SimpleVerticalLine { get; set; }
 
         public byte[] Content { get; set; }
         public virtual DbDrop Drop { get; set; }

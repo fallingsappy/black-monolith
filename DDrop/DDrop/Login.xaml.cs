@@ -1,49 +1,40 @@
-﻿using DDrop.BE.Models;
-using DDrop.Utility.Cryptography;
-using DDrop.Utility.ImageOperations;
-using System;
-using System.Data.SqlClient;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using DDrop.BE.Enums.Logger;
+using DDrop.BE.Models;
 using DDrop.DAL;
+using DDrop.Properties;
+using DDrop.Utility.Cryptography;
+using DDrop.Utility.ImageOperations;
+using DDrop.Utility.Logger;
 using DDrop.Utility.Mappers;
+using DDrop.Utility.SeriesLocalStorageOperations;
 using ToastNotifications;
 using ToastNotifications.Messages;
-using System.Windows.Controls;
-using System.Reflection;
-using DDrop.Utility.Logger;
-using DDrop.Utility.SeriesLocalStorageOperations;
-using DDrop.BE.Enums.Logger;
 
 namespace DDrop
 {
     /// <summary>
-    /// Логика взаимодействия для Login.xaml
+    ///     Логика взаимодействия для Login.xaml
     /// </summary>
     public partial class Login
     {
-        public static readonly DependencyProperty LocalStoredUsersProperty = DependencyProperty.Register("LocalStoredUsers", typeof(LocalStoredUsers), typeof(Login));
-        public LocalStoredUsers LocalStoredUsers
-        {
-            get => (LocalStoredUsers)GetValue(LocalStoredUsersProperty);
-            set => SetValue(LocalStoredUsersProperty, value);
-        }
-        
-        public static readonly DependencyProperty UserLoginProperty = DependencyProperty.Register("UserLogin", typeof(User), typeof(Login));
-        private IDDropRepository _dDropRepository;
-        private readonly Notifier _notifier;
+        public static readonly DependencyProperty LocalStoredUsersProperty =
+            DependencyProperty.Register("LocalStoredUsers", typeof(LocalStoredUsers), typeof(Login));
+
+        public static readonly DependencyProperty UserLoginProperty =
+            DependencyProperty.Register("UserLogin", typeof(User), typeof(Login));
+
         private readonly ILogger _logger;
+        private readonly Notifier _notifier;
+        private readonly IDDropRepository _dDropRepository;
         public bool LoginSucceeded;
-        public User UserLogin
-        {
-            get { return (User)GetValue(UserLoginProperty); }
-            set
-            {
-                SetValue(UserLoginProperty, value);
-            }
-        }
 
         public Login(IDDropRepository dDropRepository, Notifier notifier, ILogger logger)
         {
@@ -53,14 +44,25 @@ namespace DDrop
 
             LocalStoredUsers = new LocalStoredUsers();
 
-            if (!string.IsNullOrEmpty(Properties.Settings.Default.StoredUsers))
-            {
-                LocalStoredUsers = JsonSerializeProvider.DeserializeFromString<LocalStoredUsers>(Properties.Settings.Default.StoredUsers);
-            }
-            
+            if (!string.IsNullOrEmpty(Settings.Default.StoredUsers))
+                LocalStoredUsers =
+                    JsonSerializeProvider.DeserializeFromString<LocalStoredUsers>(Settings.Default.StoredUsers);
+
             InitializeComponent();
 
             DataContext = this;
+        }
+
+        public LocalStoredUsers LocalStoredUsers
+        {
+            get => (LocalStoredUsers) GetValue(LocalStoredUsersProperty);
+            set => SetValue(LocalStoredUsersProperty, value);
+        }
+
+        public User UserLogin
+        {
+            get => (User) GetValue(UserLoginProperty);
+            set => SetValue(UserLoginProperty, value);
         }
 
         private async void LoginButton_Click(object sender, RoutedEventArgs e)
@@ -71,7 +73,8 @@ namespace DDrop
                 ErrorMessage.Text = "Введите электронную почту.";
                 TextBoxEmail.Focus();
             }
-            else if (!Regex.IsMatch(TextBoxEmail.Text, @"^[a-zA-Z][\w\.-]*[a-zA-Z0-9]@[a-zA-Z0-9][\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]$"))
+            else if (!Regex.IsMatch(TextBoxEmail.Text,
+                @"^[a-zA-Z][\w\.-]*[a-zA-Z0-9]@[a-zA-Z0-9][\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]$"))
             {
                 ErrorMessage.Text = "Электронная почта имеет не верный формат.";
                 TextBoxEmail.Select(0, TextBoxEmail.Text.Length);
@@ -99,20 +102,18 @@ namespace DDrop
 
                     try
                     {
-                        UserLogin.UserSeries = DDropDbEntitiesMapper.DbSeriesToSeries(await Task.Run(() => _dDropRepository.GetSeriesByUserId(user.UserId)), UserLogin);
+                        UserLogin.UserSeries = DDropDbEntitiesMapper.DbSeriesToSeries(
+                            await Task.Run(() => _dDropRepository.GetSeriesByUserId(user.UserId)), UserLogin);
 
                         LoginSucceeded = true;
 
-                        if (RememberMe.IsChecked == true && shouldRemember)
-                        {
-                            StoreUserLocal(email, password);
-                        }
+                        if (RememberMe.IsChecked == true && shouldRemember) StoreUserLocal(email, password);
 
-                        _logger.LogInfo(new LogEntry()
+                        _logger.LogInfo(new LogEntry
                         {
                             Username = user.Email,
                             LogCategory = LogCategory.Authorization,
-                            Message = $"Пользователь {user.Email} успешно авторизован.",
+                            Message = $"Пользователь {user.Email} успешно авторизован."
                         });
                         _notifier.ShowSuccess($"Пользователь {user.Email} авторизован.");
                         LoginWindowLoading();
@@ -120,7 +121,8 @@ namespace DDrop
                     }
                     catch (TimeoutException)
                     {
-                        _notifier.ShowError($"Не удалось получить список серий пользователя {UserLogin.Email}. Не удалось установить подключение. Проверьте интернет соединение.");
+                        _notifier.ShowError(
+                            $"Не удалось получить список серий пользователя {UserLogin.Email}. Не удалось установить подключение. Проверьте интернет соединение.");
                         LoginSucceeded = false;
                         LoginWindowLoading();
                     }
@@ -169,12 +171,10 @@ namespace DDrop
 
         private void StoreUserLocal(string email, string password)
         {
-            bool newUser = true;
+            var newUser = true;
 
             if (LocalStoredUsers.Users != null)
-            {
                 foreach (var localUser in LocalStoredUsers.Users)
-                {
                     if (localUser.Login == email)
                     {
                         newUser = false;
@@ -183,20 +183,16 @@ namespace DDrop
                         {
                             localUser.Password = password;
 
-                            Properties.Settings.Default.StoredUsers = JsonSerializeProvider.SerializeToString(LocalStoredUsers);
+                            Settings.Default.StoredUsers = JsonSerializeProvider.SerializeToString(LocalStoredUsers);
 
-                            Properties.Settings.Default.Save();
+                            Settings.Default.Save();
                         }
 
 
                         break;
                     }
-                }
-            }
             else
-            {
-                LocalStoredUsers.Users = new System.Collections.ObjectModel.ObservableCollection<LocalStoredUser>();
-            }
+                LocalStoredUsers.Users = new ObservableCollection<LocalStoredUser>();
 
             if (newUser)
             {
@@ -206,9 +202,9 @@ namespace DDrop
                     Password = password
                 });
 
-                Properties.Settings.Default.StoredUsers = JsonSerializeProvider.SerializeToString(LocalStoredUsers);
+                Settings.Default.StoredUsers = JsonSerializeProvider.SerializeToString(LocalStoredUsers);
 
-                Properties.Settings.Default.Save();
+                Settings.Default.Save();
             }
         }
 
@@ -222,7 +218,7 @@ namespace DDrop
         private void RegistrationButton_Click(object sender, RoutedEventArgs e)
         {
             Visibility = Visibility.Collapsed;
-            Registration registrationWindow = new Registration(_dDropRepository, _notifier, _logger)
+            var registrationWindow = new Registration(_dDropRepository, _notifier, _logger)
             {
                 Owner = this
             };
@@ -263,10 +259,11 @@ namespace DDrop
 
         private void LoginOfflineButton_Click(object sender, RoutedEventArgs e)
         {
-            UserLogin = new User()
+            UserLogin = new User
             {
                 Email = "anonymousUser@anonymousUser.com",
-                UserPhoto = ImageInterpreter.ImageToByteArray(Properties.Resources.cool_profile_picture_300x219_vectorized__1_),
+                UserPhoto = ImageInterpreter.ImageToByteArray(Properties.Resources
+                    .cool_profile_picture_300x219_vectorized__1_),
                 FirstName = "Неизвестно",
                 LastName = "Неизвестно",
                 IsLoggedIn = false,
@@ -280,23 +277,18 @@ namespace DDrop
 
         private void LoginPasswordBox_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Space)
-            {
-                e.Handled = true;
-            }
+            if (e.Key == Key.Space) e.Handled = true;
         }
 
         private void PasswordUnmask_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Space)
-            {
-                e.Handled = true;
-            }
+            if (e.Key == Key.Space) e.Handled = true;
         }
 
         private void SetSelection(PasswordBox passwordBox, int start, int length)
         {
-            passwordBox.GetType().GetMethod("Select", BindingFlags.Instance | BindingFlags.NonPublic)?.Invoke(passwordBox, new object[] { start, length });
+            passwordBox.GetType().GetMethod("Select", BindingFlags.Instance | BindingFlags.NonPublic)
+                ?.Invoke(passwordBox, new object[] {start, length});
         }
 
         private void LoginPasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
@@ -323,11 +315,11 @@ namespace DDrop
 
         private async void LocalUsersCombobox_DropDownClosed(object sender, EventArgs e)
         {
-            var comboBox = (ComboBox)sender;
+            var comboBox = (ComboBox) sender;
 
             if (comboBox.SelectedIndex > -1)
             {
-                var storedUser = (LocalStoredUser)comboBox.SelectedItem;
+                var storedUser = (LocalStoredUser) comboBox.SelectedItem;
 
                 LoginPasswordBox.Password = storedUser.Password;
                 TextBoxEmail.Text = storedUser.Login;

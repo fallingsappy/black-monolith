@@ -5,13 +5,14 @@ namespace DDrop.BE.Models
 {
     public class LocalStoredUser : INotifyPropertyChanged
     {
+        private bool _isChecked;
         private string _login;
+
+        private string _password;
+
         public string Login
         {
-            get
-            {
-                return _login;
-            }
+            get => _login;
             set
             {
                 _login = value;
@@ -19,13 +20,9 @@ namespace DDrop.BE.Models
             }
         }
 
-        private string _password;
         public string Password
         {
-            get
-            {
-                return _password;
-            }
+            get => _password;
             set
             {
                 _password = value;
@@ -33,13 +30,9 @@ namespace DDrop.BE.Models
             }
         }
 
-        private bool _isChecked;
         public bool IsChecked
         {
-            get
-            {
-                return _isChecked;
-            }
+            get => _isChecked;
             set
             {
                 _isChecked = value;
@@ -57,13 +50,12 @@ namespace DDrop.BE.Models
 
     public class LocalStoredUsers : INotifyPropertyChanged
     {
+        private bool _isEnabled;
         private ObservableCollection<LocalStoredUser> _users;
+
         public ObservableCollection<LocalStoredUser> Users
         {
-            get
-            {
-                return _users;
-            }
+            get => _users;
             set
             {
                 _users = value;
@@ -71,13 +63,9 @@ namespace DDrop.BE.Models
             }
         }
 
-        private bool _isEnabled;
         public bool IsEnabled
         {
-            get
-            {
-                return _users.Count > 0;
-            }
+            get => _users.Count > 0;
             set
             {
                 _isEnabled = value;

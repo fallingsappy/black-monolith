@@ -1,7 +1,10 @@
-﻿namespace DDrop.BL.ImageProcessing.Python
+﻿using System.Drawing;
+
+namespace DDrop.BL.ImageProcessing.Python
 {
     public interface IPythonProvider
     {
-        System.Drawing.Point[] GetDiameters(byte[] inputPhoto, string tempFileName, string scriptToRun, string interpreter, int ksize = 9, int treshold1 = 50, int treshold2 = 5, int size1 = 100, int size2 = 250);
+        Point[] GetDiameters(byte[] inputPhoto, string tempFileName, string scriptToRun, string interpreter,
+            int ksize = 9, int treshold1 = 50, int treshold2 = 5, int size1 = 100, int size2 = 250);
     }
 }

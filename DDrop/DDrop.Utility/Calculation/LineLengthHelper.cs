@@ -8,9 +8,8 @@ namespace DDrop.Utility.Calculation
     public class LineLengthHelper
     {
         [DllImport("gdi32.dll")]
-        private static extern bool LineDDA(int nXStart, int nYStart, int nXEnd, int nYEnd, LineDdaProc lpLineFunc, IntPtr lpData);
-
-        private delegate void LineDdaProc(int x, int y, IntPtr lpData);
+        private static extern bool LineDDA(int nXStart, int nYStart, int nXEnd, int nYEnd, LineDdaProc lpLineFunc,
+            IntPtr lpData);
 
         public static List<Point> GetPointsOnLine(System.Drawing.Point point1, System.Drawing.Point point2)
         {
@@ -32,8 +31,10 @@ namespace DDrop.Utility.Calculation
         private static void GetPointsOnLineCallback(int x, int y, IntPtr lpData)
         {
             var handle = GCHandle.FromIntPtr(lpData);
-            var points = (List<Point>)handle.Target;
+            var points = (List<Point>) handle.Target;
             points.Add(new Point(x, y));
         }
+
+        private delegate void LineDdaProc(int x, int y, IntPtr lpData);
     }
 }

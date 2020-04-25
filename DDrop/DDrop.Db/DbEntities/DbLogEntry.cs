@@ -5,8 +5,8 @@ namespace DDrop.Db.DbEntities
 {
     public class DbLogEntry
     {
-        [Key]
-        public Guid Id { get; set; }
+        [Key] public Guid Id { get; set; }
+
         public string Date { get; set; }
         public string Username { get; set; }
         public string LogLevel { get; set; }

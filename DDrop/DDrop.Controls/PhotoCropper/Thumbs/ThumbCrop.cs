@@ -7,12 +7,12 @@ namespace DDrop.Controls.PhotoCropper.Thumbs
 {
     internal class ThumbCrop : Thumb
     {
-        public double ThumbSize { get; }
-
         public ThumbCrop(double thumbSize)
         {
             ThumbSize = thumbSize;
         }
+
+        public double ThumbSize { get; }
 
         protected override Visual GetVisualChild(int index)
         {
@@ -20,17 +20,18 @@ namespace DDrop.Controls.PhotoCropper.Thumbs
         }
 
         /// <summary>
-        /// Custom visual style of thumb
+        ///     Custom visual style of thumb
         /// </summary>
         /// <param name="drawingContext"></param>
         protected override void OnRender(DrawingContext drawingContext)
         {
-            drawingContext.DrawRectangle(Brushes.White, new Pen(Brushes.Black, 2), new Rect(new Size(ThumbSize, ThumbSize)));
+            drawingContext.DrawRectangle(Brushes.White, new Pen(Brushes.Black, 2),
+                new Rect(new Size(ThumbSize, ThumbSize)));
             drawingContext.DrawRectangle(Brushes.Black, new Pen(Brushes.Black, 0), new Rect(2, 2, 6, 6));
         }
 
         /// <summary>
-        /// Set thumb to corresponding positions
+        ///     Set thumb to corresponding positions
         /// </summary>
         /// <param name="x">X coordinate</param>
         /// <param name="y">Y coordinate</param>

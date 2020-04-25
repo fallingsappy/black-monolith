@@ -6,13 +6,21 @@ namespace DDrop.BE.Models
 {
     public class ReferencePhoto : INotifyPropertyChanged
     {
+        private byte[] _content;
+
+        private Line _line;
+
+        private string _name;
+
+        private int _pixelsInMillimeter;
         private Series _series;
+        private SimpleLine _simpleLine;
+
+        private Guid? _simpleReferencePhotoLineId;
+
         public Series Series
         {
-            get
-            {
-                return _series;
-            }
+            get => _series;
             set
             {
                 _series = value;
@@ -22,13 +30,9 @@ namespace DDrop.BE.Models
 
         public Guid ReferencePhotoId { get; set; }
 
-        private string _name;
         public string Name
         {
-            get
-            {
-                return _name;
-            }
+            get => _name;
             set
             {
                 _name = value;
@@ -36,13 +40,9 @@ namespace DDrop.BE.Models
             }
         }
 
-        private byte[] _content;
         public byte[] Content
         {
-            get
-            {
-                return _content;
-            }
+            get => _content;
             set
             {
                 _content = value;
@@ -50,26 +50,19 @@ namespace DDrop.BE.Models
             }
         }
 
-        private Guid? _simpleReferencePhotoLineId;
         public Guid? SimpleReferencePhotoLineId
         {
-            get
-            {
-                return _simpleReferencePhotoLineId;
-            }
+            get => _simpleReferencePhotoLineId;
             set
             {
                 _simpleReferencePhotoLineId = value;
                 OnPropertyChanged(new PropertyChangedEventArgs("SimpleReferencePhotoLineId"));
             }
         }
-        private SimpleLine _simpleLine;
+
         public SimpleLine SimpleLine
         {
-            get
-            {
-                return _simpleLine;
-            }
+            get => _simpleLine;
             set
             {
                 _simpleLine = value;
@@ -77,13 +70,9 @@ namespace DDrop.BE.Models
             }
         }
 
-        private Line _line;
         public Line Line
         {
-            get
-            {
-                return _line;
-            }
+            get => _line;
             set
             {
                 _line = value;
@@ -91,13 +80,9 @@ namespace DDrop.BE.Models
             }
         }
 
-        private int _pixelsInMillimeter;
         public int PixelsInMillimeter
         {
-            get
-            {
-                return _pixelsInMillimeter;
-            }
+            get => _pixelsInMillimeter;
             set
             {
                 _pixelsInMillimeter = value;
@@ -106,6 +91,7 @@ namespace DDrop.BE.Models
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
         public void OnPropertyChanged(PropertyChangedEventArgs e)
         {
             PropertyChanged?.Invoke(this, e);

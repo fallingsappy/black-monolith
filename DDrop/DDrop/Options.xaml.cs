@@ -1,16 +1,15 @@
-﻿using DDrop.BE.Enums.Options;
-using DDrop.BE.Models;
-using DDrop.Utility.SeriesLocalStorageOperations;
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using DDrop.BE.Enums.Logger;
+using DDrop.BE.Enums.Options;
+using DDrop.BE.Models;
+using DDrop.Properties;
 using DDrop.Utility.Logger;
-using DDrop.Utility.Mappers;
+using DDrop.Utility.SeriesLocalStorageOperations;
 using DDrop.Utility.Validation;
 using Microsoft.Win32;
 using Newtonsoft.Json;
@@ -22,19 +21,93 @@ using pbu = RFM.RFM_WPFProgressBarUpdate;
 namespace DDrop
 {
     /// <summary>
-    /// Логика взаимодействия для Options.xaml
+    ///     Логика взаимодействия для Options.xaml
     /// </summary>
     public partial class Options : INotifyPropertyChanged
     {
-        public static readonly DependencyProperty LocalStoredUsersProperty = DependencyProperty.Register("LocalStoredUsers", typeof(LocalStoredUsers), typeof(Options));
+        public static readonly DependencyProperty LocalStoredUsersProperty =
+            DependencyProperty.Register("LocalStoredUsers", typeof(LocalStoredUsers), typeof(Options));
+
+
+        public static readonly DependencyProperty UserAutoCalculationTemplatesProperty =
+            DependencyProperty.Register("UserAutoCalculationTemplates",
+                typeof(ObservableCollection<AutoCalculationTemplate>), typeof(Options));
+
+        private bool? _allSelectedCalculationTemplates = false;
+
+        private bool _allSelectedCalculationTemplatesChanging;
+        private bool? _allSelectedStoredUsers = false;
+
+        private bool _allSelectedStoredUsersChanging;
+        private AutoCalculationTemplate _currentAutoCalculationTemplate;
+        private readonly ILogger _logger;
+        private readonly Notifier _notifier;
+        private readonly User _user;
+        public bool ShowContourOnPreviewIsChanged;
+
+
+        public bool ShowLinesOnPreviewIsChanged;
+
+        public Options(Notifier notifier, ILogger logger, User user)
+        {
+            _notifier = notifier;
+            _logger = logger;
+            _user = user;
+            InitializeComponent();
+            InitializePaths();
+            InitilizeUserTemplates();
+
+            if (!string.IsNullOrEmpty(Settings.Default.StoredUsers))
+            {
+                LocalStoredUsers =
+                    JsonSerializeProvider.DeserializeFromString<LocalStoredUsers>(Settings.Default.StoredUsers);
+
+                StoredUsers.ItemsSource = LocalStoredUsers.Users;
+            }
+
+            OptionsLoadingComplete();
+        }
+
         public LocalStoredUsers LocalStoredUsers
         {
-            get => (LocalStoredUsers)GetValue(LocalStoredUsersProperty);
+            get => (LocalStoredUsers) GetValue(LocalStoredUsersProperty);
             set => SetValue(LocalStoredUsersProperty, value);
         }
 
-        private bool _allSelectedStoredUsersChanging;
-        private bool? _allSelectedStoredUsers = false;
+        public bool? AllSelectedStoredUsers
+        {
+            get => _allSelectedStoredUsers;
+            set
+            {
+                if (value == _allSelectedStoredUsers) return;
+                _allSelectedStoredUsers = value;
+
+                AllSelectedChanged();
+                OnPropertyChanged(new PropertyChangedEventArgs("AllSelectedStoredUsers"));
+            }
+        }
+
+        public ObservableCollection<AutoCalculationTemplate> UserAutoCalculationTemplates
+        {
+            get => (ObservableCollection<AutoCalculationTemplate>) GetValue(UserAutoCalculationTemplatesProperty);
+            set => SetValue(UserAutoCalculationTemplatesProperty, value);
+        }
+
+        public bool? AllSelectedCalculationTemplates
+        {
+            get => _allSelectedCalculationTemplates;
+            set
+            {
+                if (value == _allSelectedCalculationTemplates) return;
+                _allSelectedCalculationTemplates = value;
+
+                AllSelectedCalculationTemplatesChanged();
+                OnPropertyChanged(new PropertyChangedEventArgs("AllSelectedCalculationTemplates"));
+            }
+        }
+
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         private void AllSelectedChanged()
         {
@@ -47,15 +120,11 @@ namespace DDrop
                     _allSelectedStoredUsersChanging = true;
 
                     if (AllSelectedStoredUsers == true)
-                    {
                         foreach (var userSeries in LocalStoredUsers.Users)
                             userSeries.IsChecked = true;
-                    }
                     else if (AllSelectedStoredUsers == false)
-                    {
                         foreach (var userSeries in LocalStoredUsers.Users)
                             userSeries.IsChecked = false;
-                    }
                 }
                 finally
                 {
@@ -89,36 +158,11 @@ namespace DDrop
             }
         }
 
-        public bool? AllSelectedStoredUsers
-        {
-            get => _allSelectedStoredUsers;
-            set
-            {
-                if (value == _allSelectedStoredUsers) return;
-                _allSelectedStoredUsers = value;
-
-                AllSelectedChanged();
-                OnPropertyChanged(new PropertyChangedEventArgs("AllSelectedStoredUsers"));
-            }
-        }
-
         private void EntryOnPropertyChanged(object sender, PropertyChangedEventArgs args)
         {
             if (args.PropertyName == nameof(LocalStoredUser.IsChecked))
                 RecheckAllSelected();
         }
-
-
-
-        public static readonly DependencyProperty UserAutoCalculationTemplatesProperty = DependencyProperty.Register("UserAutoCalculationTemplates", typeof(ObservableCollection<AutoCalculationTemplate>), typeof(Options));
-        public ObservableCollection<AutoCalculationTemplate> UserAutoCalculationTemplates
-        {
-            get => (ObservableCollection<AutoCalculationTemplate>)GetValue(UserAutoCalculationTemplatesProperty);
-            set => SetValue(UserAutoCalculationTemplatesProperty, value);
-        }
-
-        private bool _allSelectedCalculationTemplatesChanging;
-        private bool? _allSelectedCalculationTemplates = false;
 
         private void AllSelectedCalculationTemplatesChanged()
         {
@@ -131,15 +175,11 @@ namespace DDrop
                     _allSelectedCalculationTemplatesChanging = true;
 
                     if (AllSelectedCalculationTemplates == true)
-                    {
                         foreach (var autoCalculationTemplate in UserAutoCalculationTemplates)
                             autoCalculationTemplate.IsChecked = true;
-                    }
                     else if (AllSelectedCalculationTemplates == false)
-                    {
                         foreach (var autoCalculationTemplate in UserAutoCalculationTemplates)
                             autoCalculationTemplate.IsChecked = false;
-                    }
                 }
                 finally
                 {
@@ -173,78 +213,33 @@ namespace DDrop
             }
         }
 
-        public bool? AllSelectedCalculationTemplates
-        {
-            get => _allSelectedCalculationTemplates;
-            set
-            {
-                if (value == _allSelectedCalculationTemplates) return;
-                _allSelectedCalculationTemplates = value;
-
-                AllSelectedCalculationTemplatesChanged();
-                OnPropertyChanged(new PropertyChangedEventArgs("AllSelectedCalculationTemplates"));
-            }
-        }
-
         private void EntryOnPropertyCalculationTemplatesChanged(object sender, PropertyChangedEventArgs args)
         {
             if (args.PropertyName == nameof(AutoCalculationTemplate.IsChecked))
                 RecheckAllSelectedCalculationTemplates();
         }
 
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
         public void OnPropertyChanged(PropertyChangedEventArgs e)
         {
             PropertyChanged?.Invoke(this, e);
         }
 
-        
-        public bool ShowLinesOnPreviewIsChanged;
-        public bool ShowContourOnPreviewIsChanged;
-        private AutoCalculationTemplate _currentAutoCalculationTemplate;
-        private Notifier _notifier;
-        private ILogger _logger;
-        private User _user;
-
-        public Options(Notifier notifier, ILogger logger, User user)
-        {
-            _notifier = notifier;
-            _logger = logger;
-            _user = user;
-            InitializeComponent();
-            InitializePaths();
-            InitilizeUserTemplates();
-
-            if (!string.IsNullOrEmpty(Properties.Settings.Default.StoredUsers))
-            {
-                LocalStoredUsers = JsonSerializeProvider.DeserializeFromString<LocalStoredUsers>(Properties.Settings.Default.StoredUsers);
-
-                StoredUsers.ItemsSource = LocalStoredUsers.Users;
-            }
-
-            OptionsLoadingComplete();
-        }
-
         private void InitilizeUserTemplates()
         {
-            if (!string.IsNullOrEmpty(Properties.Settings.Default.AutoCalculationTemplates))
-            {
-                UserAutoCalculationTemplates = JsonSerializeProvider.DeserializeFromString<ObservableCollection<AutoCalculationTemplate>>(Properties.Settings.Default.AutoCalculationTemplates);
-            }
+            if (!string.IsNullOrEmpty(Settings.Default.AutoCalculationTemplates))
+                UserAutoCalculationTemplates =
+                    JsonSerializeProvider.DeserializeFromString<ObservableCollection<AutoCalculationTemplate>>(
+                        Settings.Default.AutoCalculationTemplates);
             else
-            {
                 UserAutoCalculationTemplates = new ObservableCollection<AutoCalculationTemplate>();
-            }
 
             AutoCalculaionTemplates.ItemsSource = UserAutoCalculationTemplates;
         }
 
         private void InitializePaths()
         {
-            ShowLinesOnPreview.IsChecked = Properties.Settings.Default.ShowLinesOnPreview;
-            ShowContourOnPreview.IsChecked = Properties.Settings.Default.ShowContourOnPreview;
+            ShowLinesOnPreview.IsChecked = Settings.Default.ShowLinesOnPreview;
+            ShowContourOnPreview.IsChecked = Settings.Default.ShowContourOnPreview;
         }
 
         private void UpdateOptions(OptionsEnum option, object value)
@@ -252,13 +247,13 @@ namespace DDrop
             switch (option)
             {
                 case OptionsEnum.ShowLinesOnPreview:
-                    Properties.Settings.Default.ShowLinesOnPreview = (bool)value;
-                    Properties.Settings.Default.Save();
+                    Settings.Default.ShowLinesOnPreview = (bool) value;
+                    Settings.Default.Save();
                     ShowLinesOnPreviewIsChanged = true;
                     break;
                 case OptionsEnum.ShowContourOnPreview:
-                    Properties.Settings.Default.ShowContourOnPreview = (bool) value;
-                    Properties.Settings.Default.Save();
+                    Settings.Default.ShowContourOnPreview = (bool) value;
+                    Settings.Default.Save();
                     ShowContourOnPreviewIsChanged = true;
                     break;
                 default:
@@ -268,25 +263,25 @@ namespace DDrop
 
         private void ShowLinesOnPreview_Checked(object sender, RoutedEventArgs e)
         {
-            CheckBox checkBox = (CheckBox)sender;
+            var checkBox = (CheckBox) sender;
             UpdateOptions(OptionsEnum.ShowLinesOnPreview, checkBox.IsChecked);
         }
 
         private void ShowLinesOnPreview_Unchecked(object sender, RoutedEventArgs e)
         {
-            CheckBox checkBox = (CheckBox)sender;
+            var checkBox = (CheckBox) sender;
             UpdateOptions(OptionsEnum.ShowLinesOnPreview, checkBox.IsChecked);
         }
 
         private void ShowContourOnPreview_OnChecked(object sender, RoutedEventArgs e)
         {
-            CheckBox checkBox = (CheckBox)sender;
+            var checkBox = (CheckBox) sender;
             UpdateOptions(OptionsEnum.ShowContourOnPreview, checkBox.IsChecked);
         }
 
         private void ShowContourOnPreview_OnUnchecked(object sender, RoutedEventArgs e)
         {
-            CheckBox checkBox = (CheckBox)sender;
+            var checkBox = (CheckBox) sender;
             UpdateOptions(OptionsEnum.ShowContourOnPreview, checkBox.IsChecked);
         }
 
@@ -294,44 +289,43 @@ namespace DDrop
         {
             LocalStoredUsers.Users.RemoveAt(StoredUsers.SelectedIndex);
 
-            Properties.Settings.Default.StoredUsers = JsonSerializeProvider.SerializeToString(LocalStoredUsers);
+            Settings.Default.StoredUsers = JsonSerializeProvider.SerializeToString(LocalStoredUsers);
 
-            Properties.Settings.Default.Save();
+            Settings.Default.Save();
         }
 
         private void DeleteAllStoredUsers_OnClick(object sender, RoutedEventArgs e)
         {
             var checkedCount = 0;
 
-            MessageBoxResult messageBoxResult =
-                MessageBox.Show(checkedCount > 0 ? "Удалить выбранных локальных пользователей?" : "Удалить всех локальныйх пользователей?",
+            var messageBoxResult =
+                MessageBox.Show(
+                    checkedCount > 0
+                        ? "Удалить выбранных локальных пользователей?"
+                        : "Удалить всех локальныйх пользователей?",
                     "Подтверждение удаления", MessageBoxButton.YesNo);
             if (messageBoxResult == MessageBoxResult.Yes)
-            {
-                for (int i = LocalStoredUsers.Users.Count - 1; i >= 0; i--)
+                for (var i = LocalStoredUsers.Users.Count - 1; i >= 0; i--)
                 {
-                    if (checkedCount > 0 && !LocalStoredUsers.Users[i].IsChecked)
-                    {
-                        continue;
-                    }
+                    if (checkedCount > 0 && !LocalStoredUsers.Users[i].IsChecked) continue;
 
                     LocalStoredUsers.Users.RemoveAt(i);
                 }
-            }
         }
 
         private void AddTemplate_OnClick(object sender, RoutedEventArgs e)
         {
-            UserAutoCalculationTemplates.Add(new AutoCalculationTemplate()
+            UserAutoCalculationTemplates.Add(new AutoCalculationTemplate
             {
                 Id = Guid.NewGuid(),
                 Title = AutoCalculationTemplateTitle.Text,
-                Parameters = new AutoCalculationParameters(),
+                Parameters = new AutoCalculationParameters()
             });
 
-            Properties.Settings.Default.AutoCalculationTemplates = JsonSerializeProvider.SerializeToString(UserAutoCalculationTemplates);
+            Settings.Default.AutoCalculationTemplates =
+                JsonSerializeProvider.SerializeToString(UserAutoCalculationTemplates);
 
-            Properties.Settings.Default.Save();
+            Settings.Default.Save();
         }
 
         private void DeleteSingleTemplate_OnClick(object sender, RoutedEventArgs e)
@@ -343,26 +337,22 @@ namespace DDrop
         {
             var checkedCount = 0;
 
-            MessageBoxResult messageBoxResult =
-                MessageBox.Show(checkedCount > 0 ? "Удалить выбранные шаблоны авторасчета?" : "Удалить все шаблоны авторасчета?",
+            var messageBoxResult =
+                MessageBox.Show(
+                    checkedCount > 0 ? "Удалить выбранные шаблоны авторасчета?" : "Удалить все шаблоны авторасчета?",
                     "Подтверждение удаления", MessageBoxButton.YesNo);
             if (messageBoxResult == MessageBoxResult.Yes)
-            {
-                for (int i = UserAutoCalculationTemplates.Count - 1; i >= 0; i--)
+                for (var i = UserAutoCalculationTemplates.Count - 1; i >= 0; i--)
                 {
-                    if (checkedCount > 0 && !UserAutoCalculationTemplates[i].IsChecked)
-                    {
-                        continue;
-                    }
+                    if (checkedCount > 0 && !UserAutoCalculationTemplates[i].IsChecked) continue;
 
                     UserAutoCalculationTemplates.RemoveAt(i);
                 }
-            }
         }
 
         private async void ImportTemplate_OnClick(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog
+            var openFileDialog = new OpenFileDialog
             {
                 Filter = "DDrop files (*.dplate)|*.dplate|All files (*.*)|*.*",
                 Multiselect = true,
@@ -381,15 +371,16 @@ namespace DDrop
                 {
                     try
                     {
-                        var deserializedTemplate = await JsonSerializeProvider.DeserializeFromFileAsync<AutoCalculationTemplate>(fileName);
+                        var deserializedTemplate =
+                            await JsonSerializeProvider.DeserializeFromFileAsync<AutoCalculationTemplate>(fileName);
 
                         UserAutoCalculationTemplates.Add(deserializedTemplate);
 
-                        _logger.LogInfo(new LogEntry()
+                        _logger.LogInfo(new LogEntry
                         {
                             Username = _user.Email,
                             LogCategory = LogCategory.Options,
-                            Message = $"Шаблон авторасчета {deserializedTemplate.Title} добавлен.",
+                            Message = $"Шаблон авторасчета {deserializedTemplate.Title} добавлен."
                         });
                         _notifier.ShowSuccess($"Шаблон авторасчета {deserializedTemplate.Title} добавлен.");
                     }
@@ -415,7 +406,7 @@ namespace DDrop
         {
             if (UserAutoCalculationTemplates.Count > 0)
             {
-                VistaFolderBrowserDialog saveFileDialog = new VistaFolderBrowserDialog
+                var saveFileDialog = new VistaFolderBrowserDialog
                 {
                     UseDescriptionForTitle = true,
                     Description = "Выберите папку для сохранения..."
@@ -425,29 +416,27 @@ namespace DDrop
                 {
                     OptionsIsLoading();
 
-                    int checkedCount = UserAutoCalculationTemplates.Count(x => x.IsChecked);
+                    var checkedCount = UserAutoCalculationTemplates.Count(x => x.IsChecked);
 
-                    var pbuHandle1 = pbu.New(ProgressBar, 0, checkedCount > 0 ? checkedCount : UserAutoCalculationTemplates.Count, 0);
+                    var pbuHandle1 = pbu.New(ProgressBar, 0,
+                        checkedCount > 0 ? checkedCount : UserAutoCalculationTemplates.Count, 0);
 
                     foreach (var autoCalculationTemplate in UserAutoCalculationTemplates)
                     {
-                        if (checkedCount > 0 && !autoCalculationTemplate.IsChecked)
-                        {
-                            continue;
-                        }
+                        if (checkedCount > 0 && !autoCalculationTemplate.IsChecked) continue;
 
 
                         await JsonSerializeProvider.SerializeToFileAsync(autoCalculationTemplate,
                             $"{saveFileDialog.SelectedPath}\\{autoCalculationTemplate.Title}.dplate");
 
-                        _logger.LogInfo(new LogEntry()
+                        _logger.LogInfo(new LogEntry
                         {
                             Username = _user.Email,
                             LogCategory = LogCategory.Options,
-                            Message = $"файл {autoCalculationTemplate.Title}.dplate сохранен на диске.",
+                            Message = $"файл {autoCalculationTemplate.Title}.dplate сохранен на диске."
                         });
                         _notifier.ShowSuccess($"файл {autoCalculationTemplate.Title}.dplate сохранен на диске.");
-                        
+
                         pbu.CurValue[pbuHandle1] += 1;
                     }
 
@@ -462,7 +451,7 @@ namespace DDrop
                 _notifier.ShowInformation("Нет серий для выгрузки.");
             }
         }
-        
+
         private void OptionsIsLoading()
         {
             GeneralSettings.IsEnabled = false;
@@ -492,14 +481,14 @@ namespace DDrop
         private void AutoCalculaionTemplates_OnCellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
             if (e.EditingElement is TextBox t)
-            {
                 if (!string.IsNullOrWhiteSpace(t.Text))
                 {
                     if (ValidationHelper.IsTextAllowed(t.Text))
                     {
-                        Properties.Settings.Default.AutoCalculationTemplates = JsonSerializeProvider.SerializeToString(UserAutoCalculationTemplates);
+                        Settings.Default.AutoCalculationTemplates =
+                            JsonSerializeProvider.SerializeToString(UserAutoCalculationTemplates);
 
-                        Properties.Settings.Default.Save();
+                        Settings.Default.Save();
                     }
                     else
                     {
@@ -507,7 +496,6 @@ namespace DDrop
                         e.Cancel = true;
                     }
                 }
-            }
         }
 
         private void AutoCalculationTypeCombo_OnDropDownClosed(object sender, EventArgs e)
@@ -516,11 +504,12 @@ namespace DDrop
 
             if (comboBox != null && comboBox.SelectedIndex != -1)
             {
-                _currentAutoCalculationTemplate.TemplateType = (CalculationVariants)comboBox.SelectedIndex;
+                _currentAutoCalculationTemplate.TemplateType = (CalculationVariants) comboBox.SelectedIndex;
 
-                Properties.Settings.Default.AutoCalculationTemplates = JsonSerializeProvider.SerializeToString(UserAutoCalculationTemplates);
+                Settings.Default.AutoCalculationTemplates =
+                    JsonSerializeProvider.SerializeToString(UserAutoCalculationTemplates);
 
-                Properties.Settings.Default.Save();
+                Settings.Default.Save();
             }
         }
 

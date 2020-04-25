@@ -1,10 +1,10 @@
-﻿using DDrop.BE.Models;
-using OfficeOpenXml;
-using OfficeOpenXml.Drawing.Chart;
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using DDrop.BE.Models;
+using OfficeOpenXml;
+using OfficeOpenXml.Drawing.Chart;
 
 namespace DDrop.Utility.ExcelOperations
 {
@@ -12,9 +12,9 @@ namespace DDrop.Utility.ExcelOperations
     {
         public static void CreateSingleSeriesExcelFile(User User, string fileName)
         {
-            using (ExcelPackage excelPackage = new ExcelPackage())
+            using (var excelPackage = new ExcelPackage())
             {
-                ExcelWorksheet mainWorksheet = excelPackage.Workbook.Worksheets.Add($"Общая информация");
+                var mainWorksheet = excelPackage.Workbook.Worksheets.Add("Общая информация");
 
                 mainWorksheet.Cells["A1:C1"].Merge = true;
                 mainWorksheet.Cells["A2:C2"].Merge = true;
@@ -32,22 +32,23 @@ namespace DDrop.Utility.ExcelOperations
                 mainWorksheet.Cells["D2"].Value = User.LastName;
                 mainWorksheet.Cells["D3"].Value = User.Email;
 
-                ExcelScatterChart seriesCombinedChart = mainWorksheet.Drawings.AddChart("seriesCombinedChart", eChartType.XYScatterLines) as ExcelScatterChart;
+                var seriesCombinedChart =
+                    mainWorksheet.Drawings.AddChart("seriesCombinedChart", eChartType.XYScatterLines) as
+                        ExcelScatterChart;
 
-                seriesCombinedChart.Title.Text = $"Зависимость радиуса капли от времени испарения";
+                seriesCombinedChart.Title.Text = "Зависимость радиуса капли от времени испарения";
                 seriesCombinedChart.Legend.Position = eLegendPosition.Right;
                 seriesCombinedChart.XAxis.Title.Text = "Время, с";
                 seriesCombinedChart.YAxis.Title.Text = "Радиус, м";
 
-                int indexer = 0;
+                var indexer = 0;
 
-                bool exportAll = User.UserSeries.Where(x => x.IsChecked == true).ToList().Count == 0;
+                var exportAll = User.UserSeries.Where(x => x.IsChecked).ToList().Count == 0;
 
                 foreach (var currentSeries in User.UserSeries)
-                {
                     if (currentSeries.IsChecked || exportAll)
                     {
-                        ExcelWorksheet worksheet = excelPackage.Workbook.Worksheets.Add($"{currentSeries.Title}");
+                        var worksheet = excelPackage.Workbook.Worksheets.Add($"{currentSeries.Title}");
 
                         worksheet.Cells["A1:C1"].Merge = true;
                         worksheet.Cells["A2:C2"].Merge = true;
@@ -69,10 +70,10 @@ namespace DDrop.Utility.ExcelOperations
                         worksheet.Cells["D3"].Value = currentSeries.IntervalBetweenPhotos;
                         worksheet.Cells["D4"].Value = currentSeries.ReferencePhotoForSeries.PixelsInMillimeter;
 
-                        ObservableCollection<SeriesToExcel> singleSeriesToExcelOutput = new ObservableCollection<SeriesToExcel>();
-                        for (int i = 0; i < currentSeries.DropPhotosSeries.Count; i++)
+                        var singleSeriesToExcelOutput = new ObservableCollection<SeriesToExcel>();
+                        for (var i = 0; i < currentSeries.DropPhotosSeries.Count; i++)
                         {
-                            DropPhoto dropPhoto = currentSeries.DropPhotosSeries[i];
+                            var dropPhoto = currentSeries.DropPhotosSeries[i];
                             singleSeriesToExcelOutput.Add(new SeriesToExcel
                             {
                                 Time = i * currentSeries.IntervalBetweenPhotos,
@@ -82,7 +83,7 @@ namespace DDrop.Utility.ExcelOperations
                                 XDiameterInPixels = dropPhoto.XDiameterInPixels,
                                 YDiameterInPixels = dropPhoto.YDiameterInPixels,
                                 XDiameterInMeters = dropPhoto.Drop.XDiameterInMeters,
-                                YDiameterInMeters = dropPhoto.Drop.YDiameterInMeters,
+                                YDiameterInMeters = dropPhoto.Drop.YDiameterInMeters
                             });
                         }
 
@@ -90,9 +91,11 @@ namespace DDrop.Utility.ExcelOperations
 
                         var end = worksheet.Dimension.End.Row;
 
-                        ExcelScatterChart seriesChart = worksheet.Drawings.AddChart("seriesChart", eChartType.XYScatterLines) as ExcelScatterChart;
+                        var seriesChart =
+                            worksheet.Drawings.AddChart("seriesChart", eChartType.XYScatterLines) as ExcelScatterChart;
 
-                        seriesChart.Title.Text = $"Зависимость радиуса капли от времени испарения для серии {currentSeries.Title}";
+                        seriesChart.Title.Text =
+                            $"Зависимость радиуса капли от времени испарения для серии {currentSeries.Title}";
                         seriesChart.Legend.Position = eLegendPosition.Right;
 
                         seriesChart.Series.Add(worksheet.Cells[$"G7:G{end}"], worksheet.Cells[$"A7:A{end}"]);
@@ -110,13 +113,12 @@ namespace DDrop.Utility.ExcelOperations
                         worksheet.Cells.AutoFitColumns();
                         indexer++;
                     }
-                }
 
                 seriesCombinedChart.SetSize(510, 660);
                 seriesCombinedChart.SetPosition(mainWorksheet.Dimension.End.Row + 1, 0, 0, 0);
                 mainWorksheet.Cells.AutoFitColumns();
 
-                FileInfo excelFile = new FileInfo($@"{fileName}");
+                var excelFile = new FileInfo($@"{fileName}");
                 excelPackage.SaveAs(excelFile);
             }
         }

@@ -106,12 +106,9 @@ D:\fallingsappyGit\DDrop\DDrop.DAL\bin\Debug\EntityFramework.SqlServer.xml
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.DAL\bin\Debug\DDrop.DAL.dll.config
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.DAL\bin\Debug\DDrop.DAL.dll
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.DAL\bin\Debug\DDrop.DAL.pdb
-E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.DAL\bin\Debug\DDrop.BE.dll
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.DAL\bin\Debug\DDrop.Db.dll
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.DAL\bin\Debug\EntityFramework.dll
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.DAL\bin\Debug\EntityFramework.SqlServer.dll
-E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.DAL\bin\Debug\DDrop.BE.pdb
-E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.DAL\bin\Debug\DDrop.BE.dll.config
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.DAL\bin\Debug\DDrop.Db.pdb
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.DAL\bin\Debug\DDrop.Db.dll.config
 E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.DAL\bin\Debug\EntityFramework.xml

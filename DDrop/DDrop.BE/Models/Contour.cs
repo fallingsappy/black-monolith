@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Shapes;
@@ -9,13 +8,20 @@ namespace DDrop.BE.Models
 {
     public class Contour : INotifyPropertyChanged
     {
+        private CalculationVariants _calculationVariants;
         private Guid _contourId;
+
+        private DropPhoto _currentDropPhoto;
+
+        private ObservableCollection<Line> _lines;
+
+        private AutoCalculationParameters _parameters;
+
+        private ObservableCollection<SimpleLine> _simpleLines;
+
         public Guid ContourId
         {
-            get
-            {
-                return _contourId;
-            }
+            get => _contourId;
             set
             {
                 _contourId = value;
@@ -23,13 +29,9 @@ namespace DDrop.BE.Models
             }
         }
 
-        private ObservableCollection<SimpleLine> _simpleLines;
         public ObservableCollection<SimpleLine> SimpleLines
         {
-            get
-            {
-                return _simpleLines;
-            }
+            get => _simpleLines;
             set
             {
                 _simpleLines = value;
@@ -37,13 +39,9 @@ namespace DDrop.BE.Models
             }
         }
 
-        private ObservableCollection<Line> _lines;
         public ObservableCollection<Line> Lines
         {
-            get
-            {
-                return _lines;
-            }
+            get => _lines;
             set
             {
                 _lines = value;
@@ -51,13 +49,9 @@ namespace DDrop.BE.Models
             }
         }
 
-        private DropPhoto _currentDropPhoto;
         public DropPhoto CurrentDropPhoto
         {
-            get
-            {
-                return _currentDropPhoto;
-            }
+            get => _currentDropPhoto;
             set
             {
                 _currentDropPhoto = value;
@@ -65,13 +59,9 @@ namespace DDrop.BE.Models
             }
         }
 
-        private AutoCalculationParameters _parameters;
         public AutoCalculationParameters Parameters
         {
-            get
-            {
-                return _parameters;
-            }
+            get => _parameters;
             set
             {
                 _parameters = value;
@@ -79,13 +69,9 @@ namespace DDrop.BE.Models
             }
         }
 
-        private CalculationVariants _calculationVariants;
         public CalculationVariants CalculationVariants
         {
-            get
-            {
-                return _calculationVariants;
-            }
+            get => _calculationVariants;
             set
             {
                 _calculationVariants = value;
@@ -94,6 +80,7 @@ namespace DDrop.BE.Models
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
         public void OnPropertyChanged(PropertyChangedEventArgs e)
         {
             PropertyChanged?.Invoke(this, e);

@@ -1,18 +1,15 @@
-﻿namespace DDrop.Db.Migrations
-{
-    using System;
-    using System.Data.Entity;
-    using System.Data.Entity.Migrations;
-    using System.Linq;
+﻿using System.Data.Entity.Migrations;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<DDrop.Db.DDropContext>
+namespace DDrop.Db.Migrations
+{
+    internal sealed class Configuration : DbMigrationsConfiguration<DDropContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(DDrop.Db.DDropContext context)
+        protected override void Seed(DDropContext context)
         {
             //  This method will be called after migrating to the latest version.
 

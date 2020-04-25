@@ -5,16 +5,17 @@ using System.Windows.Media;
 namespace DDrop.Controls.PhotoCropper.Managers
 {
     /// <summary>
-    /// Display text information
+    ///     Display text information
     /// </summary>
     internal class DisplayTextManager
     {
-        private readonly TextBlock _sizeTextBlock;
         private readonly RectangleManager _rectangleManager;
+        private readonly TextBlock _sizeTextBlock;
+
         public DisplayTextManager(Canvas canvas, RectangleManager rectangleManager)
         {
             _rectangleManager = rectangleManager;
-            _sizeTextBlock = new TextBlock()
+            _sizeTextBlock = new TextBlock
             {
                 Text = "Size counter",
                 FontSize = 14,
@@ -27,7 +28,7 @@ namespace DDrop.Controls.PhotoCropper.Managers
 
 
         /// <summary>
-        /// Manage visibility of text
+        ///     Manage visibility of text
         /// </summary>
         /// <param name="isVisble">Set current visibility</param>
         public void ShowText(bool isVisble)
@@ -36,7 +37,7 @@ namespace DDrop.Controls.PhotoCropper.Managers
         }
 
         /// <summary>
-        /// Update (redraw) text label
+        ///     Update (redraw) text label
         /// </summary>
         public void UpdateSizeText()
         {
@@ -46,7 +47,7 @@ namespace DDrop.Controls.PhotoCropper.Managers
             var calculateTop = _rectangleManager.TopLeft.Y - _sizeTextBlock.ActualHeight - offsetTop;
             if (calculateTop < 0)
                 calculateTop = offsetTop;
-            
+
             Canvas.SetLeft(_sizeTextBlock, _rectangleManager.TopLeft.X + offsetLeft);
             Canvas.SetTop(_sizeTextBlock, calculateTop);
             _sizeTextBlock.Text = $"w: {_rectangleManager.RectangleWidth}, h: {_rectangleManager.RectangleHeight}";

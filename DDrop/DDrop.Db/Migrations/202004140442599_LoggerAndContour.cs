@@ -1,17 +1,16 @@
-﻿namespace DDrop.Db.Migrations
+﻿using System.Data.Entity.Migrations;
+
+namespace DDrop.Db.Migrations
 {
-    using System;
-    using System.Data.Entity.Migrations;
-    
     public partial class LoggerAndContour : DbMigration
     {
         public override void Up()
         {
             CreateTable(
-                "dbo.DbLogEntries",
-                c => new
+                    "dbo.DbLogEntries",
+                    c => new
                     {
-                        Id = c.Guid(nullable: false),
+                        Id = c.Guid(false),
                         Date = c.String(),
                         Username = c.String(),
                         LogLevel = c.String(),
@@ -20,28 +19,28 @@
                         Details = c.String(),
                         Exception = c.String(),
                         InnerException = c.String(),
-                        StackTrace = c.String(),
+                        StackTrace = c.String()
                     })
                 .PrimaryKey(t => t.Id);
-            
+
             AddColumn("dbo.DbContours", "CalculationParameters", c => c.String());
             AddColumn("dbo.DbContours", "CalculationProvider", c => c.String());
             DropTable("dbo.DbLogs");
         }
-        
+
         public override void Down()
         {
             CreateTable(
-                "dbo.DbLogs",
-                c => new
+                    "dbo.DbLogs",
+                    c => new
                     {
-                        LogId = c.Guid(nullable: false),
-                        DateOfAddition = c.DateTime(nullable: false),
+                        LogId = c.Guid(false),
+                        DateOfAddition = c.DateTime(false),
                         Message = c.String(),
-                        Details = c.String(),
+                        Details = c.String()
                     })
                 .PrimaryKey(t => t.LogId);
-            
+
             DropColumn("dbo.DbContours", "CalculationProvider");
             DropColumn("dbo.DbContours", "CalculationParameters");
             DropTable("dbo.DbLogEntries");

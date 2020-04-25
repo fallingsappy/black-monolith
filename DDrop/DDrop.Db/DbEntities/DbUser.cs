@@ -8,8 +8,8 @@ namespace DDrop.Db.DbEntities
     [Table("Users")]
     public class DbUser
     {
-        [Key]
-        public Guid UserId { get; set; }
+        [Key] public Guid UserId { get; set; }
+
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public byte[] UserPhoto { get; set; }

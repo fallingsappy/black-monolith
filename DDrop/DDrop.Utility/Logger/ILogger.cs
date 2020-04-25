@@ -8,6 +8,5 @@ namespace DDrop.Utility.Logger
         void LogInfo(LogEntry logEntry);
         void LogWarning(LogEntry logEntry);
         void LogError(LogEntry logEntry);
-
     }
 }

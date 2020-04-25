@@ -11,8 +11,8 @@ namespace DDrop.Utility.Cryptography
 
         public static bool PasswordsMatch(string userInput, string savedPassword)
         {
-            string hashedInput = HashPassword(userInput);
-            bool doPasswordsMatch = string.Equals(hashedInput, savedPassword);
+            var hashedInput = HashPassword(userInput);
+            var doPasswordsMatch = string.Equals(hashedInput, savedPassword);
             return doPasswordsMatch;
         }
     }

@@ -1,99 +1,97 @@
-﻿using DDrop.BE.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using DDrop.BE.Models;
 using DDrop.Utility.Calculation;
 using Brushes = System.Windows.Media.Brushes;
+using Point = System.Drawing.Point;
 
 namespace DDrop.Controls.PixelDrawer
 {
     /// <summary>
-    /// Interaction logic for PixelDrawer.xaml
+    ///     Interaction logic for PixelDrawer.xaml
     /// </summary>
     public partial class PixelDrawer
     {
-        public static readonly DependencyProperty PixelsInMillimeterProperty = DependencyProperty.Register("PixelsInMillimeter", typeof(string), typeof(PixelDrawer));
-        public static readonly DependencyProperty PixelsInMillimeterVerticalProperty = DependencyProperty.Register("PixelsInMillimeterVertical", typeof(string), typeof(PixelDrawer));
-        public static readonly DependencyProperty PixelsInMillimeterHorizontalProperty = DependencyProperty.Register("PixelsInMillimeterHorizontal", typeof(string), typeof(PixelDrawer));
-        public static readonly DependencyProperty ImageSourceProperty = DependencyProperty.Register("ImageSource", typeof(ImageSource), typeof(PixelDrawer));
-        public static readonly DependencyProperty CurrentSeriesProperty = DependencyProperty.Register("CurrentSeries", typeof(Series), typeof(PixelDrawer));
-        public static readonly DependencyProperty CurrentDropPhotoProperty = DependencyProperty.Register("CurrentDropPhoto", typeof(DropPhoto), typeof(PixelDrawer));
-        public static readonly DependencyProperty DrawningIsEnabledProperty = DependencyProperty.Register("DrawningIsEnabled", typeof(bool), typeof(PixelDrawer));
+        public static readonly DependencyProperty PixelsInMillimeterProperty =
+            DependencyProperty.Register("PixelsInMillimeter", typeof(string), typeof(PixelDrawer));
 
-        public bool DrawningIsEnabled
-        {
-            get { return (bool) GetValue(DrawningIsEnabledProperty); }
-            set
-            {
-                SetValue(DrawningIsEnabledProperty, value);
-            }
-        }
+        public static readonly DependencyProperty PixelsInMillimeterVerticalProperty =
+            DependencyProperty.Register("PixelsInMillimeterVertical", typeof(string), typeof(PixelDrawer));
 
-        public DropPhoto CurrentDropPhoto
-        {
-            get { return (DropPhoto)GetValue(CurrentDropPhotoProperty); }
-            set
-            {
-                SetValue(CurrentDropPhotoProperty, value);
-            }
-        }
+        public static readonly DependencyProperty PixelsInMillimeterHorizontalProperty =
+            DependencyProperty.Register("PixelsInMillimeterHorizontal", typeof(string), typeof(PixelDrawer));
 
-        public Series CurrentSeries
-        {
-            get { return (Series)GetValue(CurrentSeriesProperty); }
+        public static readonly DependencyProperty ImageSourceProperty =
+            DependencyProperty.Register("ImageSource", typeof(ImageSource), typeof(PixelDrawer));
 
-            set
-            {
-                SetValue(CurrentSeriesProperty, value);
-            }
-        }
+        public static readonly DependencyProperty CurrentSeriesProperty =
+            DependencyProperty.Register("CurrentSeries", typeof(Series), typeof(PixelDrawer));
 
-        public string PixelsInMillimeter
-        {
-            get { return (string)GetValue(PixelsInMillimeterProperty); }
-            set
-            {
-                SetValue(PixelsInMillimeterProperty, value);
-            }
-        }
+        public static readonly DependencyProperty CurrentDropPhotoProperty =
+            DependencyProperty.Register("CurrentDropPhoto", typeof(DropPhoto), typeof(PixelDrawer));
 
-        public string PixelsInMillimeterVertical
-        {
-            get { return (string)GetValue(PixelsInMillimeterVerticalProperty); }
-            set
-            {
-                SetValue(PixelsInMillimeterVerticalProperty, value);
-            }
-        }
+        public static readonly DependencyProperty DrawningIsEnabledProperty =
+            DependencyProperty.Register("DrawningIsEnabled", typeof(bool), typeof(PixelDrawer));
 
-        public string PixelsInMillimeterHorizontal
-        {
-            get { return (string)GetValue(PixelsInMillimeterHorizontalProperty); }
-            set
-            {
-                SetValue(PixelsInMillimeterHorizontalProperty, value);
-            }
-        }
+        private readonly List<Line> _horizontalLines = new List<Line>();
 
-        public ImageSource ImageSource
-        {
-            get { return (ImageSource)GetValue(ImageSourceProperty); }
+        private Line _selectedLine;
 
-            set
-            {
-                SetValue(ImageSourceProperty, value);
-            }
-        }
+        private readonly List<Line> _verticalLines = new List<Line>();
 
         public PixelDrawer()
         {
             InitializeComponent();
             DataContext = this;
+        }
+
+        public bool DrawningIsEnabled
+        {
+            get => (bool) GetValue(DrawningIsEnabledProperty);
+            set => SetValue(DrawningIsEnabledProperty, value);
+        }
+
+        public DropPhoto CurrentDropPhoto
+        {
+            get => (DropPhoto) GetValue(CurrentDropPhotoProperty);
+            set => SetValue(CurrentDropPhotoProperty, value);
+        }
+
+        public Series CurrentSeries
+        {
+            get => (Series) GetValue(CurrentSeriesProperty);
+
+            set => SetValue(CurrentSeriesProperty, value);
+        }
+
+        public string PixelsInMillimeter
+        {
+            get => (string) GetValue(PixelsInMillimeterProperty);
+            set => SetValue(PixelsInMillimeterProperty, value);
+        }
+
+        public string PixelsInMillimeterVertical
+        {
+            get => (string) GetValue(PixelsInMillimeterVerticalProperty);
+            set => SetValue(PixelsInMillimeterVerticalProperty, value);
+        }
+
+        public string PixelsInMillimeterHorizontal
+        {
+            get => (string) GetValue(PixelsInMillimeterHorizontalProperty);
+            set => SetValue(PixelsInMillimeterHorizontalProperty, value);
+        }
+
+        public ImageSource ImageSource
+        {
+            get => (ImageSource) GetValue(ImageSourceProperty);
+
+            set => SetValue(ImageSourceProperty, value);
         }
 
         public bool _drawingHorizontalLine { get; set; }
@@ -102,28 +100,16 @@ namespace DDrop.Controls.PixelDrawer
 
         public bool TwoLineMode { get; set; }
 
-        private Line _selectedLine;
-
-        private List<Line> _horizontalLines = new List<Line>();
-
-        private List<Line> _verticalLines = new List<Line>();
-
         private void canDrawing_MouseMove_NotDown(object sender, MouseEventArgs e)
         {
             Cursor newCursor;
 
             if (_drawingHorizontalLine)
-            {
-                newCursor = ((TextBlock)Application.Current.Resources["CursorRulerHorizontal"]).Cursor;
-            }
+                newCursor = ((TextBlock) Application.Current.Resources["CursorRulerHorizontal"]).Cursor;
             else if (_drawingVerticalLine)
-            {
-                newCursor = ((TextBlock)Application.Current.Resources["CursorRulerVertical"]).Cursor;
-            }
+                newCursor = ((TextBlock) Application.Current.Resources["CursorRulerVertical"]).Cursor;
             else
-            {
-                newCursor = ((TextBlock)Application.Current.Resources["CursorDrawing"]).Cursor;
-            }
+                newCursor = ((TextBlock) Application.Current.Resources["CursorDrawing"]).Cursor;
 
             if (CanDrawing.Cursor != newCursor)
                 CanDrawing.Cursor = newCursor;
@@ -168,16 +154,20 @@ namespace DDrop.Controls.PixelDrawer
             CanDrawing.MouseLeave -= ReferenceImage_NewSegmentDrawingMouseLeave;
             Application.Current.Deactivated -= ReferenceImage_NewSegmentDrawingLostFocus;
 
-            if ((_selectedLine.X1 == _selectedLine.X2) && (_selectedLine.Y1 == _selectedLine.Y2) || _selectedLine == null)
+            if (_selectedLine.X1 == _selectedLine.X2 && _selectedLine.Y1 == _selectedLine.Y2 || _selectedLine == null)
+            {
                 CanDrawing.Children.Remove(_selectedLine);
+            }
             else
             {
-                var point11 = new System.Drawing.Point(Convert.ToInt32(_selectedLine.X1), Convert.ToInt32(_selectedLine.Y1));
-                var point22 = new System.Drawing.Point(Convert.ToInt32(_selectedLine.X2), Convert.ToInt32(_selectedLine.Y2));
+                var point11 = new Point(Convert.ToInt32(_selectedLine.X1), Convert.ToInt32(_selectedLine.Y1));
+                var point22 = new Point(Convert.ToInt32(_selectedLine.X2), Convert.ToInt32(_selectedLine.Y2));
 
                 if (TwoLineMode)
                 {
-                    if (Math.Abs(_selectedLine.X1 - _selectedLine.X2) >= Math.Abs(_selectedLine.Y1 - _selectedLine.Y2) && !_drawingVerticalLine || _drawingHorizontalLine)
+                    if (Math.Abs(_selectedLine.X1 - _selectedLine.X2) >=
+                        Math.Abs(_selectedLine.Y1 - _selectedLine.Y2) && !_drawingVerticalLine ||
+                        _drawingHorizontalLine)
                     {
                         _selectedLine.Stroke = Brushes.DeepPink;
 
@@ -185,10 +175,7 @@ namespace DDrop.Controls.PixelDrawer
 
                         if (CurrentDropPhoto.Contour != null)
                         {
-                            foreach (var line in CurrentDropPhoto.Contour.Lines)
-                            {
-                                CanDrawing.Children.Remove(line);
-                            }
+                            foreach (var line in CurrentDropPhoto.Contour.Lines) CanDrawing.Children.Remove(line);
 
                             CurrentDropPhoto.Contour.SimpleLines.Clear();
                             CurrentDropPhoto.Contour.Lines.Clear();
@@ -197,9 +184,7 @@ namespace DDrop.Controls.PixelDrawer
                         }
 
                         if (_horizontalLines.Count > 0)
-                        {
                             CanDrawing.Children.Remove(_horizontalLines[_horizontalLines.Count - 1]);
-                        }
 
                         _horizontalLines.Add(_selectedLine);
                         CurrentDropPhoto.HorizontalLine = _selectedLine;
@@ -215,7 +200,8 @@ namespace DDrop.Controls.PixelDrawer
                         {
                             horizontalLineForAdd.SimpleLineId = Guid.NewGuid();
                             CurrentDropPhoto.SimpleHorizontalLine = horizontalLineForAdd;
-                            CurrentDropPhoto.SimpleHorizontalLineId = CurrentDropPhoto.SimpleHorizontalLine.SimpleLineId;
+                            CurrentDropPhoto.SimpleHorizontalLineId =
+                                CurrentDropPhoto.SimpleHorizontalLine.SimpleLineId;
                         }
                         else
                         {
@@ -223,10 +209,13 @@ namespace DDrop.Controls.PixelDrawer
                             CurrentDropPhoto.SimpleHorizontalLine = horizontalLineForAdd;
                         }
 
-                        PixelsInMillimeterHorizontal = LineLengthHelper.GetPointsOnLine(point11, point22).Count.ToString();
+                        PixelsInMillimeterHorizontal =
+                            LineLengthHelper.GetPointsOnLine(point11, point22).Count.ToString();
                         CurrentDropPhoto.XDiameterInPixels = Convert.ToInt32(PixelsInMillimeterHorizontal);
                     }
-                    else if (Math.Abs(_selectedLine.X1 - _selectedLine.X2) < Math.Abs(_selectedLine.Y1 - _selectedLine.Y2) && !_drawingHorizontalLine || _drawingVerticalLine)
+                    else if (Math.Abs(_selectedLine.X1 - _selectedLine.X2) <
+                             Math.Abs(_selectedLine.Y1 - _selectedLine.Y2) && !_drawingHorizontalLine ||
+                             _drawingVerticalLine)
                     {
                         _selectedLine.Stroke = Brushes.Green;
 
@@ -234,10 +223,7 @@ namespace DDrop.Controls.PixelDrawer
 
                         if (CurrentDropPhoto.Contour != null)
                         {
-                            foreach (var line in CurrentDropPhoto.Contour.Lines)
-                            {
-                                CanDrawing.Children.Remove(line);
-                            }
+                            foreach (var line in CurrentDropPhoto.Contour.Lines) CanDrawing.Children.Remove(line);
 
                             CurrentDropPhoto.Contour.SimpleLines.Clear();
                             CurrentDropPhoto.Contour.Lines.Clear();
@@ -246,9 +232,7 @@ namespace DDrop.Controls.PixelDrawer
                         }
 
                         if (_verticalLines.Count > 0)
-                        {
                             CanDrawing.Children.Remove(_verticalLines[_verticalLines.Count - 1]);
-                        }
 
                         _verticalLines.Add(_selectedLine);
                         CurrentDropPhoto.VerticalLine = _selectedLine;
@@ -272,7 +256,8 @@ namespace DDrop.Controls.PixelDrawer
                             CurrentDropPhoto.SimpleVerticalLine = verticalLineForAdd;
                         }
 
-                        PixelsInMillimeterVertical = LineLengthHelper.GetPointsOnLine(point11, point22).Count.ToString();
+                        PixelsInMillimeterVertical =
+                            LineLengthHelper.GetPointsOnLine(point11, point22).Count.ToString();
                         CurrentDropPhoto.YDiameterInPixels = Convert.ToInt32(PixelsInMillimeterVertical);
                     }
                 }
@@ -295,15 +280,18 @@ namespace DDrop.Controls.PixelDrawer
                     {
                         simpleReferenceLineForAdd.SimpleLineId = Guid.NewGuid();
                         CurrentSeries.ReferencePhotoForSeries.SimpleLine = simpleReferenceLineForAdd;
-                        CurrentSeries.ReferencePhotoForSeries.SimpleReferencePhotoLineId = CurrentSeries.ReferencePhotoForSeries.SimpleLine.SimpleLineId;
+                        CurrentSeries.ReferencePhotoForSeries.SimpleReferencePhotoLineId =
+                            CurrentSeries.ReferencePhotoForSeries.SimpleLine.SimpleLineId;
                     }
                     else
                     {
-                        simpleReferenceLineForAdd.SimpleLineId = CurrentSeries.ReferencePhotoForSeries.SimpleLine.SimpleLineId;
-                        CurrentSeries.ReferencePhotoForSeries.SimpleLine = simpleReferenceLineForAdd;                        
+                        simpleReferenceLineForAdd.SimpleLineId =
+                            CurrentSeries.ReferencePhotoForSeries.SimpleLine.SimpleLineId;
+                        CurrentSeries.ReferencePhotoForSeries.SimpleLine = simpleReferenceLineForAdd;
                     }
 
-                    CurrentSeries.ReferencePhotoForSeries.PixelsInMillimeter = LineLengthHelper.GetPointsOnLine(point11, point22).Count;
+                    CurrentSeries.ReferencePhotoForSeries.PixelsInMillimeter =
+                        LineLengthHelper.GetPointsOnLine(point11, point22).Count;
                 }
             }
         }
@@ -314,18 +302,13 @@ namespace DDrop.Controls.PixelDrawer
 
         private void ReferenceImage_NewSegmentDrawingMouseLeave(object sender, MouseEventArgs e)
         {
-            if (e.RightButton == MouseButtonState.Pressed)
-            {
-                canDrawing_MouseUp_Drawing(sender, e);
-            }
+            if (e.RightButton == MouseButtonState.Pressed) canDrawing_MouseUp_Drawing(sender, e);
         }
 
         private void ReferenceImage_NewSegmentDrawingLostFocus(object sender, EventArgs e)
         {
             if (Mouse.RightButton == MouseButtonState.Pressed)
-            {
                 canDrawing_MouseUp_Drawing(sender, new MouseEventArgs(Mouse.PrimaryDevice, 0));
-            }
         }
 
         #endregion

@@ -17,7 +17,7 @@ namespace DDrop.Utility.Logger
 
         public async void Log(LogEntry logEntry)
         {
-            await _dDropRepository.SaveLogEntry(new DbLogEntry()
+            await _dDropRepository.SaveLogEntry(new DbLogEntry
             {
                 Id = Guid.NewGuid(),
                 Exception = logEntry.Exception,
@@ -34,7 +34,7 @@ namespace DDrop.Utility.Logger
 
         public async void LogInfo(LogEntry logEntry)
         {
-            await _dDropRepository.SaveLogEntry(new DbLogEntry()
+            await _dDropRepository.SaveLogEntry(new DbLogEntry
             {
                 Id = Guid.NewGuid(),
                 Exception = logEntry.Exception,
@@ -51,7 +51,7 @@ namespace DDrop.Utility.Logger
 
         public async void LogWarning(LogEntry logEntry)
         {
-            await _dDropRepository.SaveLogEntry(new DbLogEntry()
+            await _dDropRepository.SaveLogEntry(new DbLogEntry
             {
                 Id = Guid.NewGuid(),
                 Exception = logEntry.Exception,
@@ -68,7 +68,7 @@ namespace DDrop.Utility.Logger
 
         public async void LogError(LogEntry logEntry)
         {
-            await _dDropRepository.SaveLogEntry(new DbLogEntry()
+            await _dDropRepository.SaveLogEntry(new DbLogEntry
             {
                 Id = Guid.NewGuid(),
                 Exception = logEntry.Exception,

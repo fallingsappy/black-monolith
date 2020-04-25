@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 
@@ -7,33 +8,32 @@ namespace DDrop.BE.Models
 {
     public class Series : INotifyPropertyChanged
     {
-        private Guid _currentUserId;
-        public Guid CurrentUserId
-        {
-            get
-            {
-                return _currentUserId;
-            }
-            set
-            {
-                _currentUserId = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("CurrentUserId"));
-            }
-        }
+        private string _addedDate;
+
+        private bool _canDrawPlot;
 
         private User _currentUser;
-        public User CurrentUser
-        {
-            get
-            {
-                return _currentUser;
-            }
-            set
-            {
-                _currentUser = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("CurrentUser"));
-            }
-        }
+        private Guid _currentUserId;
+
+        private ObservableCollection<DropPhoto> _dropPhotosSeries;
+
+        private bool _enableDropPhotosOrderChange;
+
+        private bool _exactCalculationModel;
+
+        private double _intervalBetweenPhotos;
+
+        private bool _isChecked;
+
+        private bool _isCheckedForAdd;
+
+        private bool _loaded = true;
+
+        private ReferencePhoto _referencePhotoForSeries;
+
+        private string _title;
+
+        private bool _useCreationDateTime;
 
         public Series()
         {
@@ -41,25 +41,31 @@ namespace DDrop.BE.Models
             _dropPhotosSeries.CollectionChanged += _dropPhotosSeries_CollectionChanged;
         }
 
-        private void _dropPhotosSeries_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        public Guid CurrentUserId
         {
-            OnPropertyChanged(new PropertyChangedEventArgs(nameof(CanDrawPlot)));
-            foreach (var photo in _dropPhotosSeries)
+            get => _currentUserId;
+            set
             {
-                photo.PhotoOrderInSeries = _dropPhotosSeries.IndexOf(photo);
+                _currentUserId = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("CurrentUserId"));
             }
-            CurrentUser.OnPropertyChanged(new PropertyChangedEventArgs(nameof(User.IsAnySelectedSeriesCanDrawPlot)));
+        }
+
+        public User CurrentUser
+        {
+            get => _currentUser;
+            set
+            {
+                _currentUser = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("CurrentUser"));
+            }
         }
 
         public Guid SeriesId { get; set; }
 
-        private string _title;
         public string Title
         {
-            get
-            {
-                return _title;
-            }
+            get => _title;
             set
             {
                 _title = value;
@@ -67,13 +73,9 @@ namespace DDrop.BE.Models
             }
         }
 
-        private ObservableCollection<DropPhoto> _dropPhotosSeries;
         public ObservableCollection<DropPhoto> DropPhotosSeries
         {
-            get
-            {
-                return _dropPhotosSeries;
-            }
+            get => _dropPhotosSeries;
             set
             {
                 _dropPhotosSeries = value;
@@ -81,13 +83,9 @@ namespace DDrop.BE.Models
             }
         }
 
-        private ReferencePhoto _referencePhotoForSeries;
         public ReferencePhoto ReferencePhotoForSeries
         {
-            get
-            {
-                return _referencePhotoForSeries;
-            }
+            get => _referencePhotoForSeries;
             set
             {
                 _referencePhotoForSeries = value;
@@ -95,13 +93,9 @@ namespace DDrop.BE.Models
             }
         }
 
-        private bool _exactCalculationModel;
         public bool ExactCalculationModel
         {
-            get
-            {
-                return _exactCalculationModel;
-            }
+            get => _exactCalculationModel;
             set
             {
                 _exactCalculationModel = value;
@@ -109,13 +103,9 @@ namespace DDrop.BE.Models
             }
         }
 
-        private double _intervalBetweenPhotos;
         public double IntervalBetweenPhotos
         {
-            get
-            {
-                return _intervalBetweenPhotos;
-            }
+            get => _intervalBetweenPhotos;
             set
             {
                 _intervalBetweenPhotos = value;
@@ -123,13 +113,9 @@ namespace DDrop.BE.Models
             }
         }
 
-        private bool _isChecked;
         public bool IsChecked
         {
-            get
-            {
-                return _isChecked;
-            }
+            get => _isChecked;
             set
             {
                 _isChecked = value;
@@ -137,13 +123,9 @@ namespace DDrop.BE.Models
             }
         }
 
-        private bool _isCheckedForAdd;
         public bool IsCheckedForAdd
         {
-            get
-            {
-                return _isCheckedForAdd;
-            }
+            get => _isCheckedForAdd;
             set
             {
                 _isCheckedForAdd = value;
@@ -151,18 +133,20 @@ namespace DDrop.BE.Models
             }
         }
 
-        private bool _canDrawPlot;
         public bool CanDrawPlot
         {
             get
             {
                 if (_dropPhotosSeries?.Where(x => x.Drop?.RadiusInMeters != null).ToList().Count > 1 &&
                     _dropPhotosSeries?.Where(x => x.Drop?.RadiusInMeters == null).ToList().Count == 0 &&
-                    _dropPhotosSeries.All(x => x.Drop?.RadiusInMeters != 0) && (IntervalBetweenPhotos != 0 || 
-                    _dropPhotosSeries?.Where(x => x.CreationDateTime == null).ToList().Count == 0 && UseCreationDateTime) && _loaded)
-                {
+                    _dropPhotosSeries.All(x => x.Drop?.RadiusInMeters != 0) && (IntervalBetweenPhotos != 0 ||
+                                                                                _dropPhotosSeries?.Where(x =>
+                                                                                        x.CreationDateTime == null)
+                                                                                    .ToList()
+                                                                                    .Count == 0 &&
+                                                                                UseCreationDateTime) &&
+                    _loaded)
                     return true;
-                }
 
                 return false;
             }
@@ -173,14 +157,9 @@ namespace DDrop.BE.Models
             }
         }
 
-        private bool _loaded = true;
-
         public bool Loaded
         {
-            get
-            {
-                return _loaded;
-            }
+            get => _loaded;
             set
             {
                 _loaded = value;
@@ -188,13 +167,9 @@ namespace DDrop.BE.Models
             }
         }
 
-        private string _addedDate;
         public string AddedDate
         {
-            get
-            {
-                return _addedDate;
-            }
+            get => _addedDate;
             set
             {
                 _addedDate = value;
@@ -202,13 +177,9 @@ namespace DDrop.BE.Models
             }
         }
 
-        private bool _useCreationDateTime;
         public bool UseCreationDateTime
         {
-            get
-            {
-                return _useCreationDateTime;
-            }
+            get => _useCreationDateTime;
             set
             {
                 _useCreationDateTime = value;
@@ -216,14 +187,9 @@ namespace DDrop.BE.Models
             }
         }
 
-        private bool _enableDropPhotosOrderChange;
-
         public bool EnableDropPhotosOrderChange
         {
-            get
-            {
-                return _enableDropPhotosOrderChange;
-            }
+            get => _enableDropPhotosOrderChange;
             set
             {
                 _enableDropPhotosOrderChange = value;
@@ -232,6 +198,14 @@ namespace DDrop.BE.Models
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        private void _dropPhotosSeries_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            OnPropertyChanged(new PropertyChangedEventArgs(nameof(CanDrawPlot)));
+            foreach (var photo in _dropPhotosSeries) photo.PhotoOrderInSeries = _dropPhotosSeries.IndexOf(photo);
+            CurrentUser.OnPropertyChanged(new PropertyChangedEventArgs(nameof(User.IsAnySelectedSeriesCanDrawPlot)));
+        }
+
         public void OnPropertyChanged(PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(Loaded))
@@ -244,7 +218,9 @@ namespace DDrop.BE.Models
                 OnPropertyChanged(new PropertyChangedEventArgs(nameof(CanDrawPlot)));
 
             if (e.PropertyName == nameof(IsChecked))
-                CurrentUser.OnPropertyChanged(new PropertyChangedEventArgs(nameof(User.IsAnySelectedSeriesCanDrawPlot))); ;
+                CurrentUser.OnPropertyChanged(
+                    new PropertyChangedEventArgs(nameof(User.IsAnySelectedSeriesCanDrawPlot)));
+            ;
 
             PropertyChanged?.Invoke(this, e);
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
@@ -11,7 +12,7 @@ namespace DDrop.Utility.Animation
         public static GridLengthAnimation animation;
 
         /// <summary>
-        /// Animate expand/collapse of a grid column. 
+        ///     Animate expand/collapse of a grid column.
         /// </summary>
         /// <param name="gridColumn">The grid column to expand/collapse.</param>
         /// <param name="expandedWidth">The expanded width.</param>
@@ -20,7 +21,8 @@ namespace DDrop.Utility.Animation
         /// <param name="minWidth">The minimum width of the column.</param>
         /// <param name="seconds">The seconds component of the duration.</param>
         /// <param name="expand">If true, expand, otherwise collapse.</param>
-        public static async System.Threading.Tasks.Task AnimateGridColumnExpandCollapseAsync(ColumnDefinition gridColumn, bool expand, double expandedWidth, double collapsedWidth,
+        public static async Task AnimateGridColumnExpandCollapseAsync(ColumnDefinition gridColumn, bool expand,
+            double expandedWidth, double collapsedWidth,
             double minWidth, int seconds, int milliseconds)
         {
             if (expand && gridColumn.ActualWidth >= expandedWidth)
@@ -31,7 +33,7 @@ namespace DDrop.Utility.Animation
                 // It's already collapsed.
                 return;
 
-            Storyboard storyBoard = new Storyboard();
+            var storyBoard = new Storyboard();
 
             animation = new GridLengthAnimation();
             animation.From = new GridLength(gridColumn.ActualWidth);
@@ -62,7 +64,7 @@ namespace DDrop.Utility.Animation
         }
 
         /// <summary>
-        /// Animate expand/collapse of a grid row. 
+        ///     Animate expand/collapse of a grid row.
         /// </summary>
         /// <param name="gridRow">The grid row to expand/collapse.</param>
         /// <param name="expandedHeight">The expanded height.</param>
@@ -71,7 +73,8 @@ namespace DDrop.Utility.Animation
         /// <param name="milliseconds">The milliseconds component of the duration.</param>
         /// <param name="seconds">The seconds component of the duration.</param>
         /// <param name="expand">If true, expand, otherwise collapse.</param>
-        public static async System.Threading.Tasks.Task AnimateGridRowExpandCollapse(RowDefinition gridRow, bool expand, double expandedHeight, double collapsedHeight, double minHeight, int seconds, int milliseconds)
+        public static async Task AnimateGridRowExpandCollapse(RowDefinition gridRow, bool expand, double expandedHeight,
+            double collapsedHeight, double minHeight, int seconds, int milliseconds)
         {
             if (expand && gridRow.ActualHeight >= expandedHeight)
                 // It's as high as it needs to be.
@@ -81,9 +84,9 @@ namespace DDrop.Utility.Animation
                 // It's already collapsed.
                 return;
 
-            Storyboard storyBoard = new Storyboard();
+            var storyBoard = new Storyboard();
 
-            GridLengthAnimation animation = new GridLengthAnimation();
+            var animation = new GridLengthAnimation();
             animation.From = new GridLength(gridRow.ActualHeight);
             animation.To = new GridLength(expand ? expandedHeight : collapsedHeight);
             animation.Duration = new TimeSpan(0, 0, 0, seconds, milliseconds);

@@ -4,11 +4,9 @@ namespace DDrop.BE.Models
 {
     public class SeriesToExcel
     {
-        [DisplayName("Время, с")]
-        public double Time { get; set; }
+        [DisplayName("Время, с")] public double Time { get; set; }
 
-        [DisplayName("Имя файла")]
-        public string Name { get; set; }
+        [DisplayName("Имя файла")] public string Name { get; set; }
 
         [DisplayName("Горизонтальный диаметр, px")]
         public int XDiameterInPixels { get; set; }
@@ -22,8 +20,7 @@ namespace DDrop.BE.Models
         [DisplayName("Горизонтальный диаметр, м")]
         public double YDiameterInMeters { get; set; }
 
-        [DisplayName("Радиус, м")]
-        public double RadiusInMeters { get; set; }
+        [DisplayName("Радиус, м")] public double RadiusInMeters { get; set; }
 
         [DisplayName("Объем, кубические метры")]
         public double VolumeInCubicalMeters { get; set; }

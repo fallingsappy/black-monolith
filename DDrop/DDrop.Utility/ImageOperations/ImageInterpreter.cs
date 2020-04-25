@@ -10,18 +10,19 @@ namespace DDrop.Utility.ImageOperations
         {
             byte[] fileData = null;
 
-            using (FileStream fs = File.OpenRead(fileName))
+            using (var fs = File.OpenRead(fileName))
             {
                 var binaryReader = new BinaryReader(fs);
-                fileData = binaryReader.ReadBytes((int)fs.Length);
+                fileData = binaryReader.ReadBytes((int) fs.Length);
             }
+
             return fileData;
         }
 
         public static byte[] ImageToByteArray(Bitmap imageIn)
         {
-            ImageConverter converter = new ImageConverter();
-            return (byte[])converter.ConvertTo(imageIn, typeof(byte[]));
+            var converter = new ImageConverter();
+            return (byte[]) converter.ConvertTo(imageIn, typeof(byte[]));
         }
 
         public static BitmapImage LoadImage(byte[] imageData)
@@ -47,5 +48,3 @@ namespace DDrop.Utility.ImageOperations
         }
     }
 }
-
-

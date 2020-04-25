@@ -7,8 +7,8 @@ namespace DDrop.Db.DbEntities
     [Table("Drops")]
     public class DbDrop
     {
-        [Key]
-        public Guid DropId { get; set; }
+        [Key] public Guid DropId { get; set; }
+
         public double XDiameterInMeters { get; set; }
         public double YDiameterInMeters { get; set; }
         public double ZDiameterInMeters { get; set; }

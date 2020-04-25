@@ -6,13 +6,49 @@ namespace DDrop.BE.Models
 {
     public class DropPhoto : INotifyPropertyChanged
     {
+        private string _addedDate;
+
+        private byte[] _content;
+
+        private Contour _contour;
+
+        private string _creationDateTime;
+
+        private Series _currentSeries;
         private Guid _currentSeriesId;
+
+        private Drop _drop;
+
+        private Line _horizontalLine;
+
+        private bool _isChecked;
+
+        private string _name;
+        private string _path;
+
+        private int _photoOrderInSeries;
+
+        private bool _processed;
+
+        private bool _requireSaving;
+        private SimpleLine _simpleHorizontalLine;
+
+        private Guid? _simpleHorizontalLineId;
+        private SimpleLine _simpleVerticalLine;
+
+        private Guid? _simpleVerticalLineId;
+
+        private Line _verticalLine;
+
+        private int _xDiameterInPixels;
+
+        private int _yDiameterInPixels;
+
+        private int _zDiameterInPixels;
+
         public Guid CurrentSeriesId
         {
-            get
-            {
-                return _currentSeriesId;
-            }
+            get => _currentSeriesId;
             set
             {
                 _currentSeriesId = value;
@@ -20,13 +56,9 @@ namespace DDrop.BE.Models
             }
         }
 
-        private Series _currentSeries;
         public Series CurrentSeries
         {
-            get
-            {
-                return _currentSeries;
-            }
+            get => _currentSeries;
             set
             {
                 _currentSeries = value;
@@ -35,13 +67,10 @@ namespace DDrop.BE.Models
         }
 
         public Guid DropPhotoId { get; set; }
-        private string _path;
+
         public string Path
         {
-            get
-            {
-                return _path;
-            }
+            get => _path;
             set
             {
                 _path = value;
@@ -49,13 +78,9 @@ namespace DDrop.BE.Models
             }
         }
 
-        private string _name;
         public string Name
         {
-            get
-            {
-                return _name;
-            }
+            get => _name;
             set
             {
                 _name = value;
@@ -63,13 +88,9 @@ namespace DDrop.BE.Models
             }
         }
 
-        private int _xDiameterInPixels;
         public int XDiameterInPixels
         {
-            get
-            {
-                return _xDiameterInPixels;
-            }
+            get => _xDiameterInPixels;
             set
             {
                 _xDiameterInPixels = value;
@@ -77,13 +98,9 @@ namespace DDrop.BE.Models
             }
         }
 
-        private int _yDiameterInPixels;
         public int YDiameterInPixels
         {
-            get
-            {
-                return _yDiameterInPixels;
-            }
+            get => _yDiameterInPixels;
             set
             {
                 _yDiameterInPixels = value;
@@ -91,13 +108,9 @@ namespace DDrop.BE.Models
             }
         }
 
-        private int _zDiameterInPixels;
         public int ZDiameterInPixels
         {
-            get
-            {
-                return _zDiameterInPixels;
-            }
+            get => _zDiameterInPixels;
             set
             {
                 _zDiameterInPixels = value;
@@ -105,26 +118,19 @@ namespace DDrop.BE.Models
             }
         }
 
-        private Guid? _simpleHorizontalLineId;
         public Guid? SimpleHorizontalLineId
         {
-            get
-            {
-                return _simpleHorizontalLineId;
-            }
+            get => _simpleHorizontalLineId;
             set
             {
                 _simpleHorizontalLineId = value;
                 OnPropertyChanged(new PropertyChangedEventArgs("SimpleHorizontalLineId"));
             }
         }
-        private SimpleLine _simpleHorizontalLine;
+
         public SimpleLine SimpleHorizontalLine
         {
-            get
-            {
-                return _simpleHorizontalLine;
-            }
+            get => _simpleHorizontalLine;
             set
             {
                 _simpleHorizontalLine = value;
@@ -132,13 +138,9 @@ namespace DDrop.BE.Models
             }
         }
 
-        private Line _horizontalLine;
         public Line HorizontalLine
         {
-            get
-            {
-                return _horizontalLine;
-            }
+            get => _horizontalLine;
             set
             {
                 _horizontalLine = value;
@@ -146,26 +148,19 @@ namespace DDrop.BE.Models
             }
         }
 
-        private Guid? _simpleVerticalLineId;
         public Guid? SimpleVerticalLineId
         {
-            get
-            {
-                return _simpleVerticalLineId;
-            }
+            get => _simpleVerticalLineId;
             set
             {
                 _simpleVerticalLineId = value;
                 OnPropertyChanged(new PropertyChangedEventArgs("SimpleVerticalLineId"));
             }
         }
-        private SimpleLine _simpleVerticalLine;
+
         public SimpleLine SimpleVerticalLine
         {
-            get
-            {
-                return _simpleVerticalLine;
-            }
+            get => _simpleVerticalLine;
             set
             {
                 _simpleVerticalLine = value;
@@ -173,13 +168,9 @@ namespace DDrop.BE.Models
             }
         }
 
-        private Line _verticalLine;
         public Line VerticalLine
         {
-            get
-            {
-                return _verticalLine;
-            }
+            get => _verticalLine;
             set
             {
                 _verticalLine = value;
@@ -187,13 +178,9 @@ namespace DDrop.BE.Models
             }
         }
 
-        private byte[] _content;
         public byte[] Content
         {
-            get
-            {
-                return _content;
-            }
+            get => _content;
             set
             {
                 _content = value;
@@ -201,13 +188,9 @@ namespace DDrop.BE.Models
             }
         }
 
-        private Drop _drop;
         public Drop Drop
         {
-            get
-            {
-                return _drop;
-            }
+            get => _drop;
             set
             {
                 _drop = value;
@@ -215,13 +198,9 @@ namespace DDrop.BE.Models
             }
         }
 
-        private string _addedDate;
         public string AddedDate
         {
-            get
-            {
-                return _addedDate;
-            }
+            get => _addedDate;
             set
             {
                 _addedDate = value;
@@ -229,13 +208,9 @@ namespace DDrop.BE.Models
             }
         }
 
-        private bool _isChecked;
         public bool IsChecked
         {
-            get
-            {
-                return _isChecked;
-            }
+            get => _isChecked;
             set
             {
                 _isChecked = value;
@@ -243,7 +218,6 @@ namespace DDrop.BE.Models
             }
         }
 
-        private bool _processed;
         public bool Processed
         {
             get
@@ -260,13 +234,9 @@ namespace DDrop.BE.Models
             }
         }
 
-        private string _creationDateTime;
         public string CreationDateTime
         {
-            get
-            {
-                return _creationDateTime;
-            }
+            get => _creationDateTime;
             set
             {
                 _creationDateTime = value;
@@ -274,13 +244,9 @@ namespace DDrop.BE.Models
             }
         }
 
-        private bool _requireSaving;
         public bool RequireSaving
         {
-            get
-            {
-                return _requireSaving;
-            }
+            get => _requireSaving;
             set
             {
                 _requireSaving = value;
@@ -288,13 +254,9 @@ namespace DDrop.BE.Models
             }
         }
 
-        private int _photoOrderInSeries;
         public int PhotoOrderInSeries
         {
-            get
-            {
-                return _photoOrderInSeries;
-            }
+            get => _photoOrderInSeries;
             set
             {
                 _photoOrderInSeries = value;
@@ -302,13 +264,9 @@ namespace DDrop.BE.Models
             }
         }
 
-        private Contour _contour;
         public Contour Contour
         {
-            get
-            {
-                return _contour;
-            }
+            get => _contour;
             set
             {
                 _contour = value;
@@ -317,6 +275,7 @@ namespace DDrop.BE.Models
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
         public void OnPropertyChanged(PropertyChangedEventArgs e)
         {
             PropertyChanged?.Invoke(this, e);

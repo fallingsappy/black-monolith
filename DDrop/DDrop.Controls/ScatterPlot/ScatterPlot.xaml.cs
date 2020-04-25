@@ -11,39 +11,58 @@ using LiveCharts.Wpf;
 namespace DDrop.Controls.ScatterPlot
 {
     /// <summary>
-    /// Логика взаимодействия для UserControl1.xaml
+    ///     Логика взаимодействия для UserControl1.xaml
     /// </summary>
     public partial class ScatterPlot : INotifyPropertyChanged
     {
         public static readonly DependencyProperty UserProperty =
-        DependencyProperty.Register("User", typeof(User), typeof(ScatterPlot));
+            DependencyProperty.Register("User", typeof(User), typeof(ScatterPlot));
 
         public static readonly DependencyProperty ParticularSeriesIndexProperty =
-        DependencyProperty.Register("ParticularSeriesIndex", typeof(int?), typeof(ScatterPlot));
+            DependencyProperty.Register("ParticularSeriesIndex", typeof(int?), typeof(ScatterPlot));
 
-        public int? ParticularSeriesIndex
-        {
-            get { return (int?)GetValue(ParticularSeriesIndexProperty); }
-            set { SetValue(ParticularSeriesIndexProperty, value); OnPropertyChanged(new PropertyChangedEventArgs("ParticularSeriesIndex")); }
-        }
-
-        public User User
-        {
-            get { return (User)GetValue(UserProperty); }
-            set { SetValue(UserProperty, value); OnPropertyChanged(new PropertyChangedEventArgs("User")); }
-        }
+        private SeriesCollection _series;
 
         public ScatterPlot()
         {
             InitializeComponent();
 
-            if (DesignerProperties.GetIsInDesignMode(this))
-            {
-                return;
-            }
+            if (DesignerProperties.GetIsInDesignMode(this)) return;
 
             Loaded += ScatterPlot_Loaded;
         }
+
+        public int? ParticularSeriesIndex
+        {
+            get => (int?) GetValue(ParticularSeriesIndexProperty);
+            set
+            {
+                SetValue(ParticularSeriesIndexProperty, value);
+                OnPropertyChanged(new PropertyChangedEventArgs("ParticularSeriesIndex"));
+            }
+        }
+
+        public User User
+        {
+            get => (User) GetValue(UserProperty);
+            set
+            {
+                SetValue(UserProperty, value);
+                OnPropertyChanged(new PropertyChangedEventArgs("User"));
+            }
+        }
+
+        public SeriesCollection SeriesCollection
+        {
+            get => _series;
+            set
+            {
+                _series = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("SeriesCollection"));
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         private void ScatterPlot_Loaded(object sender, RoutedEventArgs e)
         {
@@ -52,13 +71,9 @@ namespace DDrop.Controls.ScatterPlot
             if (User?.UserSeries != null)
             {
                 if (ParticularSeriesIndex != null)
-                {
                     SingleSeriesPlot();
-                }
                 else
-                {
                     MultiSeriesPlot();
-                }
             }
 
             DataContext = this;
@@ -66,7 +81,7 @@ namespace DDrop.Controls.ScatterPlot
 
         private void MultiSeriesPlot()
         {
-            for (int i = 0; i < User.UserSeries.Count; i++)
+            for (var i = 0; i < User.UserSeries.Count; i++)
             {
                 var temp = new ChartValues<ObservablePoint>();
                 if (User.UserSeries[i].CanDrawPlot && User.UserSeries[i].IsChecked)
@@ -84,18 +99,22 @@ namespace DDrop.Controls.ScatterPlot
                     else
                     {
                         var ci = new CultureInfo("en-US");
-                        var formats = new[] { "M-d-yyyy", "dd-MM-yyyy", "MM-dd-yyyy", "M.d.yyyy", "dd.MM.yyyy", "MM.dd.yyyy" }
-                                .Union(ci.DateTimeFormat.GetAllDateTimePatterns()).ToArray();
+                        var formats = new[]
+                                {"M-d-yyyy", "dd-MM-yyyy", "MM-dd-yyyy", "M.d.yyyy", "dd.MM.yyyy", "MM.dd.yyyy"}
+                            .Union(ci.DateTimeFormat.GetAllDateTimePatterns()).ToArray();
 
                         var orderedDropPhotos = User.UserSeries[i].DropPhotosSeries
                             .OrderBy(x => DateTime.Parse(x.CreationDateTime, CultureInfo.InvariantCulture)).ToList();
 
-                        for (int j = 0; j < orderedDropPhotos.Count; j++)
+                        for (var j = 0; j < orderedDropPhotos.Count; j++)
                         {
                             var dropRadiusInMeters = orderedDropPhotos[j].Drop.RadiusInMeters;
                             if (dropRadiusInMeters != null)
                                 temp.Add(new ObservablePoint(
-                                    (DateTime.Parse(orderedDropPhotos[j].CreationDateTime, CultureInfo.InvariantCulture) - DateTime.Parse(orderedDropPhotos[0].CreationDateTime, CultureInfo.InvariantCulture)).TotalSeconds,
+                                    (DateTime.Parse(orderedDropPhotos[j].CreationDateTime,
+                                         CultureInfo.InvariantCulture) -
+                                     DateTime.Parse(orderedDropPhotos[0].CreationDateTime,
+                                         CultureInfo.InvariantCulture)).TotalSeconds,
                                     dropRadiusInMeters
                                         .Value));
                         }
@@ -105,7 +124,7 @@ namespace DDrop.Controls.ScatterPlot
                     {
                         Title = User.UserSeries[i].Title,
                         Values = temp,
-                        LineSmoothness = 0,
+                        LineSmoothness = 0
                     });
                 }
             }
@@ -118,7 +137,7 @@ namespace DDrop.Controls.ScatterPlot
                 var temp = new ChartValues<ObservablePoint>();
                 if (!User.UserSeries[ParticularSeriesIndex.Value].UseCreationDateTime)
                 {
-                    for (int j = 0; j < User.UserSeries[ParticularSeriesIndex.Value].DropPhotosSeries.Count; j++)
+                    for (var j = 0; j < User.UserSeries[ParticularSeriesIndex.Value].DropPhotosSeries.Count; j++)
                     {
                         var dropRadiusInMeters = User.UserSeries[ParticularSeriesIndex.Value].DropPhotosSeries[j].Drop
                             .RadiusInMeters;
@@ -134,12 +153,14 @@ namespace DDrop.Controls.ScatterPlot
                     var orderedDropPhotos = User.UserSeries[ParticularSeriesIndex.Value].DropPhotosSeries
                         .OrderBy(x => DateTime.Parse(x.CreationDateTime, CultureInfo.InvariantCulture)).ToList();
 
-                    for (int j = 0; j < orderedDropPhotos.Count; j++)
+                    for (var j = 0; j < orderedDropPhotos.Count; j++)
                     {
                         var dropRadiusInMeters = orderedDropPhotos[j].Drop.RadiusInMeters;
                         if (dropRadiusInMeters != null)
                             temp.Add(new ObservablePoint(
-                                (DateTime.Parse(orderedDropPhotos[j].CreationDateTime, CultureInfo.InvariantCulture) - DateTime.Parse(orderedDropPhotos[0].CreationDateTime, CultureInfo.InvariantCulture)).TotalSeconds,
+                                (DateTime.Parse(orderedDropPhotos[j].CreationDateTime, CultureInfo.InvariantCulture) -
+                                 DateTime.Parse(orderedDropPhotos[0].CreationDateTime, CultureInfo.InvariantCulture))
+                                .TotalSeconds,
                                 dropRadiusInMeters
                                     .Value));
                     }
@@ -149,26 +170,10 @@ namespace DDrop.Controls.ScatterPlot
                 {
                     Title = User.UserSeries[ParticularSeriesIndex.Value].Title,
                     Values = temp,
-                    LineSmoothness = 0,
+                    LineSmoothness = 0
                 });
             }
         }
-
-        private SeriesCollection _series;
-        public SeriesCollection SeriesCollection
-        {
-            get
-            {
-                return _series;
-            }
-            set
-            {
-                _series = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("SeriesCollection"));
-            }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         public void OnPropertyChanged(PropertyChangedEventArgs e)
         {

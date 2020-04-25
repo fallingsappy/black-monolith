@@ -5,14 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DDrop"
         mc:Ignorable="d"
-        Title="Информация" MinHeight="450" MinWidth="800" Icon="Resources/Icons/MainIcon.png" WindowStartupLocation="CenterScreen" WindowState="Maximized" Width="791">
+        Title="Информация" MinHeight="450" MinWidth="800" Icon="Resources/Icons/MainIcon.png"
+        WindowStartupLocation="CenterScreen" WindowState="Maximized" Width="791">
     <Grid>
         <TabControl Margin="10">
             <TabItem Header="О программе">
                 <Grid Background="#FFE5E5E5">
-                    <RichTextBox x:Name="AboutRTB" IsReadOnly="True" Margin="10">
-                    </RichTextBox>
-                    <Image Source="Resources/Icons/MainIcon_vectorized.png" Margin="282,190,283,40"/>
+                    <RichTextBox x:Name="AboutRTB" IsReadOnly="True" Margin="10" />
+                    <Image Source="Resources/Icons/MainIcon_vectorized.png" Margin="282,190,283,40" />
                 </Grid>
             </TabItem>
             <TabItem Header="Справка">
@@ -21,40 +21,40 @@
                         <TabItem Header="Меню">
                             <TabControl>
                                 <TabItem Header="Меню">
-                                    <RichTextBox x:Name="MenuRTB" IsReadOnly="True"/>
+                                    <RichTextBox x:Name="MenuRTB" IsReadOnly="True" />
                                 </TabItem>
-                                <TabItem Header="Расчет" >
-                                    <RichTextBox x:Name="CalculationRTB" IsReadOnly="True"/>
+                                <TabItem Header="Расчет">
+                                    <RichTextBox x:Name="CalculationRTB" IsReadOnly="True" />
                                 </TabItem>
-                                <TabItem Header="Учетная запись" >
-                                    <RichTextBox x:Name="AccountRTB" IsReadOnly="True"/>
+                                <TabItem Header="Учетная запись">
+                                    <RichTextBox x:Name="AccountRTB" IsReadOnly="True" />
                                 </TabItem>
                             </TabControl>
                         </TabItem>
                         <TabItem Header="Менеджер серий">
-                            <RichTextBox x:Name="SeriesManagerRTB" IsReadOnly="True"/>
+                            <RichTextBox x:Name="SeriesManagerRTB" IsReadOnly="True" />
                         </TabItem>
                         <TabItem Header="Серия">
                             <TabControl>
                                 <TabItem Header="Общая информация">
-                                    <RichTextBox x:Name="CommonSeriesInformationRTB" IsReadOnly="True"/>
+                                    <RichTextBox x:Name="CommonSeriesInformationRTB" IsReadOnly="True" />
                                 </TabItem>
                                 <TabItem Header="Фотографии">
-                                    <RichTextBox x:Name="PhotosRTB" IsReadOnly="True"/>
+                                    <RichTextBox x:Name="PhotosRTB" IsReadOnly="True" />
                                 </TabItem>
                                 <TabItem Header="Референс">
-                                    <RichTextBox x:Name="ReferenceRTB" IsReadOnly="True"/>
+                                    <RichTextBox x:Name="ReferenceRTB" IsReadOnly="True" />
                                 </TabItem>
                                 <TabItem Header="График">
-                                    <RichTextBox x:Name="SeriesPlotRTB" IsReadOnly="True"/>
+                                    <RichTextBox x:Name="SeriesPlotRTB" IsReadOnly="True" />
                                 </TabItem>
                             </TabControl>
                         </TabItem>
                         <TabItem Header="Общий график серий">
-                            <RichTextBox x:Name="CommonSeriesPlotRTB" IsReadOnly="True"/>
+                            <RichTextBox x:Name="CommonSeriesPlotRTB" IsReadOnly="True" />
                         </TabItem>
                         <TabItem Header="Расчетная модель">
-                            <RichTextBox Name="CalculationModelRTB" IsReadOnly="True"/>
+                            <RichTextBox Name="CalculationModelRTB" IsReadOnly="True" />
                         </TabItem>
                     </TabControl>
                 </Grid>
@@ -63,10 +63,10 @@
                 <Grid Background="#FFE5E5E5">
                     <TabControl>
                         <TabItem Header="Разработчики">
-                            <RichTextBox x:Name="DevelopmentRTB" IsReadOnly="True"/>
+                            <RichTextBox x:Name="DevelopmentRTB" IsReadOnly="True" />
                         </TabItem>
                         <TabItem Header="Тестировщики">
-                            <RichTextBox x:Name="TestingRTB" IsReadOnly="True"/>
+                            <RichTextBox x:Name="TestingRTB" IsReadOnly="True" />
                         </TabItem>
                     </TabControl>
                 </Grid>

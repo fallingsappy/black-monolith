@@ -1,15 +1,14 @@
-﻿namespace DDrop.Db.Migrations
+﻿using System.Data.Entity.Migrations;
+
+namespace DDrop.Db.Migrations
 {
-    using System;
-    using System.Data.Entity.Migrations;
-    
     public partial class PhotoOrder : DbMigration
     {
         public override void Up()
         {
-            AddColumn("dbo.DropPhotos", "PhotoOrderInSeries", c => c.Int(nullable: false));
+            AddColumn("dbo.DropPhotos", "PhotoOrderInSeries", c => c.Int(false));
         }
-        
+
         public override void Down()
         {
             DropColumn("dbo.DropPhotos", "PhotoOrderInSeries");

@@ -1,51 +1,78 @@
-﻿using DDrop.BE.Models;
-using DDrop.BL.Series;
-using DDrop.Utility.ExcelOperations;
-using DDrop.Utility.ImageOperations;
-using Microsoft.Win32;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using DDrop.BE.Enums.Logger;
+using DDrop.BE.Enums.Options;
+using DDrop.BE.Models;
+using DDrop.BL.AppStateBL;
+using DDrop.BL.Calculation;
+using DDrop.BL.DropPhoto;
+using DDrop.BL.GeometryBL;
+using DDrop.BL.ImageProcessing.CSharp;
+using DDrop.BL.ImageProcessing.Python;
+using DDrop.BL.Series;
+using DDrop.DAL;
+using DDrop.Properties;
+using DDrop.Utility.Animation;
+using DDrop.Utility.DataGrid;
+using DDrop.Utility.ExcelOperations;
+using DDrop.Utility.ImageOperations;
+using DDrop.Utility.Logger;
+using DDrop.Utility.Mappers;
+using DDrop.Utility.SeriesLocalStorageOperations;
+using Microsoft.Win32;
+using Newtonsoft.Json;
+using Ookii.Dialogs.Wpf;
 using ToastNotifications;
 using ToastNotifications.Lifetime;
 using ToastNotifications.Messages;
 using ToastNotifications.Position;
+using Brushes = System.Windows.Media.Brushes;
 using pbu = RFM.RFM_WPFProgressBarUpdate;
-using DDrop.BL.DropPhoto;
-using DDrop.DAL;
-using DDrop.Utility.Mappers;
-using System.Threading.Tasks;
-using Ookii.Dialogs.Wpf;
-using System.Threading;
-using System.Windows.Input;
-using DDrop.BE.Enums.Logger;
-using DDrop.BE.Enums.Options;
-using DDrop.BL.AppStateBL;
-using DDrop.BL.Calculation;
-using DDrop.BL.GeometryBL;
-using DDrop.BL.ImageProcessing.CSharp;
-using DDrop.BL.ImageProcessing.Python;
-using DDrop.Utility.Animation;
-using DDrop.Utility.DataGrid;
-using DDrop.Utility.Logger;
-using DDrop.Utility.SeriesLocalStorageOperations;
-using Newtonsoft.Json;
+using Point = System.Drawing.Point;
 
 namespace DDrop
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    ///     Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : INotifyPropertyChanged
     {
+        public MainWindow(ISeriesBL seriesBL, IDropPhotoBL dropPhotoBL, IDDropRepository dDropRepository,
+            IDropletImageProcessor dropletImageProcessor, IPythonProvider pythonProvider, ILogger logger,
+            IGeometryBL geometryBL, IAppStateBL appStateBL, ICalculationBL calculationBL)
+        {
+            InitializeComponent();
+            InitializePaths();
+
+            _seriesBL = seriesBL;
+            _dropPhotoBL = dropPhotoBL;
+            _dDropRepository = dDropRepository;
+            _dropletImageProcessor = dropletImageProcessor;
+            _pythonProvider = pythonProvider;
+            _logger = logger;
+            _geometryBL = geometryBL;
+            _appStateBL = appStateBL;
+            _calculationBL = calculationBL;
+
+            AppMainWindow.Show();
+
+            SeriesManagerIsLoading();
+            ProgressBar.IsIndeterminate = true;
+
+            Login();
+        }
+
         #region Variable Declaration
 
         private bool _allSelectedSeriesChanging;
@@ -67,8 +94,9 @@ namespace DDrop
         private readonly IAppStateBL _appStateBL;
         private readonly ICalculationBL _calculationBL;
 
-        private ObservableCollection<AutoCalculationTemplate> _autoCalculationDefaultTemplates =
+        private readonly ObservableCollection<AutoCalculationTemplate> _autoCalculationDefaultTemplates =
             new ObservableCollection<AutoCalculationTemplate>();
+
         private ObservableCollection<AutoCalculationTemplate> _userAutoCalculationTemplates =
             new ObservableCollection<AutoCalculationTemplate>();
 
@@ -83,20 +111,24 @@ namespace DDrop
         private DropPhoto _copiedDropPhoto;
 
         public static readonly DependencyProperty СurrentPythonAutoCalculationTemplateProperty =
-            DependencyProperty.Register("СurrentPythonAutoCalculationTemplate", typeof(AutoCalculationTemplate), typeof(MainWindow));
+            DependencyProperty.Register("СurrentPythonAutoCalculationTemplate", typeof(AutoCalculationTemplate),
+                typeof(MainWindow));
 
         public static readonly DependencyProperty СurrentCSharpAutoCalculationTemplateProperty =
-            DependencyProperty.Register("СurrentCSharpAutoCalculationTemplate", typeof(AutoCalculationTemplate), typeof(MainWindow));
+            DependencyProperty.Register("СurrentCSharpAutoCalculationTemplate", typeof(AutoCalculationTemplate),
+                typeof(MainWindow));
 
         public static readonly DependencyProperty PythonAutoCalculationTemplateProperty =
-            DependencyProperty.Register("PythonAutoCalculationTemplate", typeof(ObservableCollection<AutoCalculationTemplate>), typeof(MainWindow));
-        
+            DependencyProperty.Register("PythonAutoCalculationTemplate",
+                typeof(ObservableCollection<AutoCalculationTemplate>), typeof(MainWindow));
+
         public static readonly DependencyProperty CSharpAutoCalculationTemplateProperty =
-            DependencyProperty.Register("CSharpAutoCalculationTemplate", typeof(ObservableCollection<AutoCalculationTemplate>), typeof(MainWindow));
-        
+            DependencyProperty.Register("CSharpAutoCalculationTemplate",
+                typeof(ObservableCollection<AutoCalculationTemplate>), typeof(MainWindow));
+
         public static readonly DependencyProperty ImageForEditProperty =
             DependencyProperty.Register("ImageForEdit", typeof(ImageSource), typeof(MainWindow));
-       
+
         public static readonly DependencyProperty CurrentSeriesProperty =
             DependencyProperty.Register("CurrentSeries", typeof(Series), typeof(MainWindow));
 
@@ -157,37 +189,37 @@ namespace DDrop
 
         public ImageSource ImageForEdit
         {
-            get => (ImageSource) GetValue(ImageForEditProperty);
+            get => (ImageSource)GetValue(ImageForEditProperty);
             set => SetValue(ImageForEditProperty, value);
         }
 
         public DropPhoto CurrentDropPhoto
         {
-            get => (DropPhoto) GetValue(CurrentDropPhotoProperty);
+            get => (DropPhoto)GetValue(CurrentDropPhotoProperty);
             set => SetValue(CurrentDropPhotoProperty, value);
         }
 
         public Series CurrentSeries
         {
-            get => (Series) GetValue(CurrentSeriesProperty);
+            get => (Series)GetValue(CurrentSeriesProperty);
             set => SetValue(CurrentSeriesProperty, value);
         }
 
         public ImageSource ReferenceImage
         {
-            get => (ImageSource) GetValue(ReferenceImageProperty);
+            get => (ImageSource)GetValue(ReferenceImageProperty);
             set => SetValue(ReferenceImageProperty, value);
         }
 
         public User User
         {
-            get => (User) GetValue(UserProperty);
+            get => (User)GetValue(UserProperty);
             set => SetValue(UserProperty, value);
         }
 
         public int ParticularSeriesIndex
         {
-            get => (int) GetValue(ParticularSeriesIndexProperty);
+            get => (int)GetValue(ParticularSeriesIndexProperty);
             set
             {
                 SetValue(ParticularSeriesIndexProperty, value);
@@ -204,35 +236,11 @@ namespace DDrop
 
         #endregion
 
-        public MainWindow(ISeriesBL seriesBL, IDropPhotoBL dropPhotoBL, IDDropRepository dDropRepository,
-            IDropletImageProcessor dropletImageProcessor, IPythonProvider pythonProvider, ILogger logger, IGeometryBL geometryBL, IAppStateBL appStateBL, ICalculationBL calculationBL)
-        {
-            InitializeComponent();
-            InitializePaths();
-
-            _seriesBL = seriesBL;
-            _dropPhotoBL = dropPhotoBL;
-            _dDropRepository = dDropRepository;
-            _dropletImageProcessor = dropletImageProcessor;
-            _pythonProvider = pythonProvider;
-            _logger = logger;
-            _geometryBL = geometryBL;
-            _appStateBL = appStateBL;
-            _calculationBL = calculationBL;
-
-            AppMainWindow.Show();
-
-            SeriesManagerIsLoading();
-            ProgressBar.IsIndeterminate = true;
-
-            Login();
-        }
-
         #region Authorization
 
         private void Login()
         {
-            Login login = new Login(_dDropRepository, _notifier, _logger)
+            var login = new Login(_dDropRepository, _notifier, _logger)
             {
                 Owner = AppMainWindow
             };
@@ -275,15 +283,11 @@ namespace DDrop
                     _allSelectedSeriesChanging = true;
 
                     if (AllSelectedSeries == true)
-                    {
                         foreach (var userSeries in User.UserSeries)
                             userSeries.IsChecked = true;
-                    }
                     else if (AllSelectedSeries == false)
-                    {
                         foreach (var userSeries in User.UserSeries)
                             userSeries.IsChecked = false;
-                    }
                 }
                 finally
                 {
@@ -349,7 +353,7 @@ namespace DDrop
                 SeriesWindowLoading();
                 SeriesManagerIsLoading();
 
-                Series seriesToAdd = new Series
+                var seriesToAdd = new Series
                 {
                     SeriesId = Guid.NewGuid(),
                     Title = OneLineSetterValue.Text,
@@ -374,11 +378,11 @@ namespace DDrop
                     OneLineSetterValue.Text = "";
 
                     _notifier.ShowSuccess($"Добавлена новая серия {seriesToAdd.Title}");
-                    _logger.LogInfo(new LogEntry()
+                    _logger.LogInfo(new LogEntry
                     {
                         Username = User.Email,
                         LogCategory = LogCategory.Series,
-                        Message = $"Добавлена новая серия {seriesToAdd.Title}",
+                        Message = $"Добавлена новая серия {seriesToAdd.Title}"
                     });
                 }
                 catch (TimeoutException)
@@ -426,7 +430,7 @@ namespace DDrop
                 ProgressBar.IsIndeterminate = true;
                 SeriesManagerIsLoading(false);
 
-                Series old = new Series()
+                var old = new Series
                 {
                     CurrentUser = User,
                     CurrentUserId = User.UserId
@@ -438,7 +442,6 @@ namespace DDrop
                 CurrentSeries = User.UserSeries[SeriesDataGrid.SelectedIndex];
 
                 if (CurrentSeries.ReferencePhotoForSeries != null)
-                {
                     try
                     {
                         var referencePhotoId = CurrentSeries.ReferencePhotoForSeries.ReferencePhotoId;
@@ -464,7 +467,6 @@ namespace DDrop
                         });
                         throw;
                     }
-                }
 
                 SeriesDrawerSwap(old);
                 Photos.ItemsSource = null;
@@ -473,9 +475,7 @@ namespace DDrop
                 ParticularSeriesIndex = SeriesDataGrid.SelectedIndex;
 
                 if (CurrentSeries?.ReferencePhotoForSeries?.Content != null)
-                {
                     ReferenceImage = ImageInterpreter.LoadImage(CurrentSeries.ReferencePhotoForSeries.Content);
-                }
 
                 SeriesManagerLoadingComplete(false);
                 SingleSeries.IsEnabled = true;
@@ -503,7 +503,7 @@ namespace DDrop
 
         private async void SeriesPreviewDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            DropPhoto selectedPhoto = (DropPhoto) SeriesPreviewDataGrid.SelectedItem;
+            var selectedPhoto = (DropPhoto) SeriesPreviewDataGrid.SelectedItem;
             if (selectedPhoto != null)
             {
                 _currentSeriesPreviewPhoto = selectedPhoto;
@@ -513,10 +513,7 @@ namespace DDrop
 
                 try
                 {
-                    if (_tokenSource != null)
-                    {
-                        _tokenSource.Cancel();
-                    }
+                    if (_tokenSource != null) _tokenSource.Cancel();
 
                     _tokenSource = new CancellationTokenSource();
 
@@ -531,14 +528,13 @@ namespace DDrop
                     ImgPreview.Source = ImageInterpreter.LoadImage(_currentSeriesPreviewPhoto.Content);
 
                     _geometryBL.PrepareLines(_currentSeriesPreviewPhoto, out _horizontalLineSeriesPreview,
-                        out _verticalLineSeriesPreview, Properties.Settings.Default.ShowLinesOnPreview);
+                        out _verticalLineSeriesPreview, Settings.Default.ShowLinesOnPreview);
 
-                    _geometryBL.PrepareContour(_currentSeriesPreviewPhoto, out _contourSeriesPreview, Properties.Settings.Default.ShowContourOnPreview);
-
+                    _geometryBL.PrepareContour(_currentSeriesPreviewPhoto, out _contourSeriesPreview,
+                        Settings.Default.ShowContourOnPreview);
                 }
                 catch (OperationCanceledException)
                 {
-
                 }
                 catch (TimeoutException)
                 {
@@ -569,27 +565,22 @@ namespace DDrop
                 if (_verticalLineSeriesPreview != null)
                     PreviewCanvas.Children.Add(_verticalLineSeriesPreview);
                 if (_contourSeriesPreview != null)
-                {
                     foreach (var line in _contourSeriesPreview)
-                    {
                         PreviewCanvas.Children.Add(line);
-                    }
-                }
 
                 ProgressBar.IsIndeterminate = false;
             }
             else
+            {
                 ImgPreview.Source = null;
+            }
         }
 
         private void CombinedSeriesPlot_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             var tabItem = (TabItem) sender;
 
-            if (tabItem.IsEnabled && User != null)
-            {
-                _notifier.ShowSuccess("Новый общий график серий построен");
-            }
+            if (tabItem.IsEnabled && User != null) _notifier.ShowSuccess("Новый общий график серий построен");
         }
 
         private void ExportSeriesButton_Click(object sender, RoutedEventArgs e)
@@ -599,7 +590,7 @@ namespace DDrop
                 if (User.IsAnySelectedSeriesCanDrawPlot)
                 {
                     SeriesManagerIsLoading();
-                    SaveFileDialog saveFileDialog = new SaveFileDialog
+                    var saveFileDialog = new SaveFileDialog
                     {
                         Filter = "Excel files (*.xlsx)|*.xlsx|All files (*.*)|*.*",
                         AddExtension = true,
@@ -632,7 +623,7 @@ namespace DDrop
             {
                 var checkedCount = User.UserSeries.Count(x => x.IsChecked);
 
-                MessageBoxResult messageBoxResult =
+                var messageBoxResult =
                     MessageBox.Show(checkedCount > 0 ? "Удалить выбранные серии?" : "Удалить все серии?",
                         "Подтверждение удаления", MessageBoxButton.YesNo);
                 if (messageBoxResult == MessageBoxResult.Yes)
@@ -640,32 +631,23 @@ namespace DDrop
                     var pbuHandle1 = pbu.New(ProgressBar, 0, User.UserSeries.Count, 0);
                     SeriesWindowLoading(false);
                     SeriesManagerIsLoading();
-                    for (int i = User.UserSeries.Count - 1; i >= 0; i--)
+                    for (var i = User.UserSeries.Count - 1; i >= 0; i--)
                     {
                         try
                         {
-                            if (checkedCount > 0 && !User.UserSeries[i].IsChecked)
-                            {
-                                continue;
-                            }
+                            if (checkedCount > 0 && !User.UserSeries[i].IsChecked) continue;
 
-                            var userEmail = User.Email;
-                            var dbUser = await Task.Run(() => _dDropRepository.GetUserByLogin(userEmail));
-                            var userSeries = User.UserSeries[i];
-                            await Task.Run(() =>
-                                _dDropRepository.DeleteSingleSeries(
-                                    DDropDbEntitiesMapper.SingleSeriesToSingleDbSeries(userSeries, dbUser)));
-
-                            User.UserSeries.RemoveAt(i);
+                            await _seriesBL.DeleteSeries(User.UserSeries[i], CurrentSeries, MainWindowPixelDrawer.CanDrawing);
 
                             _notifier.ShowSuccess($"Серия {User.UserSeries[i].Title} была удалена.");
 
-                            _logger.LogInfo(new LogEntry()
+                            _logger.LogInfo(new LogEntry
                             {
                                 Username = User.Email,
                                 LogCategory = LogCategory.Series,
-                                Message = $"Серия {User.UserSeries[i].Title} была удалена.",
+                                Message = $"Серия {User.UserSeries[i].Title} была удалена."
                             });
+                            User.UserSeries.Remove(User.UserSeries[i]);
                         }
                         catch (TimeoutException)
                         {
@@ -698,7 +680,6 @@ namespace DDrop
                     SeriesManagerLoadingComplete();
                     SeriesWindowLoading(false);
                 }
-
             }
             else
             {
@@ -708,7 +689,7 @@ namespace DDrop
 
         private async void DeleteSingleSeriesButton_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult messageBoxResult =
+            var messageBoxResult =
                 MessageBox.Show($"Удалить серию {User.UserSeries[SeriesDataGrid.SelectedIndex].Title}?",
                     "Подтверждение удаления", MessageBoxButton.YesNo);
             if (messageBoxResult == MessageBoxResult.Yes)
@@ -718,20 +699,13 @@ namespace DDrop
                     SeriesWindowLoading();
                     SeriesManagerIsLoading();
 
-                    var userEmail = User.Email;
-                    var dbUser = await Task.Run(() => _dDropRepository.GetUserByLogin(userEmail));
-                    await Task.Run(() =>
-                    {
-                        Dispatcher.InvokeAsync(() => _dDropRepository.DeleteSingleSeries(
-                            DDropDbEntitiesMapper.SingleSeriesToSingleDbSeries(
-                                User.UserSeries[SeriesDataGrid.SelectedIndex], dbUser)));
-                    });
+                    await _seriesBL.DeleteSeries(User.UserSeries[SeriesDataGrid.SelectedIndex], CurrentSeries, MainWindowPixelDrawer.CanDrawing);
 
-                    _logger.LogInfo(new LogEntry()
+                    _logger.LogInfo(new LogEntry
                     {
                         Username = User.Email,
                         LogCategory = LogCategory.Series,
-                        Message = $"Серия {User.UserSeries[SeriesDataGrid.SelectedIndex].Title} была удалена.",
+                        Message = $"Серия {User.UserSeries[SeriesDataGrid.SelectedIndex].Title} была удалена."
                     });
                     _notifier.ShowSuccess($"Серия {User.UserSeries[SeriesDataGrid.SelectedIndex].Title} была удалена.");
 
@@ -770,17 +744,14 @@ namespace DDrop
         {
             var tabItem = (TabItem) sender;
 
-            if (tabItem.IsEnabled && User != null)
-            {
-                _notifier.ShowSuccess("Новый график построен");
-            }
+            if (tabItem.IsEnabled && User != null) _notifier.ShowSuccess("Новый график построен");
         }
 
         private void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (sender is TabControl tc)
             {
-                TabItem item = (TabItem) tc.SelectedItem;
+                var item = (TabItem) tc.SelectedItem;
 
                 if (item?.Name != null)
                 {
@@ -789,9 +760,7 @@ namespace DDrop
                         Photos.ItemsSource = CurrentSeries.DropPhotosSeries;
 
                         if (!CurrentSeries.CanDrawPlot && SingleSeriesTabControl.SelectedIndex == 2)
-                        {
                             SingleSeriesTabControl.SelectedIndex = 0;
-                        }
                     }
                     else if (item.Name == "SeriesManager")
                     {
@@ -806,7 +775,7 @@ namespace DDrop
         {
             if (User.UserSeries.Count > 0)
             {
-                VistaFolderBrowserDialog saveFileDialog = new VistaFolderBrowserDialog
+                var saveFileDialog = new VistaFolderBrowserDialog
                 {
                     UseDescriptionForTitle = true,
                     Description = "Выберите папку для сохранения..."
@@ -817,17 +786,14 @@ namespace DDrop
                     SeriesWindowLoading(false);
                     SeriesManagerIsLoading();
 
-                    int checkedCount = User.UserSeries.Count(x => x.IsChecked);
+                    var checkedCount = User.UserSeries.Count(x => x.IsChecked);
 
                     var pbuHandle1 = pbu.New(ProgressBar, 0, checkedCount > 0 ? checkedCount : User.UserSeries.Count,
                         0);
 
                     foreach (var series in User.UserSeries)
                     {
-                        if (checkedCount > 0 && !series.IsChecked)
-                        {
-                            continue;
-                        }
+                        if (checkedCount > 0 && !series.IsChecked) continue;
 
                         try
                         {
@@ -837,11 +803,11 @@ namespace DDrop
                             await Task.Run(() => DDropDbEntitiesMapper.ExportSeriesLocalAsync(
                                 $"{saveFileDialog.SelectedPath}\\{series.Title}.ddrops", fullDbSeries));
 
-                            _logger.LogInfo(new LogEntry()
+                            _logger.LogInfo(new LogEntry
                             {
                                 Username = User.Email,
                                 LogCategory = LogCategory.Series,
-                                Message = $"файл {series.Title}.ddrops сохранен на диске.",
+                                Message = $"файл {series.Title}.ddrops сохранен на диске."
                             });
                             _notifier.ShowSuccess($"файл {series.Title}.ddrops сохранен на диске.");
                         }
@@ -883,7 +849,7 @@ namespace DDrop
 
         private async void ImportLocalSeries_ClickAsync(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog
+            var openFileDialog = new OpenFileDialog
             {
                 Filter = "DDrop files (*.ddrops)|*.ddrops|All files (*.*)|*.*",
                 Multiselect = true,
@@ -921,18 +887,15 @@ namespace DDrop
                                         DDropDbEntitiesMapper.SingleSeriesToSingleDbSeries(deserializedSerie, dbUser)));
 
                                 deserializedSerie.ReferencePhotoForSeries.Content = null;
-                                foreach (var dropPhoto in deserializedSerie.DropPhotosSeries)
-                                {
-                                    dropPhoto.Content = null;
-                                }
+                                foreach (var dropPhoto in deserializedSerie.DropPhotosSeries) dropPhoto.Content = null;
 
                                 User.UserSeries.Add(deserializedSerie);
 
-                                _logger.LogInfo(new LogEntry()
+                                _logger.LogInfo(new LogEntry
                                 {
                                     Username = User.Email,
                                     LogCategory = LogCategory.Series,
-                                    Message = $"Серия {dbSerieForAdd.Title} добавлена.",
+                                    Message = $"Серия {dbSerieForAdd.Title} добавлена."
                                 });
                                 _notifier.ShowSuccess($"Серия {dbSerieForAdd.Title} добавлена.");
                             }
@@ -1020,11 +983,11 @@ namespace DDrop
                     var text = seriesNameCell.Text;
                     await Task.Run(() => _dDropRepository.UpdateSeriesName(text, seriesId));
 
-                    _logger.LogInfo(new LogEntry()
+                    _logger.LogInfo(new LogEntry
                     {
                         Username = User.Email,
                         LogCategory = LogCategory.Series,
-                        Message = "Название серии изменено успешно.",
+                        Message = "Название серии изменено успешно."
                     });
                     _notifier.ShowSuccess("Название серии изменено успешно.");
                 }
@@ -1063,8 +1026,9 @@ namespace DDrop
 
             ImgPreview.Source = ImageInterpreter.LoadImage(_currentSeriesPreviewPhoto.Content);
 
-            _geometryBL.PrepareLines(dropPhoto, out _horizontalLineSeriesPreview, out _verticalLineSeriesPreview, Properties.Settings.Default.ShowLinesOnPreview);
-            _geometryBL.PrepareContour(dropPhoto, out _contourSeriesPreview, Properties.Settings.Default.ShowContourOnPreview);
+            _geometryBL.PrepareLines(dropPhoto, out _horizontalLineSeriesPreview, out _verticalLineSeriesPreview,
+                Settings.Default.ShowLinesOnPreview);
+            _geometryBL.PrepareContour(dropPhoto, out _contourSeriesPreview, Settings.Default.ShowContourOnPreview);
 
             ProgressBar.IsIndeterminate = false;
             _appStateBL.HideAdorner(CurrentSeriesImageLoading);
@@ -1077,12 +1041,8 @@ namespace DDrop
             if (_verticalLineSeriesPreview != null)
                 PreviewCanvas.Children.Add(_verticalLineSeriesPreview);
             if (_contourSeriesPreview != null)
-            {
                 foreach (var line in _contourSeriesPreview)
-                {
                     PreviewCanvas.Children.Add(line);
-                }
-            }
         }
 
         private void EditIntervalBetweenPhotos_Click(object sender, RoutedEventArgs e)
@@ -1118,12 +1078,12 @@ namespace DDrop
 
                         CurrentSeries.IntervalBetweenPhotos = intervalBetweenPhotos;
 
-                        _logger.LogInfo(new LogEntry()
+                        _logger.LogInfo(new LogEntry
                         {
                             Username = User.Email,
                             LogCategory = LogCategory.Series,
                             Message =
-                                $"Сохранен новый интервал между снимками для серии {CurrentSeries.Title}. Не удалось установить подключение. Проверьте интернет соединение.",
+                                $"Сохранен новый интервал между снимками для серии {CurrentSeries.Title}. Не удалось установить подключение. Проверьте интернет соединение."
                         });
                     }
                     catch (TimeoutException)
@@ -1175,15 +1135,11 @@ namespace DDrop
                     _allSelectedPhotosChanging = true;
 
                     if (AllSelectedPhotos == true)
-                    {
                         foreach (var dropPhoto in CurrentSeries.DropPhotosSeries)
                             dropPhoto.IsChecked = true;
-                    }
                     else if (AllSelectedPhotos == false)
-                    {
                         foreach (var dropPhoto in CurrentSeries.DropPhotosSeries)
                             dropPhoto.IsChecked = false;
-                    }
                 }
                 finally
                 {
@@ -1238,7 +1194,7 @@ namespace DDrop
 
         private async void MenuItemChoosePhotos_OnClick(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog
+            var openFileDialog = new OpenFileDialog
             {
                 Filter = "Jpeg files (*.jpg)|*.jpg|All files (*.*)|*.*",
                 Multiselect = true,
@@ -1254,7 +1210,7 @@ namespace DDrop
                 SingleSeriesLoading();
                 _appStateBL.ShowAdorner(CurrentSeriesPhotoContentLoading);
 
-                for (int i = 0; i < openFileDialog.FileNames.Length; ++i)
+                for (var i = 0; i < openFileDialog.FileNames.Length; ++i)
                 {
                     pbu.CurValue[pbuHandle1] += 1;
 
@@ -1264,7 +1220,7 @@ namespace DDrop
                         Photos.ItemsSource = CurrentSeries.DropPhotosSeries;
                     }
 
-                    var imageForAdding = new DropPhoto()
+                    var imageForAdding = new DropPhoto
                     {
                         DropPhotoId = Guid.NewGuid(),
                         Name = openFileDialog.SafeFileNames[i],
@@ -1277,7 +1233,7 @@ namespace DDrop
                             .ToString(CultureInfo.InvariantCulture),
                         PhotoOrderInSeries = CurrentSeries.DropPhotosSeries.Count
                     };
-                    imageForAdding.Drop = new Drop()
+                    imageForAdding.Drop = new Drop
                     {
                         DropId = imageForAdding.DropPhotoId,
                         Series = CurrentSeries,
@@ -1287,7 +1243,6 @@ namespace DDrop
                     imageForAdding.PropertyChanged += PhotosOnPropertyChanged;
 
                     if (ImageValidator.ValidateImage(imageForAdding.Content))
-                    {
                         try
                         {
                             var seriesId = CurrentSeries.SeriesId;
@@ -1298,11 +1253,11 @@ namespace DDrop
                             imageForAdding.Content = null;
                             CurrentSeries.DropPhotosSeries.Add(imageForAdding);
 
-                            _logger.LogInfo(new LogEntry()
+                            _logger.LogInfo(new LogEntry
                             {
                                 Username = User.Email,
                                 LogCategory = LogCategory.DropPhoto,
-                                Message = $"Снимок {imageForAdding.Name} добавлен.",
+                                Message = $"Снимок {imageForAdding.Name} добавлен."
                             });
                             _notifier.ShowSuccess($"Снимок {imageForAdding.Name} добавлен.");
                         }
@@ -1325,16 +1280,13 @@ namespace DDrop
                             });
                             throw;
                         }
-                    }
                     else
-                    {
                         _notifier.ShowError($"Файл {imageForAdding.Name} имеет неизвестный формат.");
-                    }
                 }
 
                 SingleSeriesLoadingComplete();
                 _appStateBL.HideAdorner(CurrentSeriesPhotoContentLoading);
-                _notifier.ShowSuccess($"Новые снимки успешно добавлены.");
+                _notifier.ShowSuccess("Новые снимки успешно добавлены.");
                 pbu.ResetValue(pbuHandle1);
                 pbu.Remove(pbuHandle1);
             }
@@ -1342,7 +1294,7 @@ namespace DDrop
 
         private async void Photos_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            DropPhoto selectedFile = (DropPhoto) Photos.SelectedItem;
+            var selectedFile = (DropPhoto) Photos.SelectedItem;
             if (selectedFile != null)
             {
                 try
@@ -1351,12 +1303,8 @@ namespace DDrop
                     ImgCurrent.CanDrawing.Children.Remove(CurrentDropPhoto?.VerticalLine);
 
                     if (CurrentDropPhoto?.Contour != null)
-                    {
                         foreach (var line in CurrentDropPhoto.Contour.Lines)
-                        {
                             ImgCurrent.CanDrawing.Children.Remove(line);
-                        }
-                    }
 
 
                     ProgressBar.IsIndeterminate = true;
@@ -1380,10 +1328,11 @@ namespace DDrop
 
                     if (CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].Contour?.Parameters != null)
                     {
-                        _currentPhotoAutoCalculationTemplate = new AutoCalculationTemplate()
+                        _currentPhotoAutoCalculationTemplate = new AutoCalculationTemplate
                         {
                             Title = "Текущий контур",
-                            TemplateType = CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].Contour.CalculationVariants,
+                            TemplateType = CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].Contour
+                                .CalculationVariants,
                             Parameters = CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].Contour.Parameters
                         };
                     }
@@ -1392,8 +1341,12 @@ namespace DDrop
                         _currentPhotoAutoCalculationTemplate = null;
                         CSharpTemplatesCombobox.SelectedIndex = 0;
                         PythonTemplatesCombobox.SelectedIndex = 0;
-                        СurrentCSharpAutoCalculationTemplate = _autoCalculationDefaultTemplates.FirstOrDefault(x => x.TemplateType == CalculationVariants.CalculateWithCSharp);
-                        СurrentPythonAutoCalculationTemplate = _autoCalculationDefaultTemplates.FirstOrDefault(x => x.TemplateType == CalculationVariants.CalculateWithPython);
+                        СurrentCSharpAutoCalculationTemplate =
+                            _autoCalculationDefaultTemplates.FirstOrDefault(x =>
+                                x.TemplateType == CalculationVariants.CalculateWithCSharp);
+                        СurrentPythonAutoCalculationTemplate =
+                            _autoCalculationDefaultTemplates.FirstOrDefault(x =>
+                                x.TemplateType == CalculationVariants.CalculateWithPython);
                     }
 
                     BuildTemplates();
@@ -1442,7 +1395,9 @@ namespace DDrop
                 _appStateBL.HideAdorner(CurrentSeriesImageLoading);
             }
             else
+            {
                 ImageForEdit = null;
+            }
         }
 
         private void ShowLinesOnPhotosPreview(DropPhoto dropPhoto, Canvas canvas)
@@ -1451,35 +1406,27 @@ namespace DDrop
             canvas.Children.Remove(dropPhoto.VerticalLine);
 
             if (dropPhoto.Contour != null)
-            {
                 foreach (var line in dropPhoto.Contour.Lines)
-                {
                     canvas.Children.Remove(line);
-                }
-            }
 
-            if (dropPhoto.HorizontalLine != null && Properties.Settings.Default.ShowLinesOnPreview ||
+            if (dropPhoto.HorizontalLine != null && Settings.Default.ShowLinesOnPreview ||
                 dropPhoto.HorizontalLine != null && _photoEditModeOn)
                 canvas.Children.Add(dropPhoto.HorizontalLine);
-            if (dropPhoto.VerticalLine != null && Properties.Settings.Default.ShowLinesOnPreview ||
+            if (dropPhoto.VerticalLine != null && Settings.Default.ShowLinesOnPreview ||
                 dropPhoto.VerticalLine != null && _photoEditModeOn)
                 canvas.Children.Add(dropPhoto.VerticalLine);
-            if (dropPhoto.Contour != null && Properties.Settings.Default.ShowContourOnPreview)
-            {
+            if (dropPhoto.Contour != null && Settings.Default.ShowContourOnPreview)
                 foreach (var line in dropPhoto.Contour.Lines)
-                {
                     canvas.Children.Add(line);
-                }
-            }
         }
 
         private async void DeleteInputPhotos_OnClick(object sender, RoutedEventArgs e)
         {
             if (CurrentSeries.DropPhotosSeries.Count > 0)
             {
-                int checkedCount = CurrentSeries.DropPhotosSeries.Count(x => x.IsChecked);
+                var checkedCount = CurrentSeries.DropPhotosSeries.Count(x => x.IsChecked);
 
-                MessageBoxResult messageBoxResult =
+                var messageBoxResult =
                     MessageBox.Show(checkedCount > 0 ? "Удалить выбранные снимки?" : "Удалить все снимки?",
                         "Подтверждение удаления", MessageBoxButton.YesNo);
                 if (messageBoxResult == MessageBoxResult.Yes)
@@ -1489,42 +1436,23 @@ namespace DDrop
                     SingleSeriesLoading();
                     _appStateBL.ShowAdorner(CurrentSeriesPhotoContentLoading);
 
-                    for (int i = CurrentSeries.DropPhotosSeries.Count - 1; i >= 0; i--)
+                    for (var i = CurrentSeries.DropPhotosSeries.Count - 1; i >= 0; i--)
                     {
                         try
                         {
-                            if (checkedCount > 0 && !CurrentSeries.DropPhotosSeries[i].IsChecked)
-                            {
-                                continue;
-                            }
+                            if (checkedCount > 0 && !CurrentSeries.DropPhotosSeries[i].IsChecked) continue;
 
-                            if (CurrentDropPhoto != null && CurrentSeries.DropPhotosSeries[i].DropPhotoId ==
-                                CurrentDropPhoto.DropPhotoId)
-                            {
-                                ImgCurrent.CanDrawing.Children.Remove(CurrentSeries.DropPhotosSeries[i].HorizontalLine);
-                                ImgCurrent.CanDrawing.Children.Remove(CurrentSeries.DropPhotosSeries[i].VerticalLine);
-
-                                if (CurrentSeries.DropPhotosSeries[i].Contour != null)
-                                {
-                                    foreach (var line in CurrentSeries.DropPhotosSeries[i].Contour.Lines)
-                                    {
-                                        ImgCurrent.CanDrawing.Children.Remove(line);
-                                    }
-                                }
-                            }
-
-                            var photoForDeleteId = CurrentSeries.DropPhotosSeries[i].DropPhotoId;
-                            await Task.Run(() => _dDropRepository.DeleteDropPhoto(photoForDeleteId));
+                            await DeleteDropPhoto(CurrentSeries.DropPhotosSeries[i], CurrentDropPhoto, ImgCurrent.CanDrawing);
 
                             _notifier.ShowSuccess($"Снимок {CurrentSeries.DropPhotosSeries[i].Name} успешно удален.");
-                            _logger.LogInfo(new LogEntry()
+                            _logger.LogInfo(new LogEntry
                             {
                                 Username = User.Email,
                                 LogCategory = LogCategory.DropPhoto,
-                                Message = $"Снимок {CurrentSeries.DropPhotosSeries[i].Name} успешно удален.",
+                                Message = $"Снимок {CurrentSeries.DropPhotosSeries[i].Name} успешно удален."
                             });
 
-                            CurrentSeries.DropPhotosSeries.Remove(CurrentSeries.DropPhotosSeries[i]);
+                            CurrentSeries.DropPhotosSeries.RemoveAt(i);
                         }
                         catch (TimeoutException)
                         {
@@ -1562,9 +1490,26 @@ namespace DDrop
             }
         }
 
+        public async Task DeleteDropPhoto(DropPhoto dropPhoto, DropPhoto currentDropPhoto, Canvas canvas)
+        {
+            if (currentDropPhoto != null && dropPhoto.DropPhotoId ==
+                currentDropPhoto.DropPhotoId)
+            {
+                canvas.Children.Remove(dropPhoto.HorizontalLine);
+                canvas.Children.Remove(dropPhoto.VerticalLine);
+
+                if (dropPhoto.Contour != null)
+                    foreach (var line in dropPhoto.Contour.Lines)
+                        canvas.Children.Remove(line);
+            }
+
+            var photoForDeleteId = dropPhoto.DropPhotoId;
+            await Task.Run(() => _dDropRepository.DeleteDropPhoto(photoForDeleteId));
+        }
+
         private async void DeleteSingleInputPhotoButton_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult messageBoxResult =
+            var messageBoxResult =
                 MessageBox.Show($"Удалить снимок {CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].Name}?",
                     "Подтверждение удаления", MessageBoxButton.YesNo);
             if (messageBoxResult == MessageBoxResult.Yes)
@@ -1574,18 +1519,17 @@ namespace DDrop
                 _appStateBL.ShowAdorner(CurrentSeriesPhotoContentLoading);
                 try
                 {
-                    var photoForDeleteId = CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].DropPhotoId;
-                    await Task.Run(() => _dDropRepository.DeleteDropPhoto(photoForDeleteId));
+                    await DeleteDropPhoto(CurrentSeries.DropPhotosSeries[Photos.SelectedIndex], CurrentDropPhoto, ImgCurrent.CanDrawing);
 
-                    _logger.LogInfo(new LogEntry()
+                    _logger.LogInfo(new LogEntry
                     {
                         Username = User.Email,
                         LogCategory = LogCategory.DropPhoto,
-                        Message = $"Снимок {CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].Name} удален.",
+                        Message = $"Снимок {CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].Name} удален."
                     });
+
                     _notifier.ShowSuccess(
                         $"Снимок {CurrentSeries.DropPhotosSeries[Photos.SelectedIndex].Name} удален.");
-
                     CurrentSeries.DropPhotosSeries.RemoveAt(Photos.SelectedIndex);
                 }
                 catch (TimeoutException)
@@ -1621,7 +1565,7 @@ namespace DDrop
                 await PhotoEditModeOn();
 
                 ShowLinesOnPhotosPreview(CurrentDropPhoto, ImgCurrent.CanDrawing);
-                
+
                 if (CurrentDropPhoto.HorizontalLine == null)
                     CurrentDropPhoto.HorizontalLine = new Line();
 
@@ -1634,7 +1578,7 @@ namespace DDrop
                     HorizontalLine = CurrentDropPhoto.HorizontalLine,
                     VerticalLine = CurrentDropPhoto.VerticalLine,
                     SimpleHorizontalLine = CurrentDropPhoto.SimpleHorizontalLine,
-                    SimpleVerticalLine = CurrentDropPhoto.SimpleVerticalLine,
+                    SimpleVerticalLine = CurrentDropPhoto.SimpleVerticalLine
                 };
 
 
@@ -1655,6 +1599,7 @@ namespace DDrop
         }
 
         private bool _photoEditModeOn;
+
         private async Task PhotoEditModeOn()
         {
             SaveInputPhotoEditButton.IsEnabled = true;
@@ -1720,10 +1665,7 @@ namespace DDrop
 
         private async void SaveInputPhotoEditButton_Click(object sender, RoutedEventArgs e)
         {
-            if (IsSaveRequired())
-            {
-                await SavePixelDiameters();
-            }
+            if (IsSaveRequired()) await SavePixelDiameters();
 
             await PhotoEditModeOff();
             ShowLinesOnPhotosPreview(CurrentDropPhoto, ImgCurrent.CanDrawing);
@@ -1734,8 +1676,8 @@ namespace DDrop
             SaveInputPhotoEditButton.IsEnabled = false;
             DiscardManualPhotoEdit.IsEnabled = false;
 
-            int xDiameterInPixelsTextBox = Convert.ToInt32(PixelsInMillimeterHorizontalTextBox.Text);
-            int yDiameterInPixelsTextBox = Convert.ToInt32(PixelsInMillimeterVerticalTextBox.Text);
+            var xDiameterInPixelsTextBox = Convert.ToInt32(PixelsInMillimeterHorizontalTextBox.Text);
+            var yDiameterInPixelsTextBox = Convert.ToInt32(PixelsInMillimeterVerticalTextBox.Text);
 
             CurrentDropPhoto.Drop.RadiusInMeters = 0;
             CurrentDropPhoto.Drop.VolumeInCubicalMeters = 0;
@@ -1761,7 +1703,7 @@ namespace DDrop
             {
                 _appStateBL.ShowAdorner(CurrentSeriesPhotoContentLoading);
                 _appStateBL.ShowAdorner(CurrentSeriesImageLoading);
-                
+
                 SingleSeriesLoading();
 
                 await ReCalculateDropParameters(CurrentDropPhoto);
@@ -1771,7 +1713,9 @@ namespace DDrop
             }
             else
             {
-                _notifier.ShowInformation($"Не указан один из диаметров. Расчет для снимка {CurrentDropPhoto.Name} не выполнен.");
+                await _dropPhotoBL.UpdateDropPhoto(CurrentDropPhoto);
+                _notifier.ShowInformation(
+                    $"Не указан один из диаметров. Расчет для снимка {CurrentDropPhoto.Name} не выполнен.");
             }
         }
 
@@ -1780,13 +1724,11 @@ namespace DDrop
             int xDiameterInPixelsTextBox;
             int yDiameterInPixelsTextBox;
 
-            if (int.TryParse(PixelsInMillimeterHorizontalTextBox.Text, out xDiameterInPixelsTextBox) && int.TryParse(PixelsInMillimeterVerticalTextBox.Text, out yDiameterInPixelsTextBox))
-            {
-                if (_initialXDiameterInPixels != xDiameterInPixelsTextBox || _initialYDiameterInPixels != yDiameterInPixelsTextBox)
-                {
+            if (int.TryParse(PixelsInMillimeterHorizontalTextBox.Text, out xDiameterInPixelsTextBox) &&
+                int.TryParse(PixelsInMillimeterVerticalTextBox.Text, out yDiameterInPixelsTextBox))
+                if (_initialXDiameterInPixels != xDiameterInPixelsTextBox ||
+                    _initialYDiameterInPixels != yDiameterInPixelsTextBox)
                     return SaveRequired = true;
-                }
-            }
 
             return SaveRequired;
         }
@@ -1795,7 +1737,8 @@ namespace DDrop
         {
             if (IsSaveRequired())
             {
-                if (MessageBox.Show("Сохранить изменения?", "Предупреждение", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                if (MessageBox.Show("Сохранить изменения?", "Предупреждение", MessageBoxButton.YesNo,
+                        MessageBoxImage.Warning) == MessageBoxResult.Yes)
                 {
                     await SavePixelDiameters();
                 }
@@ -1804,15 +1747,15 @@ namespace DDrop
                     ImgCurrent.CanDrawing.Children.Remove(CurrentDropPhoto.HorizontalLine);
                     ImgCurrent.CanDrawing.Children.Remove(CurrentDropPhoto.VerticalLine);
 
-                    _geometryBL.RestoreOriginalContour(CurrentDropPhoto, _copiedDropPhoto, ImgCurrent.CanDrawing, CurrentDropPhoto.DropPhotoId);
+                    _geometryBL.RestoreOriginalContour(CurrentDropPhoto, _copiedDropPhoto, ImgCurrent.CanDrawing,
+                        CurrentDropPhoto.DropPhotoId);
 
                     if (CurrentDropPhoto.Contour != null)
                     {
                         CurrentDropPhoto.Contour.Lines = new ObservableCollection<Line>();
 
                         foreach (var contourSimpleLine in CurrentDropPhoto.Contour.SimpleLines)
-                        {
-                            CurrentDropPhoto.Contour.Lines.Add(new Line()
+                            CurrentDropPhoto.Contour.Lines.Add(new Line
                             {
                                 X1 = contourSimpleLine.X1,
                                 X2 = contourSimpleLine.X2,
@@ -1821,7 +1764,6 @@ namespace DDrop
                                 Stroke = Brushes.Red,
                                 StrokeThickness = 2
                             });
-                        }
                     }
 
                     CurrentDropPhoto.HorizontalLine = _copiedDropPhoto.HorizontalLine;
@@ -1839,7 +1781,7 @@ namespace DDrop
             await PhotoEditModeOff();
             ShowLinesOnPhotosPreview(CurrentDropPhoto, ImgCurrent.CanDrawing);
         }
-        
+
         private async void Photos_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
             SingleSeriesLoading();
@@ -1855,11 +1797,11 @@ namespace DDrop
                     var text = photoNameCell.Text;
                     await Task.Run(() => _dDropRepository.UpdateDropPhotoName(text, currentDropPhotoId));
 
-                    _logger.LogInfo(new LogEntry()
+                    _logger.LogInfo(new LogEntry
                     {
                         Username = User.Email,
                         LogCategory = LogCategory.DropPhoto,
-                        Message = "Название снимка изменено успешно.",
+                        Message = "Название снимка изменено успешно."
                     });
                     _notifier.ShowSuccess("Название снимка изменено успешно.");
                 }
@@ -1901,12 +1843,12 @@ namespace DDrop
                     var seriesId = CurrentSeries.SeriesId;
                     await Task.Run(() => _dDropRepository.UseCreationDateTime(true, seriesId));
 
-                    _logger.LogInfo(new LogEntry()
+                    _logger.LogInfo(new LogEntry
                     {
                         Username = User.Email,
                         LogCategory = LogCategory.DropPhoto,
                         Message =
-                            $"Серия {CurrentSeries.Title} использует время создания снимков. Порядок фотографий будет проигнорирован.",
+                            $"Серия {CurrentSeries.Title} использует время создания снимков. Порядок фотографий будет проигнорирован."
                     });
                     _notifier.ShowSuccess(
                         $"Серия {CurrentSeries.Title} использует время создания снимков. Порядок фотографий будет проигнорирован.");
@@ -1947,11 +1889,11 @@ namespace DDrop
                     var seriesId = CurrentSeries.SeriesId;
                     await Task.Run(() => _dDropRepository.UseCreationDateTime(false, seriesId));
 
-                    _logger.LogInfo(new LogEntry()
+                    _logger.LogInfo(new LogEntry
                     {
                         Username = User.Email,
                         LogCategory = LogCategory.DropPhoto,
-                        Message = $"Серия {CurrentSeries.Title} использует интервал между снимками.",
+                        Message = $"Серия {CurrentSeries.Title} использует интервал между снимками."
                     });
                     _notifier.ShowSuccess($"Серия {CurrentSeries.Title} использует интервал между снимками.");
                 }
@@ -1994,9 +1936,7 @@ namespace DDrop
             _originalOrder = new Dictionary<Guid, int>();
 
             foreach (var item in CurrentSeries.DropPhotosSeries)
-            {
                 _originalOrder.Add(item.DropPhotoId, item.PhotoOrderInSeries);
-            }
         }
 
         private async Task PhotosReOrderModeOn()
@@ -2037,7 +1977,7 @@ namespace DDrop
 
             if (orderChanged)
             {
-                MessageBoxResult messageBoxResult = MessageBox.Show("Сохранить новый порядок снимков?",
+                var messageBoxResult = MessageBox.Show("Сохранить новый порядок снимков?",
                     "Подтверждение выхода", MessageBoxButton.YesNoCancel);
                 if (messageBoxResult == MessageBoxResult.Yes)
                 {
@@ -2047,11 +1987,11 @@ namespace DDrop
                             DDropDbEntitiesMapper.ListOfDropPhotosToListOfDbDropPhotos(CurrentSeries.DropPhotosSeries,
                                 CurrentSeries.SeriesId));
 
-                        _logger.LogInfo(new LogEntry()
+                        _logger.LogInfo(new LogEntry
                         {
                             Username = CurrentSeries.CurrentUser.Email,
                             LogCategory = LogCategory.DropPhoto,
-                            Message = $"Порядок снимков для серии {CurrentSeries.Title} обновлен.",
+                            Message = $"Порядок снимков для серии {CurrentSeries.Title} обновлен."
                         });
 
                         await PhotosReOrderModeOff();
@@ -2083,11 +2023,11 @@ namespace DDrop
                 {
                     DiscardNewPhotosOrder();
 
-                    _logger.LogInfo(new LogEntry()
+                    _logger.LogInfo(new LogEntry
                     {
                         Username = CurrentSeries.CurrentUser.Email,
                         LogCategory = LogCategory.DropPhoto,
-                        Message = "Cтарый порядок снимков восстановлен.",
+                        Message = "Cтарый порядок снимков восстановлен."
                     });
 
                     await PhotosReOrderModeOff();
@@ -2095,27 +2035,22 @@ namespace DDrop
             }
             else
             {
-                MessageBoxResult messageBoxResult = MessageBox.Show("Закончить редактирование порядка снимков",
+                var messageBoxResult = MessageBox.Show("Закончить редактирование порядка снимков",
                     "Подтверждение выхода", MessageBoxButton.YesNo);
-                if (messageBoxResult == MessageBoxResult.Yes)
-                {
-                    await PhotosReOrderModeOff();
-                }
+                if (messageBoxResult == MessageBoxResult.Yes) await PhotosReOrderModeOff();
             }
         }
 
         private bool OrderChanged()
         {
-            bool orderChanged = false;
+            var orderChanged = false;
 
             foreach (var dropPhoto in CurrentSeries.DropPhotosSeries)
-            {
                 if (_originalOrder[dropPhoto.DropPhotoId] != dropPhoto.PhotoOrderInSeries)
                 {
                     orderChanged = true;
                     break;
                 }
-            }
 
             return orderChanged;
         }
@@ -2123,9 +2058,7 @@ namespace DDrop
         private void DiscardNewPhotosOrder()
         {
             foreach (var dropPhoto in CurrentSeries.DropPhotosSeries)
-            {
                 dropPhoto.PhotoOrderInSeries = _originalOrder[dropPhoto.DropPhotoId];
-            }
 
             CurrentSeries.DropPhotosSeries = OrderByPhotoOrderInSeries(CurrentSeries.DropPhotosSeries);
             _notifier.ShowInformation("Cтарый порядок снимков восстановлен.");
@@ -2135,7 +2068,7 @@ namespace DDrop
         {
             if (OrderChanged())
             {
-                MessageBoxResult messageBoxResult = MessageBox.Show("Отменить изменение порядка снимков?",
+                var messageBoxResult = MessageBox.Show("Отменить изменение порядка снимков?",
                     "Подтверждение", MessageBoxButton.YesNo);
                 if (messageBoxResult == MessageBoxResult.Yes)
                 {
@@ -2156,7 +2089,7 @@ namespace DDrop
             ObservableCollection<DropPhoto> temp;
             temp = new ObservableCollection<DropPhoto>(orderThoseGroups.OrderBy(p => p.PhotoOrderInSeries));
             orderThoseGroups.Clear();
-            foreach (DropPhoto j in temp) orderThoseGroups.Add(j);
+            foreach (var j in temp) orderThoseGroups.Add(j);
             return orderThoseGroups;
         }
 
@@ -2166,7 +2099,7 @@ namespace DDrop
 
         private async void ChooseReference_OnClick(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog
+            var openFileDialog = new OpenFileDialog
             {
                 Filter = "Jpeg files (*.jpg)|*.jpg|All files (*.*)|*.*",
                 Multiselect = false,
@@ -2179,7 +2112,7 @@ namespace DDrop
                 ProgressBar.IsIndeterminate = true;
                 SingleSeriesLoading();
                 _appStateBL.ShowAdorner(ReferenceImageLoading);
-                
+
                 var referencePhotoContentForAdd = ImageInterpreter.FileToByteArray(openFileDialog.FileName);
 
                 if (ImageValidator.ValidateImage(referencePhotoContentForAdd))
@@ -2195,7 +2128,7 @@ namespace DDrop
                             Content = referencePhotoContentForAdd,
                             Name = openFileDialog.SafeFileNames[0],
                             ReferencePhotoId = CurrentSeries.SeriesId,
-                            Line = new Line(),
+                            Line = new Line()
                         };
                     }
                     else
@@ -2242,11 +2175,11 @@ namespace DDrop
                         ChangeReferenceLine.Visibility = Visibility.Visible;
                         SaveReferenceLine.Visibility = Visibility.Hidden;
 
-                        _logger.LogInfo(new LogEntry()
+                        _logger.LogInfo(new LogEntry
                         {
                             Username = User.Email,
                             LogCategory = LogCategory.ReferencePhoto,
-                            Message = $"Референсный снимок {CurrentSeries.ReferencePhotoForSeries.Name} добавлен.",
+                            Message = $"Референсный снимок {CurrentSeries.ReferencePhotoForSeries.Name} добавлен."
                         });
                         _notifier.ShowSuccess(
                             $"Референсный снимок {CurrentSeries.ReferencePhotoForSeries.Name} добавлен.");
@@ -2286,7 +2219,7 @@ namespace DDrop
         {
             if (CurrentSeries.ReferencePhotoForSeries?.Content != null)
             {
-                MessageBoxResult messageBoxResult = MessageBox.Show("Удалить референсный снимок?",
+                var messageBoxResult = MessageBox.Show("Удалить референсный снимок?",
                     "Подтверждение удаления", MessageBoxButton.YesNo);
                 if (messageBoxResult == MessageBoxResult.Yes)
                 {
@@ -2307,11 +2240,11 @@ namespace DDrop
 
                         _notifier.ShowSuccess(
                             $"Референсный снимок {CurrentSeries.ReferencePhotoForSeries.Name} удален.");
-                        _logger.LogInfo(new LogEntry()
+                        _logger.LogInfo(new LogEntry
                         {
                             Username = User.Email,
                             LogCategory = LogCategory.ReferencePhoto,
-                            Message = $"Референсный снимок {CurrentSeries.ReferencePhotoForSeries.Name} удален.",
+                            Message = $"Референсный снимок {CurrentSeries.ReferencePhotoForSeries.Name} удален."
                         });
 
                         MainWindowPixelDrawer.PixelsInMillimeter = "";
@@ -2368,18 +2301,16 @@ namespace DDrop
 
                     await Task.Run(() => _dDropRepository.UpdateReferencePhoto(dbReferencePhoto));
 
-                    _logger.LogInfo(new LogEntry()
+                    _logger.LogInfo(new LogEntry
                     {
                         Username = User.Email,
                         LogCategory = LogCategory.ReferencePhoto,
-                        Message = $"Сохранено новое референсное расстояние для серии {CurrentSeries.Title}.",
+                        Message = $"Сохранено новое референсное расстояние для серии {CurrentSeries.Title}."
                     });
                     _notifier.ShowSuccess($"Сохранено новое референсное расстояние для серии {CurrentSeries.Title}.");
 
                     if (CurrentSeries.DropPhotosSeries.Any(x => x.XDiameterInPixels > 0 && x.YDiameterInPixels > 0))
-                    {
                         await ReCalculateDropParameters();
-                    }
                 }
                 catch (TimeoutException)
                 {
@@ -2413,14 +2344,14 @@ namespace DDrop
             }
         }
 
-        private async Task ReCalculateDropParameters(bool CheckForChecked = false)
+        private async Task ReCalculateDropParameters(bool checkForChecked = false)
         {
-            int checkedCount = 0;
+            var checkedCount = 0;
 
-            if (CheckForChecked)
+            if (checkForChecked)
                 checkedCount = CurrentSeries.DropPhotosSeries.Count(x => x.IsChecked);
 
-            MessageBoxResult messageBoxResult =
+            var messageBoxResult =
                 MessageBox.Show("Пересчитать параметры капель?", "Подтверждение", MessageBoxButton.YesNo);
             if (messageBoxResult == MessageBoxResult.Yes)
             {
@@ -2430,13 +2361,11 @@ namespace DDrop
 
                 foreach (var dropPhoto in CurrentSeries.DropPhotosSeries)
                 {
-                    if (CheckForChecked && checkedCount > 0 && !dropPhoto.IsChecked)
+                    if (checkForChecked && checkedCount > 0 && !dropPhoto.IsChecked)
                         continue;
 
                     if (dropPhoto.XDiameterInPixels > 0 && dropPhoto.YDiameterInPixels > 0)
-                    {
                         await ReCalculateDropParameters(dropPhoto);
-                    }
 
                     pbu.CurValue[pbuHandle1] += 1;
                 }
@@ -2449,7 +2378,7 @@ namespace DDrop
         private async Task ReCalculateDropParameters(DropPhoto dropPhoto)
         {
             {
-                Drop tempDrop = new Drop
+                var tempDrop = new Drop
                 {
                     DropId = dropPhoto.Drop.DropId,
                     DropPhoto = dropPhoto.Drop.DropPhoto,
@@ -2463,13 +2392,14 @@ namespace DDrop
 
                 try
                 {
-                    await _calculationBL.CalculateDropParameters(dropPhoto, PixelsInMillimeterTextBox.Text, CurrentDropPhoto.DropPhotoId);
+                    await _calculationBL.CalculateDropParameters(dropPhoto, PixelsInMillimeterTextBox.Text,
+                        CurrentDropPhoto.DropPhotoId);
 
-                    _logger.LogInfo(new LogEntry()
+                    _logger.LogInfo(new LogEntry
                     {
                         Username = User.Email,
                         LogCategory = LogCategory.Calculation,
-                        Message = $"Расчет для снимка {dropPhoto.Name} выполнен.",
+                        Message = $"Расчет для снимка {dropPhoto.Name} выполнен."
                     });
                     _notifier.ShowSuccess($"Расчет для снимка {dropPhoto.Name} выполнен.");
                 }
@@ -2506,14 +2436,14 @@ namespace DDrop
                 if (CurrentSeries.ReferencePhotoForSeries.Line != null)
                 {
                     _storedReferencePhotoPixelsInMillimeter = CurrentSeries.ReferencePhotoForSeries.PixelsInMillimeter;
-                    _storedReferenceLine = new Line()
+                    _storedReferenceLine = new Line
                     {
                         X1 = CurrentSeries.ReferencePhotoForSeries.Line.X1,
                         X2 = CurrentSeries.ReferencePhotoForSeries.Line.X2,
                         Y1 = CurrentSeries.ReferencePhotoForSeries.Line.Y1,
                         Y2 = CurrentSeries.ReferencePhotoForSeries.Line.Y2,
                         Stroke = CurrentSeries.ReferencePhotoForSeries.Line.Stroke,
-                        StrokeThickness = CurrentSeries.ReferencePhotoForSeries.Line.StrokeThickness,
+                        StrokeThickness = CurrentSeries.ReferencePhotoForSeries.Line.StrokeThickness
                     };
                 }
 
@@ -2554,12 +2484,9 @@ namespace DDrop
 
         private void CancelReferencePhotoEditing_OnClick(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult messageBoxResult =
+            var messageBoxResult =
                 MessageBox.Show("Отменить изменения?", "Подтверждение", MessageBoxButton.YesNo);
-            if (messageBoxResult == MessageBoxResult.Yes)
-            {
-                DiscardReferenceLineChanges();
-            }
+            if (messageBoxResult == MessageBoxResult.Yes) DiscardReferenceLineChanges();
         }
 
         private void DiscardReferenceLineChanges()
@@ -2597,34 +2524,23 @@ namespace DDrop
 
         private bool IsReferencePhotoLineChanged()
         {
-            if (_storedReferenceLine == null && CurrentSeries.ReferencePhotoForSeries.Line != null)
-            {
-                return true;
-            }
+            if (_storedReferenceLine == null && CurrentSeries.ReferencePhotoForSeries.Line != null) return true;
 
             if (CurrentSeries.ReferencePhotoForSeries.Line != null && _storedReferenceLine != null)
-            {
                 if (Math.Abs(CurrentSeries.ReferencePhotoForSeries.Line.X1 - _storedReferenceLine.X1) > 0.001)
                     return true;
-            }
 
             if (CurrentSeries.ReferencePhotoForSeries.Line != null && _storedReferenceLine != null)
-            {
                 if (Math.Abs(CurrentSeries.ReferencePhotoForSeries.Line.X2 - _storedReferenceLine.X2) > 0.001)
                     return true;
-            }
 
             if (CurrentSeries.ReferencePhotoForSeries.Line != null && _storedReferenceLine != null)
-            {
                 if (Math.Abs(CurrentSeries.ReferencePhotoForSeries.Line.Y1 - _storedReferenceLine.Y1) > 0.001)
                     return true;
-            }
 
             if (CurrentSeries.ReferencePhotoForSeries.Line != null && _storedReferenceLine != null)
-            {
                 if (Math.Abs(CurrentSeries.ReferencePhotoForSeries.Line.Y2 - _storedReferenceLine.Y2) > 0.001)
                     return true;
-            }
 
             return false;
         }
@@ -2655,10 +2571,7 @@ namespace DDrop
 
                 _storedDropPhotos = new ObservableCollection<DropPhoto>();
 
-                foreach (var dropPhoto in CurrentSeries.DropPhotosSeries)
-                {
-                    StoreDropPhoto(dropPhoto, _storedDropPhotos);
-                }
+                foreach (var dropPhoto in CurrentSeries.DropPhotosSeries) StoreDropPhoto(dropPhoto, _storedDropPhotos);
 
                 await AnimationHelper.AnimateGridColumnExpandCollapseAsync(AutoCalculationColumn, true, 300, 0,
                     AutoCalculationColumn.MinWidth, 0, 200);
@@ -2681,29 +2594,29 @@ namespace DDrop
 
         private void StoreDropPhoto(DropPhoto dropPhoto, ObservableCollection<DropPhoto> storeTo)
         {
-            storeTo.Add(new DropPhoto()
+            storeTo.Add(new DropPhoto
             {
                 DropPhotoId = dropPhoto.DropPhotoId,
-                SimpleHorizontalLine = dropPhoto.SimpleHorizontalLine != null 
-                ?  new SimpleLine()
+                SimpleHorizontalLine = dropPhoto.SimpleHorizontalLine != null
+                    ? new SimpleLine
                     {
                         X1 = dropPhoto.SimpleHorizontalLine.X1,
                         X2 = dropPhoto.SimpleHorizontalLine.X2,
                         Y1 = dropPhoto.SimpleHorizontalLine.Y1,
                         Y2 = dropPhoto.SimpleHorizontalLine.Y2,
                         SimpleLineId = dropPhoto.SimpleHorizontalLineId.GetValueOrDefault()
-                    } 
-                : null,
-                SimpleVerticalLine = dropPhoto.SimpleVerticalLine != null 
-                ? new SimpleLine()
+                    }
+                    : null,
+                SimpleVerticalLine = dropPhoto.SimpleVerticalLine != null
+                    ? new SimpleLine
                     {
                         X1 = dropPhoto.SimpleVerticalLine.X1,
                         X2 = dropPhoto.SimpleVerticalLine.X2,
                         Y1 = dropPhoto.SimpleVerticalLine.Y1,
                         Y2 = dropPhoto.SimpleVerticalLine.Y2,
                         SimpleLineId = dropPhoto.SimpleVerticalLineId.GetValueOrDefault()
-                    } 
-                : null,
+                    }
+                    : null
             });
 
             _geometryBL.StoreContour(dropPhoto, _storedDropPhotos[_storedDropPhotos.Count - 1]);
@@ -2713,6 +2626,8 @@ namespace DDrop
         {
             _appStateBL.ShowAdorner(CurrentSeriesImageLoading);
             _appStateBL.ShowAdorner(CurrentSeriesPhotoContentLoading);
+            AutoCalculationMenu.IsEnabled = false;
+
             await AnimationHelper.AnimateGridColumnExpandCollapseAsync(AutoCalculationColumn, false, 300, 0,
                 AutoCalculationColumn.MinWidth, 0, 200);
 
@@ -2726,25 +2641,20 @@ namespace DDrop
 
                 for (var i = 0; i < CurrentSeries.DropPhotosSeries.Count; i++)
                 {
-                    if (checkedCount > 0 && !CurrentSeries.DropPhotosSeries[i].IsChecked)
-                    {
-                        continue;
-                    }
+                    if (checkedCount > 0 && !CurrentSeries.DropPhotosSeries[i].IsChecked) continue;
 
                     CurrentSeries.DropPhotosSeries[i].RequireSaving = true;
 
-                    System.Drawing.Point[] points;
+                    Point[] points;
                     try
                     {
                         if (CurrentSeries.DropPhotosSeries[i].Content == null)
-                        {
                             CurrentSeries.DropPhotosSeries[i].Content =
                                 await _dDropRepository.GetDropPhotoContent(
                                     CurrentSeries.DropPhotosSeries[i].DropPhotoId, CancellationToken.None);
-                        }
 
 
-                        if ((CalculationVariants) Properties.Settings.Default.AutoCalculationType ==
+                        if ((CalculationVariants) Settings.Default.AutoCalculationType ==
                             CalculationVariants.CalculateWithPython)
                         {
                             try
@@ -2754,11 +2664,12 @@ namespace DDrop
                             }
                             catch (InvalidOperationException exception)
                             {
-                                _notifier.ShowError($"{exception.Message} для снимка {CurrentSeries.DropPhotosSeries[i].Name}.");
+                                _notifier.ShowError(
+                                    $"{exception.Message} для снимка {CurrentSeries.DropPhotosSeries[i].Name}.");
                                 continue;
                             }
                         }
-                        else if ((CalculationVariants) Properties.Settings.Default.AutoCalculationType == CalculationVariants.CalculateWithCSharp)
+                        else if ((CalculationVariants) Settings.Default.AutoCalculationType == CalculationVariants.CalculateWithCSharp)
                         {
                             try
                             {
@@ -2767,7 +2678,8 @@ namespace DDrop
                             }
                             catch (InvalidOperationException exception)
                             {
-                                _notifier.ShowError($"{exception.Message} для снимка {CurrentSeries.DropPhotosSeries[i].Name}. Попробуйте изменить параметры расчета.");
+                                _notifier.ShowError(
+                                    $"{exception.Message} для снимка {CurrentSeries.DropPhotosSeries[i].Name}. Попробуйте изменить параметры расчета.");
                                 continue;
                             }
                         }
@@ -2778,9 +2690,7 @@ namespace DDrop
                         }
 
                         if (CurrentSeries.DropPhotosSeries[i] != CurrentDropPhoto)
-                        {
                             CurrentSeries.DropPhotosSeries[i].Content = null;
-                        }
 
                         _geometryBL.CreateContour(CurrentSeries.DropPhotosSeries[i], points, calculationVariant,
                             CShrpKsize.Text, CShrpSize1.Text, CShrpSize2.Text, CShrpThreshold1.Text,
@@ -2813,11 +2723,10 @@ namespace DDrop
 
                     if (CurrentDropPhoto != null &&
                         CurrentDropPhoto.DropPhotoId == CurrentSeries.DropPhotosSeries[i].DropPhotoId)
-                    {
                         ShowLinesOnPhotosPreview(CurrentDropPhoto, ImgCurrent.CanDrawing);
-                    }
 
-                    _calculationBL.ReCalculateAllParametersFromLines(CurrentSeries.DropPhotosSeries[i], PixelsInMillimeterTextBox.Text);
+                    _calculationBL.ReCalculateAllParametersFromLines(CurrentSeries.DropPhotosSeries[i],
+                        PixelsInMillimeterTextBox.Text);
                 }
 
                 pbu.ResetValue(pbuHandle1);
@@ -2828,10 +2737,13 @@ namespace DDrop
                     AutoCalculationColumn.MinWidth, 0, 200);
                 _appStateBL.HideAdorner(CurrentSeriesPhotoContentLoading);
                 Photos.IsEnabled = true;
+                AutoCalculationMenu.IsEnabled = true;
                 _appStateBL.HideAdorner(CurrentSeriesImageLoading);
             }
             else
+            {
                 _notifier.ShowInformation("Нет фотографий для расчета.");
+            }
         }
 
         private void ComboBox_OnDropDownClosed(object sender, EventArgs e)
@@ -2840,12 +2752,12 @@ namespace DDrop
 
             if (comboBox != null && comboBox.SelectedIndex == -1)
             {
-                comboBox.SelectedIndex = Properties.Settings.Default.AutoCalculationType;
+                comboBox.SelectedIndex = Settings.Default.AutoCalculationType;
             }
             else
             {
-                if (comboBox != null) Properties.Settings.Default.AutoCalculationType = comboBox.SelectedIndex;
-                Properties.Settings.Default.Save();
+                if (comboBox != null) Settings.Default.AutoCalculationType = comboBox.SelectedIndex;
+                Settings.Default.Save();
             }
         }
 
@@ -2853,32 +2765,27 @@ namespace DDrop
         {
             var checkedCount = CurrentSeries.DropPhotosSeries.Count(x => x.IsChecked);
             var message = GetDiscardMessage(checkedCount);
-            MessageBoxResult messageBoxResult = MessageBox.Show(message, "Подтверждение", MessageBoxButton.YesNo);
-            if (messageBoxResult == MessageBoxResult.Yes)
-            {
-                DiscardAutoCalculationChanges(false, checkedCount);
-            }
+            var messageBoxResult = MessageBox.Show(message, "Подтверждение", MessageBoxButton.YesNo);
+            if (messageBoxResult == MessageBoxResult.Yes) DiscardAutoCalculationChanges(false, checkedCount);
         }
 
         private void InitializePaths()
         {
-            InterpreterTextBox.Text = Properties.Settings.Default.Interpreter;
-            ScriptToRunTextBox.Text = Properties.Settings.Default.ScriptToRun;
+            InterpreterTextBox.Text = Settings.Default.Interpreter;
+            ScriptToRunTextBox.Text = Settings.Default.ScriptToRun;
         }
 
         private void ChooseFilePath_OnClick(object sender, RoutedEventArgs e)
         {
-            Button button = (Button) sender;
-            OpenFileDialog openFileDialog = new OpenFileDialog
+            var button = (Button) sender;
+            var openFileDialog = new OpenFileDialog
             {
                 Multiselect = false,
                 AddExtension = true
             };
 
             if (openFileDialog.ShowDialog() == true)
-            {
                 UpdateOptions((OptionsEnum) Enum.Parse(typeof(OptionsEnum), button.Name), openFileDialog.FileName);
-            }
         }
 
         private void UpdateOptions(OptionsEnum option, object value)
@@ -2886,13 +2793,13 @@ namespace DDrop
             switch (option)
             {
                 case OptionsEnum.Interpreter:
-                    Properties.Settings.Default.Interpreter = (string) value;
-                    Properties.Settings.Default.Save();
+                    Settings.Default.Interpreter = (string) value;
+                    Settings.Default.Save();
                     InterpreterTextBox.Text = (string) value;
                     break;
                 case OptionsEnum.ScriptToRun:
-                    Properties.Settings.Default.ScriptToRun = (string) value;
-                    Properties.Settings.Default.Save();
+                    Settings.Default.ScriptToRun = (string) value;
+                    Settings.Default.Save();
                     ScriptToRunTextBox.Text = (string) value;
                     break;
                 default:
@@ -2900,15 +2807,13 @@ namespace DDrop
             }
         }
 
-        private System.Drawing.Point[] CalculateWithPython(DropPhoto dropPhoto)
+        private Point[] CalculateWithPython(DropPhoto dropPhoto)
         {
-            bool interpreterAndScriptCheck = string.IsNullOrWhiteSpace(Properties.Settings.Default.ScriptToRun) ||
-                                             string.IsNullOrWhiteSpace(Properties.Settings.Default.Interpreter);
+            var interpreterAndScriptCheck = string.IsNullOrWhiteSpace(Settings.Default.ScriptToRun) ||
+                                            string.IsNullOrWhiteSpace(Settings.Default.Interpreter);
             if (!interpreterAndScriptCheck)
-            {
                 return _pythonProvider.GetDiameters(dropPhoto.Content, dropPhoto.Name,
-                    Properties.Settings.Default.ScriptToRun, Properties.Settings.Default.Interpreter);
-            }
+                    Settings.Default.ScriptToRun, Settings.Default.Interpreter);
 
             _notifier.ShowInformation("Выберите интерпритатор python и исполняемый скрипт в меню \"Опции\"");
 
@@ -2919,20 +2824,25 @@ namespace DDrop
         {
             if (CurrentSeries.DropPhotosSeries.Any(x => x.RequireSaving))
             {
-                int checkedCount = CurrentSeries.DropPhotosSeries.Count(x => x.IsChecked);
+                var checkedCount = CurrentSeries.DropPhotosSeries.Count(x => x.IsChecked);
+                var requireSavingCount = CurrentSeries.DropPhotosSeries.Count(x => x.RequireSaving);
 
-                MessageBoxResult messageBoxResult =
-                    MessageBox.Show(checkedCount > 0 ? "Сохранить результаты расчета для выбранных снимков?" : "Сохранить результаты расчета ? ",
+                var messageBoxResult =
+                    MessageBox.Show(
+                        checkedCount > 0
+                            ? "Сохранить результаты расчета для выбранных снимков?"
+                            : "Сохранить результаты расчета ? ",
                         "Подтверждение удаления", MessageBoxButton.YesNo);
                 if (messageBoxResult == MessageBoxResult.Yes)
                 {
                     var pbuHandle1 = pbu.New(ProgressBar, 0,
-                        checkedCount > 0 ? checkedCount : CurrentSeries.DropPhotosSeries.Count, 0);
+                        checkedCount > 0 ? checkedCount : requireSavingCount, 0);
 
                     _appStateBL.ShowAdorner(CurrentSeriesImageLoading);
                     _appStateBL.ShowAdorner(CurrentSeriesPhotoContentLoading);
+                    AutoCalculationMenu.IsEnabled = false;
 
-                    for (int i = CurrentSeries.DropPhotosSeries.Count - 1; i >= 0; i--)
+                    for (var i = CurrentSeries.DropPhotosSeries.Count - 1; i >= 0; i--)
                     {
                         try
                         {
@@ -2943,32 +2853,32 @@ namespace DDrop
                                 continue;
                             }
 
-                            if (checkedCount > 0 && !CurrentSeries.DropPhotosSeries[i].IsChecked)
-                            {
-                                continue;
-                            }
+                            if (checkedCount > 0 && !CurrentSeries.DropPhotosSeries[i].IsChecked) continue;
+
+                            if (!CurrentSeries.DropPhotosSeries[i].RequireSaving) continue;
 
                             if (CurrentSeries.DropPhotosSeries[i].Content == null)
-                            {
                                 CurrentSeries.DropPhotosSeries[i].Content =
-                                    await _dDropRepository.GetDropPhotoContent(CurrentSeries.DropPhotosSeries[i].DropPhotoId,
+                                    await _dDropRepository.GetDropPhotoContent(
+                                        CurrentSeries.DropPhotosSeries[i].DropPhotoId,
                                         CancellationToken.None);
-                            }
 
-                            var dbPhoto = DDropDbEntitiesMapper.DropPhotoToDbDropPhoto(CurrentSeries.DropPhotosSeries[i], CurrentSeries.SeriesId);
+                            var dbPhoto =
+                                DDropDbEntitiesMapper.DropPhotoToDbDropPhoto(CurrentSeries.DropPhotosSeries[i],
+                                    CurrentSeries.SeriesId);
                             await Task.Run(() => _dDropRepository.UpdateDropPhoto(dbPhoto));
 
-                            if (CurrentDropPhoto != null && CurrentSeries.DropPhotosSeries[i].DropPhotoId != CurrentDropPhoto.DropPhotoId)
-                            {
-                                CurrentSeries.DropPhotosSeries[i].Content = null;
-                            }
+                            if (CurrentDropPhoto != null && CurrentSeries.DropPhotosSeries[i].DropPhotoId !=
+                                CurrentDropPhoto.DropPhotoId) CurrentSeries.DropPhotosSeries[i].Content = null;
 
-                            _notifier.ShowSuccess($"Результаты авторасчета для {CurrentSeries.DropPhotosSeries[i].Name} успешно сохранены.");
-                            _logger.LogInfo(new LogEntry()
+                            _notifier.ShowSuccess(
+                                $"Результаты авторасчета для {CurrentSeries.DropPhotosSeries[i].Name} успешно сохранены.");
+                            _logger.LogInfo(new LogEntry
                             {
                                 Username = User.Email,
                                 LogCategory = LogCategory.AutoCalculation,
-                                Message = $"Результаты авторасчета для {CurrentSeries.DropPhotosSeries[i].Name} успешно сохранены.",
+                                Message =
+                                    $"Результаты авторасчета для {CurrentSeries.DropPhotosSeries[i].Name} успешно сохранены."
                             });
                         }
                         catch (TimeoutException)
@@ -3000,6 +2910,7 @@ namespace DDrop
 
                     _appStateBL.HideAdorner(CurrentSeriesImageLoading);
                     _appStateBL.HideAdorner(CurrentSeriesPhotoContentLoading);
+                    AutoCalculationMenu.IsEnabled = true;
 
                     await AutoCalculationModeOff();
 
@@ -3016,7 +2927,7 @@ namespace DDrop
         {
             if (CurrentSeries.DropPhotosSeries.Any(x => x.RequireSaving))
             {
-                MessageBoxResult messageBoxResult = MessageBox.Show("Закончить авторасчет без сохранения?",
+                var messageBoxResult = MessageBox.Show("Закончить авторасчет без сохранения?",
                     "Подтверждение", MessageBoxButton.YesNo);
                 if (messageBoxResult == MessageBoxResult.Yes)
                 {
@@ -3052,10 +2963,7 @@ namespace DDrop
             {
                 foreach (var dropPhoto in CurrentSeries.DropPhotosSeries)
                 {
-                    if (checkedCount > 0 && !dropPhoto.IsChecked && discardAll == false)
-                    {
-                        continue;
-                    }
+                    if (checkedCount > 0 && !dropPhoto.IsChecked && discardAll == false) continue;
 
                     if (dropPhoto.RequireSaving == false && dropPhoto.IsChecked)
                     {
@@ -3085,7 +2993,8 @@ namespace DDrop
             {
                 _geometryBL.RestoreOriginalLines(dropPhoto, storedPhoto, ImgCurrent.CanDrawing);
 
-                _geometryBL.RestoreOriginalContour(dropPhoto, storedPhoto, ImgCurrent.CanDrawing, CurrentDropPhoto.DropPhotoId);
+                _geometryBL.RestoreOriginalContour(dropPhoto, storedPhoto, ImgCurrent.CanDrawing,
+                    CurrentDropPhoto.DropPhotoId);
             }
 
             _calculationBL.ReCalculateAllParametersFromLines(dropPhoto, PixelsInMillimeterTextBox.Text);
@@ -3096,25 +3005,19 @@ namespace DDrop
 
         private static string GetDiscardMessage(int checkedCount)
         {
-            if (checkedCount > 0)
-            {
-                return "Отменить изменения для выбранных снимков?";
-            }
+            if (checkedCount > 0) return "Отменить изменения для выбранных снимков?";
 
             return "Отменить все изменения?";
         }
 
         private void InitilizeUserTemplates()
         {
-            if (!string.IsNullOrEmpty(Properties.Settings.Default.AutoCalculationTemplates))
-            {
-                _userAutoCalculationTemplates = JsonSerializeProvider.DeserializeFromString<ObservableCollection<AutoCalculationTemplate>>(Properties.Settings.Default.AutoCalculationTemplates);
-            }
+            if (!string.IsNullOrEmpty(Settings.Default.AutoCalculationTemplates))
+                _userAutoCalculationTemplates =
+                    JsonSerializeProvider.DeserializeFromString<ObservableCollection<AutoCalculationTemplate>>(
+                        Settings.Default.AutoCalculationTemplates);
             else
-            {
                 _userAutoCalculationTemplates = new ObservableCollection<AutoCalculationTemplate>();
-            }
-
         }
 
         private void InitilizeDefaultTemplates()
@@ -3128,7 +3031,7 @@ namespace DDrop
                     Size1 = 100,
                     Size2 = 250,
                     Treshold1 = 50,
-                    Treshold2 = 100,
+                    Treshold2 = 100
                 },
                 TemplateType = CalculationVariants.CalculateWithCSharp
             });
@@ -3142,7 +3045,7 @@ namespace DDrop
                     Size1 = 100,
                     Size2 = 250,
                     Treshold1 = 50,
-                    Treshold2 = 5,
+                    Treshold2 = 5
                 },
                 TemplateType = CalculationVariants.CalculateWithPython
             });
@@ -3162,7 +3065,6 @@ namespace DDrop
             }
 
             foreach (var userAutoCalculationTemplate in _userAutoCalculationTemplates)
-            {
                 switch (userAutoCalculationTemplate.TemplateType)
                 {
                     case CalculationVariants.CalculateWithPython:
@@ -3178,7 +3080,6 @@ namespace DDrop
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
-            }
 
             if (_currentPhotoAutoCalculationTemplate != null)
             {
@@ -3199,14 +3100,18 @@ namespace DDrop
 
                     СurrentCSharpAutoCalculationTemplate = null;
                     CSharpTemplatesCombobox.SelectedIndex = -1;
-                }    
+                }
             }
             else
             {
                 CSharpTemplatesCombobox.SelectedIndex = 0;
                 PythonTemplatesCombobox.SelectedIndex = 0;
-                СurrentCSharpAutoCalculationTemplate = _autoCalculationDefaultTemplates.FirstOrDefault(x => x.TemplateType == CalculationVariants.CalculateWithCSharp);
-                СurrentPythonAutoCalculationTemplate = _autoCalculationDefaultTemplates.FirstOrDefault(x => x.TemplateType == CalculationVariants.CalculateWithPython);
+                СurrentCSharpAutoCalculationTemplate =
+                    _autoCalculationDefaultTemplates.FirstOrDefault(x =>
+                        x.TemplateType == CalculationVariants.CalculateWithCSharp);
+                СurrentPythonAutoCalculationTemplate =
+                    _autoCalculationDefaultTemplates.FirstOrDefault(x =>
+                        x.TemplateType == CalculationVariants.CalculateWithPython);
             }
         }
 
@@ -3234,6 +3139,130 @@ namespace DDrop
                 СurrentCSharpAutoCalculationTemplate = null;
         }
 
+        private void SavePythonTemplate_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(TextBoxPythonTemplateName.Text))
+            {
+                _userAutoCalculationTemplates.Add(new AutoCalculationTemplate
+                {
+                    Title = TextBoxPythonTemplateName.Text,
+                    Id = Guid.NewGuid(),
+                    TemplateType = CalculationVariants.CalculateWithPython,
+                    Parameters = new AutoCalculationParameters
+                    {
+                        Ksize = Ksize.Value ?? 1,
+                        Size1 = Size1.Value ?? 1,
+                        Size2 = Size2.Value ?? 1,
+                        Treshold1 = Threshold1.Value ?? 1,
+                        Treshold2 = Threshold2.Value ?? 1
+                    }
+                });
+
+                Settings.Default.AutoCalculationTemplates =
+                    JsonSerializeProvider.SerializeToString(_userAutoCalculationTemplates);
+
+                Settings.Default.Save();
+                InitilizeTemplates();
+
+                EndPythonTemplateAdding();
+            }
+            else
+            {
+                _notifier.ShowInformation("Введите название для шаблона.");
+            }
+        }
+
+        private void EndPythonTemplateAdding()
+        {
+            PythonTemplateName.Visibility = Visibility.Hidden;
+            TextBoxPythonTemplateName.Visibility = Visibility.Hidden;
+            SavePythonTemplate.Visibility = Visibility.Hidden;
+            CancelPythonTemplateAdding.Visibility = Visibility.Hidden;
+
+            AddPythonTemplate.Visibility = Visibility.Visible;
+            PythonTemplatesCombobox.Visibility = Visibility.Visible;
+            ChoosePythonTemplate.Visibility = Visibility.Visible;
+        }
+
+        private void SaveCSharpTemplate_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(TextBoxCSharpTemplateName.Text))
+            {
+                _userAutoCalculationTemplates.Add(new AutoCalculationTemplate
+                {
+                    Title = TextBoxCSharpTemplateName.Text,
+                    Id = Guid.NewGuid(),
+                    TemplateType = CalculationVariants.CalculateWithCSharp,
+                    Parameters = new AutoCalculationParameters
+                    {
+                        Ksize = CShrpKsize.Value ?? 1,
+                        Size1 = CShrpSize1.Value ?? 1,
+                        Size2 = CShrpSize2.Value ?? 1,
+                        Treshold1 = CShrpThreshold1.Value ?? 1,
+                        Treshold2 = CShrpThreshold2.Value ?? 1
+                    }
+                });
+
+                Settings.Default.AutoCalculationTemplates =
+                    JsonSerializeProvider.SerializeToString(_userAutoCalculationTemplates);
+
+                Settings.Default.Save();
+                InitilizeTemplates();
+
+                EndCSharpTemplateAdding();
+            }
+            else
+            {
+                _notifier.ShowInformation("Введите название для шаблона.");
+            }
+        }
+
+        private void EndCSharpTemplateAdding()
+        {
+            CSharpTemplateName.Visibility = Visibility.Hidden;
+            TextBoxCSharpTemplateName.Visibility = Visibility.Hidden;
+            SaveCSharpTemplate.Visibility = Visibility.Hidden;
+            CancelCSharpTemplateAdding.Visibility = Visibility.Hidden;
+
+            AddCSharpTemplate.Visibility = Visibility.Visible;
+            CSharpTemplatesCombobox.Visibility = Visibility.Visible;
+            ChooseCSharpTemplate.Visibility = Visibility.Visible;
+        }
+
+        private void AddPythonTemplate_OnClick(object sender, RoutedEventArgs e)
+        {
+            PythonTemplateName.Visibility = Visibility.Visible;
+            TextBoxPythonTemplateName.Visibility = Visibility.Visible;
+            SavePythonTemplate.Visibility = Visibility.Visible;
+            CancelPythonTemplateAdding.Visibility = Visibility.Visible;
+
+            AddPythonTemplate.Visibility = Visibility.Hidden;
+            PythonTemplatesCombobox.Visibility = Visibility.Hidden;
+            ChoosePythonTemplate.Visibility = Visibility.Hidden;
+        }
+
+        private void AddCSharpTemplate_OnClick(object sender, RoutedEventArgs e)
+        {
+            CSharpTemplateName.Visibility = Visibility.Visible;
+            TextBoxCSharpTemplateName.Visibility = Visibility.Visible;
+            SaveCSharpTemplate.Visibility = Visibility.Visible;
+            CancelCSharpTemplateAdding.Visibility = Visibility.Visible;
+
+            AddCSharpTemplate.Visibility = Visibility.Hidden;
+            CSharpTemplatesCombobox.Visibility = Visibility.Hidden;
+            ChooseCSharpTemplate.Visibility = Visibility.Hidden;
+        }
+
+        private void CancelPythonTemplateAdding_OnClick(object sender, RoutedEventArgs e)
+        {
+            EndPythonTemplateAdding();
+        }
+
+        private void CancelCSharpTemplateAdding_OnClick(object sender, RoutedEventArgs e)
+        {
+            EndCSharpTemplateAdding();
+        }
+
         #endregion
 
         #region Account
@@ -3248,22 +3277,20 @@ namespace DDrop
 
         private void AccountMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            Account accountMenu = new Account(User, _notifier, _dDropRepository, _logger);
+            var accountMenu = new Account(User, _notifier, _dDropRepository, _logger);
             accountMenu.ShowDialog();
         }
 
         private void LogoutMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult messageBoxResult = MessageBox.Show($"Выйти из учетной записи {User.Email}?",
+            var messageBoxResult = MessageBox.Show($"Выйти из учетной записи {User.Email}?",
                 "Подтверждение выхода", MessageBoxButton.YesNo);
             if (messageBoxResult == MessageBoxResult.Yes)
             {
                 MainTabControl.SelectedIndex = 0;
 
                 if (CurrentSeries?.ReferencePhotoForSeries?.Line != null)
-                {
                     MainWindowPixelDrawer.CanDrawing.Children.Remove(CurrentSeries.ReferencePhotoForSeries.Line);
-                }
 
                 if (User.UserSeries != null)
                 {
@@ -3305,14 +3332,9 @@ namespace DDrop
             if (options.ShowLinesOnPreviewIsChanged || options.ShowContourOnPreviewIsChanged)
             {
                 if (CurrentSeries != null && CurrentDropPhoto != null)
-                {
                     ShowLinesOnPhotosPreview(CurrentDropPhoto, ImgCurrent.CanDrawing);
-                }
 
-                if (_currentSeriesPreviewPhoto != null)
-                {
-                    LoadSeriesPreviewPhoto(_currentSeriesPreviewPhoto);
-                }
+                if (_currentSeriesPreviewPhoto != null) LoadSeriesPreviewPhoto(_currentSeriesPreviewPhoto);
             }
         }
 
@@ -3320,22 +3342,18 @@ namespace DDrop
         {
             if (User != null)
             {
-                MessageBoxResult messageBoxResult =
+                var messageBoxResult =
                     MessageBox.Show("Закрыть приложение?", "Подтверждение выхода", MessageBoxButton.YesNo);
                 if (messageBoxResult == MessageBoxResult.Yes)
-                {
                     _notifier.Dispose();
-                }
                 else
-                {
                     e.Cancel = true;
-                }
             }
         }
 
         private void Information_Click(object sender, RoutedEventArgs e)
         {
-            Information information = new Information();
+            var information = new Information();
             information.ShowDialog();
         }
 
@@ -3393,7 +3411,6 @@ namespace DDrop
             {
                 await SaveIntervalBetweenPhotosAsync();
                 IntervalBetweenPhotos.IsEnabled = false;
-
             }
 
             CreationTimeCheckBox.IsEnabled = false;
@@ -3449,127 +3466,5 @@ namespace DDrop
         }
 
         #endregion
-
-        private void SavePythonTemplate_OnClick(object sender, RoutedEventArgs e)
-        {
-            if (!string.IsNullOrWhiteSpace(TextBoxPythonTemplateName.Text))
-            {
-                _userAutoCalculationTemplates.Add(new AutoCalculationTemplate
-                {
-                    Title = TextBoxPythonTemplateName.Text,
-                    Id = Guid.NewGuid(),
-                    TemplateType = CalculationVariants.CalculateWithPython,
-                    Parameters = new AutoCalculationParameters()
-                    {
-                        Ksize = Ksize.Value ?? 1,
-                        Size1 = Size1.Value ?? 1,
-                        Size2 = Size2.Value ?? 1,
-                        Treshold1 = Threshold1.Value ?? 1,
-                        Treshold2 = Threshold2.Value ?? 1
-                    }
-                });
-
-                Properties.Settings.Default.AutoCalculationTemplates = JsonSerializeProvider.SerializeToString(_userAutoCalculationTemplates);
-
-                Properties.Settings.Default.Save();
-                InitilizeTemplates();
-
-                EndPythonTemplateAdding();
-            }
-            else
-            {
-                _notifier.ShowInformation("Введите название для шаблона.");
-            }
-        }
-
-        private void EndPythonTemplateAdding()
-        {
-            PythonTemplateName.Visibility = Visibility.Hidden;
-            TextBoxPythonTemplateName.Visibility = Visibility.Hidden;
-            SavePythonTemplate.Visibility = Visibility.Hidden;
-            CancelPythonTemplateAdding.Visibility = Visibility.Hidden;
-
-            AddPythonTemplate.Visibility = Visibility.Visible;
-            PythonTemplatesCombobox.Visibility = Visibility.Visible;
-            ChoosePythonTemplate.Visibility = Visibility.Visible;
-        }
-
-        private void SaveCSharpTemplate_OnClick(object sender, RoutedEventArgs e)
-        {
-            if (!string.IsNullOrWhiteSpace(TextBoxCSharpTemplateName.Text))
-            {
-                _userAutoCalculationTemplates.Add(new AutoCalculationTemplate
-                {
-                    Title = TextBoxCSharpTemplateName.Text,
-                    Id = Guid.NewGuid(),
-                    TemplateType = CalculationVariants.CalculateWithCSharp,
-                    Parameters = new AutoCalculationParameters()
-                    {
-                        Ksize = CShrpKsize.Value ?? 1,
-                        Size1 = CShrpSize1.Value ?? 1,
-                        Size2 = CShrpSize2.Value ?? 1,
-                        Treshold1 = CShrpThreshold1.Value ?? 1,
-                        Treshold2 = CShrpThreshold2.Value ?? 1
-                    }
-                });
-
-                Properties.Settings.Default.AutoCalculationTemplates = JsonSerializeProvider.SerializeToString(_userAutoCalculationTemplates);
-
-                Properties.Settings.Default.Save();
-                InitilizeTemplates();
-
-                EndCSharpTemplateAdding();
-            }
-            else
-            {
-                _notifier.ShowInformation("Введите название для шаблона.");
-            }
-        }
-
-        private void EndCSharpTemplateAdding()
-        {
-            CSharpTemplateName.Visibility = Visibility.Hidden;
-            TextBoxCSharpTemplateName.Visibility = Visibility.Hidden;
-            SaveCSharpTemplate.Visibility = Visibility.Hidden;
-            CancelCSharpTemplateAdding.Visibility = Visibility.Hidden;
-
-            AddCSharpTemplate.Visibility = Visibility.Visible;
-            CSharpTemplatesCombobox.Visibility = Visibility.Visible;
-            ChooseCSharpTemplate.Visibility = Visibility.Visible;
-        }
-
-        private void AddPythonTemplate_OnClick(object sender, RoutedEventArgs e)
-        {
-            PythonTemplateName.Visibility = Visibility.Visible;
-            TextBoxPythonTemplateName.Visibility = Visibility.Visible;
-            SavePythonTemplate.Visibility = Visibility.Visible;
-            CancelPythonTemplateAdding.Visibility = Visibility.Visible;
-
-            AddPythonTemplate.Visibility = Visibility.Hidden;
-            PythonTemplatesCombobox.Visibility = Visibility.Hidden;
-            ChoosePythonTemplate.Visibility = Visibility.Hidden;
-        }
-
-        private void AddCSharpTemplate_OnClick(object sender, RoutedEventArgs e)
-        {
-            CSharpTemplateName.Visibility = Visibility.Visible;
-            TextBoxCSharpTemplateName.Visibility = Visibility.Visible;
-            SaveCSharpTemplate.Visibility = Visibility.Visible;
-            CancelCSharpTemplateAdding.Visibility = Visibility.Visible;
-
-            AddCSharpTemplate.Visibility = Visibility.Hidden;
-            CSharpTemplatesCombobox.Visibility = Visibility.Hidden;
-            ChooseCSharpTemplate.Visibility = Visibility.Hidden;
-        }
-
-        private void CancelPythonTemplateAdding_OnClick(object sender, RoutedEventArgs e)
-        {
-            EndPythonTemplateAdding();
-        }
-
-        private void CancelCSharpTemplateAdding_OnClick(object sender, RoutedEventArgs e)
-        {
-            EndCSharpTemplateAdding();
-        }
     }
 }

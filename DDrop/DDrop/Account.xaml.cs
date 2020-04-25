@@ -1,38 +1,36 @@
 ﻿using System;
-using System.Data.Entity.Infrastructure;
 using System.Reflection;
 using System.Threading.Tasks;
-using DDrop.BE.Models;
-using DDrop.Utility.ImageOperations;
-using Microsoft.Win32;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using DDrop.BE.Enums.Logger;
+using DDrop.BE.Models;
+using DDrop.BL.AppStateBL;
 using DDrop.DAL;
+using DDrop.Properties;
+using DDrop.Utility.Cryptography;
+using DDrop.Utility.ImageOperations;
+using DDrop.Utility.Logger;
 using DDrop.Utility.Mappers;
+using Microsoft.Win32;
 using ToastNotifications;
 using ToastNotifications.Messages;
-using DDrop.Utility.Cryptography;
-using DDrop.Utility.Logger;
 
 namespace DDrop
 {
     /// <summary>
-    /// Interaction logic for Account.xaml
+    ///     Interaction logic for Account.xaml
     /// </summary>
     public partial class Account
     {
-        public static readonly DependencyProperty UserProperty = DependencyProperty.Register("User", typeof(User), typeof(Account));
+        public static readonly DependencyProperty UserProperty =
+            DependencyProperty.Register("User", typeof(User), typeof(Account));
+
         private readonly Notifier _notifier;
-        private IDDropRepository _dDropRepository;
-        private ILogger _logger;
-        public User User
-        {
-            get { return (User)GetValue(UserProperty); }
-            set { SetValue(UserProperty, value); }
-        }
+        private readonly IDDropRepository _dDropRepository;
+        private readonly ILogger _logger;
 
         public Account(User user, Notifier notifier, IDDropRepository dDropRepository, ILogger logger)
         {
@@ -50,6 +48,7 @@ namespace DDrop
                 NewPassword.Visibility = Visibility.Hidden;
                 NewPasswordConfirm.Visibility = Visibility.Hidden;
             }
+
             _dDropRepository = dDropRepository;
             _notifier = notifier;
             _logger = logger;
@@ -58,9 +57,15 @@ namespace DDrop
             ProfilePicture.Source = ImageInterpreter.LoadImage(User.UserPhoto);
         }
 
+        public User User
+        {
+            get => (User) GetValue(UserProperty);
+            set => SetValue(UserProperty, value);
+        }
+
         private async void ChooseProfilePicture_OnClick(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog
+            var openFileDialog = new OpenFileDialog
             {
                 Filter = "Jpeg files (*.jpg)|*.jpg|All files (*.*)|*.*",
                 Multiselect = false,
@@ -68,16 +73,18 @@ namespace DDrop
             };
             if (openFileDialog.ShowDialog() == true)
             {
-                Properties.Settings.Default.Reference = openFileDialog.FileName;
-                CropPhoto croppingWindow = new CropPhoto
+                Settings.Default.Reference = openFileDialog.FileName;
+                var croppingWindow = new CropPhoto
                 {
                     Height = new BitmapImage(new Uri(openFileDialog.FileName)).Height,
                     Width = new BitmapImage(new Uri(openFileDialog.FileName)).Width,
                     Owner = this
                 };
                 croppingWindow.CroppingControl.SourceImage.Source = new BitmapImage(new Uri(openFileDialog.FileName));
-                croppingWindow.CroppingControl.SourceImage.Height = new BitmapImage(new Uri(openFileDialog.FileName)).Height;
-                croppingWindow.CroppingControl.SourceImage.Width = new BitmapImage(new Uri(openFileDialog.FileName)).Width;
+                croppingWindow.CroppingControl.SourceImage.Height =
+                    new BitmapImage(new Uri(openFileDialog.FileName)).Height;
+                croppingWindow.CroppingControl.SourceImage.Width =
+                    new BitmapImage(new Uri(openFileDialog.FileName)).Width;
 
                 if (SystemParameters.PrimaryScreenHeight < croppingWindow.CroppingControl.SourceImage.Height ||
                     SystemParameters.PrimaryScreenWidth < croppingWindow.CroppingControl.SourceImage.Width)
@@ -87,7 +94,6 @@ namespace DDrop
                 else
                 {
                     if (croppingWindow.ShowDialog() == true)
-                    {
                         if (croppingWindow.UserPhotoForCropp != null)
                         {
                             try
@@ -101,11 +107,11 @@ namespace DDrop
                                 });
                                 ProfilePicture.Source = ImageInterpreter.LoadImage(User.UserPhoto);
 
-                                _logger.LogInfo(new LogEntry()
+                                _logger.LogInfo(new LogEntry
                                 {
                                     Username = User.Email,
                                     LogCategory = LogCategory.Account,
-                                    Message = "Фотография обновлена.",
+                                    Message = "Фотография обновлена."
                                 });
                                 _notifier.ShowSuccess("Фотография обновлена.");
                             }
@@ -128,9 +134,8 @@ namespace DDrop
                                 throw;
                             }
 
-                            AccountLoadingWindow();
-                        }                            
-                    }
+                            AccountLoadingComplete();
+                        }
                 }
             }
         }
@@ -140,7 +145,7 @@ namespace DDrop
             TextBlockFirstnameValue.IsEnabled = true;
             TextBlockFirstnameValue.Focus();
             ChangeFirstNameButton.Visibility = Visibility.Hidden;
-            SaveChangeFirstNameButton.Visibility = Visibility.Visible;           
+            SaveChangeFirstNameButton.Visibility = Visibility.Visible;
         }
 
         private async void SaveChangeFirstNameButton_Click(object sender, RoutedEventArgs e)
@@ -151,15 +156,16 @@ namespace DDrop
 
                 await Task.Run(() =>
                 {
-                    Dispatcher.InvokeAsync(() => _dDropRepository.UpdateUserAsync(DDropDbEntitiesMapper.UserToDbUser(User)));
+                    Dispatcher.InvokeAsync(() =>
+                        _dDropRepository.UpdateUserAsync(DDropDbEntitiesMapper.UserToDbUser(User)));
                 });
                 User.FirstName = TextBlockFirstnameValue.Text;
 
-                _logger.LogInfo(new LogEntry()
+                _logger.LogInfo(new LogEntry
                 {
                     Username = User.Email,
                     LogCategory = LogCategory.Account,
-                    Message = "Имя обновлено.",
+                    Message = "Имя обновлено."
                 });
                 _notifier.ShowSuccess("Имя обновлено.");
             }
@@ -182,7 +188,7 @@ namespace DDrop
                 throw;
             }
 
-            AccountLoadingWindow();
+            AccountLoadingComplete();
             TextBlockFirstnameValue.IsEnabled = false;
             ChangeFirstNameButton.Visibility = Visibility.Visible;
             SaveChangeFirstNameButton.Visibility = Visibility.Hidden;
@@ -203,15 +209,16 @@ namespace DDrop
                 AccountLoadingWindow();
                 await Task.Run(() =>
                 {
-                    Dispatcher.InvokeAsync(() => _dDropRepository.UpdateUserAsync(DDropDbEntitiesMapper.UserToDbUser(User)));
+                    Dispatcher.InvokeAsync(() =>
+                        _dDropRepository.UpdateUserAsync(DDropDbEntitiesMapper.UserToDbUser(User)));
                 });
                 User.LastName = TextBlockLastNameValue.Text;
 
-                _logger.LogInfo(new LogEntry()
+                _logger.LogInfo(new LogEntry
                 {
                     Username = User.Email,
                     LogCategory = LogCategory.Account,
-                    Message = "Фамилия обновлена.",
+                    Message = "Фамилия обновлена."
                 });
                 _notifier.ShowSuccess("Фамилия обновлена.");
             }
@@ -234,7 +241,7 @@ namespace DDrop
                 throw;
             }
 
-            AccountLoadingWindow();
+            AccountLoadingComplete();
             TextBlockLastNameValue.IsEnabled = false;
             ChangeLastNameButton.Visibility = Visibility.Visible;
             SaveChangeLastNameButton.Visibility = Visibility.Hidden;
@@ -272,55 +279,38 @@ namespace DDrop
 
         private void SetSelection(PasswordBox passwordBox, int start, int length)
         {
-            passwordBox.GetType().GetMethod("Select", BindingFlags.Instance | BindingFlags.NonPublic)?.Invoke(passwordBox, new object[] { start, length });
+            passwordBox.GetType().GetMethod("Select", BindingFlags.Instance | BindingFlags.NonPublic)
+                ?.Invoke(passwordBox, new object[] {start, length});
         }
 
         private void CurrentPassword_OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Space)
-            {
-                e.Handled = true;
-            }
+            if (e.Key == Key.Space) e.Handled = true;
         }
 
         private void NewPassword_OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Space)
-            {
-                e.Handled = true;
-            }
+            if (e.Key == Key.Space) e.Handled = true;
         }
 
         private void NewPasswordConfirm_OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Space)
-            {
-                e.Handled = true;
-            }
+            if (e.Key == Key.Space) e.Handled = true;
         }
 
         private void CurrentPasswordUnmasked_OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Space)
-            {
-                e.Handled = true;
-            }
+            if (e.Key == Key.Space) e.Handled = true;
         }
 
         private void NewPasswordUnmasked_OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Space)
-            {
-                e.Handled = true;
-            }
+            if (e.Key == Key.Space) e.Handled = true;
         }
 
         private void NewPasswordConfirmUnmasked_OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Space)
-            {
-                e.Handled = true;
-            }
+            if (e.Key == Key.Space) e.Handled = true;
         }
 
         private void NewPasswordConfirm_OnPasswordChanged(object sender, RoutedEventArgs e)
@@ -328,7 +318,8 @@ namespace DDrop
             if (string.IsNullOrWhiteSpace(NewPasswordConfirm.Password.Trim()))
             {
                 NewPasswordConfirmUnmasked.Text = NewPasswordConfirm.Password;
-                SetSelection(NewPasswordConfirm, NewPasswordConfirm.Password.Length, NewPasswordConfirm.Password.Length);
+                SetSelection(NewPasswordConfirm, NewPasswordConfirm.Password.Length,
+                    NewPasswordConfirm.Password.Length);
             }
         }
 
@@ -381,28 +372,29 @@ namespace DDrop
                         User.Password = PasswordOperations.HashPassword(NewPassword.Password);
                         await Task.Run(() =>
                         {
-                            Dispatcher.InvokeAsync(() => _dDropRepository.UpdateUserAsync(DDropDbEntitiesMapper.UserToDbUser(User)));
+                            Dispatcher.InvokeAsync(() =>
+                                _dDropRepository.UpdateUserAsync(DDropDbEntitiesMapper.UserToDbUser(User)));
                         });
 
 
-                        _logger.LogInfo(new LogEntry()
+                        _logger.LogInfo(new LogEntry
                         {
                             Username = User.Email,
                             LogCategory = LogCategory.Account,
-                            Message = "Пароль успешно изменен.",
+                            Message = "Пароль успешно изменен."
                         });
                         _notifier.ShowSuccess("Пароль успешно изменен.");
                         NewPasswordConfirm.Password = "";
                         NewPassword.Password = "";
                         CurrentPassword.Password = "";
-                        
-                        AccountLoadingWindow();
+
+                        AccountLoadingComplete();
                     }
                     catch (TimeoutException)
                     {
                         _notifier.ShowError("Не удалось сохранить пароль. Проверьте интернет соединение.");
 
-                        AccountLoadingWindow();
+                        AccountLoadingComplete();
                     }
                     catch (Exception exception)
                     {
@@ -423,26 +415,37 @@ namespace DDrop
                 {
                     _notifier.ShowError("Новый пароль и его подтверждение не совпадают.");
 
-                    AccountLoadingWindow();
+                    AccountLoadingComplete();
                 }
             }
             else
             {
                 _notifier.ShowError("Неверный старый пароль.");
 
-                AccountLoadingWindow();
+                AccountLoadingComplete();
             }
         }
 
         private void AccountLoadingWindow()
         {
-            ChangePasswordButton.IsEnabled = !ChangePasswordButton.IsEnabled;
-            SaveChangeLastNameButton.IsEnabled = !SaveChangeLastNameButton.IsEnabled;
-            ChangeLastNameButton.IsEnabled = !ChangeLastNameButton.IsEnabled;
-            SaveChangeFirstNameButton.IsEnabled = !SaveChangeFirstNameButton.IsEnabled;
-            ChangeFirstNameButton.IsEnabled = !ChangeFirstNameButton.IsEnabled;
-            ChooseProfilePicture.IsEnabled = !ChooseProfilePicture.IsEnabled;
-            AccountLoading.IsAdornerVisible = !AccountLoading.IsAdornerVisible;
+            ChangePasswordButton.IsEnabled = false;
+            SaveChangeLastNameButton.IsEnabled = false;
+            ChangeLastNameButton.IsEnabled = false;
+            SaveChangeFirstNameButton.IsEnabled = false;
+            ChangeFirstNameButton.IsEnabled = false;
+            ChooseProfilePicture.IsEnabled = false;
+            AccountLoading.IsAdornerVisible = true;
+        }
+
+        private void AccountLoadingComplete()
+        {
+            ChangePasswordButton.IsEnabled = true;
+            SaveChangeLastNameButton.IsEnabled = true;
+            ChangeLastNameButton.IsEnabled = true;
+            SaveChangeFirstNameButton.IsEnabled = true;
+            ChangeFirstNameButton.IsEnabled = true;
+            ChooseProfilePicture.IsEnabled = true;
+            AccountLoading.IsAdornerVisible = false;
         }
     }
 }

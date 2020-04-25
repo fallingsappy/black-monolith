@@ -1,31 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 
 namespace SimpleSample
 {
     /// <summary>
-    /// Interaction logic for LoadingWait.xaml
+    ///     Interaction logic for LoadingWait.xaml
     /// </summary>
     public partial class LoadingWait : UserControl
     {
-
         #region Data
+
         private readonly DispatcherTimer animationTimer;
+
         #endregion
 
         #region Constructor
+
         public LoadingWait()
         {
             InitializeComponent();
@@ -34,9 +28,11 @@ namespace SimpleSample
                 DispatcherPriority.ContextIdle, Dispatcher);
             animationTimer.Interval = new TimeSpan(0, 0, 0, 0, 75);
         }
+
         #endregion
 
         #region Private Methods
+
         private void Start()
         {
             Mouse.OverrideCursor = Cursors.Wait;
@@ -76,10 +72,10 @@ namespace SimpleSample
             double posOffSet, double step)
         {
             ellipse.SetValue(Canvas.LeftProperty, 50.0
-                + Math.Sin(offset + posOffSet * step) * 50.0);
+                                                  + Math.Sin(offset + posOffSet * step) * 50.0);
 
             ellipse.SetValue(Canvas.TopProperty, 50
-                + Math.Cos(offset + posOffSet * step) * 50.0);
+                                                 + Math.Cos(offset + posOffSet * step) * 50.0);
         }
 
         private void HandleUnloaded(object sender, RoutedEventArgs e)
@@ -90,13 +86,14 @@ namespace SimpleSample
         private void HandleVisibleChanged(object sender,
             DependencyPropertyChangedEventArgs e)
         {
-            bool isVisible = (bool)e.NewValue;
+            var isVisible = (bool) e.NewValue;
 
             if (isVisible)
                 Start();
             else
                 Stop();
         }
+
         #endregion
     }
 }

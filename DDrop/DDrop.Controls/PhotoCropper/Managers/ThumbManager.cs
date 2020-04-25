@@ -7,18 +7,27 @@ using DDrop.Controls.PhotoCropper.Thumbs;
 
 namespace DDrop.Controls.PhotoCropper.Managers
 {
-    /// <summary>у11
-    /// Class that represent for displaying/redraw thumbs
+    /// <summary>
+    ///     у11
+    ///     Class that represent for displaying/redraw thumbs
     /// </summary>
     internal class ThumbManager
     {
-        private readonly ThumbCrop _bottomMiddle, _leftMiddle, _topMiddle, _rightMiddle, _topLeft, _topRight, _bottomLeft, _bottomRight;
+        private readonly ThumbCrop _bottomMiddle,
+            _leftMiddle,
+            _topMiddle,
+            _rightMiddle,
+            _topLeft,
+            _topRight,
+            _bottomLeft,
+            _bottomRight;
+
         private readonly Canvas _canvas;
         private readonly RectangleManager _rectangleManager;
-        private readonly double _thumbSize;
         private readonly bool _squareMode;
+        private readonly double _thumbSize;
 
-        public ThumbManager(Canvas canvas, RectangleManager rectangleManager,  bool squareMode)
+        public ThumbManager(Canvas canvas, RectangleManager rectangleManager, bool squareMode)
         {
             //  initizalize
             _canvas = canvas;
@@ -37,137 +46,120 @@ namespace DDrop.Controls.PhotoCropper.Managers
             _bottomRight = ThumbFactory.CreateThumb(ThumbFactory.ThumbPosition.BottomRight, _canvas, _thumbSize);
 
             //  subsctibe to mouse events
-            _bottomMiddle.DragDelta += new DragDeltaEventHandler(BottomMiddleDragDeltaEventHandler);
-            _bottomMiddle.PreviewMouseLeftButtonDown += new MouseButtonEventHandler(PreviewMouseLeftButtonDownGenericHandler);
-            _bottomMiddle.PreviewMouseLeftButtonUp += new MouseButtonEventHandler(PreviewMouseLeftButtonUpGenericHandler);
+            _bottomMiddle.DragDelta += BottomMiddleDragDeltaEventHandler;
+            _bottomMiddle.PreviewMouseLeftButtonDown += PreviewMouseLeftButtonDownGenericHandler;
+            _bottomMiddle.PreviewMouseLeftButtonUp += PreviewMouseLeftButtonUpGenericHandler;
 
-            _leftMiddle.DragDelta += new DragDeltaEventHandler(LeftMiddleDragDeltaEventHandler);
-            _leftMiddle.PreviewMouseLeftButtonDown += new MouseButtonEventHandler(PreviewMouseLeftButtonDownGenericHandler);
-            _leftMiddle.PreviewMouseLeftButtonUp += new MouseButtonEventHandler(PreviewMouseLeftButtonUpGenericHandler);
+            _leftMiddle.DragDelta += LeftMiddleDragDeltaEventHandler;
+            _leftMiddle.PreviewMouseLeftButtonDown += PreviewMouseLeftButtonDownGenericHandler;
+            _leftMiddle.PreviewMouseLeftButtonUp += PreviewMouseLeftButtonUpGenericHandler;
 
-            _topMiddle.DragDelta += new DragDeltaEventHandler(TopMiddleDragDeltaEventHandler);
-            _topMiddle.PreviewMouseLeftButtonDown += new MouseButtonEventHandler(PreviewMouseLeftButtonDownGenericHandler);
-            _topMiddle.PreviewMouseLeftButtonUp += new MouseButtonEventHandler(PreviewMouseLeftButtonUpGenericHandler);
+            _topMiddle.DragDelta += TopMiddleDragDeltaEventHandler;
+            _topMiddle.PreviewMouseLeftButtonDown += PreviewMouseLeftButtonDownGenericHandler;
+            _topMiddle.PreviewMouseLeftButtonUp += PreviewMouseLeftButtonUpGenericHandler;
 
-            _rightMiddle.DragDelta += new DragDeltaEventHandler(RightMiddleDragDeltaEventHandler);
-            _rightMiddle.PreviewMouseLeftButtonDown += new MouseButtonEventHandler(PreviewMouseLeftButtonDownGenericHandler);
-            _rightMiddle.PreviewMouseLeftButtonUp += new MouseButtonEventHandler(PreviewMouseLeftButtonUpGenericHandler);
+            _rightMiddle.DragDelta += RightMiddleDragDeltaEventHandler;
+            _rightMiddle.PreviewMouseLeftButtonDown += PreviewMouseLeftButtonDownGenericHandler;
+            _rightMiddle.PreviewMouseLeftButtonUp += PreviewMouseLeftButtonUpGenericHandler;
 
-            _topLeft.DragDelta += new DragDeltaEventHandler(TopLeftDragDeltaEventHandler);
-            _topLeft.PreviewMouseLeftButtonDown += new MouseButtonEventHandler(PreviewMouseLeftButtonDownGenericHandler);
-            _topLeft.PreviewMouseLeftButtonUp += new MouseButtonEventHandler(PreviewMouseLeftButtonUpGenericHandler);
+            _topLeft.DragDelta += TopLeftDragDeltaEventHandler;
+            _topLeft.PreviewMouseLeftButtonDown += PreviewMouseLeftButtonDownGenericHandler;
+            _topLeft.PreviewMouseLeftButtonUp += PreviewMouseLeftButtonUpGenericHandler;
 
-            _topRight.DragDelta += new DragDeltaEventHandler(TopRightDragDeltaEventHandler);
-            _topRight.PreviewMouseLeftButtonDown += new MouseButtonEventHandler(PreviewMouseLeftButtonDownGenericHandler);
-            _topRight.PreviewMouseLeftButtonUp += new MouseButtonEventHandler(PreviewMouseLeftButtonUpGenericHandler);
+            _topRight.DragDelta += TopRightDragDeltaEventHandler;
+            _topRight.PreviewMouseLeftButtonDown += PreviewMouseLeftButtonDownGenericHandler;
+            _topRight.PreviewMouseLeftButtonUp += PreviewMouseLeftButtonUpGenericHandler;
 
-            _bottomLeft.DragDelta += new DragDeltaEventHandler(BottomLeftDragDeltaEventHandler);
-            _bottomLeft.PreviewMouseLeftButtonDown += new MouseButtonEventHandler(PreviewMouseLeftButtonDownGenericHandler);
-            _bottomLeft.PreviewMouseLeftButtonUp += new MouseButtonEventHandler(PreviewMouseLeftButtonUpGenericHandler);
+            _bottomLeft.DragDelta += BottomLeftDragDeltaEventHandler;
+            _bottomLeft.PreviewMouseLeftButtonDown += PreviewMouseLeftButtonDownGenericHandler;
+            _bottomLeft.PreviewMouseLeftButtonUp += PreviewMouseLeftButtonUpGenericHandler;
 
-            _bottomRight.DragDelta += new DragDeltaEventHandler(BottomRightDragDeltaEventHandler);
-            _bottomRight.PreviewMouseLeftButtonDown += new MouseButtonEventHandler(PreviewMouseLeftButtonDownGenericHandler);
-            _bottomRight.PreviewMouseLeftButtonUp += new MouseButtonEventHandler(PreviewMouseLeftButtonUpGenericHandler);
+            _bottomRight.DragDelta += BottomRightDragDeltaEventHandler;
+            _bottomRight.PreviewMouseLeftButtonDown += PreviewMouseLeftButtonDownGenericHandler;
+            _bottomRight.PreviewMouseLeftButtonUp += PreviewMouseLeftButtonUpGenericHandler;
         }
 
         private double BottomSideCalculation(object sender, DragDeltaEventArgs e)
         {
-            ThumbCrop thumb = sender as ThumbCrop;
-            double deltaVertical = e.VerticalChange;
-            double currentPoint = Canvas.GetTop(thumb);
-            double thumbResultTop = currentPoint + deltaVertical;
+            var thumb = sender as ThumbCrop;
+            var deltaVertical = e.VerticalChange;
+            var currentPoint = Canvas.GetTop(thumb);
+            var thumbResultTop = currentPoint + deltaVertical;
             if (thumbResultTop + _thumbSize / 2 > _canvas.ActualHeight)
-            {
                 thumbResultTop = _canvas.ActualHeight - _thumbSize / 2;
-            }
-            double resultHeight = thumbResultTop - _rectangleManager.TopLeft.Y + _thumbSize / 2;
+            var resultHeight = thumbResultTop - _rectangleManager.TopLeft.Y + _thumbSize / 2;
             return resultHeight;
         }
 
         private double RightSideCalculation(object sender, DragDeltaEventArgs e)
         {
-            ThumbCrop thumb = sender as ThumbCrop;
+            var thumb = sender as ThumbCrop;
 
-            double deltaHorizontal = e.HorizontalChange;
-            double currLeft = Canvas.GetLeft(thumb);
-            double resultThumbLeft = currLeft + deltaHorizontal;
-            if (resultThumbLeft > _canvas.ActualWidth)
-            {
-                resultThumbLeft = _canvas.ActualWidth;
-            }
+            var deltaHorizontal = e.HorizontalChange;
+            var currLeft = Canvas.GetLeft(thumb);
+            var resultThumbLeft = currLeft + deltaHorizontal;
+            if (resultThumbLeft > _canvas.ActualWidth) resultThumbLeft = _canvas.ActualWidth;
 
-            double resultWidth = resultThumbLeft - _rectangleManager.TopLeft.X;
+            var resultWidth = resultThumbLeft - _rectangleManager.TopLeft.X;
             return resultWidth;
         }
 
         private Tuple<double, double> LeftSideCalculation(object sender, DragDeltaEventArgs e)
         {
-            ThumbCrop thumb = sender as ThumbCrop;
-            double deltaHorizontal = e.HorizontalChange;
-            double currLeft = Canvas.GetLeft(thumb);
-            double resulThumbtLeft = currLeft + deltaHorizontal;
-            if (resulThumbtLeft < 0)
-            {
-                resulThumbtLeft = -_thumbSize / 2;
-            }
+            var thumb = sender as ThumbCrop;
+            var deltaHorizontal = e.HorizontalChange;
+            var currLeft = Canvas.GetLeft(thumb);
+            var resulThumbtLeft = currLeft + deltaHorizontal;
+            if (resulThumbtLeft < 0) resulThumbtLeft = -_thumbSize / 2;
 
-            double offset = currLeft - resulThumbtLeft;
-            double resultLeft = resulThumbtLeft + _thumbSize / 2;
-            double resultWidth = _rectangleManager.RectangleWidth + offset;
+            var offset = currLeft - resulThumbtLeft;
+            var resultLeft = resulThumbtLeft + _thumbSize / 2;
+            var resultWidth = _rectangleManager.RectangleWidth + offset;
             return Tuple.Create(resultLeft, resultWidth);
         }
 
         private Tuple<double, double> TopSideCalculation(object sender, DragDeltaEventArgs e)
         {
-            ThumbCrop thumb = sender as ThumbCrop;
-            double deltaVertical = e.VerticalChange;
-            double currentPoint = Canvas.GetTop(thumb);
-            double resultThumbTop = currentPoint + deltaVertical;
-            if (resultThumbTop < 0)
-            {
-                resultThumbTop = -_thumbSize / 2;
-            }
-            double offset = currentPoint - resultThumbTop;
-            double resultHeight = _rectangleManager.RectangleHeight + offset;
-            double resultTop = resultThumbTop + _thumbSize / 2;
+            var thumb = sender as ThumbCrop;
+            var deltaVertical = e.VerticalChange;
+            var currentPoint = Canvas.GetTop(thumb);
+            var resultThumbTop = currentPoint + deltaVertical;
+            if (resultThumbTop < 0) resultThumbTop = -_thumbSize / 2;
+            var offset = currentPoint - resultThumbTop;
+            var resultHeight = _rectangleManager.RectangleHeight + offset;
+            var resultTop = resultThumbTop + _thumbSize / 2;
             return Tuple.Create(resultTop, resultHeight);
         }
 
         private Tuple<double, double> LeftSideCalculationSquare(object sender, DragDeltaEventArgs e)
         {
-            ThumbCrop thumb = sender as ThumbCrop;
-            double deltaVertical = e.HorizontalChange;
-            double currLeft = Canvas.GetLeft(thumb);
-            double resulThumbtLeft = currLeft + deltaVertical;
+            var thumb = sender as ThumbCrop;
+            var deltaVertical = e.HorizontalChange;
+            var currLeft = Canvas.GetLeft(thumb);
+            var resulThumbtLeft = currLeft + deltaVertical;
 
-            if (resulThumbtLeft < 0)
-            {
-                resulThumbtLeft = -_thumbSize / 2;
-            }
+            if (resulThumbtLeft < 0) resulThumbtLeft = -_thumbSize / 2;
 
-            double offset = currLeft - resulThumbtLeft;
-            double resultLeft = resulThumbtLeft + _thumbSize / 2;
-            double resultWidth = _rectangleManager.RectangleWidth + offset;
+            var offset = currLeft - resulThumbtLeft;
+            var resultLeft = resulThumbtLeft + _thumbSize / 2;
+            var resultWidth = _rectangleManager.RectangleWidth + offset;
             return Tuple.Create(resultLeft, resultWidth);
         }
 
         private Tuple<double, double> TopSideCalculationSquare(object sender, DragDeltaEventArgs e)
         {
-            ThumbCrop thumb = sender as ThumbCrop;
-            double deltaHorizontal = e.HorizontalChange;
-            double currentPoint = Canvas.GetTop(thumb);
-            double getLeft = Canvas.GetLeft(thumb);
-            double resultThumbTop = currentPoint;
+            var thumb = sender as ThumbCrop;
+            var deltaHorizontal = e.HorizontalChange;
+            var currentPoint = Canvas.GetTop(thumb);
+            var getLeft = Canvas.GetLeft(thumb);
+            var resultThumbTop = currentPoint;
             if (getLeft > 0)
                 resultThumbTop = currentPoint + deltaHorizontal;
 
-            if (resultThumbTop < 0)
-            {
-                resultThumbTop = -_thumbSize / 2;
-            }
-            double offset = currentPoint - resultThumbTop;
-            double resultHeight = _rectangleManager.RectangleHeight + offset;
-            double resultTop = resultThumbTop + _thumbSize / 2;
+            if (resultThumbTop < 0) resultThumbTop = -_thumbSize / 2;
+            var offset = currentPoint - resultThumbTop;
+            var resultHeight = _rectangleManager.RectangleHeight + offset;
+            var resultTop = resultThumbTop + _thumbSize / 2;
             return Tuple.Create(resultTop, resultHeight);
         }
 
@@ -175,13 +167,13 @@ namespace DDrop.Controls.PhotoCropper.Managers
         {
             if (_squareMode)
             {
-                double resultHeight = BottomSideCalculation(sender, e);
+                var resultHeight = BottomSideCalculation(sender, e);
                 UpdateRectangeSize(null, null, resultHeight, resultHeight);
             }
             else
             {
-                double resultWidth = RightSideCalculation(sender, e);
-                double resultHeight = BottomSideCalculation(sender, e);
+                var resultWidth = RightSideCalculation(sender, e);
+                var resultHeight = BottomSideCalculation(sender, e);
 
                 UpdateRectangeSize(null, null, resultHeight, resultWidth);
             }
@@ -191,15 +183,15 @@ namespace DDrop.Controls.PhotoCropper.Managers
         {
             if (_squareMode)
             {
-                double resultLeft = LeftSideCalculation(sender, e).Item1;
-                double resultWidth = LeftSideCalculation(sender, e).Item2;
+                var resultLeft = LeftSideCalculation(sender, e).Item1;
+                var resultWidth = LeftSideCalculation(sender, e).Item2;
                 UpdateRectangeSize(resultLeft, null, resultWidth, resultWidth);
             }
             else
             {
-                double resultHeight = BottomSideCalculation(sender, e);
-                double resultLeft = LeftSideCalculation(sender, e).Item1;
-                double resultWidth = LeftSideCalculation(sender, e).Item2;
+                var resultHeight = BottomSideCalculation(sender, e);
+                var resultLeft = LeftSideCalculation(sender, e).Item1;
+                var resultWidth = LeftSideCalculation(sender, e).Item2;
 
                 UpdateRectangeSize(resultLeft, null, resultHeight, resultWidth);
             }
@@ -207,17 +199,17 @@ namespace DDrop.Controls.PhotoCropper.Managers
 
         private void TopRightDragDeltaEventHandler(object sender, DragDeltaEventArgs e)
         {
-            if(_squareMode)
+            if (_squareMode)
             {
-                double resultTop = TopSideCalculation(sender, e).Item1;
-                double resultHeight = TopSideCalculation(sender, e).Item2;
+                var resultTop = TopSideCalculation(sender, e).Item1;
+                var resultHeight = TopSideCalculation(sender, e).Item2;
                 UpdateRectangeSize(null, resultTop, resultHeight, resultHeight);
             }
             else
             {
-                double resultTop = TopSideCalculation(sender, e).Item1;
-                double resultHeight = TopSideCalculation(sender, e).Item2;
-                double resultWidth = RightSideCalculation(sender, e);
+                var resultTop = TopSideCalculation(sender, e).Item1;
+                var resultHeight = TopSideCalculation(sender, e).Item2;
+                var resultWidth = RightSideCalculation(sender, e);
 
                 UpdateRectangeSize(null, resultTop, resultHeight, resultWidth);
             }
@@ -227,17 +219,17 @@ namespace DDrop.Controls.PhotoCropper.Managers
         {
             if (_squareMode)
             {
-                double resultTop = TopSideCalculationSquare(sender, e).Item1;
-                double resultLeft = LeftSideCalculation(sender, e).Item1;
-                double resultWidth = LeftSideCalculation(sender, e).Item2;
+                var resultTop = TopSideCalculationSquare(sender, e).Item1;
+                var resultLeft = LeftSideCalculation(sender, e).Item1;
+                var resultWidth = LeftSideCalculation(sender, e).Item2;
                 UpdateRectangeSize(resultLeft, resultTop, resultWidth, resultWidth);
             }
             else
             {
-                double resultTop = TopSideCalculation(sender, e).Item1;
-                double resultHeight = TopSideCalculation(sender, e).Item2;
-                double resultLeft = LeftSideCalculation(sender, e).Item1;
-                double resultWidth = LeftSideCalculation(sender, e).Item2;
+                var resultTop = TopSideCalculation(sender, e).Item1;
+                var resultHeight = TopSideCalculation(sender, e).Item2;
+                var resultLeft = LeftSideCalculation(sender, e).Item1;
+                var resultWidth = LeftSideCalculation(sender, e).Item2;
 
                 UpdateRectangeSize(resultLeft, resultTop, resultHeight, resultWidth);
             }
@@ -245,50 +237,57 @@ namespace DDrop.Controls.PhotoCropper.Managers
 
         private void RightMiddleDragDeltaEventHandler(object sender, DragDeltaEventArgs e)
         {
-            double resultWidth = RightSideCalculation(sender, e);
+            var resultWidth = RightSideCalculation(sender, e);
             UpdateRectangeSize(null, null, null, resultWidth);
         }
 
         private void TopMiddleDragDeltaEventHandler(object sender, DragDeltaEventArgs e)
         {
-            double resultTop = TopSideCalculation(sender, e).Item1;
-            double resultHeight = TopSideCalculation(sender, e).Item2;
+            var resultTop = TopSideCalculation(sender, e).Item1;
+            var resultHeight = TopSideCalculation(sender, e).Item2;
             UpdateRectangeSize(null, resultTop, resultHeight, null);
         }
 
         private void LeftMiddleDragDeltaEventHandler(object sender, DragDeltaEventArgs e)
         {
-            double resultLeft = LeftSideCalculation(sender, e).Item1;
-            double resultWidth = LeftSideCalculation(sender, e).Item2;
+            var resultLeft = LeftSideCalculation(sender, e).Item1;
+            var resultWidth = LeftSideCalculation(sender, e).Item2;
             UpdateRectangeSize(resultLeft, null, null, resultWidth);
         }
 
         private void BottomMiddleDragDeltaEventHandler(object sender, DragDeltaEventArgs e)
         {
-            double resultHeight = BottomSideCalculation(sender, e);
+            var resultHeight = BottomSideCalculation(sender, e);
             UpdateRectangeSize(null, null, resultHeight, null);
         }
 
         /// <summary>
-        /// Update (redraw) thumbs positions
+        ///     Update (redraw) thumbs positions
         /// </summary>
         public void UpdateThumbsPosition()
         {
             if (_rectangleManager.RectangleHeight > 0 && _rectangleManager.RectangleWidth > 0)
             {
-                _bottomMiddle.SetPosition(_rectangleManager.TopLeft.X + _rectangleManager.RectangleWidth / 2, _rectangleManager.TopLeft.Y + _rectangleManager.RectangleHeight);
-                _leftMiddle.SetPosition(_rectangleManager.TopLeft.X, _rectangleManager.TopLeft.Y + _rectangleManager.RectangleHeight / 2);
-                _topMiddle.SetPosition(_rectangleManager.TopLeft.X + _rectangleManager.RectangleWidth / 2, _rectangleManager.TopLeft.Y);
-                _rightMiddle.SetPosition(_rectangleManager.TopLeft.X + _rectangleManager.RectangleWidth, _rectangleManager.TopLeft.Y + _rectangleManager.RectangleHeight / 2);
+                _bottomMiddle.SetPosition(_rectangleManager.TopLeft.X + _rectangleManager.RectangleWidth / 2,
+                    _rectangleManager.TopLeft.Y + _rectangleManager.RectangleHeight);
+                _leftMiddle.SetPosition(_rectangleManager.TopLeft.X,
+                    _rectangleManager.TopLeft.Y + _rectangleManager.RectangleHeight / 2);
+                _topMiddle.SetPosition(_rectangleManager.TopLeft.X + _rectangleManager.RectangleWidth / 2,
+                    _rectangleManager.TopLeft.Y);
+                _rightMiddle.SetPosition(_rectangleManager.TopLeft.X + _rectangleManager.RectangleWidth,
+                    _rectangleManager.TopLeft.Y + _rectangleManager.RectangleHeight / 2);
                 _topLeft.SetPosition(_rectangleManager.TopLeft.X, _rectangleManager.TopLeft.Y);
-                _topRight.SetPosition(_rectangleManager.TopLeft.X + _rectangleManager.RectangleWidth, _rectangleManager.TopLeft.Y);
-                _bottomLeft.SetPosition(_rectangleManager.TopLeft.X, _rectangleManager.TopLeft.Y + _rectangleManager.RectangleHeight);
-                _bottomRight.SetPosition(_rectangleManager.TopLeft.X + _rectangleManager.RectangleWidth, _rectangleManager.TopLeft.Y + _rectangleManager.RectangleHeight);
+                _topRight.SetPosition(_rectangleManager.TopLeft.X + _rectangleManager.RectangleWidth,
+                    _rectangleManager.TopLeft.Y);
+                _bottomLeft.SetPosition(_rectangleManager.TopLeft.X,
+                    _rectangleManager.TopLeft.Y + _rectangleManager.RectangleHeight);
+                _bottomRight.SetPosition(_rectangleManager.TopLeft.X + _rectangleManager.RectangleWidth,
+                    _rectangleManager.TopLeft.Y + _rectangleManager.RectangleHeight);
             }
         }
 
         /// <summary>
-        /// Manage thumbs visibility
+        ///     Manage thumbs visibility
         /// </summary>
         /// <param name="isVisble">Set current visibility</param>
         public void ShowThumbs(bool isVisble)
@@ -301,7 +300,6 @@ namespace DDrop.Controls.PhotoCropper.Managers
                     _topRight.Visibility = Visibility.Visible;
                     _bottomLeft.Visibility = Visibility.Visible;
                     _bottomRight.Visibility = Visibility.Visible;
-
                 }
                 else
                 {
@@ -323,7 +321,6 @@ namespace DDrop.Controls.PhotoCropper.Managers
                     _topRight.Visibility = Visibility.Visible;
                     _bottomLeft.Visibility = Visibility.Visible;
                     _bottomRight.Visibility = Visibility.Visible;
-
                 }
                 else
                 {
@@ -340,7 +337,7 @@ namespace DDrop.Controls.PhotoCropper.Managers
         }
 
         /// <summary>
-        /// Update cropping rectangle
+        ///     Update cropping rectangle
         /// </summary>
         /// <param name="left">Left rectangle coordinate</param>
         /// <param name="top">Top rectangle coordinate</param>
@@ -348,19 +345,19 @@ namespace DDrop.Controls.PhotoCropper.Managers
         /// <param name="width">Width of rectangle</param>
         private void UpdateRectangeSize(double? left, double? top, double? height, double? width)
         {
-            double resultLeft = _rectangleManager.TopLeft.X;
-            double resultTop = _rectangleManager.TopLeft.Y;
-            double resultHeight = _rectangleManager.RectangleHeight;
-            double resultWidth = _rectangleManager.RectangleWidth;
+            var resultLeft = _rectangleManager.TopLeft.X;
+            var resultTop = _rectangleManager.TopLeft.Y;
+            var resultHeight = _rectangleManager.RectangleHeight;
+            var resultWidth = _rectangleManager.RectangleWidth;
 
             if (left != null)
-                resultLeft = (double)left;
+                resultLeft = (double) left;
             if (top != null)
-                resultTop = (double)top;
+                resultTop = (double) top;
             if (height != null)
-                resultHeight = (double)height;
+                resultHeight = (double) height;
             if (width != null)
-                resultWidth = (double)width;
+                resultWidth = (double) width;
 
             _rectangleManager.UpdateRectangle(resultLeft, resultTop, resultWidth, resultHeight);
             UpdateThumbsPosition();
@@ -368,13 +365,13 @@ namespace DDrop.Controls.PhotoCropper.Managers
 
         private void PreviewMouseLeftButtonDownGenericHandler(object sender, MouseButtonEventArgs e)
         {
-            ThumbCrop thumb = sender as ThumbCrop;
+            var thumb = sender as ThumbCrop;
             thumb.CaptureMouse();
         }
 
         private void PreviewMouseLeftButtonUpGenericHandler(object sender, MouseButtonEventArgs e)
         {
-            ThumbCrop thumb = sender as ThumbCrop;
+            var thumb = sender as ThumbCrop;
             thumb.ReleaseMouseCapture();
         }
     }

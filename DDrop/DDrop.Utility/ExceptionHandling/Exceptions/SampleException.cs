@@ -2,7 +2,7 @@
 
 namespace DDrop.Utility.ExceptionHandling.Exceptions
 {
-    class SampleException : Exception
+    internal class SampleException : Exception
     {
         public SampleException(string message) : base(message)
         {
