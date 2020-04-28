@@ -69,7 +69,7 @@ namespace DDrop.Utility.ExcelOperations
                         worksheet.Cells["D1"].Value = currentSeries.Title;
                         worksheet.Cells["D2"].Value = DateTime.Now.ToString();
                         worksheet.Cells["D3"].Value = currentSeries.IntervalBetweenPhotos;
-                        worksheet.Cells["D4"].Value = currentSeries.ReferencePhotoForSeries.PixelsInMillimeter;
+                        worksheet.Cells["D4"].Value = currentSeries.ReferencePhotoForSeries?.PixelsInMillimeter ?? 0;
 
                         var singleSeriesToExcelOutput = new ObservableCollection<SeriesToExcel>();
 

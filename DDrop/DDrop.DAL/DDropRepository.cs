@@ -279,6 +279,38 @@ namespace DDrop.DAL
                                 x.ZDiameterInMeters
                             }).FirstOrDefaultAsync();
 
+                        var contour = await context.Contours.Where(x => x.ContourId == dropPhoto.DropPhotoId)
+                            .Select(x => new
+                            {
+                                x.ContourId,
+                                x.CalculationParameters,
+                                x.CalculationProvider,
+                                x.SimpleLines
+                            }).FirstOrDefaultAsync();
+
+                        DbContour contourForAdd = null;
+
+                        if (contour != null)
+                        {
+                            contourForAdd = new DbContour
+                            {
+                                CalculationParameters = contour.CalculationParameters,
+                                CalculationProvider = contour.CalculationProvider,
+                                SimpleLines = new List<DbSimpleLine>()
+                            };
+
+                            foreach (var dbSimpleLine in contour.SimpleLines)
+                            {
+                                contourForAdd.SimpleLines.Add(new DbSimpleLine
+                                {
+                                    X1 = dbSimpleLine.X1,
+                                    X2 = dbSimpleLine.X2,
+                                    Y1 = dbSimpleLine.Y1,
+                                    Y2 = dbSimpleLine.Y2
+                                });
+                            }
+                        }
+
                         dbDropPhotoForAdd.Add(new DbDropPhoto
                         {
                             Drop = new DbDrop
@@ -296,8 +328,8 @@ namespace DDrop.DAL
                                 {
                                     X1 = dropPhoto.SimpleHorizontalLine.X1,
                                     Y1 = dropPhoto.SimpleHorizontalLine.Y1,
-                                    Y2 = dropPhoto.SimpleHorizontalLine.X2,
-                                    X2 = dropPhoto.SimpleHorizontalLine.Y2
+                                    Y2 = dropPhoto.SimpleHorizontalLine.Y2,
+                                    X2 = dropPhoto.SimpleHorizontalLine.X2
                                 }
                                 : null,
                             SimpleVerticalLine = dropPhoto.SimpleVerticalLine != null
@@ -313,7 +345,8 @@ namespace DDrop.DAL
                             YDiameterInPixels = dropPhoto.YDiameterInPixels,
                             ZDiameterInPixels = dropPhoto.ZDiameterInPixels,
                             CreationDateTime = dropPhoto.CreationDateTime,
-                            PhotoOrderInSeries = dropPhoto.PhotoOrderInSeries
+                            PhotoOrderInSeries = dropPhoto.PhotoOrderInSeries,
+                            Contour = contourForAdd
                         });
                     }
 

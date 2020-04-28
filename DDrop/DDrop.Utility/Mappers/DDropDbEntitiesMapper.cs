@@ -335,15 +335,15 @@ namespace DDrop.Utility.Mappers
 
                         foreach (var contourSimpleLine in dropPhoto.Contour.SimpleLines)
                         {
-                            if (contourSimpleLine.ContourId != null)
+                            if (contourSimpleLine.ContourId != null || deserialization)
                                 userSimpleLines.Add(new SimpleLine
                                 {
-                                    SimpleLineId = contourSimpleLine.SimpleLineId,
+                                    SimpleLineId = deserialization ? Guid.NewGuid() : contourSimpleLine.SimpleLineId,
                                     X1 = contourSimpleLine.X1,
                                     X2 = contourSimpleLine.X2,
                                     Y1 = contourSimpleLine.Y1,
                                     Y2 = contourSimpleLine.Y2,
-                                    ContourId = contourSimpleLine.ContourId.Value
+                                    ContourId = dropPhoto.DropPhotoId
                                 });
 
                             userLines.Add(new Line

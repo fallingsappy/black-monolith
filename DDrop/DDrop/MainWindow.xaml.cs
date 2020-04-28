@@ -420,11 +420,26 @@ namespace DDrop
             {
                 PreviewCanvas.Children.Remove(_horizontalLineSeriesPreview);
                 PreviewCanvas.Children.Remove(_verticalLineSeriesPreview);
-
+                if (_contourSeriesPreview != null)
+                {
+                    foreach (var line in _contourSeriesPreview)
+                    {
+                        PreviewCanvas.Children.Remove(line);
+                    }
+                }
+                
                 if (CurrentDropPhoto?.HorizontalLine != null)
                     ImgCurrent.CanDrawing.Children.Remove(CurrentDropPhoto.HorizontalLine);
                 if (CurrentDropPhoto?.VerticalLine != null)
                     ImgCurrent.CanDrawing.Children.Remove(CurrentDropPhoto.VerticalLine);
+
+                if (CurrentDropPhoto?.Contour != null)
+                {
+                    foreach (var line in CurrentDropPhoto.Contour.Lines)
+                    {
+                        ImgCurrent.CanDrawing.Children.Remove(line);
+                    }
+                }
 
                 SingleSeries.IsEnabled = false;
                 ProgressBar.IsIndeterminate = true;
@@ -599,9 +614,16 @@ namespace DDrop
 
                     if (saveFileDialog.ShowDialog() == true)
                     {
-                        ExcelOperations.CreateSingleSeriesExcelFile(User, saveFileDialog.FileName);
+                        try
+                        {
+                            ExcelOperations.CreateSingleSeriesExcelFile(User, saveFileDialog.FileName);
 
-                        _notifier.ShowSuccess($"Файл {saveFileDialog.SafeFileName} успешно сохранен.");
+                            _notifier.ShowSuccess($"Файл {saveFileDialog.SafeFileName} успешно сохранен.");
+                        }
+                        catch (InvalidOperationException exception)
+                        {
+                            _notifier.ShowError($"{exception.InnerException?.InnerException?.Message}");
+                        }
                     }
 
                     SeriesManagerLoadingComplete();
@@ -652,6 +674,22 @@ namespace DDrop
                                 LogCategory = LogCategory.Series,
                                 Message = $"Серия {User.UserSeries[i].Title} была удалена."
                             });
+
+                            PreviewCanvas.Children.Remove(_horizontalLineSeriesPreview);
+                            PreviewCanvas.Children.Remove(_verticalLineSeriesPreview);
+                            if (_contourSeriesPreview != null)
+                            {
+                                foreach (var line in _contourSeriesPreview)
+                                {
+                                    PreviewCanvas.Children.Remove(line);
+                                }
+                            }
+
+                            if (CurrentDropPhoto?.HorizontalLine != null)
+                                ImgCurrent.CanDrawing.Children.Remove(CurrentDropPhoto.HorizontalLine);
+                            if (CurrentDropPhoto?.VerticalLine != null)
+                                ImgCurrent.CanDrawing.Children.Remove(CurrentDropPhoto.VerticalLine);
+
                             User.UserSeries.Remove(User.UserSeries[i]);
                         }
                         catch (TimeoutException)
@@ -703,6 +741,20 @@ namespace DDrop
                 {
                     SeriesWindowLoading();
                     SeriesManagerIsLoading();
+                    PreviewCanvas.Children.Remove(_horizontalLineSeriesPreview);
+                    PreviewCanvas.Children.Remove(_verticalLineSeriesPreview);
+                    if (_contourSeriesPreview != null)
+                    {
+                        foreach (var line in _contourSeriesPreview)
+                        {
+                            PreviewCanvas.Children.Remove(line);
+                        }
+                    }
+
+                    if (CurrentDropPhoto?.HorizontalLine != null)
+                        ImgCurrent.CanDrawing.Children.Remove(CurrentDropPhoto.HorizontalLine);
+                    if (CurrentDropPhoto?.VerticalLine != null)
+                        ImgCurrent.CanDrawing.Children.Remove(CurrentDropPhoto.VerticalLine);
 
                     await _seriesBL.DeleteSeries(User.UserSeries[SeriesDataGrid.SelectedIndex], CurrentSeries, MainWindowPixelDrawer.CanDrawing);
 
@@ -895,8 +947,10 @@ namespace DDrop
                                 await Task.Run(() =>
                                     _dDropRepository.CreateFullSeries(
                                         DDropDbEntitiesMapper.SingleSeriesToSingleDbSeries(deserializedSerie, dbUser)));
-
-                                deserializedSerie.ReferencePhotoForSeries.Content = null;
+                                
+                                if (deserializedSerie.ReferencePhotoForSeries?.Content != null)
+                                    deserializedSerie.ReferencePhotoForSeries.Content = null;
+                                
                                 foreach (var dropPhoto in deserializedSerie.DropPhotosSeries) dropPhoto.Content = null;
 
                                 User.UserSeries.Add(deserializedSerie);
