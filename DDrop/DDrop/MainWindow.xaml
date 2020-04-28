@@ -612,41 +612,33 @@
                                                 <Label Content="Параметры" HorizontalAlignment="Left"
                                                        Margin="10,10,0,0" Height="26" VerticalAlignment="Top"
                                                        FontWeight="Bold" />
-                                                <CheckBox Margin="113,16,10,0" x:Name="UseCSharpDefault"
-                                                          IsChecked="True" Content="По умолчанию" Height="20"
-                                                          VerticalAlignment="Top" />
                                                 <Label Content="Размытие:" HorizontalAlignment="Left"
                                                        Margin="10,41,0,0" Height="26" VerticalAlignment="Top" />
                                                 <extToolkit:IntegerUpDown x:Name="CShrpKsize" Increment="2"
                                                                           AllowTextInput="False" Minimum="1"
                                                                           Margin="113,44,10,0"
                                                                           Text="{Binding ElementName=AppMainWindow, Path=СurrentCSharpAutoCalculationTemplate.Parameters.Ksize}"
-                                                                          IsEnabled="{Binding ElementName=UseCSharpDefault, Path=IsChecked, Converter={StaticResource InverseBooleanConverter}}"
                                                                           Height="23" VerticalAlignment="Top" />
                                                 <Label Content="Порог (мин):" HorizontalAlignment="Left"
                                                        Margin="10,72,0,0" Height="26" VerticalAlignment="Top" />
                                                 <extToolkit:IntegerUpDown x:Name="CShrpThreshold1" Margin="113,75,10,0"
                                                                           Text="{Binding ElementName=AppMainWindow, Path=СurrentCSharpAutoCalculationTemplate.Parameters.Treshold1}"
-                                                                          IsEnabled="{Binding ElementName=UseCSharpDefault, Path=IsChecked, Converter={StaticResource InverseBooleanConverter}}"
                                                                           Height="23" VerticalAlignment="Top" />
                                                 <Label Content="Порог (макс):" HorizontalAlignment="Left"
                                                        Margin="10,103,0,0" Height="26" VerticalAlignment="Top" />
                                                 <extToolkit:IntegerUpDown x:Name="CShrpThreshold2"
                                                                           Margin="113,106,10,0"
                                                                           Text="{Binding ElementName=AppMainWindow, Path=СurrentCSharpAutoCalculationTemplate.Parameters.Treshold2}"
-                                                                          IsEnabled="{Binding ElementName=UseCSharpDefault, Path=IsChecked, Converter={StaticResource InverseBooleanConverter}}"
                                                                           Height="23" VerticalAlignment="Top" />
                                                 <Label Content="Высота контура:" HorizontalAlignment="Left"
                                                        Margin="10,134,0,0" Height="26" VerticalAlignment="Top" />
                                                 <extToolkit:IntegerUpDown x:Name="CShrpSize1" Margin="113,137,10,0"
                                                                           Text="{Binding ElementName=AppMainWindow, Path=СurrentCSharpAutoCalculationTemplate.Parameters.Size1}"
-                                                                          IsEnabled="{Binding ElementName=UseCSharpDefault, Path=IsChecked, Converter={StaticResource InverseBooleanConverter}}"
                                                                           Height="23" VerticalAlignment="Top" />
                                                 <Label Content="Ширина контура:" HorizontalAlignment="Left"
                                                        Margin="10,165,0,0" Height="26" VerticalAlignment="Top" />
                                                 <extToolkit:IntegerUpDown x:Name="CShrpSize2" Margin="113,168,10,0"
                                                                           Text="{Binding ElementName=AppMainWindow, Path=СurrentCSharpAutoCalculationTemplate.Parameters.Size2}"
-                                                                          IsEnabled="{Binding ElementName=UseCSharpDefault, Path=IsChecked, Converter={StaticResource InverseBooleanConverter}}"
                                                                           Height="23" VerticalAlignment="Top" />
                                                 <Label x:Name="ChooseCSharpTemplate" Content="Выбрать шаблон:"
                                                        HorizontalAlignment="Left" Margin="10,196,0,0" Height="26"
@@ -655,7 +647,6 @@
                                                        Content="Название:" HorizontalAlignment="Left"
                                                        Margin="10,196,0,0" Height="26" VerticalAlignment="Top" />
                                                 <ComboBox x:Name="CSharpTemplatesCombobox" Margin="113,199,37,0"
-                                                          IsEnabled="{Binding ElementName=UseCSharpDefault, Path=IsChecked, Converter={StaticResource InverseBooleanConverter}}"
                                                           Height="23" VerticalAlignment="Top"
                                                           ItemsSource="{Binding ElementName=AppMainWindow, Path=CSharpAutoCalculationTemplate}"
                                                           DisplayMemberPath="Title"
@@ -725,44 +716,36 @@
                                                 <Label Content="Параметры" HorizontalAlignment="Left"
                                                        Margin="10,10,0,0" Height="26" VerticalAlignment="Top"
                                                        FontWeight="Bold" />
-                                                <CheckBox Margin="113,16,10,0" x:Name="UsePythonDefault"
-                                                          IsChecked="True" Content="По умолчанию" Height="20"
-                                                          VerticalAlignment="Top" />
                                                 <Label Content="Размытие:" HorizontalAlignment="Left"
                                                        Margin="10,41,0,0" Height="26" VerticalAlignment="Top" />
                                                 <extToolkit:IntegerUpDown Increment="2" AllowTextInput="False"
                                                                           Minimum="1" x:Name="Ksize"
                                                                           Margin="113,44,10,0"
                                                                           Value="{Binding ElementName=AppMainWindow, Path=СurrentPythonAutoCalculationTemplate.Parameters.Ksize}"
-                                                                          IsEnabled="{Binding ElementName=UsePythonDefault, Path=IsChecked, Converter={StaticResource InverseBooleanConverter}}"
                                                                           Height="23" VerticalAlignment="Top" />
                                                 <Label Content="Порог (мин):" HorizontalAlignment="Left"
                                                        Margin="10,72,0,0" Height="26" VerticalAlignment="Top" />
                                                 <extToolkit:IntegerUpDown x:Name="Threshold1" Margin="113,75,10,0"
                                                                           Minimum="1"
                                                                           Value="{Binding ElementName=AppMainWindow, Path=СurrentPythonAutoCalculationTemplate.Parameters.Treshold1}"
-                                                                          IsEnabled="{Binding ElementName=UsePythonDefault, Path=IsChecked, Converter={StaticResource InverseBooleanConverter}}"
                                                                           Height="23" VerticalAlignment="Top" />
                                                 <Label Content="Порог (макс):" HorizontalAlignment="Left"
                                                        Margin="10,103,0,0" Height="26" VerticalAlignment="Top" />
                                                 <extToolkit:IntegerUpDown x:Name="Threshold2" Margin="113,106,10,0"
                                                                           Minimum="1"
                                                                           Value="{Binding ElementName=AppMainWindow, Path=СurrentPythonAutoCalculationTemplate.Parameters.Treshold2}"
-                                                                          IsEnabled="{Binding ElementName=UsePythonDefault, Path=IsChecked, Converter={StaticResource InverseBooleanConverter}}"
                                                                           Height="23" VerticalAlignment="Top" />
                                                 <Label Content="Высота контура:" HorizontalAlignment="Left"
                                                        Margin="10,134,0,0" Height="26" VerticalAlignment="Top" />
                                                 <extToolkit:IntegerUpDown x:Name="Size1" Margin="113,137,10,0"
                                                                           Minimum="1"
                                                                           Value="{Binding ElementName=AppMainWindow, Path=СurrentPythonAutoCalculationTemplate.Parameters.Size1}"
-                                                                          IsEnabled="{Binding ElementName=UsePythonDefault, Path=IsChecked, Converter={StaticResource InverseBooleanConverter}}"
                                                                           Height="23" VerticalAlignment="Top" />
                                                 <Label Content="Ширина контура:" HorizontalAlignment="Left"
                                                        Margin="10,165,0,0" Height="26" VerticalAlignment="Top" />
                                                 <extToolkit:IntegerUpDown x:Name="Size2" Margin="113,168,10,0"
                                                                           Minimum="1"
                                                                           Value="{Binding ElementName=AppMainWindow, Path=СurrentPythonAutoCalculationTemplate.Parameters.Size2}"
-                                                                          IsEnabled="{Binding ElementName=UsePythonDefault, Path=IsChecked, Converter={StaticResource InverseBooleanConverter}}"
                                                                           Height="23" VerticalAlignment="Top" />
                                                 <Label x:Name="ChoosePythonTemplate" Content="Выбрать шаблон:"
                                                        HorizontalAlignment="Left" Margin="10,196,0,0" Height="26"
@@ -770,8 +753,7 @@
                                                 <Label x:Name="PythonTemplateName" Visibility="Hidden"
                                                        Content="Название:" HorizontalAlignment="Left"
                                                        Margin="10,196,0,0" Height="26" VerticalAlignment="Top" />
-                                                <ComboBox x:Name="PythonTemplatesCombobox" Margin="113,199,42,0"
-                                                          IsEnabled="{Binding ElementName=UsePythonDefault, Path=IsChecked, Converter={StaticResource InverseBooleanConverter}}"
+                                                <ComboBox x:Name="PythonTemplatesCombobox" Margin="113,199,37,0"
                                                           Height="23" VerticalAlignment="Top"
                                                           ItemsSource="{Binding ElementName=AppMainWindow, Path=PythonAutoCalculationTemplate}"
                                                           DisplayMemberPath="Title"

@@ -50,7 +50,6 @@ namespace DDrop.BE.Models
 
     public class LocalStoredUsers : INotifyPropertyChanged
     {
-        private bool _isEnabled;
         private ObservableCollection<LocalStoredUser> _users;
 
         public ObservableCollection<LocalStoredUser> Users
@@ -63,9 +62,10 @@ namespace DDrop.BE.Models
             }
         }
 
+        private bool _isEnabled;
         public bool IsEnabled
         {
-            get => _users.Count > 0;
+            get =>_users?.Count > 0;
             set
             {
                 _isEnabled = value;

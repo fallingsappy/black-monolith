@@ -637,6 +637,11 @@ namespace DDrop
                         {
                             if (checkedCount > 0 && !User.UserSeries[i].IsChecked) continue;
 
+                            if (User.UserSeries[i] == CurrentSeries)
+                            {
+                                ClearSeriesView();
+                            }
+
                             await _seriesBL.DeleteSeries(User.UserSeries[i], CurrentSeries, MainWindowPixelDrawer.CanDrawing);
 
                             _notifier.ShowSuccess($"Серия {User.UserSeries[i].Title} была удалена.");
@@ -710,10 +715,7 @@ namespace DDrop
                     _notifier.ShowSuccess($"Серия {User.UserSeries[SeriesDataGrid.SelectedIndex].Title} была удалена.");
 
                     User.UserSeries.RemoveAt(SeriesDataGrid.SelectedIndex);
-                    Photos.ItemsSource = null;
-                    ImgPreview.Source = null;
-                    SeriesPreviewDataGrid.ItemsSource = null;
-                    SeriesPreviewDataGrid.SelectedIndex = -1;
+                    ClearSeriesView();
                 }
                 catch (TimeoutException)
                 {
@@ -738,6 +740,14 @@ namespace DDrop
                 SeriesManagerLoadingComplete();
                 SeriesWindowLoading();
             }
+        }
+
+        private void ClearSeriesView()
+        {
+            Photos.ItemsSource = null;
+            ImgPreview.Source = null;
+            SeriesPreviewDataGrid.ItemsSource = null;
+            SeriesPreviewDataGrid.SelectedIndex = -1;
         }
 
         private void SingleSeriesPlotTabItem_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -979,17 +989,25 @@ namespace DDrop
             {
                 if (seriesNameCell != null)
                 {
-                    var seriesId = CurrentSeries.SeriesId;
-                    var text = seriesNameCell.Text;
-                    await Task.Run(() => _dDropRepository.UpdateSeriesName(text, seriesId));
-
-                    _logger.LogInfo(new LogEntry
+                    if (!string.IsNullOrWhiteSpace(seriesNameCell.Text))
                     {
-                        Username = User.Email,
-                        LogCategory = LogCategory.Series,
-                        Message = "Название серии изменено успешно."
-                    });
-                    _notifier.ShowSuccess("Название серии изменено успешно.");
+                        var seriesId = CurrentSeries.SeriesId;
+                        var text = seriesNameCell.Text;
+                        await Task.Run(() => _dDropRepository.UpdateSeriesName(text, seriesId));
+
+                        _logger.LogInfo(new LogEntry
+                        {
+                            Username = User.Email,
+                            LogCategory = LogCategory.Series,
+                            Message = "Название серии изменено успешно."
+                        });
+                        _notifier.ShowSuccess("Название серии изменено успешно.");
+                    }
+                    else
+                    {
+                        _notifier.ShowInformation("Название серии не может быть пустым.");
+                        seriesNameCell.Text = CurrentSeries.Title;
+                    }
                 }
             }
             catch (TimeoutException)
@@ -1639,6 +1657,7 @@ namespace DDrop
             _loadPhotosContent = true;
 
             Photos.ScrollIntoView(Photos.SelectedItem);
+            _copiedDropPhoto = null;
         }
 
         private void VerticalRulerToggleButton_Checked(object sender, RoutedEventArgs e)
@@ -1791,19 +1810,27 @@ namespace DDrop
             {
                 if (photoNameCell != null)
                 {
-                    ProgressBar.IsIndeterminate = true;
-
-                    var currentDropPhotoId = CurrentDropPhoto.DropPhotoId;
-                    var text = photoNameCell.Text;
-                    await Task.Run(() => _dDropRepository.UpdateDropPhotoName(text, currentDropPhotoId));
-
-                    _logger.LogInfo(new LogEntry
+                    if (!string.IsNullOrWhiteSpace(photoNameCell.Text))
                     {
-                        Username = User.Email,
-                        LogCategory = LogCategory.DropPhoto,
-                        Message = "Название снимка изменено успешно."
-                    });
-                    _notifier.ShowSuccess("Название снимка изменено успешно.");
+                        ProgressBar.IsIndeterminate = true;
+
+                        var currentDropPhotoId = CurrentDropPhoto.DropPhotoId;
+                        var text = photoNameCell.Text;
+                        await Task.Run(() => _dDropRepository.UpdateDropPhotoName(text, currentDropPhotoId));
+
+                        _logger.LogInfo(new LogEntry
+                        {
+                            Username = User.Email,
+                            LogCategory = LogCategory.DropPhoto,
+                            Message = "Название снимка изменено успешно."
+                        });
+                        _notifier.ShowSuccess("Название снимка изменено успешно.");
+                    }
+                    else
+                    {
+                        _notifier.ShowInformation("Название снимка не может быть пустым.");
+                        photoNameCell.Text = CurrentDropPhoto.Name;
+                    }
                 }
             }
             catch (TimeoutException)
@@ -2346,32 +2373,39 @@ namespace DDrop
 
         private async Task ReCalculateDropParameters(bool checkForChecked = false)
         {
-            var checkedCount = 0;
-
-            if (checkForChecked)
-                checkedCount = CurrentSeries.DropPhotosSeries.Count(x => x.IsChecked);
-
-            var messageBoxResult =
-                MessageBox.Show("Пересчитать параметры капель?", "Подтверждение", MessageBoxButton.YesNo);
-            if (messageBoxResult == MessageBoxResult.Yes)
+            if (CurrentSeries.ReferencePhotoForSeries?.PixelsInMillimeter > 0)
             {
-                ProgressBar.IsIndeterminate = false;
+                var checkedCount = 0;
 
-                var pbuHandle1 = pbu.New(ProgressBar, 0, CurrentSeries.DropPhotosSeries.Count, 0);
+                if (checkForChecked)
+                    checkedCount = CurrentSeries.DropPhotosSeries.Count(x => x.IsChecked);
 
-                foreach (var dropPhoto in CurrentSeries.DropPhotosSeries)
+                var messageBoxResult =
+                    MessageBox.Show("Пересчитать параметры капель?", "Подтверждение", MessageBoxButton.YesNo);
+                if (messageBoxResult == MessageBoxResult.Yes)
                 {
-                    if (checkForChecked && checkedCount > 0 && !dropPhoto.IsChecked)
-                        continue;
+                    ProgressBar.IsIndeterminate = false;
 
-                    if (dropPhoto.XDiameterInPixels > 0 && dropPhoto.YDiameterInPixels > 0)
-                        await ReCalculateDropParameters(dropPhoto);
+                    var pbuHandle1 = pbu.New(ProgressBar, 0, CurrentSeries.DropPhotosSeries.Count, 0);
 
-                    pbu.CurValue[pbuHandle1] += 1;
+                    foreach (var dropPhoto in CurrentSeries.DropPhotosSeries)
+                    {
+                        if (checkForChecked && checkedCount > 0 && !dropPhoto.IsChecked)
+                            continue;
+
+                        if (dropPhoto.XDiameterInPixels > 0 && dropPhoto.YDiameterInPixels > 0)
+                            await ReCalculateDropParameters(dropPhoto);
+
+                        pbu.CurValue[pbuHandle1] += 1;
+                    }
+
+                    pbu.ResetValue(pbuHandle1);
+                    pbu.Remove(pbuHandle1);
                 }
-
-                pbu.ResetValue(pbuHandle1);
-                pbu.Remove(pbuHandle1);
+            }
+            else
+            {
+                _notifier.ShowInformation("Выберите референсное расстояние на референсном снимке.");
             }
         }
 
@@ -2393,7 +2427,7 @@ namespace DDrop
                 try
                 {
                     await _calculationBL.CalculateDropParameters(dropPhoto, PixelsInMillimeterTextBox.Text,
-                        CurrentDropPhoto.DropPhotoId);
+                        dropPhoto.DropPhotoId);
 
                     _logger.LogInfo(new LogEntry
                     {
@@ -2657,6 +2691,12 @@ namespace DDrop
                         if ((CalculationVariants) Settings.Default.AutoCalculationType ==
                             CalculationVariants.CalculateWithPython)
                         {
+                            if (!PythonFilesIsSelected())
+                            {
+                                _notifier.ShowInformation("Выберите интерпритатор python и исполняемый скрипт.");
+                                break;
+                            }
+
                             try
                             {
                                 points = CalculateWithPython(CurrentSeries.DropPhotosSeries[i]);
@@ -2666,6 +2706,52 @@ namespace DDrop
                             {
                                 _notifier.ShowError(
                                     $"{exception.Message} для снимка {CurrentSeries.DropPhotosSeries[i].Name}.");
+
+                                _logger.LogError(new LogEntry
+                                {
+                                    Exception = exception.ToString(),
+                                    LogCategory = LogCategory.Common,
+                                    InnerException = exception.InnerException?.Message,
+                                    Message = exception.Message,
+                                    StackTrace = exception.StackTrace,
+                                    Username = User.Email,
+                                    Details = exception.TargetSite.Name
+                                });
+
+                                continue;
+                            }
+                            catch (Win32Exception exception)
+                            {
+                                _notifier.ShowError("Указанный в качестве интерпретатора файл не является исполняемым.");
+
+                                _logger.LogError(new LogEntry
+                                {
+                                    Exception = exception.ToString(),
+                                    LogCategory = LogCategory.Common,
+                                    InnerException = exception.InnerException?.Message,
+                                    Message = exception.Message,
+                                    StackTrace = exception.StackTrace,
+                                    Username = User.Email,
+                                    Details = exception.TargetSite.Name
+                                });
+
+                                continue;
+                            }
+                            catch (FormatException exception)
+                            {
+                                _notifier.ShowError("Не удалось построить точки.");
+
+                                _logger.LogError(new LogEntry
+                                {
+                                    Exception = exception.ToString(),
+                                    LogCategory = LogCategory.Common,
+                                    InnerException = exception.InnerException?.Message,
+                                    Message = exception.Message,
+                                    StackTrace = exception.StackTrace,
+                                    Username = User.Email,
+                                    Details = exception.TargetSite.Name
+                                });
+
                                 continue;
                             }
                         }
@@ -2692,11 +2778,14 @@ namespace DDrop
                         if (CurrentSeries.DropPhotosSeries[i] != CurrentDropPhoto)
                             CurrentSeries.DropPhotosSeries[i].Content = null;
 
-                        _geometryBL.CreateContour(CurrentSeries.DropPhotosSeries[i], points, calculationVariant,
-                            CShrpKsize.Text, CShrpSize1.Text, CShrpSize2.Text, CShrpThreshold1.Text,
-                            CShrpThreshold2.Text, Ksize.Text, Size1.Text, Size2.Text, Threshold1.Text, Threshold2.Text,
-                            CurrentDropPhoto, ImgCurrent);
-                        _geometryBL.CreateDiameters(CurrentSeries.DropPhotosSeries[i], points);
+                        if (points != null)
+                        {
+                            _geometryBL.CreateContour(CurrentSeries.DropPhotosSeries[i], points, calculationVariant,
+                                CShrpKsize.Text, CShrpSize1.Text, CShrpSize2.Text, CShrpThreshold1.Text,
+                                CShrpThreshold2.Text, Ksize.Text, Size1.Text, Size2.Text, Threshold1.Text, Threshold2.Text,
+                                CurrentDropPhoto, ImgCurrent);
+                            _geometryBL.CreateDiameters(CurrentSeries.DropPhotosSeries[i], points);
+                        }
                     }
                     catch (TimeoutException)
                     {
@@ -2809,15 +2898,19 @@ namespace DDrop
 
         private Point[] CalculateWithPython(DropPhoto dropPhoto)
         {
-            var interpreterAndScriptCheck = string.IsNullOrWhiteSpace(Settings.Default.ScriptToRun) ||
-                                            string.IsNullOrWhiteSpace(Settings.Default.Interpreter);
-            if (!interpreterAndScriptCheck)
+            if (PythonFilesIsSelected())
                 return _pythonProvider.GetDiameters(dropPhoto.Content, dropPhoto.Name,
                     Settings.Default.ScriptToRun, Settings.Default.Interpreter);
 
-            _notifier.ShowInformation("Выберите интерпритатор python и исполняемый скрипт в меню \"Опции\"");
+            _notifier.ShowInformation("Выберите интерпритатор python и исполняемый скрипт.");
 
             return null;
+        }
+
+        private bool PythonFilesIsSelected()
+        {
+            return !string.IsNullOrWhiteSpace(Settings.Default.ScriptToRun) ||
+                                            !string.IsNullOrWhiteSpace(Settings.Default.Interpreter);
         }
 
         private async void SaveCalculationResults_OnClick(object sender, RoutedEventArgs e)
@@ -2908,6 +3001,7 @@ namespace DDrop
                     pbu.ResetValue(pbuHandle1);
                     pbu.Remove(pbuHandle1);
 
+                    
                     _appStateBL.HideAdorner(CurrentSeriesImageLoading);
                     _appStateBL.HideAdorner(CurrentSeriesPhotoContentLoading);
                     AutoCalculationMenu.IsEnabled = true;
@@ -2955,6 +3049,7 @@ namespace DDrop
                 AutoCalculationColumn.MinWidth, 0, 200);
             _overrideLoadingBehaviour = false;
             SingleSeriesLoadingComplete(false);
+            _storedDropPhotos = null;
         }
 
         private void DiscardAutoCalculationChanges(bool discardAll = false, int checkedCount = 0)

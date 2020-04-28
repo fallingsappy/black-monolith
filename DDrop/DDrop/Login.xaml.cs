@@ -174,7 +174,9 @@ namespace DDrop
             var newUser = true;
 
             if (LocalStoredUsers.Users != null)
+            {
                 foreach (var localUser in LocalStoredUsers.Users)
+                {
                     if (localUser.Login == email)
                     {
                         newUser = false;
@@ -191,6 +193,8 @@ namespace DDrop
 
                         break;
                     }
+                }
+            }
             else
                 LocalStoredUsers.Users = new ObservableCollection<LocalStoredUser>();
 

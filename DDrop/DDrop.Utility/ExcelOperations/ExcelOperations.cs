@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using DDrop.BE.Models;
@@ -71,20 +72,49 @@ namespace DDrop.Utility.ExcelOperations
                         worksheet.Cells["D4"].Value = currentSeries.ReferencePhotoForSeries.PixelsInMillimeter;
 
                         var singleSeriesToExcelOutput = new ObservableCollection<SeriesToExcel>();
-                        for (var i = 0; i < currentSeries.DropPhotosSeries.Count; i++)
+
+                        if (currentSeries.UseCreationDateTime)
                         {
-                            var dropPhoto = currentSeries.DropPhotosSeries[i];
-                            singleSeriesToExcelOutput.Add(new SeriesToExcel
+                            var orderedDropPhotos = currentSeries.DropPhotosSeries
+                                .OrderBy(x => DateTime.Parse(x.CreationDateTime, CultureInfo.InvariantCulture)).ToList();
+
+                            for (var i = 0; i < currentSeries.DropPhotosSeries.Count; i++)
                             {
-                                Time = i * currentSeries.IntervalBetweenPhotos,
-                                Name = dropPhoto.Name,
-                                RadiusInMeters = dropPhoto.Drop.RadiusInMeters.Value,
-                                VolumeInCubicalMeters = dropPhoto.Drop.VolumeInCubicalMeters,
-                                XDiameterInPixels = dropPhoto.XDiameterInPixels,
-                                YDiameterInPixels = dropPhoto.YDiameterInPixels,
-                                XDiameterInMeters = dropPhoto.Drop.XDiameterInMeters,
-                                YDiameterInMeters = dropPhoto.Drop.YDiameterInMeters
-                            });
+                                var dropPhoto = currentSeries.DropPhotosSeries[i];
+                                
+                                singleSeriesToExcelOutput.Add(new SeriesToExcel
+                                {
+                                    Time = (DateTime.Parse(orderedDropPhotos[i].CreationDateTime,
+                                                CultureInfo.InvariantCulture) -
+                                            DateTime.Parse(orderedDropPhotos[0].CreationDateTime,
+                                                CultureInfo.InvariantCulture)).TotalSeconds,
+                                    Name = dropPhoto.Name,
+                                    RadiusInMeters = dropPhoto.Drop.RadiusInMeters.Value,
+                                    VolumeInCubicalMeters = dropPhoto.Drop.VolumeInCubicalMeters,
+                                    XDiameterInPixels = dropPhoto.XDiameterInPixels,
+                                    YDiameterInPixels = dropPhoto.YDiameterInPixels,
+                                    XDiameterInMeters = dropPhoto.Drop.XDiameterInMeters,
+                                    YDiameterInMeters = dropPhoto.Drop.YDiameterInMeters
+                                });
+                            }
+                        }
+                        else
+                        {
+                            for (var i = 0; i < currentSeries.DropPhotosSeries.Count; i++)
+                            {
+                                var dropPhoto = currentSeries.DropPhotosSeries[i];
+                                singleSeriesToExcelOutput.Add(new SeriesToExcel
+                                {
+                                    Time = i * currentSeries.IntervalBetweenPhotos,
+                                    Name = dropPhoto.Name,
+                                    RadiusInMeters = dropPhoto.Drop.RadiusInMeters.Value,
+                                    VolumeInCubicalMeters = dropPhoto.Drop.VolumeInCubicalMeters,
+                                    XDiameterInPixels = dropPhoto.XDiameterInPixels,
+                                    YDiameterInPixels = dropPhoto.YDiameterInPixels,
+                                    XDiameterInMeters = dropPhoto.Drop.XDiameterInMeters,
+                                    YDiameterInMeters = dropPhoto.Drop.YDiameterInMeters
+                                });
+                            }
                         }
 
                         worksheet.Cells["A6"].LoadFromCollection(singleSeriesToExcelOutput, true);

@@ -57,12 +57,12 @@ namespace DDrop.BL.ImageProcessing.Python
                     outputAsArray[i] = outputAsArray[i].Replace("[", "");
                     outputAsArray[i] = outputAsArray[i].Replace("]", "");
 
-                    var formatedDiamters = outputAsArray[i].Split(new[] {" "}, StringSplitOptions.RemoveEmptyEntries);
+                    var formattedDiameters = outputAsArray[i].Split(new[] {" "}, StringSplitOptions.RemoveEmptyEntries);
 
                     points[i] = new Point
                     {
-                        X = Convert.ToInt32(formatedDiamters[0]),
-                        Y = Convert.ToInt32(formatedDiamters[1])
+                        X = Convert.ToInt32(formattedDiameters[0]),
+                        Y = Convert.ToInt32(formattedDiameters[1])
                     };
                 }
 

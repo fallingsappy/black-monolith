@@ -98,11 +98,6 @@ namespace DDrop.Controls.ScatterPlot
                     }
                     else
                     {
-                        var ci = new CultureInfo("en-US");
-                        var formats = new[]
-                                {"M-d-yyyy", "dd-MM-yyyy", "MM-dd-yyyy", "M.d.yyyy", "dd.MM.yyyy", "MM.dd.yyyy"}
-                            .Union(ci.DateTimeFormat.GetAllDateTimePatterns()).ToArray();
-
                         var orderedDropPhotos = User.UserSeries[i].DropPhotosSeries
                             .OrderBy(x => DateTime.Parse(x.CreationDateTime, CultureInfo.InvariantCulture)).ToList();
 
