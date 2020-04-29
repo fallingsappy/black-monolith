@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -18,7 +19,15 @@ namespace DDrop.Utility.SeriesLocalStorageOperations
         {
             using (var fileStream = File.OpenRead(path))
             {
-                return await JsonSerializer.DeserializeAsync<T>(fileStream);
+                try
+                {
+                    return await JsonSerializer.DeserializeAsync<T>(fileStream);
+                }
+                catch (JsonException)
+                {
+                    throw new InvalidOperationException();
+                }
+                
             }
         }
 

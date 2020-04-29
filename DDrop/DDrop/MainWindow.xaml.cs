@@ -1487,7 +1487,8 @@ namespace DDrop
             if (dropPhoto.VerticalLine != null && Settings.Default.ShowLinesOnPreview ||
                 dropPhoto.VerticalLine != null && _photoEditModeOn)
                 canvas.Children.Add(dropPhoto.VerticalLine);
-            if (dropPhoto.Contour != null && Settings.Default.ShowContourOnPreview)
+            if (dropPhoto.Contour != null && Settings.Default.ShowContourOnPreview ||
+                dropPhoto.Contour != null && _autoCalculationModeOn)
                 foreach (var line in dropPhoto.Contour.Lines)
                     canvas.Children.Add(line);
         }
@@ -1677,6 +1678,7 @@ namespace DDrop
             SaveInputPhotoEditButton.IsEnabled = true;
             DiscardManualPhotoEdit.IsEnabled = true;
             _photoEditModeOn = true;
+            _autoCalculationModeOn = true;
             SeriesEditMenu.Visibility = Visibility.Hidden;
             EditPhotosColumn.Visibility = Visibility.Hidden;
             DeletePhotosColumn.Visibility = Visibility.Hidden;
@@ -1695,6 +1697,7 @@ namespace DDrop
         public async Task PhotoEditModeOff()
         {
             _photoEditModeOn = false;
+            _autoCalculationModeOn = false;
             SeriesEditMenu.Visibility = Visibility.Visible;
             EditPhotosColumn.Visibility = Visibility.Visible;
             DeletePhotosColumn.Visibility = Visibility.Visible;
@@ -2521,17 +2524,17 @@ namespace DDrop
         {
             if (CurrentSeries.ReferencePhotoForSeries?.Content != null)
             {
-                if (CurrentSeries.ReferencePhotoForSeries.Line != null)
+                if (CurrentSeries.ReferencePhotoForSeries.SimpleLine != null)
                 {
                     _storedReferencePhotoPixelsInMillimeter = CurrentSeries.ReferencePhotoForSeries.PixelsInMillimeter;
                     _storedReferenceLine = new Line
                     {
-                        X1 = CurrentSeries.ReferencePhotoForSeries.Line.X1,
-                        X2 = CurrentSeries.ReferencePhotoForSeries.Line.X2,
-                        Y1 = CurrentSeries.ReferencePhotoForSeries.Line.Y1,
-                        Y2 = CurrentSeries.ReferencePhotoForSeries.Line.Y2,
-                        Stroke = CurrentSeries.ReferencePhotoForSeries.Line.Stroke,
-                        StrokeThickness = CurrentSeries.ReferencePhotoForSeries.Line.StrokeThickness
+                        X1 = CurrentSeries.ReferencePhotoForSeries.SimpleLine.X1,
+                        X2 = CurrentSeries.ReferencePhotoForSeries.SimpleLine.X2,
+                        Y1 = CurrentSeries.ReferencePhotoForSeries.SimpleLine.Y1,
+                        Y2 = CurrentSeries.ReferencePhotoForSeries.SimpleLine.Y2,
+                        Stroke = Brushes.DeepPink,
+                        StrokeThickness = 2
                     };
                 }
 
@@ -2647,11 +2650,13 @@ namespace DDrop
                 EndPythonTemplateAdding();
                 EndCSharpTemplateAdding();
 
+                _autoCalculationModeOn = true;
+                _photoEditModeOn = true;
                 SeriesEditMenu.Visibility = Visibility.Hidden;
                 EditPhotosColumn.Visibility = Visibility.Hidden;
                 DeletePhotosColumn.Visibility = Visibility.Hidden;
                 AutoCalculationGridSplitter.IsEnabled = true;
-
+                ShowLinesOnPhotosPreview(CurrentDropPhoto, ImgCurrent.CanDrawing);
                 AutoCalculationMenu.Visibility = Visibility.Visible;
 
                 SingleSeriesLoading(false);
@@ -3082,14 +3087,18 @@ namespace DDrop
                     DiscardAutoCalculationChanges(true);
 
                     await AutoCalculationModeOff();
+                    ShowLinesOnPhotosPreview(CurrentDropPhoto, ImgCurrent.CanDrawing);
                 }
             }
             else
             {
                 await AutoCalculationModeOff();
+                ShowLinesOnPhotosPreview(CurrentDropPhoto, ImgCurrent.CanDrawing);
             }
         }
 
+
+        private bool _autoCalculationModeOn;
         private async Task AutoCalculationModeOff()
         {
             SeriesEditMenu.Visibility = Visibility.Visible;
@@ -3098,6 +3107,9 @@ namespace DDrop
             AutoCalculationGridSplitter.IsEnabled = false;
 
             AutoCalculationMenu.Visibility = Visibility.Hidden;
+
+            _autoCalculationModeOn = false;
+            _photoEditModeOn = false;
 
             await AnimationHelper.AnimateGridColumnExpandCollapseAsync(AutoCalculationColumn, false, 300, 0,
                 AutoCalculationColumn.MinWidth, 0, 200);

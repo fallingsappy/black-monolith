@@ -310,6 +310,10 @@ namespace DDrop
                     if (checkedCount > 0 && !LocalStoredUsers.Users[i].IsChecked) continue;
 
                     LocalStoredUsers.Users.RemoveAt(i);
+
+                    Settings.Default.StoredUsers = JsonSerializeProvider.SerializeToString(LocalStoredUsers);
+
+                    Settings.Default.Save();
                 }
         }
 
@@ -331,6 +335,11 @@ namespace DDrop
         private void DeleteSingleTemplate_OnClick(object sender, RoutedEventArgs e)
         {
             UserAutoCalculationTemplates.RemoveAt(AutoCalculaionTemplates.SelectedIndex);
+
+            Settings.Default.AutoCalculationTemplates =
+                JsonSerializeProvider.SerializeToString(UserAutoCalculationTemplates);
+
+            Settings.Default.Save();
         }
 
         private void DeleteTemplateButton_OnClick(object sender, RoutedEventArgs e)
@@ -347,6 +356,11 @@ namespace DDrop
                     if (checkedCount > 0 && !UserAutoCalculationTemplates[i].IsChecked) continue;
 
                     UserAutoCalculationTemplates.RemoveAt(i);
+
+                    Settings.Default.AutoCalculationTemplates =
+                        JsonSerializeProvider.SerializeToString(UserAutoCalculationTemplates);
+
+                    Settings.Default.Save();
                 }
         }
 
@@ -374,20 +388,36 @@ namespace DDrop
                         var deserializedTemplate =
                             await JsonSerializeProvider.DeserializeFromFileAsync<AutoCalculationTemplate>(fileName);
 
-                        UserAutoCalculationTemplates.Add(deserializedTemplate);
-
-                        _logger.LogInfo(new LogEntry
+                        if (deserializedTemplate.Parameters != null)
                         {
-                            Username = _user.Email,
-                            LogCategory = LogCategory.Options,
-                            Message = $"Шаблон авторасчета {deserializedTemplate.Title} добавлен."
-                        });
-                        _notifier.ShowSuccess($"Шаблон авторасчета {deserializedTemplate.Title} добавлен.");
+
+                            deserializedTemplate.Id = Guid.NewGuid();
+
+                            UserAutoCalculationTemplates.Add(deserializedTemplate);
+
+                            Settings.Default.AutoCalculationTemplates =
+                                JsonSerializeProvider.SerializeToString(UserAutoCalculationTemplates);
+
+                            Settings.Default.Save();
+
+                            _logger.LogInfo(new LogEntry
+                            {
+                                Username = _user.Email,
+                                LogCategory = LogCategory.Options,
+                                Message = $"Шаблон авторасчета {deserializedTemplate.Title} добавлен."
+                            });
+                            _notifier.ShowSuccess($"Шаблон авторасчета {deserializedTemplate.Title} добавлен.");
+                        }
+                        else
+                        {
+                            throw new InvalidOperationException();
+                        }
                     }
-                    catch (JsonException)
+                    catch (InvalidOperationException)
                     {
                         _notifier.ShowError(
                             $"Не удалось десериализовать файл {fileName}. Файл не является файлом шаблона или поврежден.");
+
                     }
 
                     pbu.CurValue[pbuHandle1] += 1;
@@ -517,7 +547,7 @@ namespace DDrop
         {
             var dataGrid = sender as DataGrid;
 
-            if (dataGrid != null)
+            if (dataGrid != null && dataGrid.SelectedIndex != -1)
                 _currentAutoCalculationTemplate = UserAutoCalculationTemplates[dataGrid.SelectedIndex];
         }
     }

@@ -32,7 +32,7 @@
                             <Button Grid.Column="0" Grid.Row="0" Name="DeleteAllStoredUsers" HorizontalAlignment="Left"
                                     VerticalAlignment="Top" Width="28" BorderBrush="{x:Null}" Background="{x:Null}"
                                     Height="26" Click="DeleteAllStoredUsers_OnClick" Margin="10,6,0,0"
-                                    ToolTip="Добавить серию.">
+                                    ToolTip="Удалить всех локальных пользователей.">
                                 <ContentControl Content="{StaticResource DeleteIcon}" Height="22" Width="23" />
                             </Button>
                         </Grid>
@@ -58,7 +58,8 @@
                                     <DataTemplate>
                                         <Button Name="DeleteLocalUser" HorizontalAlignment="Left"
                                                 VerticalAlignment="Top" Width="27" Background="{x:Null}"
-                                                BorderBrush="{x:Null}" Height="25" Click="DeleteLocalUser_Click">
+                                                BorderBrush="{x:Null}" Height="25" Click="DeleteLocalUser_Click"
+                                                ToolTip="Удалить локального пользователя.">
                                             <ContentControl Content="{StaticResource DeleteIcon}" Height="20" />
                                         </Button>
                                     </DataTemplate>
@@ -75,7 +76,7 @@
                         <Grid>
                             <Button Grid.Column="0" Grid.Row="0" Name="AddTemplate" HorizontalAlignment="Left"
                                     VerticalAlignment="Top" Width="28" BorderBrush="{x:Null}" Background="{x:Null}"
-                                    Height="26" Click="AddTemplate_OnClick" Margin="10,6,0,0" ToolTip="Добавить серию.">
+                                    Height="26" Click="AddTemplate_OnClick" Margin="10,6,0,0" ToolTip="Добавить шаблон.">
                                 <ContentControl Content="{StaticResource AddIcon}" Height="22" Width="23" />
                             </Button>
                             <TextBox Grid.Column="0" Grid.Row="0" Name="AutoCalculationTemplateTitle" Height="19"
@@ -160,7 +161,8 @@
                                             <Button Name="DeleteSingleTemplate" HorizontalAlignment="Left"
                                                     VerticalAlignment="Top" Width="27" Background="{x:Null}"
                                                     BorderBrush="{x:Null}" Height="25"
-                                                    Click="DeleteSingleTemplate_OnClick">
+                                                    Click="DeleteSingleTemplate_OnClick"
+                                                    ToolTip="Удалить шаблон">
                                                 <ContentControl Content="{StaticResource DeleteIcon}" Height="20" />
                                             </Button>
                                         </DataTemplate>

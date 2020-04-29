@@ -327,7 +327,7 @@ namespace DDrop.Utility.Mappers
                                     .CalculationParameters),
                             CalculationVariants = (CalculationVariants) Enum.Parse(typeof(CalculationVariants),
                                 dropPhoto.Contour.CalculationProvider, true),
-                            ContourId = dropPhoto.Contour.ContourId
+                            ContourId = userDropPhoto.DropPhotoId
                         };
 
                         var userSimpleLines = new ObservableCollection<SimpleLine>();
@@ -343,7 +343,7 @@ namespace DDrop.Utility.Mappers
                                     X2 = contourSimpleLine.X2,
                                     Y1 = contourSimpleLine.Y1,
                                     Y2 = contourSimpleLine.Y2,
-                                    ContourId = dropPhoto.DropPhotoId
+                                    ContourId = userDropPhoto.DropPhotoId
                                 });
 
                             userLines.Add(new Line

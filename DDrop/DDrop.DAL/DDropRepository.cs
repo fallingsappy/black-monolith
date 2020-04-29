@@ -442,7 +442,26 @@ namespace DDrop.DAL
 
                     context.Series.Remove(series);
 
-                    await context.SaveChangesAsync();
+                    bool saveFailed;
+
+                    do
+                    {
+                        saveFailed = false;
+
+                        try
+                        {
+                            await context.SaveChangesAsync();
+                        }
+                        catch (DbUpdateConcurrencyException ex)
+                        {
+                            saveFailed = true;
+
+                            // Update the values of the entity that failed to save from the store
+                            await ex.Entries.Single().ReloadAsync();
+                        }
+
+                    } while (saveFailed);
+
                 }
                 catch (SqlException e)
                 {
@@ -567,6 +586,7 @@ namespace DDrop.DAL
 
                     if (contour != null && dropPhoto.Contour != null)
                     {
+                        context.SimpleLines.RemoveRange(contour.SimpleLines);
                         contour.SimpleLines = dropPhoto.Contour.SimpleLines;
                         contour.CalculationParameters = dropPhoto.Contour.CalculationParameters;
                         contour.CalculationProvider = dropPhoto.Contour.CalculationProvider;
