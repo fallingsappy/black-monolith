@@ -37,9 +37,6 @@
                 <Button x:Name="RegistrationButton" Content="Регистрация" HorizontalAlignment="Left"
                         Margin="175,296,0,0" VerticalAlignment="Top" Width="70" Click="RegistrationButton_Click"
                         FontSize="11" />
-                <Button Visibility="Hidden" Content="Войти оффлайн" HorizontalAlignment="Left" Margin="380,375,0,0"
-                        VerticalAlignment="Top" Width="85" Click="LoginOfflineButton_Click" FontSize="11"
-                        Name="LoginOfflineButton" />
                 <CheckBox Unchecked="ToggleButton_OnUnchecked" Checked="ToggleButton_OnChecked"
                           Content="Показать символы" HorizontalAlignment="Left" Margin="175,248,0,0"
                           VerticalAlignment="Top" Height="19" Width="150" />

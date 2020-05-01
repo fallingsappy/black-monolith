@@ -1474,23 +1474,26 @@ namespace DDrop
 
         private void ShowLinesOnPhotosPreview(DropPhoto dropPhoto, Canvas canvas)
         {
-            canvas.Children.Remove(dropPhoto.HorizontalLine);
-            canvas.Children.Remove(dropPhoto.VerticalLine);
+            if (dropPhoto != null && canvas != null)
+            {
+                canvas.Children.Remove(dropPhoto.HorizontalLine);
+                canvas.Children.Remove(dropPhoto.VerticalLine);
 
-            if (dropPhoto.Contour != null)
-                foreach (var line in dropPhoto.Contour.Lines)
-                    canvas.Children.Remove(line);
+                if (dropPhoto.Contour != null)
+                    foreach (var line in dropPhoto.Contour.Lines)
+                        canvas.Children.Remove(line);
 
-            if (dropPhoto.HorizontalLine != null && Settings.Default.ShowLinesOnPreview ||
-                dropPhoto.HorizontalLine != null && _photoEditModeOn)
-                canvas.Children.Add(dropPhoto.HorizontalLine);
-            if (dropPhoto.VerticalLine != null && Settings.Default.ShowLinesOnPreview ||
-                dropPhoto.VerticalLine != null && _photoEditModeOn)
-                canvas.Children.Add(dropPhoto.VerticalLine);
-            if (dropPhoto.Contour != null && Settings.Default.ShowContourOnPreview ||
-                dropPhoto.Contour != null && _autoCalculationModeOn)
-                foreach (var line in dropPhoto.Contour.Lines)
-                    canvas.Children.Add(line);
+                if (dropPhoto.HorizontalLine != null && Settings.Default.ShowLinesOnPreview ||
+                    dropPhoto.HorizontalLine != null && _photoEditModeOn)
+                    canvas.Children.Add(dropPhoto.HorizontalLine);
+                if (dropPhoto.VerticalLine != null && Settings.Default.ShowLinesOnPreview ||
+                    dropPhoto.VerticalLine != null && _photoEditModeOn)
+                    canvas.Children.Add(dropPhoto.VerticalLine);
+                if (dropPhoto.Contour != null && Settings.Default.ShowContourOnPreview ||
+                    dropPhoto.Contour != null && _autoCalculationModeOn)
+                    foreach (var line in dropPhoto.Contour.Lines)
+                        canvas.Children.Add(line);
+            }
         }
 
         private async void DeleteInputPhotos_OnClick(object sender, RoutedEventArgs e)

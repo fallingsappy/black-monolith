@@ -4,7 +4,7 @@
 library
 C#
 .cs
-E:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Controls\obj\Debug\
+D:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Controls\obj\Debug\
 DDrop.Controls
 none
 false
@@ -12,9 +12,9 @@ DEBUG;TRACE
 
 4-9519742
 
-20-896734985
-131809448801
+202132213164
+13-1182702089
 LoadingSpinner\LoadingWait.xaml;PhotoCropper\CropControl.xaml;PixelDrawer\PixelDrawer.xaml;ScatterPlot\ScatterPlot.xaml;
 
-True
+False
 

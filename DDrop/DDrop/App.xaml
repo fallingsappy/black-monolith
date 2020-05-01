@@ -13,8 +13,10 @@
                 <ResourceDictionary x:Name="IconsDictionary" Source="pack://application:,,,/Resources/Icons/Icons.xaml" />
                 <ResourceDictionary
                     Source="pack://application:,,,/ToastNotifications.Messages;component/Themes/Default.xaml" />
+                <ResourceDictionary>
+                    <valueConverters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+                </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
-            <valueConverters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

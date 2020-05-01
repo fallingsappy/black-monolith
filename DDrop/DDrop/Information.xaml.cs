@@ -122,6 +122,15 @@ namespace DDrop
             textRange = new TextRange(ReOrderPhotosOpRTB.Document.ContentStart, ReOrderPhotosOpRTB.Document.ContentEnd);
             textRange.Load(new MemoryStream(Encoding.UTF8.GetBytes(Properties.Resources.PhotosReOrder)), DataFormats.Rtf);
 
+            textRange = new TextRange(PythonSetupOpRTB.Document.ContentStart, PythonSetupOpRTB.Document.ContentEnd);
+            textRange.Load(new MemoryStream(Encoding.UTF8.GetBytes(Properties.Resources.AutoCalcPython)), DataFormats.Rtf);
+
+            textRange = new TextRange(AutoCalcAddTemplateOpRTB.Document.ContentStart, AutoCalcAddTemplateOpRTB.Document.ContentEnd);
+            textRange.Load(new MemoryStream(Encoding.UTF8.GetBytes(Properties.Resources.AutoCalcAddTemplate)), DataFormats.Rtf);
+
+            textRange = new TextRange(AutoCalculationCommonOpRTB.Document.ContentStart, AutoCalculationCommonOpRTB.Document.ContentEnd);
+            textRange.Load(new MemoryStream(Encoding.UTF8.GetBytes(Properties.Resources.AutoCalculationCommon)), DataFormats.Rtf);
+
             #endregion
 
             #endregion

@@ -261,24 +261,6 @@ namespace DDrop
             LoginPasswordBox.Password = PasswordUnmask.Text;
         }
 
-        private void LoginOfflineButton_Click(object sender, RoutedEventArgs e)
-        {
-            UserLogin = new User
-            {
-                Email = "anonymousUser@anonymousUser.com",
-                UserPhoto = ImageInterpreter.ImageToByteArray(Properties.Resources
-                    .cool_profile_picture_300x219_vectorized__1_),
-                FirstName = "Неизвестно",
-                LastName = "Неизвестно",
-                IsLoggedIn = false,
-                Password = PasswordOperations.HashPassword("1q2w3e4r5t6y"),
-                UserId = Guid.NewGuid()
-            };
-            LoginSucceeded = true;
-
-            Close();
-        }
-
         private void LoginPasswordBox_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Space) e.Handled = true;

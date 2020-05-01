@@ -83,9 +83,15 @@
                                                 </TabItem>
                                                 <TabItem Header="Авторасчет">
                                                     <TabControl>
-                                                        <TabItem Header="Общее"></TabItem>
-                                                        <TabItem Header="Добавление шаблонов"></TabItem>
-                                                        <TabItem Header="Настройка Python обработчика"></TabItem>
+                                                        <TabItem Header="Общее">
+                                                            <RichTextBox Name="AutoCalculationCommonOpRTB" IsReadOnly="True" />
+                                                        </TabItem>
+                                                        <TabItem Header="Добавление шаблонов">
+                                                            <RichTextBox Name="AutoCalcAddTemplateOpRTB" IsReadOnly="True" />
+                                                        </TabItem>
+                                                        <TabItem Header="Настройка Python обработчика">
+                                                            <RichTextBox Name="PythonSetupOpRTB" IsReadOnly="True" />
+                                                        </TabItem>
                                                     </TabControl>
                                                 </TabItem>
                                                 <TabItem Header="Изменение порядка">

@@ -109,6 +109,34 @@ namespace DDrop.Properties {
         ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1251\deff0\nouicompat\deflang1049{\fonttbl{\f0\fnil\fcharset204 Segoe UI;}{\f1\fnil\fcharset0 Segoe UI;}{\f2\fnil\fcharset0 Calibri;}}
         ///{\colortbl ;\red0\green0\blue0;}
         ///{\*\generator Riched20 10.0.18362}\viewkind4\uc1 
+        ///\pard\qc\cf1\b\f0\fs33\&apos;d4\&apos;ee\&apos;f2\&apos;ee\&apos;e3\&apos;f0\&apos;e0\&apos;f4\&apos;e8\&apos;e8\b0\f1\lang1033\par
+        ///
+        ///\pard\fi375\qj\f0\fs21\lang1049\&apos;cd\&apos;e0 \&apos;fd\&apos;f2\&apos;ee\&apos;e9 \&apos;e2\&apos;ea\&apos;eb\&apos;e0\&apos;e4\&apos;ea\&apos;e5 \&apos;ec\&apos;ee\&apos;e6\&apos;ed\&apos;ee \&apos;e7\&apos;e0\&apos;e3\&apos;f0\&apos;f3\&apos;e7\&apos;e8\&apos;f2\&apos;fc \&apos;ed\&apos;ee\&apos;e2\&apos;fb\&apos;e5 \&apos;f1\&apos;ed\&apos;e8\&apos;ec\&apos;ea\&apos; [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string AutoCalcAddTemplate {
+            get {
+                return ResourceManager.GetString("AutoCalcAddTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1251\deff0\nouicompat\deflang1049{\fonttbl{\f0\fnil\fcharset204 Segoe UI;}{\f1\fnil\fcharset0 Segoe UI;}{\f2\fnil\fcharset0 Calibri;}}
+        ///{\colortbl ;\red0\green0\blue0;}
+        ///{\*\generator Riched20 10.0.18362}\viewkind4\uc1 
+        ///\pard\qc\cf1\b\f0\fs33\&apos;cd\&apos;e0\&apos;f1\&apos;f2\&apos;f0\&apos;ee\&apos;e9\&apos;ea\&apos;e0 \f1\lang1033 Python \f0\lang1049\&apos;ee\&apos;e1\&apos;f0\&apos;e0\&apos;e1\&apos;ee\&apos;f2\&apos;f7\&apos;e8\&apos;ea\&apos;e0\b0\f1\lang1033\par
+        ///
+        ///\pard\qj\f0\fs21\lang1049\&apos;d0\&apos;e0\&apos;e1\&apos;ee\&apos;f2\&apos;e0 \&apos;f1 \f1\lang1033 Python \f0\lang1049\&apos;ee\&apos;e1\&apos;f0\&apos;e0\&apos;e1\&apos;ee\&apos;f [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string AutoCalcPython {
+            get {
+                return ResourceManager.GetString("AutoCalcPython", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1251\deff0\nouicompat\deflang1049{\fonttbl{\f0\fnil\fcharset204 Segoe UI;}{\f1\fnil\fcharset0 Segoe UI;}{\f2\fnil\fcharset0 Calibri;}}
+        ///{\colortbl ;\red0\green0\blue0;}
+        ///{\*\generator Riched20 10.0.18362}\viewkind4\uc1 
         ///\pard\qc\cf1\b\f0\fs33\&apos;cc\&apos;e5\&apos;ed\&apos;e5\&apos;e4\&apos;e6\&apos;e5\&apos;f0 \&apos;f1\&apos;e5\&apos;f0\&apos;e8\&apos;e9\b0\f1\lang1033\par
         ///
         ///\pard\li710\qj\f0\fs21\lang1049\&apos;ce\&apos;e4\&apos;ed\&apos;ee\&apos;e9 \&apos;e8\&apos;e7 \&apos;e8\&apos;ed\&apos;f2\&apos;e5\&apos;f0\&apos;e5\&apos;f1\&apos;ed\&apos;fb\&apos;f5 \&apos;f4\&apos;e8\&apos;f7 \&apos;ef\&apos;f0\&apos;ee\&apos;e3\&apos;f0\&apos;e0\&apos;ec\&apos;ec\&apos;fb \&apos;ff\&apos;e2\&apos;eb\&apos;ff\&apos;e5\&apos; [rest of string was truncated]&quot;;.
@@ -116,6 +144,20 @@ namespace DDrop.Properties {
         public static string AutoCalculation {
             get {
                 return ResourceManager.GetString("AutoCalculation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1251\deff0\nouicompat\deflang1049{\fonttbl{\f0\fnil\fcharset204 Segoe UI;}{\f1\fnil\fcharset0 Segoe UI;}{\f2\fnil\fcharset0 Calibri;}}
+        ///{\colortbl ;\red0\green0\blue0;}
+        ///{\*\generator Riched20 10.0.18362}\viewkind4\uc1 
+        ///\pard\qc\cf1\b\f0\fs33\&apos;d4\&apos;ee\&apos;f2\&apos;ee\&apos;e3\&apos;f0\&apos;e0\&apos;f4\&apos;e8\&apos;e8\b0\f1\lang1033\par
+        ///
+        ///\pard\fi375\qj\f0\fs21\lang1049\&apos;cd\&apos;e0 \&apos;fd\&apos;f2\&apos;ee\&apos;e9 \&apos;e2\&apos;ea\&apos;eb\&apos;e0\&apos;e4\&apos;ea\&apos;e5 \&apos;ec\&apos;ee\&apos;e6\&apos;ed\&apos;ee \&apos;e7\&apos;e0\&apos;e3\&apos;f0\&apos;f3\&apos;e7\&apos;e8\&apos;f2\&apos;fc \&apos;ed\&apos;ee\&apos;e2\&apos;fb\&apos;e5 \&apos;f1\&apos;ed\&apos;e8\&apos;ec\&apos;ea\&apos; [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string AutoCalculationCommon {
+            get {
+                return ResourceManager.GetString("AutoCalculationCommon", resourceCulture);
             }
         }
         
@@ -256,16 +298,6 @@ namespace DDrop.Properties {
         public static string CommonSeriesPlotOp {
             get {
                 return ResourceManager.GetString("CommonSeriesPlotOp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        public static System.Drawing.Bitmap cool_profile_picture_300x219_vectorized__1_ {
-            get {
-                object obj = ResourceManager.GetObject("cool_profile_picture_300x219_vectorized__1_", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -492,20 +524,6 @@ namespace DDrop.Properties {
         public static string SeriesManager {
             get {
                 return ResourceManager.GetString("SeriesManager", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1251\deff0\nouicompat\deflang1049{\fonttbl{\f0\fnil\fcharset204 Segoe UI;}{\f1\fnil\fcharset0 Segoe UI;}{\f2\fnil\fcharset0 Calibri;}}
-        ///{\colortbl ;\red0\green0\blue0;}
-        ///{\*\generator Riched20 10.0.18362}\viewkind4\uc1 
-        ///\pard\qc\cf1\b\f0\fs33\&apos;cc\&apos;e5\&apos;ed\&apos;e5\&apos;e4\&apos;e6\&apos;e5\&apos;f0 \&apos;f1\&apos;e5\&apos;f0\&apos;e8\&apos;e9\b0\f1\lang1033\par
-        ///
-        ///\pard\fi375\qj\f0\fs21\lang1049\&apos;cc\&apos;e5\&apos;ed\&apos;e5\&apos;e4\&apos;e6\&apos;e5\&apos;f0 \&apos;f1\&apos;e5\&apos;f0\&apos;e8\&apos;e9 \&apos;f1\&apos;ee\&apos;f1\&apos;f2\&apos;ee\&apos;e8\&apos;f2 \&apos;e8\&apos;e7 \&apos;f7\&apos;e5\&apos;f2\&apos;fb\&apos;f0\&apos;e5\&apos;f5 \&apos;e7\&apos;ee\&apos;ed:\f1\lang1 [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string SeriesManager1 {
-            get {
-                return ResourceManager.GetString("SeriesManager1", resourceCulture);
             }
         }
         

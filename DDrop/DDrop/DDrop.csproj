@@ -200,6 +200,9 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="Resources\PythonScripts\GetContourWithSystemIO.py">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\Texts\InformationAboutApp\About\About.rtf" />
     <None Include="Resources\Texts\InformationAboutApp\Development\Developers\Developers.rtf" />
     <None Include="Resources\Texts\InformationAboutApp\Development\Testers\Testers.rtf" />
@@ -241,6 +244,9 @@
     <None Include="Resources\Texts\InformationAboutApp\Help\Operations\SeriesManager\AddSeries.rtf" />
     <None Include="Resources\Texts\InformationAboutApp\Help\Operations\SeriesManager\AutoExcelReport.rtf" />
     <None Include="Resources\Texts\InformationAboutApp\Help\Operations\SeriesManager\ImportExport.rtf" />
+    <None Include="Resources\Texts\InformationAboutApp\Help\Operations\Series\Photos\AutoCalculation\AutoCalcAddTemplate.rtf" />
+    <None Include="Resources\Texts\InformationAboutApp\Help\Operations\Series\Photos\AutoCalculation\AutoCalcPython.rtf" />
+    <None Include="Resources\Texts\InformationAboutApp\Help\Operations\Series\Photos\AutoCalculation\AutoCalculationCommon.rtf" />
     <None Include="Resources\Texts\InformationAboutApp\Help\Operations\Series\Photos\PhotosAdd.rtf" />
     <None Include="Resources\Texts\InformationAboutApp\Help\Operations\Series\Photos\PhotosEdit.rtf" />
     <None Include="Resources\Texts\InformationAboutApp\Help\Operations\Series\Photos\PhotosReCalculate.rtf" />
@@ -289,19 +295,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\Cursors\RulerHorizontalResize.cur">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
+    <Resource Include="Resources\Cursors\RulerHorizontalResize.cur" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\Cursors\RulerVerticalResize.cur">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\AnonymousUser\cool-profile-picture-300x219_vectorized %281%29.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
+    <Resource Include="Resources\Cursors\RulerVerticalResize.cur" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Icons\MainIcon_vectorized.png" />
@@ -312,7 +309,6 @@
   <ItemGroup />
   <ItemGroup>
     <Resource Include="MainIcon.ico" />
-    <Content Include="Resources\PythonScripts\GetContour.py" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
