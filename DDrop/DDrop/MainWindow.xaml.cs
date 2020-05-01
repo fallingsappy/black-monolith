@@ -2656,7 +2656,9 @@ namespace DDrop
                 EditPhotosColumn.Visibility = Visibility.Hidden;
                 DeletePhotosColumn.Visibility = Visibility.Hidden;
                 AutoCalculationGridSplitter.IsEnabled = true;
-                ShowLinesOnPhotosPreview(CurrentDropPhoto, ImgCurrent.CanDrawing);
+                if (CurrentDropPhoto != null)
+                    ShowLinesOnPhotosPreview(CurrentDropPhoto, ImgCurrent.CanDrawing);
+                
                 AutoCalculationMenu.Visibility = Visibility.Visible;
 
                 SingleSeriesLoading(false);

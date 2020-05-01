@@ -319,17 +319,27 @@ namespace DDrop
 
         private void AddTemplate_OnClick(object sender, RoutedEventArgs e)
         {
-            UserAutoCalculationTemplates.Add(new AutoCalculationTemplate
+            if (!string.IsNullOrWhiteSpace(AutoCalculationTemplateTitle.Text))
             {
-                Id = Guid.NewGuid(),
-                Title = AutoCalculationTemplateTitle.Text,
-                Parameters = new AutoCalculationParameters()
-            });
+                UserAutoCalculationTemplates.Add(new AutoCalculationTemplate
+                {
+                    Id = Guid.NewGuid(),
+                    Title = AutoCalculationTemplateTitle.Text,
+                    Parameters = new AutoCalculationParameters
+                    {
+                        Ksize = 1
+                    }
+                });
 
-            Settings.Default.AutoCalculationTemplates =
-                JsonSerializeProvider.SerializeToString(UserAutoCalculationTemplates);
+                Settings.Default.AutoCalculationTemplates =
+                    JsonSerializeProvider.SerializeToString(UserAutoCalculationTemplates);
 
-            Settings.Default.Save();
+                Settings.Default.Save();
+            }
+            else
+            {
+                _notifier.ShowInformation("Введите название шаблона.");
+            }
         }
 
         private void DeleteSingleTemplate_OnClick(object sender, RoutedEventArgs e)
@@ -549,6 +559,14 @@ namespace DDrop
 
             if (dataGrid != null && dataGrid.SelectedIndex != -1)
                 _currentAutoCalculationTemplate = UserAutoCalculationTemplates[dataGrid.SelectedIndex];
+        }
+
+        private void UpDownBase_OnValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            Settings.Default.AutoCalculationTemplates =
+                JsonSerializeProvider.SerializeToString(UserAutoCalculationTemplates);
+
+            Settings.Default.Save();
         }
     }
 }

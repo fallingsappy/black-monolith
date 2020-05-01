@@ -2619,6 +2619,276 @@
             The file name of the opencv_ffmpeg library
             </summary>
         </member>
+        <member name="F:Emgu.CV.CvInvoke.OpencvCoreLibrary">
+            <summary>
+            The file name of the core library
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.CvInvoke.OpencvImgprocLibrary">
+            <summary>
+            The file name of the imgproc library
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.CvInvoke.OpencvVideoLibrary">
+            <summary>
+            The file name of the video library
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.CvInvoke.OpencvFlannLibrary">
+            <summary>
+            The file name of the flann library
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.CvInvoke.OpencvMlLibrary">
+            <summary>
+            The file name of the ml library
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.CvInvoke.OpencvImgcodecsLibrary">
+            <summary>
+            The file name of the imgcodecs library
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.CvInvoke.OpencvVideoioLibrary">
+            <summary>
+            The file name of the videoio library
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.CvInvoke.OpencvHighguiLibrary">
+            <summary>
+            The file name of the highgui library
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.CvInvoke.OpencvObjdetectLibrary">
+            <summary>
+            The file name of the objdetect library
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.CvInvoke.OpencvFeatures2dLibrary">
+            <summary>
+            The file name of the features2d library
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.CvInvoke.OpencvCalib3dLibrary">
+            <summary>
+            The file name of the calib3d library
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.CvInvoke.OpencvCudaarithmLibrary">
+            <summary>
+            The file name of the cudaarithm library
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.CvInvoke.OpencvCudawarpingLibrary">
+            <summary>
+            The file name of the cudawarping library
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.CvInvoke.OpencvCudafiltersLibrary">
+            <summary>
+            The file name of the cudafilters library
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.CvInvoke.OpencvCudaimgprocLibrary">
+            <summary>
+            The file name of the cudaimgproc library
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.CvInvoke.OpencvCudalegacyLibrary">
+            <summary>
+            The file name of the cudalegacy library
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.CvInvoke.OpencvCudaoptflowLibrary">
+            <summary>
+            The file name of the cudaoptflow library
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.CvInvoke.OpencvCudastereoLibrary">
+            <summary>
+            The file name of the cudastereo library
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.CvInvoke.OpencvCudabgsegmLibrary">
+            <summary>
+            The file name of the cudabgsegm library
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.CvInvoke.OpencvCudafeatures2dLibrary">
+            <summary>
+            The file name of the cudafeatures2d library
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.CvInvoke.OpencvCudacodecLibrary">
+            <summary>
+            The file name of the cudacodec library
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.CvInvoke.OpencvCudaobjdetectLibrary">
+            <summary>
+            The file name of the cudaobjdetect library
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.CvInvoke.OpencvPhotoLibrary">
+            <summary>
+            The file name of the photo library
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.CvInvoke.OpencvSuperresLibrary">
+            <summary>
+            The file name of the superres library
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.CvInvoke.OpencvVideostabLibrary">
+            <summary>
+            The file name of the videostab library
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.CvInvoke.OpencvShapeLibrary">
+            <summary>
+            The file name of the shape library
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.CvInvoke.OpencvCudevLibrary">
+            <summary>
+            The file name of the cudev library
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.CvInvoke.OpencvFaceLibrary">
+            <summary>
+            The file name of the face library
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.CvInvoke.OpencvXimgprocLibrary">
+            <summary>
+            The file name of the ximgproc library
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.CvInvoke.OpencvXobjdetectLibrary">
+            <summary>
+            The file name of the xobjdetect library
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.CvInvoke.OpencvXfeatures2dLibrary">
+            <summary>
+            The file name of the xfeatures2d library
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.CvInvoke.OpencvXphotoLibrary">
+            <summary>
+            The file name of the xphoto library
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.CvInvoke.OpencvBgsegmLibrary">
+            <summary>
+            The file name of the bgsegm library
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.CvInvoke.OpencvOptflowLibrary">
+            <summary>
+            The file name of the optflow library
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.CvInvoke.OpencvStitchingLibrary">
+            <summary>
+            The file name of the stitching library
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.CvInvoke.OpencvPlotLibrary">
+            <summary>
+            The file name of the plot library
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.CvInvoke.OpencvDnnLibrary">
+            <summary>
+            The file name of the dnn library
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.CvInvoke.OpencvDnn_objdetectLibrary">
+            <summary>
+            The file name of the dnn_objdetect library
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.CvInvoke.OpencvDnn_superresLibrary">
+            <summary>
+            The file name of the dnn_superres library
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.CvInvoke.OpencvArucoLibrary">
+            <summary>
+            The file name of the aruco library
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.CvInvoke.OpencvFuzzyLibrary">
+            <summary>
+            The file name of the fuzzy library
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.CvInvoke.OpencvVizLibrary">
+            <summary>
+            The file name of the viz library
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.CvInvoke.OpencvBioinspiredLibrary">
+            <summary>
+            The file name of the bioinspired library
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.CvInvoke.OpencvTextLibrary">
+            <summary>
+            The file name of the text library
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.CvInvoke.OpencvTrackingLibrary">
+            <summary>
+            The file name of the tracking library
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.CvInvoke.OpencvDpmLibrary">
+            <summary>
+            The file name of the dpm library
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.CvInvoke.OpencvSaliencyLibrary">
+            <summary>
+            The file name of the saliency library
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.CvInvoke.OpencvImg_hashLibrary">
+            <summary>
+            The file name of the img_hash library
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.CvInvoke.OpencvPhase_unwrappingLibrary">
+            <summary>
+            The file name of the phase_unwrapping library
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.CvInvoke.OpencvFreetypeLibrary">
+            <summary>
+            The file name of the freetype library
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.CvInvoke.OpencvHfsLibrary">
+            <summary>
+            The file name of the hfs library
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.CvInvoke.OpencvQualityLibrary">
+            <summary>
+            The file name of the quality library
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.CvInvoke.OpencvStereoLibrary">
+            <summary>
+            The file name of the stereo library
+            </summary>
+        </member>
+        <member name="F:Emgu.CV.CvInvoke.OpencvSurface_matchingLibrary">
+            <summary>
+            The file name of the surface_matching library
+            </summary>
+        </member>
         <member name="F:Emgu.CV.CvInvoke.OpenCVModuleList">
             <summary>
             The List of the opencv modules

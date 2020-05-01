@@ -122,19 +122,43 @@
     <value>..\resources\texts\informationaboutapp\about\about.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
   </data>
   <data name="Account" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\texts\informationaboutapp\help\menu\account\account.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
+    <value>..\Resources\Texts\InformationAboutApp\Help\Interface\Menu\Account\Account.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
   </data>
-  <data name="Calculation" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\texts\informationaboutapp\help\menu\calculation\calculation.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
+  <data name="AddSeries" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texts\InformationAboutApp\Help\Operations\SeriesManager\AddSeries.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
+  </data>
+  <data name="AutoCalculation" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texts\InformationAboutApp\Help\Interface\Series\AutoCalculation\AutoCalculation.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
+  </data>
+  <data name="AutoCalculationTemplates" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texts\InformationAboutApp\Help\Interface\Menu\Menu\AutoCalculationTemplates.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
+  </data>
+  <data name="AutoCalculationTemplatesOp" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texts\InformationAboutApp\Help\Operations\Menu\Options\AutoCalculationTemplatesOp.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
+  </data>
+  <data name="AutoExcelReport" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texts\InformationAboutApp\Help\Operations\SeriesManager\AutoExcelReport.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
   </data>
   <data name="CalculationModel" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\texts\informationaboutapp\help\calculationmodel\calculationmodel.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
+    <value>..\Resources\Texts\InformationAboutApp\Help\CalculationModel\CalculationModel.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
+  </data>
+  <data name="CommonOperations" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texts\InformationAboutApp\Help\Operations\CommonOperations.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
+  </data>
+  <data name="CommonOptions" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texts\InformationAboutApp\Help\Interface\Menu\Menu\CommonOptions.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
+  </data>
+  <data name="CommonOptionsOp" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texts\InformationAboutApp\Help\Operations\Menu\Options\CommonOptionsOp.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
   </data>
   <data name="CommonSeriesInformation" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\texts\informationaboutapp\help\series\commoninformation\commonseriesinformation.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
+    <value>..\Resources\Texts\InformationAboutApp\Help\Interface\Series\CommonSeriesInformation.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
   </data>
   <data name="CommonSeriesPlot" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\texts\informationaboutapp\help\commonseriesplot\commonseriesplot.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
+    <value>..\Resources\Texts\InformationAboutApp\Help\Interface\CommonSeriesPlot\CommonSeriesPlot.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
+  </data>
+  <data name="CommonSeriesPlotOp" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texts\InformationAboutApp\Help\Operations\CommonSeriesPlotOp.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="cool_profile_picture_300x219_vectorized__1_" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
@@ -1377,20 +1401,53 @@
   <data name="Developers" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\texts\informationaboutapp\development\developers\developers.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
   </data>
-  <data name="Menu" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\texts\informationaboutapp\help\menu\menu\menu.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
+  <data name="ImportExport" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texts\InformationAboutApp\Help\Operations\SeriesManager\ImportExport.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
   </data>
-  <data name="Photos" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\texts\informationaboutapp\help\series\photos\photos.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
+  <data name="Information" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texts\InformationAboutApp\Help\Interface\Menu\Menu\Information.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
+  </data>
+  <data name="LocalStoredUsers" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texts\InformationAboutApp\Help\Interface\Menu\Menu\LocalStoredUsers.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
+  </data>
+  <data name="LocalStoredUsersOp" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texts\InformationAboutApp\Help\Operations\Menu\Options\LocalStoredUsersOp.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
+  </data>
+  <data name="ManualEdit" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texts\InformationAboutApp\Help\Interface\Series\ManualEdit\ManualEdit.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
+  </data>
+  <data name="Menu" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texts\InformationAboutApp\Help\Interface\Menu\Menu\Menu.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
+  </data>
+  <data name="PhotosAdd" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texts\InformationAboutApp\Help\Operations\Series\Photos\PhotosAdd.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
+  </data>
+  <data name="PhotosEdit" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texts\InformationAboutApp\Help\Operations\Series\Photos\PhotosEdit.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
+  </data>
+  <data name="PhotosReCalculate" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texts\InformationAboutApp\Help\Operations\Series\Photos\PhotosReCalculate.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
+  </data>
+  <data name="PhotosReOrder" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texts\InformationAboutApp\Help\Operations\Series\Photos\PhotosReOrder.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
   </data>
   <data name="Plot" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\texts\informationaboutapp\help\series\plot\plot.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
+    <value>..\Resources\Texts\InformationAboutApp\Help\Operations\Series\Plot.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
   </data>
-  <data name="Reference" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\texts\informationaboutapp\help\series\reference\reference.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
+  <data name="ReferenceAdd" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texts\InformationAboutApp\Help\Operations\Series\Reference\ReferenceAdd.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
+  </data>
+  <data name="ReferenceEdit" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texts\InformationAboutApp\Help\Operations\Series\Reference\ReferenceEdit.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
+  </data>
+  <data name="ReOrdering" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texts\InformationAboutApp\Help\Interface\Series\ReOrdering\ReOrdering.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
   </data>
   <data name="SeriesManager" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\texts\informationaboutapp\help\seriesmanager\seriesmanager.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
+    <value>..\Resources\Texts\InformationAboutApp\Help\Interface\SeriesManager\SeriesManager.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
+  </data>
+  <data name="SeriesManager1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Texts\InformationAboutApp\Help\Interface\SeriesManager\SeriesManager.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
   </data>
   <data name="Testers" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\texts\informationaboutapp\development\testers\testers.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>

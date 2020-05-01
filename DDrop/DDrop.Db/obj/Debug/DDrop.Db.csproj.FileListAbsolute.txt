@@ -38,7 +38,6 @@ D:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Db\bin\Debug\EntityFramew
 D:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Db\bin\Debug\EntityFramework.SqlServer.dll
 D:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Db\bin\Debug\EntityFramework.xml
 D:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Db\bin\Debug\EntityFramework.SqlServer.xml
-D:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Db\obj\Debug\DDrop.Db.csprojAssemblyReference.cache
 D:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Db\obj\Debug\DDrop.Db.Migrations.initial.resources
 D:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Db\obj\Debug\DDrop.Db.Migrations.AddedDateTime.resources
 D:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Db\obj\Debug\DDrop.Db.Migrations.UseAddedDateTime.resources
@@ -51,3 +50,4 @@ D:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Db\obj\Debug\DDrop.Db.csp
 D:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Db\obj\Debug\DDrop.Db.csproj.CopyComplete
 D:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Db\obj\Debug\DDrop.Db.dll
 D:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Db\obj\Debug\DDrop.Db.pdb
+D:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.Db\obj\Debug\DDrop.Db.csprojAssemblyReference.cache

@@ -178,8 +178,8 @@ D:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\bin\Debug\LiveCharts.d
 D:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\bin\Debug\LiveCharts.Wpf.dll
 D:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\bin\Debug\EntityFramework.dll
 D:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\bin\Debug\System.Threading.Tasks.Extensions.dll
-D:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\bin\Debug\EPPlus.dll
 D:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\bin\Debug\System.Text.Json.dll
+D:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\bin\Debug\EPPlus.dll
 D:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\bin\Debug\EasyEncryption.dll
 D:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
 D:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\bin\Debug\System.Memory.dll
@@ -205,8 +205,8 @@ D:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\bin\Debug\LiveCharts.W
 D:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\bin\Debug\LiveCharts.Wpf.xml
 D:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\bin\Debug\EntityFramework.xml
 D:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\bin\Debug\System.Threading.Tasks.Extensions.xml
-D:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\bin\Debug\EPPlus.xml
 D:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\bin\Debug\System.Text.Json.xml
+D:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\bin\Debug\EPPlus.xml
 D:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
 D:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\bin\Debug\System.Memory.xml
 D:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop.BL\bin\Debug\System.Text.Encodings.Web.xml

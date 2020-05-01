@@ -78,13 +78,9 @@ namespace DDrop.Properties {
         ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1251\deff0\nouicompat\deflang1049{\fonttbl{\f0\fnil\fcharset204 Segoe UI;}{\f1\fnil\fcharset0 Segoe UI;}{\f2\fnil\fcharset0 Calibri;}}
         ///{\colortbl ;\red0\green0\blue0;}
         ///{\*\generator Riched20 10.0.18362}\viewkind4\uc1 
-        ///\pard\qc\cf1\b\f0\fs33\&apos;d3\&apos;f7\&apos;e5\&apos;f2\&apos;ed\&apos;e0\&apos;ff \&apos;e7\&apos;e0\&apos;ef\&apos;e8\&apos;f1\&apos;fc\b0\f1\lang1033\par
+        ///\pard\qc\cf1\b\f0\fs33\&apos;c0\&apos;ea\&apos;ea\&apos;e0\&apos;f3\&apos;ed\&apos;f2\b0\f1\lang1033\par
         ///
-        ///\pard\fi375\qj\f0\fs21\lang1049\&apos;c2 \&apos;f0\&apos;e0\&apos;e7\&apos;f0\&apos;e0\&apos;e1\&apos;ee\&apos;f2\&apos;ea\&apos;e5...\f1\lang1033\par
-        ///
-        ///\pard\sa200\sl276\slmult1\cf0\f2\fs22\lang9\par
-        ///}
-        ///.
+        ///\pard\fi375\qj\f0\fs21\lang1049\&apos;c2 \&apos;fd\&apos;f2\&apos;ee\&apos;ec \&apos;ee\&apos;ea\&apos;ed\&apos;e5 \&apos;ee\&apos;f2\&apos;ee\&apos;e1\&apos;f0\&apos;e0\&apos;e6\&apos;e0\&apos;e5\&apos;f2\&apos;f1\&apos;ff \&apos;e8\&apos;ed\&apos;f4\&apos;ee\&apos;f0\&apos;ec\&apos;e0\&apos;f6\&apos;e8\&apos;ff \&apos;ee \&apos;ef\&apos;ee\&apos;eb\&apos;fc\&apos;e7\&apos;ee\&apos;e2\&apos;e0\&apos; [rest of string was truncated]&quot;;.
         /// </summary>
         public static string Account {
             get {
@@ -96,17 +92,72 @@ namespace DDrop.Properties {
         ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1251\deff0\nouicompat\deflang1049{\fonttbl{\f0\fnil\fcharset204 Segoe UI;}{\f1\fnil\fcharset0 Segoe UI;}{\f2\fnil\fcharset0 Calibri;}}
         ///{\colortbl ;\red0\green0\blue0;}
         ///{\*\generator Riched20 10.0.18362}\viewkind4\uc1 
-        ///\pard\qc\cf1\b\f0\fs33\&apos;d0\&apos;e0\&apos;f1\&apos;f7\&apos;e5\&apos;f2\b0\f1\lang1033\par
+        ///\pard\qc\cf1\b\f0\fs33\&apos;c4\&apos;ee\&apos;e1\&apos;e0\&apos;e2\&apos;eb\&apos;e5\&apos;ed\&apos;e8\&apos;e5\b0\f1\lang1033\par
         ///
-        ///\pard\fi375\qj\f0\fs21\lang1049\&apos;c2 \&apos;f0\&apos;e0\&apos;e7\&apos;f0\&apos;e0\&apos;e1\&apos;ee\&apos;f2\&apos;ea\&apos;e5...\f1\lang1033\par
+        ///\pard\fi375\qj\f0\fs21\lang1049\&apos;d7\&apos;f2\&apos;ee\&apos;e1\&apos;fb \&apos;e4\&apos;ee\&apos;e1\&apos;e0\&apos;e2\&apos;e8\&apos;f2\&apos;fc \&apos;ed\&apos;ee\&apos;e2\&apos;f3\&apos;fe \&apos;f1\&apos;e5\&apos;f0\&apos;e8\&apos;fe \&apos;ed\&apos;e5\&apos;ee\&apos;e1\&apos;f5\&apos;ee\&apos;e4\&apos;e8\&apos;ec\&apos;ee:\par
         ///
-        ///\pard\sa200\sl276\slmult1\cf0\f2\fs22\lang9\par
-        ///}
-        ///.
+        ///\pard 
+        ///{\p [rest of string was truncated]&quot;;.
         /// </summary>
-        public static string Calculation {
+        public static string AddSeries {
             get {
-                return ResourceManager.GetString("Calculation", resourceCulture);
+                return ResourceManager.GetString("AddSeries", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1251\deff0\nouicompat\deflang1049{\fonttbl{\f0\fnil\fcharset204 Segoe UI;}{\f1\fnil\fcharset0 Segoe UI;}{\f2\fnil\fcharset0 Calibri;}}
+        ///{\colortbl ;\red0\green0\blue0;}
+        ///{\*\generator Riched20 10.0.18362}\viewkind4\uc1 
+        ///\pard\qc\cf1\b\f0\fs33\&apos;cc\&apos;e5\&apos;ed\&apos;e5\&apos;e4\&apos;e6\&apos;e5\&apos;f0 \&apos;f1\&apos;e5\&apos;f0\&apos;e8\&apos;e9\b0\f1\lang1033\par
+        ///
+        ///\pard\li710\qj\f0\fs21\lang1049\&apos;ce\&apos;e4\&apos;ed\&apos;ee\&apos;e9 \&apos;e8\&apos;e7 \&apos;e8\&apos;ed\&apos;f2\&apos;e5\&apos;f0\&apos;e5\&apos;f1\&apos;ed\&apos;fb\&apos;f5 \&apos;f4\&apos;e8\&apos;f7 \&apos;ef\&apos;f0\&apos;ee\&apos;e3\&apos;f0\&apos;e0\&apos;ec\&apos;ec\&apos;fb \&apos;ff\&apos;e2\&apos;eb\&apos;ff\&apos;e5\&apos; [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string AutoCalculation {
+            get {
+                return ResourceManager.GetString("AutoCalculation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1251\deff0\nouicompat\deflang1049{\fonttbl{\f0\fnil\fcharset204 Segoe UI;}{\f1\fnil\fcharset0 Segoe UI;}{\f2\fnil\fcharset0 Calibri;}}
+        ///{\colortbl ;\red0\green0\blue0;}
+        ///{\*\generator Riched20 10.0.18362}\viewkind4\uc1 
+        ///\pard\qc\cf1\b\f0\fs33\&apos;d8\&apos;e0\&apos;e1\&apos;eb\&apos;ee\&apos;ed\&apos;fb \&apos;e0\&apos;e2\&apos;f2\&apos;ee\&apos;f0\&apos;e0\&apos;f1\&apos;f7\&apos;e5\&apos;f2\&apos;e0\b0\f1\lang1033\par
+        ///
+        ///\pard\fi284\qj\f0\fs21\lang1049\&apos;c2 \&apos;f1\&apos;e5\&apos;ea\&apos;f6\&apos;e8\&apos;e8 \&apos;d8\&apos;e0\&apos;e1\&apos;eb\&apos;ee\&apos;ed\&apos;fb \&apos;e0\&apos;e2\&apos;f2\&apos;ee\&apos;f0\&apos;e0\&apos;f1\&apos;f7\&apos;e5\&apos;f2\&apos;e0 \&apos;ec\&apos;ee\&apos;e6\&apos;ed\&apos;e [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string AutoCalculationTemplates {
+            get {
+                return ResourceManager.GetString("AutoCalculationTemplates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1251\deff0\nouicompat\deflang1049{\fonttbl{\f0\fnil\fcharset204 Segoe UI;}{\f1\fnil\fcharset0 Segoe UI;}{\f2\fnil\fcharset0 Calibri;}}
+        ///{\colortbl ;\red0\green0\blue0;}
+        ///{\*\generator Riched20 10.0.18362}\viewkind4\uc1 
+        ///\pard\qc\cf1\b\f0\fs33\&apos;d8\&apos;e0\&apos;e1\&apos;eb\&apos;ee\&apos;ed\&apos;fb \&apos;e0\&apos;e2\&apos;f2\&apos;ee\&apos;f0\&apos;e0\&apos;f1\&apos;f7\&apos;e5\&apos;f2\&apos;e0\b0\f1\lang1033\par
+        ///
+        ///\pard\fi375\qj\f0\fs21\lang1049\&apos;d8\&apos;e0\&apos;e1\&apos;eb\&apos;ee\&apos;ed\&apos;fb \&apos;e0\&apos;e2\&apos;f2\&apos;ee\&apos;f0\&apos;e0\&apos;f1\&apos;f7\&apos;e5\&apos;f2\&apos;e0 \&apos;ef\&apos;ee\&apos;e7\&apos;e2\&apos;ee\&apos;eb\&apos;ff\&apos;fe\&apos;f2 \&apos;f1\&apos;ee\&apos;f5 [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string AutoCalculationTemplatesOp {
+            get {
+                return ResourceManager.GetString("AutoCalculationTemplatesOp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1251\deff0\nouicompat\deflang1049{\fonttbl{\f0\fnil\fcharset204 Segoe UI;}{\f1\fnil\fcharset0 Segoe UI;}{\f2\fnil\fcharset0 Calibri;}}
+        ///{\colortbl ;\red0\green0\blue0;}
+        ///{\*\generator Riched20 10.0.18362}\viewkind4\uc1 
+        ///\pard\qc\cf1\b\f0\fs33\&apos;c0\&apos;e2\&apos;f2\&apos;ee\&apos;ec\&apos;e0\&apos;f2\&apos;e8\&apos;f7\&apos;e5\&apos;f1\&apos;ea\&apos;e8\&apos;e9 \f1\lang1033 Excel \f0\lang1049\&apos;ee\&apos;f2\&apos;f7\&apos;e5\&apos;f2\b0\f1\lang1033\par
+        ///
+        ///\pard\fi375\qj\f0\fs21\lang1049\&apos;d1\&apos;e5\&apos;f0\&apos;e8\&apos;e8, \&apos;e4\&apos;eb\&apos;ff \&apos;ea\&apos;ee\&apos;f2\&apos;ee\&apos;f0\&apos;fb\&apos;f5 \&apos;e2\&apos;ee\&apos;e7\&apos;ec\&apos;ee\&apos;e6 [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string AutoExcelReport {
+            get {
+                return ResourceManager.GetString("AutoExcelReport", resourceCulture);
             }
         }
         
@@ -128,9 +179,51 @@ namespace DDrop.Properties {
         ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1251\deff0\nouicompat\deflang1049{\fonttbl{\f0\fnil\fcharset204 Segoe UI;}{\f1\fnil\fcharset0 Segoe UI;}{\f2\fnil\fcharset0 Calibri;}}
         ///{\colortbl ;\red0\green0\blue0;}
         ///{\*\generator Riched20 10.0.18362}\viewkind4\uc1 
+        ///\pard\qc\cf1\b\f0\fs33\&apos;ce\&apos;e1\&apos;f9\&apos;e8\&apos;e5 \&apos;ec\&apos;e5\&apos;f5\&apos;e0\&apos;ed\&apos;e8\&apos;ea\&apos;e8\b0\f1\lang1033\par
+        ///
+        ///\pard\fi375\qj\f0\fs21\lang1049\&apos;cd\&apos;e5\&apos;ea\&apos;ee\&apos;f2\&apos;ee\&apos;f0\&apos;fb\&apos;e5 \&apos;ec\&apos;e5\&apos;f5\&apos;e0\&apos;ed\&apos;e8\&apos;ea\&apos;e8 \&apos;f0\&apos;e0\&apos;e1\&apos;ee\&apos;f2\&apos;fb\f1\lang1033  \f0\lang1049\&apos;ef\&apos;f0\&apos;ee\&apos;e3\&apos;f0\&apos;e [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string CommonOperations {
+            get {
+                return ResourceManager.GetString("CommonOperations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1251\deff0\nouicompat\deflang1049{\fonttbl{\f0\fnil\fcharset204 Segoe UI;}{\f1\fnil\fcharset0 Segoe UI;}{\f2\fnil\fcharset0 Calibri;}}
+        ///{\colortbl ;\red0\green0\blue0;}
+        ///{\*\generator Riched20 10.0.18362}\viewkind4\uc1 
+        ///\pard\qc\cf1\b\f0\fs33\&apos;ce\&apos;e1\&apos;f9\&apos;e8\&apos;e5\b0\f1\lang1033\par
+        ///
+        ///\pard\fi284\qj\f0\fs21\lang1049\&apos;c2 \&apos;f1\&apos;e5\&apos;ea\&apos;f6\&apos;e8\&apos;e8 \&apos;ce\&apos;e1\&apos;f9\&apos;e8\&apos;e5 \&apos;ec\&apos;ee\&apos;e6\&apos;ed\&apos;ee \&apos;e2\&apos;fb\&apos;e1\&apos;f0\&apos;e0\&apos;f2\&apos;fc \&apos;f0\&apos;e5\&apos;e6\&apos;e8\&apos;ec \&apos;ee\&apos;f2\&apos;ee\&apos;e1\&apos;f0\&apos;e0\&apos;e6\&apos;e5\&apos;ed\&apos;e8\&apos;ff \&apos;eb\&apos;e8\ [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string CommonOptions {
+            get {
+                return ResourceManager.GetString("CommonOptions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1251\deff0\nouicompat\deflang1049{\fonttbl{\f0\fnil\fcharset204 Segoe UI;}{\f1\fnil\fcharset0 Segoe UI;}{\f2\fnil\fcharset0 Calibri;}}
+        ///{\colortbl ;\red0\green0\blue0;}
+        ///{\*\generator Riched20 10.0.18362}\viewkind4\uc1 
+        ///\pard\qc\cf1\b\f0\fs33\&apos;ce\&apos;e1\&apos;f9\&apos;e8\&apos;e9 \&apos;ed\&apos;e0\&apos;f1\&apos;f2\&apos;f0\&apos;ee\&apos;e9\&apos;ea\&apos;e8\b0\f1\lang1033\par
+        ///
+        ///\pard\fi375\qj\f0\fs21\lang1049\&apos;dd\&apos;f2\&apos;e0 \&apos;f1\&apos;e5\&apos;ea\&apos;f6\&apos;e8\&apos;ff \&apos;ee\&apos;ef\&apos;f6\&apos;e8\&apos;e9 \&apos;f1\&apos;ee\&apos;f1\&apos;f2\&apos;ee\&apos;e8\&apos;f2 \&apos;e8\&apos;e7 \&apos;e4\&apos;e2\&apos;f3\&apos;f5 \&apos;ef\&apos;f3\&apos;ed\&apos;ea\&apos;f2\&apos;ee\ [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string CommonOptionsOp {
+            get {
+                return ResourceManager.GetString("CommonOptionsOp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1251\deff0\nouicompat\deflang1049{\fonttbl{\f0\fnil\fcharset204 Segoe UI;}{\f1\fnil\fcharset0 Segoe UI;}{\f2\fnil\fcharset0 Calibri;}{\f3\fnil\fcharset2 Symbol;}}
+        ///{\colortbl ;\red0\green0\blue0;}
+        ///{\*\generator Riched20 10.0.18362}\viewkind4\uc1 
         ///\pard\qc\cf1\b\f0\fs33\&apos;ce\&apos;e1\&apos;f9\&apos;e0\&apos;ff \&apos;e8\&apos;ed\&apos;f4\&apos;ee\&apos;f0\&apos;ec\&apos;e0\&apos;f6\&apos;e8\&apos;ff\b0\f1\lang1033\par
         ///
-        ///\pard\fi375\qj\f0\fs21\lang1049\&apos;cd\&apos;e0 \&apos;fd\&apos;f2\&apos;ee\&apos;e9 \&apos;e2\&apos;ea\&apos;eb\&apos;e0\&apos;e4\&apos;ea\&apos;e5 \&apos;ef\&apos;f0\&apos;ee\&apos;e8\&apos;f1\&apos;f5\&apos;ee\&apos;e4\&apos;e8\&apos;f2 \&apos;f0\&apos;e0\&apos;e1\&apos;ee\&apos;f2\&apos;e0 \&apos;f1 \&apos;ea\&apos;ee\ [rest of string was truncated]&quot;;.
+        ///\pard\fi375\qj\f0\fs21\lang1049\&apos;cd\&apos;e0 \&apos;fd\&apos;f2\&apos;ee\&apos;e9 \&apos;e2\&apos;ea\&apos;eb\&apos;e0\&apos;e4\&apos;ea\&apos;e5 \&apos;ef\&apos;f0\&apos;ee\&apos;e8\&apos;f1\&apos;f5\&apos;ee\&apos;e4\&apos;e8\&apos;f2 \&apos;f0\&apos;e0\&apos;e [rest of string was truncated]&quot;;.
         /// </summary>
         public static string CommonSeriesInformation {
             get {
@@ -144,11 +237,25 @@ namespace DDrop.Properties {
         ///{\*\generator Riched20 10.0.18362}\viewkind4\uc1 
         ///\pard\qc\cf1\b\f0\fs33\&apos;ce\&apos;e1\&apos;f9\&apos;e8\&apos;e9 \&apos;e3\&apos;f0\&apos;e0\&apos;f4\&apos;e8\&apos;ea \&apos;f1\&apos;e5\&apos;f0\&apos;e8\&apos;e9\b0\f1\lang1033\par
         ///
-        ///\pard\fi375\qj\f0\fs21\lang1049\&apos;d7\&apos;f2\&apos;ee\&apos;e1\&apos;fb \&apos;ef\&apos;ee\&apos;f1\&apos;f2\&apos;f0\&apos;ee\&apos;e8\&apos;f2\&apos;fc \&apos;e3\&apos;f0\&apos;e0\&apos;f4\&apos;e8\&apos;ea \&apos;ed\&apos;e5\&apos;ee\&apos;e1\&apos;f5\&apos;ee\&apos;e4\&apos;e8\&apos;ec\&apos;ee \&apos;e2\&apos; [rest of string was truncated]&quot;;.
+        ///\pard\fi375\qj\f0\fs21\lang1049\&apos;dd\&apos;f2\&apos;e0 \&apos;f1\&apos;e5\&apos;ea\&apos;f6\&apos;e8\&apos;ff \&apos;f1\&apos;eb\&apos;f3\&apos;e6\&apos;e8\&apos;f2 \&apos;e4\&apos;eb\&apos;ff \&apos;ee\&apos;f2\&apos;ee\&apos;e1\&apos;f0\&apos;e0\&apos;e6\&apos;e5\&apos;ed\&apos;e8\&apos;ff \&apos;e2\&apos;fb\ [rest of string was truncated]&quot;;.
         /// </summary>
         public static string CommonSeriesPlot {
             get {
                 return ResourceManager.GetString("CommonSeriesPlot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1251\deff0\nouicompat\deflang1049{\fonttbl{\f0\fnil\fcharset204 Segoe UI;}{\f1\fnil\fcharset0 Segoe UI;}{\f2\fnil\fcharset0 Calibri;}}
+        ///{\colortbl ;\red0\green0\blue0;}
+        ///{\*\generator Riched20 10.0.18362}\viewkind4\uc1 
+        ///\pard\qc\cf1\b\f0\fs33\&apos;ce\&apos;e1\&apos;f9\&apos;e8\&apos;e9 \&apos;e3\&apos;f0\&apos;e0\&apos;f4\&apos;e8\&apos;ea \&apos;f1\&apos;e5\&apos;f0\&apos;e8\&apos;e9\b0\f1\lang1033\par
+        ///
+        ///\pard\fi375\qj\f0\fs21\lang1049\&apos;d7\&apos;f2\&apos;ee\&apos;e1\&apos;fb \&apos;ef\&apos;ee\&apos;f1\&apos;f2\&apos;f0\&apos;ee\&apos;e8\&apos;f2\&apos;fc\f1\lang1033  \f0\lang1049\&apos;ee\&apos;e1\&apos;f9\&apos;e8\&apos;e9 \&apos;e3\&apos;f0\&apos;e0\&apos;f4\&apos;e8\&apos;ea \ [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string CommonSeriesPlotOp {
+            get {
+                return ResourceManager.GetString("CommonSeriesPlotOp", resourceCulture);
             }
         }
         
@@ -180,12 +287,81 @@ namespace DDrop.Properties {
         ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1251\deff0\nouicompat\deflang1049{\fonttbl{\f0\fnil\fcharset204 Segoe UI;}{\f1\fnil\fcharset0 Segoe UI;}{\f2\fnil\fcharset0 Calibri;}}
         ///{\colortbl ;\red0\green0\blue0;}
         ///{\*\generator Riched20 10.0.18362}\viewkind4\uc1 
+        ///\pard\qc\cf1\b\f0\fs33\&apos;c8\&apos;ec\&apos;ef\&apos;ee\&apos;f0\&apos;f2 \&apos;e8 \&apos;fd\&apos;ea\&apos;f1\&apos;ef\&apos;ee\&apos;f0\&apos;f2\b0\f1\lang1033\par
+        ///
+        ///\pard\fi375\qj\f0\fs21\lang1049\&apos;d1\&apos;e5\&apos;f0\&apos;e8\&apos;e8 \&apos;ec\&apos;ee\&apos;e6\&apos;ed\&apos;ee \&apos;fd\&apos;ea\&apos;f1\&apos;ef\&apos;ee\&apos;f0\&apos;f2\&apos;e8\&apos;f0\&apos;ee\&apos;e2\&apos;e0\&apos;f2\&apos;fc \&apos;e8 \&apos;e8\&apos;ec\&apos;ef\&apos;ee\&apos;f0\&apos;f2\&apos;e8\&apos;f0\&apos; [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string ImportExport {
+            get {
+                return ResourceManager.GetString("ImportExport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1251\deff0\nouicompat\deflang1049{\fonttbl{\f0\fnil\fcharset204 Segoe UI;}{\f1\fnil\fcharset0 Segoe UI;}{\f2\fnil\fcharset0 Calibri;}}
+        ///{\colortbl ;\red0\green0\blue0;}
+        ///{\*\generator Riched20 10.0.18362}\viewkind4\uc1 
+        ///\pard\qc\cf1\b\f0\fs33\&apos;c8\&apos;ed\&apos;f4\&apos;ee\&apos;f0\&apos;ec\&apos;e0\&apos;f6\&apos;e8\&apos;ff\b0\f1\lang1033\par
+        ///
+        ///\pard\fi284\qj\f0\fs21\lang1049\&apos;c2 \&apos;ee\&apos;ea\&apos;ed\&apos;e5 &quot;\&apos;c8\&apos;ed\&apos;f4\&apos;ee\&apos;f0\&apos;ec\&apos;e0\&apos;f6\&apos;e8\&apos;ff&quot; \&apos;e2\&apos;fb \&apos;ec\&apos;ee\&apos;e6\&apos;e5\&apos;f2\&apos;e5 \&apos;ed\&apos;e0\&apos;e9\&apos;f2\&apos;e8 \&apos;e2\&apos;f1\&apos;fe \&apos;ed\&apos;e5\&apos;ee\&apos;e1\&apos;f5\&apos;e [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string Information {
+            get {
+                return ResourceManager.GetString("Information", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1251\deff0\nouicompat\deflang1049{\fonttbl{\f0\fnil\fcharset204 Segoe UI;}{\f1\fnil\fcharset0 Segoe UI;}{\f2\fnil\fcharset0 Calibri;}}
+        ///{\colortbl ;\red0\green0\blue0;}
+        ///{\*\generator Riched20 10.0.18362}\viewkind4\uc1 
+        ///\pard\qc\cf1\b\f0\fs33\&apos;d3\&apos;f7\&apos;e5\&apos;f2\&apos;ed\&apos;fb\&apos;e5 \&apos;e7\&apos;e0\&apos;ef\&apos;e8\&apos;f1\&apos;e8\b0\f1\lang1033\par
+        ///
+        ///\pard\fi284\qj\f0\fs21\lang1049\&apos;c2 \&apos;f1\&apos;e5\&apos;ea\&apos;f6\&apos;e8\&apos;e8 \&apos;d3\&apos;f7\&apos;e5\&apos;f2\&apos;ed\&apos;fb\&apos;e5 \&apos;e7\&apos;e0\&apos;ef\&apos;e8\&apos;f1\&apos;e8 \&apos;ec\&apos;ee\&apos;e6\&apos;ed\&apos;ee \&apos;f3\&apos;e4\&apos;e0\&apos;eb\&apos;ff\&apos;f2\&apos;fc \&apos;eb\&apos;ee\ [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string LocalStoredUsers {
+            get {
+                return ResourceManager.GetString("LocalStoredUsers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1251\deff0\nouicompat\deflang1049{\fonttbl{\f0\fnil\fcharset204 Segoe UI;}{\f1\fnil\fcharset0 Segoe UI;}{\f2\fnil\fcharset0 Calibri;}}
+        ///{\colortbl ;\red0\green0\blue0;}
+        ///{\*\generator Riched20 10.0.18362}\viewkind4\uc1 
+        ///\pard\qc\cf1\b\f0\fs33\&apos;cb\&apos;ee\&apos;ea\&apos;e0\&apos;eb\&apos;fc\&apos;ed\&apos;fb\&apos;e5 \&apos;f3\&apos;f7\&apos;e5\&apos;f2\&apos;ed\&apos;fb\&apos;e5 \&apos;e7\&apos;e0\&apos;ef\&apos;e8\&apos;f1\&apos;e8\b0\f1\lang1033\par
+        ///
+        ///\pard\fi375\qj\f0\fs21\lang1049\&apos;cf\&apos;f0\&apos;e8 \&apos;f3\&apos;f1\&apos;ef\&apos;e5\&apos;f8\&apos;ed\&apos;ee\&apos;e9 \&apos;e0\&apos;e2\&apos;f2\&apos;ee\&apos;f0\&apos;e8\&apos;e7\&apos;e0\&apos;f6\&apos;e8\&apos;e8 \&apos;f1 \&apos;ee\&apos;f2\&apos; [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string LocalStoredUsersOp {
+            get {
+                return ResourceManager.GetString("LocalStoredUsersOp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1251\deff0\nouicompat\deflang1049{\fonttbl{\f0\fnil\fcharset204 Segoe UI;}{\f1\fnil\fcharset0 Segoe UI;}{\f2\fnil\fcharset0 Calibri;}}
+        ///{\colortbl ;\red0\green0\blue0;}
+        ///{\*\generator Riched20 10.0.18362}\viewkind4\uc1 
+        ///\pard\qc\cf1\b\f0\fs33\&apos;d0\&apos;f3\&apos;f7\&apos;ed\&apos;ee\&apos;e5 \&apos;f0\&apos;e5\&apos;e4\&apos;e0\&apos;ea\&apos;f2\&apos;e8\&apos;f0\&apos;ee\&apos;e2\&apos;e0\&apos;ed\&apos;e8\&apos;e5 \&apos;f4\&apos;ee\&apos;f2\&apos;ee\&apos;e3\&apos;f0\&apos;e0\&apos;f4\&apos;e8\&apos;e9\b0\f1\lang1033\par
+        ///
+        ///\pard\qj\f0\fs21\lang1049\&apos;cf\&apos;f0\&apos;e8 \&apos;ed\&apos;e0\&apos;e6\&apos;e0\&apos;f2\&apos;e8\&apos;e8 \&apos;ed\&apos;e0 \&apos;e8\&apos;ea\&apos;ee\&apos;ed\&apos;ea\&apos;f3 \&apos;ea [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string ManualEdit {
+            get {
+                return ResourceManager.GetString("ManualEdit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1251\deff0\nouicompat\deflang1049{\fonttbl{\f0\fnil\fcharset204 Segoe UI;}{\f1\fnil\fcharset0 Segoe UI;}{\f2\fnil\fcharset0 Calibri;}{\f3\fnil\fcharset2 Symbol;}}
+        ///{\colortbl ;\red0\green0\blue0;}
+        ///{\*\generator Riched20 10.0.18362}\viewkind4\uc1 
         ///\pard\qc\cf1\b\f0\fs33\&apos;cc\&apos;e5\&apos;ed\&apos;fe\b0\f1\lang1033\par
         ///
-        ///\pard\fi375\qj\f0\fs21\lang1049\&apos;cc\&apos;e5\&apos;ed\&apos;fe \&apos;f1\&apos;ee\&apos;f1\&apos;f2\&apos;ee\&apos;e8\&apos;f2 \&apos;e8\&apos;e7 \&apos;ed\&apos;e5\&apos;f1\&apos;ea\&apos;ee\&apos;eb\&apos;fc\&apos;ea\&apos;e8\&apos;f5 \&apos;ef\&apos;f3\&apos;ed\&apos;ea\&apos;f2\&apos;ee\&apos;e2:\f1\lang1033\par
+        ///\pard\fi284\qj\f0\fs21\lang1049\&apos;cc\&apos;e5\&apos;ed\&apos;fe \&apos;f1\&apos;ee\&apos;f1\&apos;f2\&apos;ee\&apos;e8\&apos;f2 \&apos;e8\&apos;e7 \&apos;ed\&apos;e5\&apos;f1\&apos;ea\&apos;ee\&apos;eb\&apos;fc\&apos;ea\&apos;e8\&apos;f5 \&apos;ef\&apos;f3\&apos;ed\&apos;ea\&apos;f2\&apos;ee\&apos;e2:\f1\lang1033\par
         ///
-        ///\pard 
-        ///{\pntext\f1 1.\tab}{\*\pn\p [rest of string was truncated]&quot;;.
+        ///\pard\f [rest of string was truncated]&quot;;.
         /// </summary>
         public static string Menu {
             get {
@@ -197,13 +373,55 @@ namespace DDrop.Properties {
         ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1251\deff0\nouicompat\deflang1049{\fonttbl{\f0\fnil\fcharset204 Segoe UI;}{\f1\fnil\fcharset0 Segoe UI;}{\f2\fnil\fcharset0 Calibri;}}
         ///{\colortbl ;\red0\green0\blue0;}
         ///{\*\generator Riched20 10.0.18362}\viewkind4\uc1 
-        ///\pard\qc\cf1\b\f0\fs33\&apos;d4\&apos;ee\&apos;f2\&apos;ee\&apos;e3\&apos;f0\&apos;e0\&apos;f4\&apos;e8\&apos;e8\b0\f1\lang1033\par
+        ///\pard\qc\cf1\b\f0\fs33\&apos;c4\&apos;ee\&apos;e1\&apos;e0\&apos;e2\&apos;eb\&apos;e5\&apos;ed\&apos;e8\&apos;e5\b0\f1\lang1033\par
         ///
-        ///\pard\fi375\qj\f0\fs21\lang1049\&apos;cd\&apos;e0 \&apos;fd\&apos;f2\&apos;ee\&apos;e9 \&apos;e2\&apos;ea\&apos;eb\&apos;e0\&apos;e4\&apos;ea\&apos;e5 \&apos;ec\&apos;ee\&apos;e6\&apos;ed\&apos;ee \&apos;e7\&apos;e0\&apos;e3\&apos;f0\&apos;f3\&apos;e7\&apos;e8\&apos;f2\&apos;fc \&apos;ed\&apos;ee\&apos;e2\&apos;fb\&apos;e5 \&apos;f1\&apos;ed\&apos;e8\&apos;ec\&apos;ea\&apos; [rest of string was truncated]&quot;;.
+        ///\pard\fi375\qj\f0\fs21\lang1049\&apos;d7\&apos;f2\&apos;ee\&apos;e1\&apos;fb \&apos;e7\&apos;e0\&apos;e3\&apos;f0\&apos;f3\&apos;e7\&apos;e8\&apos;f2\&apos;fc \&apos;ed\&apos;ee\&apos;e2\&apos;fb\&apos;e5 \&apos;f4\&apos;ee\&apos;f2\&apos;ee\&apos;e3\&apos;f0\&apos;e0\&apos;f4\&apos;e8\&apos;e8 \&apos;ed\&apos;e5\&apos;ee\&apos;e1\&apos;f5\&apos;ee\&apos;e4\&apos;e8\&apos;ec [rest of string was truncated]&quot;;.
         /// </summary>
-        public static string Photos {
+        public static string PhotosAdd {
             get {
-                return ResourceManager.GetString("Photos", resourceCulture);
+                return ResourceManager.GetString("PhotosAdd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1251\deff0\nouicompat\deflang1049{\fonttbl{\f0\fnil\fcharset204 Segoe UI;}{\f1\fnil\fcharset0 Segoe UI;}{\f2\fnil\fcharset0 Calibri;}}
+        ///{\colortbl ;\red0\green0\blue0;}
+        ///{\*\generator Riched20 10.0.18362}\viewkind4\uc1 
+        ///\pard\qc\cf1\b\f0\fs33\&apos;d0\&apos;f3\&apos;f7\&apos;ed\&apos;ee\&apos;e5 \&apos;f0\&apos;e5\&apos;e4\&apos;e0\&apos;ea\&apos;f2\&apos;e8\&apos;f0\&apos;ee\&apos;e2\&apos;e0\&apos;ed\&apos;e8\&apos;e5\b0\f1\lang1033\par
+        ///
+        ///\pard\fi375\sl240\slmult1\qj\f0\fs21\lang1049\&apos;cf\&apos;f0\&apos;e8 \&apos;ed\&apos;e0\&apos;e6\&apos;e0\&apos;f2\&apos;e8\&apos;e8 \&apos;ed\&apos;e0 \&apos;ea\&apos;ed\&apos;ee\&apos;ef\&apos;ea\&apos;f3 \&apos;e2 \&apos;f4\&apos;ee\&apos;f0\&apos;ec\&apos;e5 [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string PhotosEdit {
+            get {
+                return ResourceManager.GetString("PhotosEdit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1251\deff0\nouicompat\deflang1049{\fonttbl{\f0\fnil\fcharset204 Segoe UI;}{\f1\fnil\fcharset0 Segoe UI;}{\f2\fnil\fcharset0 Calibri;}}
+        ///{\colortbl ;\red0\green0\blue0;}
+        ///{\*\generator Riched20 10.0.18362}\viewkind4\uc1 
+        ///\pard\qc\cf1\b\f0\fs33\&apos;cf\&apos;e5\&apos;f0\&apos;e5\&apos;f0\&apos;e0\&apos;f1\&apos;f7\&apos;e5\&apos;f2\b0\f1\lang1033\par
+        ///
+        ///\pard\fi375\sa200\sl276\slmult1\qj\f0\fs21\lang1049\&apos;ca\&apos;ed\&apos;ee\&apos;ef\&apos;ea\&apos;e0 &quot;\&apos;cf\&apos;e5\&apos;f0\&apos;e5\&apos;f1\&apos;f7\&apos;e8\&apos;f2\&apos;e0\&apos;f2\&apos;fc \&apos;ef\&apos;e0\&apos;f0\&apos;e0\&apos;ec\&apos;e5\&apos;f2\&apos;f0\&apos;fb \&apos;ea\&apos;e0\&apos;ef\&apos;e5\&apos;eb\&apos;fc&quot; {\ [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string PhotosReCalculate {
+            get {
+                return ResourceManager.GetString("PhotosReCalculate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1251\deff0\nouicompat\deflang1049{\fonttbl{\f0\fnil\fcharset204 Segoe UI;}{\f1\fnil\fcharset0 Segoe UI;}{\f2\fnil\fcharset0 Calibri;}}
+        ///{\colortbl ;\red0\green0\blue0;}
+        ///{\*\generator Riched20 10.0.18362}\viewkind4\uc1 
+        ///\pard\qc\cf1\b\f0\fs33\&apos;c8\&apos;e7\&apos;ec\&apos;e5\&apos;ed\&apos;e5\&apos;ed\&apos;e8 \&apos;ef\&apos;ee\&apos;f0\&apos;ff\&apos;e4\&apos;ea\&apos;e0\b0\f1\lang1033\par
+        ///
+        ///\pard\fi375\sa200\sl276\slmult1\qj\f0\fs21\lang1049\&apos;c4\&apos;eb\&apos;ff \&apos;ef\&apos;e5\&apos;f0\&apos;e5\&apos;f5\&apos;ee\&apos;e4\&apos;e0 \&apos;e2 \&apos;f0\&apos;e5\&apos;e6\&apos;e8\&apos;ec \&apos;e8\&apos;e7\&apos;ec\&apos;e5\&apos;ed\&apos;e5\&apos;ed\&apos;e8\&apos;ff \&apos;ef\&apos; [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string PhotosReOrder {
+            get {
+                return ResourceManager.GetString("PhotosReOrder", resourceCulture);
             }
         }
         
@@ -222,16 +440,44 @@ namespace DDrop.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1251\deff0\nouicompat\deflang1049{\fonttbl{\f0\fnil\fcharset204 Segoe UI;}{\f1\fnil\fcharset0 Segoe UI;}}
+        ///{\colortbl ;\red0\green0\blue0;}
+        ///{\*\generator Riched20 10.0.18362}\viewkind4\uc1 
+        ///\pard\qc\cf1\b\f0\fs33\&apos;c4\&apos;ee\&apos;e1\&apos;e0\&apos;e2\&apos;eb\&apos;e5\&apos;ed\&apos;e8\&apos;e5\b0\f1\lang1033\par
+        ///
+        ///\pard\fi375\qj\f0\fs21\lang1049\&apos;d7\&apos;f2\&apos;ee\&apos;e1\&apos;fb \&apos;e4\&apos;ee\&apos;e1\&apos;e0\&apos;e2\&apos;e8\&apos;f2\&apos;fc \&apos;ed\&apos;ee\&apos;e2\&apos;fb\&apos;e9 \&apos;f0\&apos;e5\&apos;f4\&apos;e5\&apos;f0\&apos;e5\&apos;ed\&apos;f1\&apos;ed\&apos;fb\&apos;e9 \&apos;f1\&apos;ed\&apos;e8\&apos;ec\&apos;ee\&apos;ea, \&apos;ed\&apos;e5\&apos;ee\&apos;e1\&apos;f5\&apos;ee\&apos;e4\&apos;e8\&apos;ec\&apos;e [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string ReferenceAdd {
+            get {
+                return ResourceManager.GetString("ReferenceAdd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1251\deff0\nouicompat\deflang1049{\fonttbl{\f0\fnil\fcharset204 Segoe UI;}{\f1\fnil\fcharset0 Segoe UI;}{\f2\fnil\fcharset0 Calibri;}}
         ///{\colortbl ;\red0\green0\blue0;}
         ///{\*\generator Riched20 10.0.18362}\viewkind4\uc1 
-        ///\pard\qc\cf1\b\f0\fs33\&apos;d0\&apos;e5\&apos;f4\&apos;e5\&apos;f0\&apos;e5\&apos;ed\&apos;f1\b0\f1\lang1033\par
+        ///\pard\qc\cf1\b\f0\fs33\&apos;d0\&apos;e5\&apos;e4\&apos;e0\&apos;ea\&apos;f2\&apos;e8\&apos;f0\&apos;ee\&apos;e2\&apos;e0\&apos;ed\&apos;e8\&apos;e5\b0\f1\lang1033\par
         ///
-        ///\pard\fi375\qj\f0\fs21\lang1049\&apos;c2\&apos;ea\&apos;eb\&apos;e0\&apos;e4\&apos;ea\&apos;e0 \&apos;f1\&apos;ee\&apos;f1\&apos;f2\&apos;ee\&apos;e8\&apos;f2 \&apos;e8\&apos;e7 \&apos;e2\&apos;e5\&apos;f0\&apos;f5\&apos;ed\&apos;e5\&apos;e3\&apos;ee \&apos;ec\&apos;e5\&apos;ed\&apos;fe \&apos;e8 \&apos;ee\&apos;e1\&apos;eb\&apos;e0\&apos;f1\&apos;f2\&apos;e8 \&apos;e3\&apos;f0\&apos;e0\ [rest of string was truncated]&quot;;.
+        ///\pard\fi375\qj\f0\fs21\lang1049\&apos;cf\&apos;ee\&apos;f1\&apos;eb\&apos;e5 \&apos;e2\&apos;fb\&apos;e1\&apos;ee\&apos;f0\&apos;e0 \&apos;f0\&apos;e5\&apos;f4\&apos;e5\&apos;f0\&apos;e5\&apos;ed\&apos;f1\&apos;e0, \&apos;f4\&apos;ee\&apos;f2\&apos;ee\&apos;e3\&apos;f0\&apos;e0\&apos;f4\&apos;e8\&apos;ff \&apos;ee\&apos;f2\&apos;ee\&apos;e [rest of string was truncated]&quot;;.
         /// </summary>
-        public static string Reference {
+        public static string ReferenceEdit {
             get {
-                return ResourceManager.GetString("Reference", resourceCulture);
+                return ResourceManager.GetString("ReferenceEdit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1251\deff0\nouicompat\deflang1049{\fonttbl{\f0\fnil\fcharset204 Segoe UI;}{\f1\fnil\fcharset0 Segoe UI;}{\f2\fnil\fcharset0 Calibri;}}
+        ///{\colortbl ;\red0\green0\blue0;}
+        ///{\*\generator Riched20 10.0.18362}\viewkind4\uc1 
+        ///\pard\qc\cf1\b\f0\fs33\&apos;c8\&apos;e7\&apos;ec\&apos;e5\&apos;ed\&apos;e5\&apos;ed\&apos;e8\&apos;e5 \&apos;ef\&apos;ee\&apos;f0\&apos;ff\&apos;e4\&apos;ea\&apos;e0 \&apos;f4\&apos;ee\&apos;f2\&apos;ee\&apos;e3\&apos;f0\&apos;e0\&apos;f4\&apos;e8\&apos;e9\b0\f1\lang1033\par
+        ///
+        ///\pard\qj\f0\fs21\lang1049\&apos;cf\&apos;f0\&apos;e8 \&apos;ed\&apos;e0\&apos;e6\&apos;e0\&apos;f2\&apos;e8\&apos;e8 \&apos;ed\&apos;e0 \&apos;e8\&apos;ea\&apos;ee\&apos;ed\&apos;ea\&apos;f3 &quot;\&apos;c8\&apos;e7\&apos;ec\&apos;e5\&apos;e [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string ReOrdering {
+            get {
+                return ResourceManager.GetString("ReOrdering", resourceCulture);
             }
         }
         
@@ -241,13 +487,25 @@ namespace DDrop.Properties {
         ///{\*\generator Riched20 10.0.18362}\viewkind4\uc1 
         ///\pard\qc\cf1\b\f0\fs33\&apos;cc\&apos;e5\&apos;ed\&apos;e5\&apos;e4\&apos;e6\&apos;e5\&apos;f0 \&apos;f1\&apos;e5\&apos;f0\&apos;e8\&apos;e9\b0\f1\lang1033\par
         ///
-        ///\pard\fi375\qj\f0\fs21\lang1049\&apos;cc\&apos;e5\&apos;ed\&apos;e5\&apos;e4\&apos;e6\&apos;e5\&apos;f0 \&apos;f1\&apos;e5\&apos;f0\&apos;e8\&apos;e9 \&apos;f1\&apos;ee\&apos;f1\&apos;f2\&apos;ee\&apos;e8\&apos;f2 \&apos;e8\&apos;e7 \&apos;f2\&apos;f0\&apos;e5\&apos;f5 \&apos;e7\&apos;ee\&apos;ed:\f1\lang1033\par
-        ///
-        ///\ [rest of string was truncated]&quot;;.
+        ///\pard\fi375\qj\f0\fs21\lang1049\&apos;cc\&apos;e5\&apos;ed\&apos;e5\&apos;e4\&apos;e6\&apos;e5\&apos;f0 \&apos;f1\&apos;e5\&apos;f0\&apos;e8\&apos;e9 \&apos;f1\&apos;ee\&apos;f1\&apos;f2\&apos;ee\&apos;e8\&apos;f2 \&apos;e8\&apos;e7 \&apos;f7\&apos;e5\&apos;f2\&apos;fb\&apos;f0\&apos;e5\&apos;f5 \&apos;e7\&apos;ee\&apos;ed:\f1\lang1 [rest of string was truncated]&quot;;.
         /// </summary>
         public static string SeriesManager {
             get {
                 return ResourceManager.GetString("SeriesManager", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1251\deff0\nouicompat\deflang1049{\fonttbl{\f0\fnil\fcharset204 Segoe UI;}{\f1\fnil\fcharset0 Segoe UI;}{\f2\fnil\fcharset0 Calibri;}}
+        ///{\colortbl ;\red0\green0\blue0;}
+        ///{\*\generator Riched20 10.0.18362}\viewkind4\uc1 
+        ///\pard\qc\cf1\b\f0\fs33\&apos;cc\&apos;e5\&apos;ed\&apos;e5\&apos;e4\&apos;e6\&apos;e5\&apos;f0 \&apos;f1\&apos;e5\&apos;f0\&apos;e8\&apos;e9\b0\f1\lang1033\par
+        ///
+        ///\pard\fi375\qj\f0\fs21\lang1049\&apos;cc\&apos;e5\&apos;ed\&apos;e5\&apos;e4\&apos;e6\&apos;e5\&apos;f0 \&apos;f1\&apos;e5\&apos;f0\&apos;e8\&apos;e9 \&apos;f1\&apos;ee\&apos;f1\&apos;f2\&apos;ee\&apos;e8\&apos;f2 \&apos;e8\&apos;e7 \&apos;f7\&apos;e5\&apos;f2\&apos;fb\&apos;f0\&apos;e5\&apos;f5 \&apos;e7\&apos;ee\&apos;ed:\f1\lang1 [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string SeriesManager1 {
+            get {
+                return ResourceManager.GetString("SeriesManager1", resourceCulture);
             }
         }
         

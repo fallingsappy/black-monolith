@@ -127,7 +127,7 @@
                                 <DataGridTemplateColumn Header="Размытие">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <xctk:IntegerUpDown Minimum="1" Increment="2" AllowTextInput="False"
+                                            <xctk:IntegerUpDown ValueChanged="UpDownBase_OnValueChanged" Minimum="1" Increment="2" AllowTextInput="False"
                                                                 Value="{Binding Parameters.Ksize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>

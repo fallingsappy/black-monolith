@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:DDrop"
         mc:Ignorable="d"
         Title="Информация" MinHeight="450" MinWidth="800" Icon="Resources/Icons/MainIcon.png"
         WindowStartupLocation="CenterScreen" WindowState="Maximized" Width="791">
@@ -18,40 +17,121 @@
             <TabItem Header="Справка">
                 <Grid Background="#FFE5E5E5">
                     <TabControl>
-                        <TabItem Header="Меню">
+                        <TabItem Header="Интерфейс">
                             <TabControl>
                                 <TabItem Header="Меню">
-                                    <RichTextBox x:Name="MenuRTB" IsReadOnly="True" />
+                                    <TabControl>
+                                        <TabItem Header="Меню">
+                                            <RichTextBox x:Name="MenuRTB" IsReadOnly="True" />
+                                        </TabItem>
+                                        <TabItem Header="Учетная запись">
+                                            <RichTextBox x:Name="AccountRTB" IsReadOnly="True" />
+                                        </TabItem>
+                                    </TabControl>
                                 </TabItem>
-                                <TabItem Header="Расчет">
-                                    <RichTextBox x:Name="CalculationRTB" IsReadOnly="True" />
+                                <TabItem Header="Менеджер серий">
+                                    <RichTextBox x:Name="SeriesManagerRTB" IsReadOnly="True" />
                                 </TabItem>
-                                <TabItem Header="Учетная запись">
-                                    <RichTextBox x:Name="AccountRTB" IsReadOnly="True" />
+                                <TabItem Header="Серия">
+                                    <TabControl>
+                                        <TabItem Header="Общее">
+                                            <RichTextBox x:Name="CommonSeriesInformationRTB" IsReadOnly="True" />
+                                        </TabItem>
+                                        <TabItem Header="Автоматический расчет">
+                                            <RichTextBox x:Name="AutoCalculationInformationRTB" IsReadOnly="True" />
+                                        </TabItem>
+                                        <TabItem Header="Ручное редактирование">
+                                            <RichTextBox x:Name="ManualEditInformationRTB" IsReadOnly="True" />
+                                        </TabItem>
+                                        <TabItem Header="Изменение порядка снимков">
+                                            <RichTextBox x:Name="PhotoReOrderInformationRTB" IsReadOnly="True" />
+                                        </TabItem>
+                                    </TabControl>
+                                </TabItem>
+                                <TabItem Header="Общий график серий">
+                                    <RichTextBox x:Name="CommonSeriesPlotRTB" IsReadOnly="True" />
                                 </TabItem>
                             </TabControl>
                         </TabItem>
-                        <TabItem Header="Менеджер серий">
-                            <RichTextBox x:Name="SeriesManagerRTB" IsReadOnly="True" />
-                        </TabItem>
-                        <TabItem Header="Серия">
+                        <TabItem Header="Операции">
                             <TabControl>
-                                <TabItem Header="Общая информация">
-                                    <RichTextBox x:Name="CommonSeriesInformationRTB" IsReadOnly="True" />
+                                <TabItem Header="Общие механики">
+                                    <RichTextBox Name="CommonOperationsRTB" IsReadOnly="True" />
                                 </TabItem>
-                                <TabItem Header="Фотографии">
-                                    <RichTextBox x:Name="PhotosRTB" IsReadOnly="True" />
+                                <TabItem Header="Менеджер Серий">
+                                    <TabControl>
+                                        <TabItem Header="Добавление">
+                                            <RichTextBox Name="AddSeriesOpRTB" IsReadOnly="True" />
+                                        </TabItem>
+                                        <TabItem Header="Импорт и Экспорт">
+                                            <RichTextBox Name="ImportExportOpRTB" IsReadOnly="True" />
+                                        </TabItem>
+                                        <TabItem Header="Автоматический Excel отчет">
+                                            <RichTextBox Name="AutoExcelReportOpRTB" IsReadOnly="True" />
+                                        </TabItem>
+                                    </TabControl>
                                 </TabItem>
-                                <TabItem Header="Референс">
-                                    <RichTextBox x:Name="ReferenceRTB" IsReadOnly="True" />
+                                <TabItem Header="Серия">
+                                    <TabControl>
+                                        <TabItem Header="Фотографии">
+                                            <TabControl>
+                                                <TabItem Header="Добавление">
+                                                    <RichTextBox Name="AddPhotosOpRTB" IsReadOnly="True" />
+                                                </TabItem>
+                                                <TabItem Header="Ручное редактирование">
+                                                    <RichTextBox Name="EditPhotosOpRTB" IsReadOnly="True" />
+                                                </TabItem>
+                                                <TabItem Header="Авторасчет">
+                                                    <TabControl>
+                                                        <TabItem Header="Общее"></TabItem>
+                                                        <TabItem Header="Добавление шаблонов"></TabItem>
+                                                        <TabItem Header="Настройка Python обработчика"></TabItem>
+                                                    </TabControl>
+                                                </TabItem>
+                                                <TabItem Header="Изменение порядка">
+                                                    <RichTextBox Name="ReOrderPhotosOpRTB" IsReadOnly="True" />
+                                                </TabItem>
+                                                <TabItem Header="Перерасчет">
+                                                    <RichTextBox Name="ReCalculatePhotosOpRTB" IsReadOnly="True" />
+                                                </TabItem>
+                                            </TabControl>
+                                        </TabItem>
+                                        <TabItem Header="Референс">
+                                            <TabControl>
+                                                <TabItem Header="Добавление">
+                                                    <RichTextBox Name="ReferenceAddOpRTB" IsReadOnly="True" />
+                                                </TabItem>
+                                                <TabItem Header="Редактирование">
+                                                    <RichTextBox Name="ReferenceEditOpRTB" IsReadOnly="True" />
+                                                </TabItem>
+                                            </TabControl>
+                                        </TabItem>
+                                        <TabItem Header="График серии">
+                                            <RichTextBox Name="SeriesPlotOpRTB" IsReadOnly="True" />
+                                        </TabItem>
+                                    </TabControl>
                                 </TabItem>
-                                <TabItem Header="График">
-                                    <RichTextBox x:Name="SeriesPlotRTB" IsReadOnly="True" />
+                                <TabItem Header="Общий график серии">
+                                    <RichTextBox Name="CommonSeriesPlotOpRTB" IsReadOnly="True" />
+                                </TabItem>
+                                <TabItem Header="Меню">
+                                    <TabControl>
+                                        <TabItem Header="Опции">
+                                            <TabControl>
+                                                <TabItem Header="Общие настройки">
+                                                    <RichTextBox Name="CommonOptionsOpRTB" IsReadOnly="True" />
+                                                </TabItem>
+                                                <TabItem Header="Локальные учетные записи">
+                                                    <RichTextBox Name="LocalStoredUsersOpRTB" IsReadOnly="True" />
+                                                </TabItem>
+                                                <TabItem Header="Шаблоны авторасчета">
+                                                    <RichTextBox Name="AutoCalculationTemplatesOpRTB" IsReadOnly="True" />
+                                                </TabItem>
+                                            </TabControl>
+                                        </TabItem>
+                                    </TabControl>
                                 </TabItem>
                             </TabControl>
-                        </TabItem>
-                        <TabItem Header="Общий график серий">
-                            <RichTextBox x:Name="CommonSeriesPlotRTB" IsReadOnly="True" />
                         </TabItem>
                         <TabItem Header="Расчетная модель">
                             <RichTextBox Name="CalculationModelRTB" IsReadOnly="True" />
@@ -72,6 +152,5 @@
                 </Grid>
             </TabItem>
         </TabControl>
-
     </Grid>
 </Window>

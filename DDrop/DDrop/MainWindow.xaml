@@ -13,7 +13,7 @@
         xmlns:extToolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
         UseLayoutRounding="True"
         mc:Ignorable="d"
-        Title="DDrop" MinHeight="500" MinWidth="870" Height="768" Width="1152" Icon="Resources/Icons/MainIcon.png"
+        Title="DDrop" MinHeight="515" MinWidth="870" Height="768" Width="1152" Icon="Resources/Icons/MainIcon.png"
         WindowState="Maximized" x:Name="AppMainWindow" Closing="AppMainWindow_Closing"
         WindowStartupLocation="CenterScreen">
     <Grid>
@@ -607,7 +607,7 @@
                                                 </ComboBox>
                                             </Grid>
                                         </TabItem>
-                                        <TabItem Header="C# Расчет">
+                                        <TabItem Header="C# расчет">
                                             <Grid>
                                                 <Label Content="Параметры" HorizontalAlignment="Left"
                                                        Margin="10,10,0,0" Height="26" VerticalAlignment="Top"
