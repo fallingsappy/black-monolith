@@ -202,7 +202,6 @@ D:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Release\MainWindow.g.
 D:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Release\Options.g.cs
 D:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Release\Registration.g.cs
 D:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Release\App.g.cs
-D:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Release\DDrop_Content.g.cs
 D:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Release\DDrop_MarkupCompile.cache
 D:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Release\DDrop_MarkupCompile.lref
 D:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Release\CropPhoto.baml
@@ -215,3 +214,4 @@ D:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Release\DDrop.csproj.
 D:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Release\DDrop.csproj.CopyComplete
 D:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Release\DDrop.exe
 D:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Release\DDrop.pdb
+D:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\bin\Release\Resources\PythonScripts\GetContourWithSystemIO.py

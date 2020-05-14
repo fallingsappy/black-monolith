@@ -15,7 +15,8 @@
         mc:Ignorable="d"
         Title="DDrop" MinHeight="515" MinWidth="870" Height="768" Width="1152" Icon="Resources/Icons/MainIcon.png"
         WindowState="Maximized" x:Name="AppMainWindow" Closing="AppMainWindow_Closing"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        SizeChanged="MainWindow_OnSizeChanged" >
     <Grid>
         <TabControl x:Name="MainTabControl" SelectionChanged="Selector_OnSelectionChanged" Margin="10,37,10,47">
             <TabItem Name="SeriesManager" Header="Менеджер Серий">
@@ -223,7 +224,7 @@
                 <Grid>
                     <TabControl x:Name="SingleSeriesTabControl" Margin="10,10,10,5">
                         <TabItem x:Name="PhotosTab" Header="Фотографии">
-                            <Grid Background="#FFE5E5E5" RenderTransformOrigin="0.56,0.503">
+                            <Grid x:Name="PhotosGrid" Background="#FFE5E5E5" RenderTransformOrigin="0.56,0.503" Loaded="PhotosGrid_OnLoaded">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />

@@ -1689,7 +1689,21 @@ namespace DDrop
             ImgCurrent.DrawningIsEnabled = true;
 
             VisualHelper.SetEnableRowsMove(Photos, true);
-            await AnimationHelper.AnimateGridRowExpandCollapse(PhotosPreviewRow, true, 600, 300, 0, 0, 200);
+            if (Application.Current.MainWindow != null)
+            {
+                if (PhotosPreviewRow.ActualHeight > PhotosGrid.ActualHeight * 0.6)
+                {
+                    VisualHelper.SetEnableRowsMove(Photos, false);
+                    await AnimationHelper.AnimateGridRowExpandCollapse(PhotosPreviewRow, false, PhotosPreviewRow.ActualHeight, PhotosGrid.ActualHeight * 0.6, 0, 0, 200);
+                }
+                else
+                {
+                    await AnimationHelper.AnimateGridRowExpandCollapse(PhotosPreviewRow, true,
+                        PhotosGrid.ActualHeight * 0.6,
+                        PhotosGrid.ActualHeight * 0.5, 0, 0, 200);
+                }
+            }
+
             ManualEditMenu.Visibility = Visibility.Visible;
 
             _overrideLoadingBehaviour = true;
@@ -1708,7 +1722,19 @@ namespace DDrop
             ImgCurrent.DrawningIsEnabled = false;
 
             VisualHelper.SetEnableRowsMove(Photos, false);
-            await AnimationHelper.AnimateGridRowExpandCollapse(PhotosPreviewRow, false, 600, 300, 0, 0, 200);
+
+            if (PhotosPreviewRow.ActualHeight > PhotosGrid.ActualHeight * 0.5)
+            {
+                VisualHelper.SetEnableRowsMove(Photos, false);
+                await AnimationHelper.AnimateGridRowExpandCollapse(PhotosPreviewRow, false, PhotosPreviewRow.ActualHeight, PhotosGrid.ActualHeight * 0.5, 0, 0, 200);
+            }
+            else
+            {
+                await AnimationHelper.AnimateGridRowExpandCollapse(PhotosPreviewRow, true,
+                    PhotosPreviewRow.ActualHeight,
+                    PhotosGrid.ActualHeight * 0.5, 0, 0, 200);
+            }
+
             ManualEditMenu.Visibility = Visibility.Hidden;
 
             Photos.ItemsSource = CurrentSeries.DropPhotosSeries;
@@ -3632,5 +3658,35 @@ namespace DDrop
         }
 
         #endregion
+
+        private async void MainWindow_OnSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (_photoEditModeOn)
+            {
+                if (Application.Current.MainWindow != null)
+                {
+                    if (PhotosPreviewRow.ActualHeight > PhotosGrid.ActualHeight * 0.6)
+                    {
+                        VisualHelper.SetEnableRowsMove(Photos, false);
+                        await AnimationHelper.AnimateGridRowExpandCollapse(PhotosPreviewRow, false, PhotosPreviewRow.ActualHeight, PhotosGrid.ActualHeight * 0.6, 0, 0, 200);
+                    }
+                    else
+                    {
+                        await AnimationHelper.AnimateGridRowExpandCollapse(PhotosPreviewRow, true,
+                            PhotosGrid.ActualHeight * 0.6,
+                            PhotosGrid.ActualHeight * 0.5, 0, 0, 200);
+                    }
+                }
+            }
+            else
+            {
+                PhotosPreviewRow.Height = new GridLength(PhotosGrid.ActualHeight / 2);
+            }
+        }
+
+        private void PhotosGrid_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            PhotosPreviewRow.Height = new GridLength(PhotosGrid.ActualHeight / 2);
+        }
     }
 }
