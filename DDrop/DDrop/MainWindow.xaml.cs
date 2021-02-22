@@ -3039,18 +3039,9 @@ namespace DDrop
                             if (checkedCount > 0 && !CurrentSeries.DropPhotosSeries[i].IsChecked) continue;
 
                             if (!CurrentSeries.DropPhotosSeries[i].RequireSaving) continue;
-
-                            if (CurrentSeries.DropPhotosSeries[i].Content == null)
-                                CurrentSeries.DropPhotosSeries[i].Content =
-                                    await _dDropRepository.GetDropPhotoContent(
-                                        CurrentSeries.DropPhotosSeries[i].DropPhotoId,
-                                        CancellationToken.None);
-
-                            var dbPhoto =
-                                DDropDbEntitiesMapper.DropPhotoToDbDropPhoto(CurrentSeries.DropPhotosSeries[i],
-                                    CurrentSeries.SeriesId);
-                            await Task.Run(() => _dDropRepository.UpdateDropPhoto(dbPhoto));
-
+                            
+                            await _dropPhotoBL.UpdateDropPhoto(CurrentSeries.DropPhotosSeries[i]);
+                            
                             if (CurrentDropPhoto != null && CurrentSeries.DropPhotosSeries[i].DropPhotoId !=
                                 CurrentDropPhoto.DropPhotoId) CurrentSeries.DropPhotosSeries[i].Content = null;
 
@@ -3657,8 +3648,6 @@ namespace DDrop
             SeriesLoading.IsAdornerVisible = !SeriesLoading.IsAdornerVisible;
         }
 
-        #endregion
-
         private async void MainWindow_OnSizeChanged(object sender, SizeChangedEventArgs e)
         {
             if (_photoEditModeOn)
@@ -3688,5 +3677,16 @@ namespace DDrop
         {
             PhotosPreviewRow.Height = new GridLength(PhotosGrid.ActualHeight / 2);
         }
+
+        #endregion
+
+        #region Substance
+        
+        private void Substance_Catalog_Click(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }

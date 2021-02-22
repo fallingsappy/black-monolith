@@ -108,6 +108,7 @@
                                                         Binding="{Binding IntervalBetweenPhotos}" />
                                     <DataGridTextColumn IsReadOnly="True" Header="Время добавления"
                                                         Binding="{Binding AddedDate}" />
+                                    <DataGridTextColumn IsReadOnly="True" Header="Вещество" />
                                     <DataGridTemplateColumn Width="35" IsReadOnly="True" CanUserResize="False">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
@@ -899,6 +900,7 @@
                 </MenuItem>
                 <MenuItem Header="Выйти" Click="MenuItem_OnClick" />
             </MenuItem>
+            <MenuItem Header="Справочник веществ" Click="Substance_Catalog_Click"></MenuItem>
             <MenuItem Header="Учетная запись" HorizontalAlignment="Right">
                 <MenuItem x:Name="AccountMenuItem" Visibility="Collapsed" Header="Аккаунт"
                           Click="AccountMenuItem_Click">

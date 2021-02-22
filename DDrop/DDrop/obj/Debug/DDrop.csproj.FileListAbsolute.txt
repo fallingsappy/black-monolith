@@ -829,3 +829,5 @@ D:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\DDrop.csproj.Co
 D:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\DDrop.exe
 D:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\DDrop.pdb
 D:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\bin\Debug\Resources\PythonScripts\GetContourWithSystemIO.py
+D:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\SubstanceCatalog.g.cs
+D:\fallingsappy\Data\Programming\portfolio\DDrop\DDrop\obj\Debug\SubstanceCatalog.baml

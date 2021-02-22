@@ -119,7 +119,8 @@ namespace DDrop.Controls.ScatterPlot
                     {
                         Title = User.UserSeries[i].Title,
                         Values = temp,
-                        LineSmoothness = 0
+                        LineSmoothness = 0,
+                        Fill = System.Windows.Media.Brushes.Transparent,
                     });
                 }
             }
@@ -165,7 +166,8 @@ namespace DDrop.Controls.ScatterPlot
                 {
                     Title = User.UserSeries[ParticularSeriesIndex.Value].Title,
                     Values = temp,
-                    LineSmoothness = 0
+                    LineSmoothness = 0,
+                    Fill = System.Windows.Media.Brushes.Transparent,
                 });
             }
         }

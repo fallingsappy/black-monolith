@@ -60,10 +60,12 @@
     <Compile Include="Models\DropPhoto.cs" />
     <Compile Include="Models\LocalStoredUser.cs" />
     <Compile Include="Models\LogEntry.cs" />
+    <Compile Include="Models\Measurement.cs" />
     <Compile Include="Models\ReferencePhoto.cs" />
     <Compile Include="Models\SimpleLine.cs" />
     <Compile Include="Models\Series.cs" />
     <Compile Include="Models\SeriesToExcel.cs" />
+    <Compile Include="Models\Substance.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

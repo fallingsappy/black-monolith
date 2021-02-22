@@ -144,14 +144,14 @@ namespace DDrop.DAL
                                 x.Series
                             }).FirstOrDefault();
 
-                        var dropPhotoForSeries = context.DropPhotos.Where(x => x.CurrentSeriesId == series.SeriesId)
+                        var measurementForSeries = context.Measurements.Where(x => x.CurrentSeriesId == series.SeriesId)
                             .Select(x => new
                             {
                                 x.Name,
                                 x.CurrentSeries,
                                 x.CurrentSeriesId,
                                 x.Drop,
-                                x.DropPhotoId,
+                                x.MeasurementId,
                                 x.SimpleHorizontalLine,
                                 x.SimpleHorizontalLineId,
                                 x.SimpleVerticalLine,
@@ -165,32 +165,32 @@ namespace DDrop.DAL
                                 x.Contour
                             }).ToList();
 
-                        var dbDropPhotoForAdd = new List<DbDropPhoto>();
+                        var dbMeasurementForAdd = new List<DbMeasurement>();
 
-                        foreach (var dropPhoto in dropPhotoForSeries)
+                        foreach (var measurement in measurementForSeries)
                         {
-                            if (dropPhoto.Contour != null)
-                                dropPhoto.Contour.SimpleLines = context.SimpleLines
-                                    .Where(x => x.ContourId == dropPhoto.Contour.ContourId).ToList();
+                            if (measurement.Contour != null)
+                                measurement.Contour.SimpleLines = context.SimpleLines
+                                    .Where(x => x.ContourId == measurement.Contour.ContourId).ToList();
 
-                            dbDropPhotoForAdd.Add(new DbDropPhoto
+                            dbMeasurementForAdd.Add(new DbMeasurement
                             {
-                                AddedDate = dropPhoto.AddedDate,
-                                CurrentSeries = dropPhoto.CurrentSeries,
-                                CurrentSeriesId = dropPhoto.CurrentSeriesId,
-                                Drop = dropPhoto.Drop,
-                                DropPhotoId = dropPhoto.DropPhotoId,
-                                Name = dropPhoto.Name,
-                                SimpleHorizontalLine = dropPhoto.SimpleHorizontalLine,
-                                SimpleHorizontalLineId = dropPhoto.SimpleHorizontalLineId,
-                                SimpleVerticalLine = dropPhoto.SimpleVerticalLine,
-                                SimpleVerticalLineId = dropPhoto.SimpleVerticalLineId,
-                                XDiameterInPixels = dropPhoto.XDiameterInPixels,
-                                YDiameterInPixels = dropPhoto.YDiameterInPixels,
-                                ZDiameterInPixels = dropPhoto.ZDiameterInPixels,
-                                CreationDateTime = dropPhoto.CreationDateTime,
-                                PhotoOrderInSeries = dropPhoto.PhotoOrderInSeries,
-                                Contour = dropPhoto.Contour
+                                AddedDate = measurement.AddedDate,
+                                CurrentSeries = measurement.CurrentSeries,
+                                CurrentSeriesId = measurement.CurrentSeriesId,
+                                Drop = measurement.Drop,
+                                MeasurementId = measurement.MeasurementId,
+                                Name = measurement.Name,
+                                SimpleHorizontalLine = measurement.SimpleHorizontalLine,
+                                SimpleHorizontalLineId = measurement.SimpleHorizontalLineId,
+                                SimpleVerticalLine = measurement.SimpleVerticalLine,
+                                SimpleVerticalLineId = measurement.SimpleVerticalLineId,
+                                XDiameterInPixels = measurement.XDiameterInPixels,
+                                YDiameterInPixels = measurement.YDiameterInPixels,
+                                ZDiameterInPixels = measurement.ZDiameterInPixels,
+                                CreationDateTime = measurement.CreationDateTime,
+                                PhotoOrderInSeries = measurement.PhotoOrderInSeries,
+                                Contour = measurement.Contour
                             });
                         }
 
@@ -214,7 +214,7 @@ namespace DDrop.DAL
                                     Series = referencePhotoForSeries.Series
                                 }
                                 : null,
-                            DropPhotosSeries = dbDropPhotoForAdd.OrderBy(x => x.PhotoOrderInSeries).ToList()
+                            MeasurementsSeries = dbMeasurementForAdd.OrderBy(x => x.PhotoOrderInSeries).ToList()
                         });
                     }
 
@@ -250,7 +250,7 @@ namespace DDrop.DAL
                             x.Content
                         }).FirstOrDefault();
 
-                    var dropPhotoForSeries = context.DropPhotos.Where(x => x.CurrentSeriesId == seriesId)
+                    var measurementForSeries = context.Measurements.Where(x => x.CurrentSeriesId == seriesId)
                         .Select(x => new
                         {
                             x.Name,
@@ -262,14 +262,14 @@ namespace DDrop.DAL
                             x.ZDiameterInPixels,
                             x.CreationDateTime,
                             x.PhotoOrderInSeries,
-                            x.DropPhotoId
+                            x.MeasurementId
                         }).ToList();
 
-                    var dbDropPhotoForAdd = new List<DbDropPhoto>();
+                    var dbMeasurementForAdd = new List<DbMeasurement>();
 
-                    foreach (var dropPhoto in dropPhotoForSeries)
+                    foreach (var measurement in measurementForSeries)
                     {
-                        var drop = await context.Drops.Where(x => x.DropPhoto.DropPhotoId == dropPhoto.DropPhotoId)
+                        var drop = await context.Drops.Where(x => x.Measurement.MeasurementId == measurement.MeasurementId)
                             .Select(x => new
                             {
                                 x.RadiusInMeters,
@@ -279,7 +279,7 @@ namespace DDrop.DAL
                                 x.ZDiameterInMeters
                             }).FirstOrDefaultAsync();
 
-                        var contour = await context.Contours.Where(x => x.ContourId == dropPhoto.DropPhotoId)
+                        var contour = await context.Contours.Where(x => x.ContourId == measurement.MeasurementId)
                             .Select(x => new
                             {
                                 x.ContourId,
@@ -311,7 +311,7 @@ namespace DDrop.DAL
                             }
                         }
 
-                        dbDropPhotoForAdd.Add(new DbDropPhoto
+                        dbMeasurementForAdd.Add(new DbMeasurement
                         {
                             Drop = new DbDrop
                             {
@@ -321,31 +321,31 @@ namespace DDrop.DAL
                                 YDiameterInMeters = drop.YDiameterInMeters,
                                 ZDiameterInMeters = drop.ZDiameterInMeters
                             },
-                            Content = dropPhoto.Content,
-                            Name = dropPhoto.Name,
-                            SimpleHorizontalLine = dropPhoto.SimpleHorizontalLine != null
+                            Content = measurement.Content,
+                            Name = measurement.Name,
+                            SimpleHorizontalLine = measurement.SimpleHorizontalLine != null
                                 ? new DbSimpleLine
                                 {
-                                    X1 = dropPhoto.SimpleHorizontalLine.X1,
-                                    Y1 = dropPhoto.SimpleHorizontalLine.Y1,
-                                    Y2 = dropPhoto.SimpleHorizontalLine.Y2,
-                                    X2 = dropPhoto.SimpleHorizontalLine.X2
+                                    X1 = measurement.SimpleHorizontalLine.X1,
+                                    Y1 = measurement.SimpleHorizontalLine.Y1,
+                                    Y2 = measurement.SimpleHorizontalLine.Y2,
+                                    X2 = measurement.SimpleHorizontalLine.X2
                                 }
                                 : null,
-                            SimpleVerticalLine = dropPhoto.SimpleVerticalLine != null
+                            SimpleVerticalLine = measurement.SimpleVerticalLine != null
                                 ? new DbSimpleLine
                                 {
-                                    X1 = dropPhoto.SimpleVerticalLine.X1,
-                                    Y1 = dropPhoto.SimpleVerticalLine.Y1,
-                                    Y2 = dropPhoto.SimpleVerticalLine.Y2,
-                                    X2 = dropPhoto.SimpleVerticalLine.X2
+                                    X1 = measurement.SimpleVerticalLine.X1,
+                                    Y1 = measurement.SimpleVerticalLine.Y1,
+                                    Y2 = measurement.SimpleVerticalLine.Y2,
+                                    X2 = measurement.SimpleVerticalLine.X2
                                 }
                                 : null,
-                            XDiameterInPixels = dropPhoto.XDiameterInPixels,
-                            YDiameterInPixels = dropPhoto.YDiameterInPixels,
-                            ZDiameterInPixels = dropPhoto.ZDiameterInPixels,
-                            CreationDateTime = dropPhoto.CreationDateTime,
-                            PhotoOrderInSeries = dropPhoto.PhotoOrderInSeries,
+                            XDiameterInPixels = measurement.XDiameterInPixels,
+                            YDiameterInPixels = measurement.YDiameterInPixels,
+                            ZDiameterInPixels = measurement.ZDiameterInPixels,
+                            CreationDateTime = measurement.CreationDateTime,
+                            PhotoOrderInSeries = measurement.PhotoOrderInSeries,
                             Contour = contourForAdd
                         });
                     }
@@ -381,7 +381,7 @@ namespace DDrop.DAL
                         UseCreationDateTime = series.UseCreationDateTime,
                         IntervalBetweenPhotos = series.IntervalBetweenPhotos,
                         ReferencePhotoForSeries = referencePhotoForAdd,
-                        DropPhotosSeries = dbDropPhotoForAdd.OrderBy(x => x.PhotoOrderInSeries).ToList()
+                        MeasurementsSeries = dbMeasurementForAdd.OrderBy(x => x.PhotoOrderInSeries).ToList()
                     };
                 }
                 catch (SqlException e)
@@ -421,18 +421,18 @@ namespace DDrop.DAL
                 {
                     context.Series.Attach(series);
 
-                    foreach (var dropPhoto in series.DropPhotosSeries)
+                    foreach (var measurement in series.MeasurementsSeries)
                     {
-                        if (dropPhoto.SimpleVerticalLine != null)
-                            context.SimpleLines.Remove(dropPhoto.SimpleVerticalLine);
+                        if (measurement.SimpleVerticalLine != null)
+                            context.SimpleLines.Remove(measurement.SimpleVerticalLine);
 
-                        if (dropPhoto.SimpleHorizontalLine != null)
-                            context.SimpleLines.Remove(dropPhoto.SimpleHorizontalLine);
+                        if (measurement.SimpleHorizontalLine != null)
+                            context.SimpleLines.Remove(measurement.SimpleHorizontalLine);
 
-                        if (dropPhoto.Contour != null)
+                        if (measurement.Contour != null)
                         {
-                            context.SimpleLines.RemoveRange(dropPhoto.Contour.SimpleLines);
-                            context.Contours.Remove(dropPhoto.Contour);
+                            context.SimpleLines.RemoveRange(measurement.Contour.SimpleLines);
+                            context.Contours.Remove(measurement.Contour);
                         }
                     }
 
@@ -531,40 +531,40 @@ namespace DDrop.DAL
 
         #region Drop Photo
 
-        public async Task CreateDropPhoto(DbDropPhoto dropPhoto, Guid seriesId)
+        public async Task CreateMeasurement(DbMeasurement measurement, Guid seriesId)
         {
             using (var context = new DDropContext())
             {
                 try
                 {
-                    var dbDropPhoto = new DbDropPhoto
+                    var dbMeasurement = new DbMeasurement
                     {
-                        AddedDate = dropPhoto.AddedDate,
-                        Content = dropPhoto.Content,
+                        AddedDate = measurement.AddedDate,
+                        Content = measurement.Content,
                         CurrentSeriesId = seriesId,
                         Drop = new DbDrop
                         {
-                            DropId = dropPhoto.DropPhotoId,
-                            RadiusInMeters = dropPhoto.Drop.RadiusInMeters,
-                            VolumeInCubicalMeters = dropPhoto.Drop.VolumeInCubicalMeters,
-                            XDiameterInMeters = dropPhoto.Drop.XDiameterInMeters,
-                            YDiameterInMeters = dropPhoto.Drop.YDiameterInMeters,
-                            ZDiameterInMeters = dropPhoto.Drop.ZDiameterInMeters
+                            DropId = measurement.MeasurementId,
+                            RadiusInMeters = measurement.Drop.RadiusInMeters,
+                            VolumeInCubicalMeters = measurement.Drop.VolumeInCubicalMeters,
+                            XDiameterInMeters = measurement.Drop.XDiameterInMeters,
+                            YDiameterInMeters = measurement.Drop.YDiameterInMeters,
+                            ZDiameterInMeters = measurement.Drop.ZDiameterInMeters
                         },
-                        DropPhotoId = dropPhoto.DropPhotoId,
-                        Name = dropPhoto.Name,
-                        SimpleHorizontalLine = dropPhoto.SimpleHorizontalLine,
-                        SimpleHorizontalLineId = dropPhoto.SimpleHorizontalLineId,
-                        SimpleVerticalLine = dropPhoto.SimpleVerticalLine,
-                        SimpleVerticalLineId = dropPhoto.SimpleVerticalLineId,
-                        XDiameterInPixels = dropPhoto.XDiameterInPixels,
-                        YDiameterInPixels = dropPhoto.YDiameterInPixels,
-                        ZDiameterInPixels = dropPhoto.ZDiameterInPixels,
-                        CreationDateTime = dropPhoto.CreationDateTime,
-                        PhotoOrderInSeries = dropPhoto.PhotoOrderInSeries
+                        MeasurementId = measurement.MeasurementId,
+                        Name = measurement.Name,
+                        SimpleHorizontalLine = measurement.SimpleHorizontalLine,
+                        SimpleHorizontalLineId = measurement.SimpleHorizontalLineId,
+                        SimpleVerticalLine = measurement.SimpleVerticalLine,
+                        SimpleVerticalLineId = measurement.SimpleVerticalLineId,
+                        XDiameterInPixels = measurement.XDiameterInPixels,
+                        YDiameterInPixels = measurement.YDiameterInPixels,
+                        ZDiameterInPixels = measurement.ZDiameterInPixels,
+                        CreationDateTime = measurement.CreationDateTime,
+                        PhotoOrderInSeries = measurement.PhotoOrderInSeries
                     };
 
-                    context.DropPhotos.Add(dbDropPhoto);
+                    context.Measurements.Add(dbMeasurement);
 
                     await context.SaveChangesAsync();
                 }
@@ -575,43 +575,43 @@ namespace DDrop.DAL
             }
         }
 
-        public async Task UpdateDropPhoto(DbDropPhoto dropPhoto)
+        public async Task UpdateMeasurement(DbMeasurement measurement)
         {
             using (var context = new DDropContext())
             {
                 try
                 {
                     var contour = await context.Contours.Include(p => p.SimpleLines)
-                        .FirstOrDefaultAsync(x => x.ContourId == dropPhoto.DropPhotoId);
+                        .FirstOrDefaultAsync(x => x.ContourId == measurement.MeasurementId);
 
-                    if (contour != null && dropPhoto.Contour != null)
+                    if (contour != null && measurement.Contour != null)
                     {
                         context.SimpleLines.RemoveRange(contour.SimpleLines);
-                        contour.SimpleLines = dropPhoto.Contour.SimpleLines;
-                        contour.CalculationParameters = dropPhoto.Contour.CalculationParameters;
-                        contour.CalculationProvider = dropPhoto.Contour.CalculationProvider;
+                        contour.SimpleLines = measurement.Contour.SimpleLines;
+                        contour.CalculationParameters = measurement.Contour.CalculationParameters;
+                        contour.CalculationProvider = measurement.Contour.CalculationProvider;
 
                         context.Set<DbContour>().AddOrUpdate(contour);
                         context.Set<DbSimpleLine>().AddRange(contour.SimpleLines);
                     }
-                    else if (dropPhoto.Contour != null)
+                    else if (measurement.Contour != null)
                     {
-                        context.Set<DbContour>().AddOrUpdate(dropPhoto.Contour);
-                        context.Set<DbSimpleLine>().AddRange(dropPhoto.Contour.SimpleLines);
+                        context.Set<DbContour>().AddOrUpdate(measurement.Contour);
+                        context.Set<DbSimpleLine>().AddRange(measurement.Contour.SimpleLines);
                     }
-                    else if (contour != null && dropPhoto.Contour == null)
+                    else if (contour != null && measurement.Contour == null)
                     {
                         context.Contours.Remove(contour);
                         context.SimpleLines.RemoveRange(contour.SimpleLines);
                     }
 
-                    if (dropPhoto.SimpleHorizontalLine != null)
-                        context.Set<DbSimpleLine>().AddOrUpdate(dropPhoto.SimpleHorizontalLine);
+                    if (measurement.SimpleHorizontalLine != null)
+                        context.Set<DbSimpleLine>().AddOrUpdate(measurement.SimpleHorizontalLine);
 
-                    if (dropPhoto.SimpleVerticalLine != null)
-                        context.Set<DbSimpleLine>().AddOrUpdate(dropPhoto.SimpleVerticalLine);
-                    context.Set<DbDropPhoto>().AddOrUpdate(dropPhoto);
-                    context.Set<DbDrop>().AddOrUpdate(dropPhoto.Drop);
+                    if (measurement.SimpleVerticalLine != null)
+                        context.Set<DbSimpleLine>().AddOrUpdate(measurement.SimpleVerticalLine);
+                    context.Set<DbMeasurement>().AddOrUpdate(measurement);
+                    context.Set<DbDrop>().AddOrUpdate(measurement.Drop);
 
                     await context.SaveChangesAsync();
                 }
@@ -639,15 +639,15 @@ namespace DDrop.DAL
             }
         }
 
-        public async Task UpdateDropPhotoName(string newName, Guid dropPhotoId)
+        public async Task UpdateMeasurementName(string newName, Guid measurementId)
         {
             using (var context = new DDropContext())
             {
                 try
                 {
-                    var dropPhoto = await context.DropPhotos.FirstOrDefaultAsync(x => x.DropPhotoId == dropPhotoId);
+                    var measurement = await context.Measurements.FirstOrDefaultAsync(x => x.MeasurementId == measurementId);
 
-                    if (dropPhoto != null) dropPhoto.Name = newName;
+                    if (measurement != null) measurement.Name = newName;
 
                     await context.SaveChangesAsync();
                 }
@@ -658,29 +658,29 @@ namespace DDrop.DAL
             }
         }
 
-        public async Task DeleteDropPhoto(Guid dropPhotoId)
+        public async Task DeleteMeasurement(Guid measurementId)
         {
             using (var context = new DDropContext())
             {
                 try
                 {
-                    var dropPhoto = await context.DropPhotos.FirstOrDefaultAsync(x => x.DropPhotoId == dropPhotoId);
+                    var measurement = await context.Measurements.FirstOrDefaultAsync(x => x.MeasurementId == measurementId);
                     var contour = await context.Contours.Include(p => p.SimpleLines)
-                        .FirstOrDefaultAsync(x => x.ContourId == dropPhoto.DropPhotoId);
+                        .FirstOrDefaultAsync(x => x.ContourId == measurement.MeasurementId);
 
-                    context.DropPhotos.Attach(dropPhoto ?? throw new InvalidOperationException());
-                    if (dropPhoto.SimpleVerticalLine != null)
-                        context.SimpleLines.Remove(dropPhoto.SimpleVerticalLine);
-                    if (dropPhoto.SimpleHorizontalLine != null)
-                        context.SimpleLines.Remove(dropPhoto.SimpleHorizontalLine);
+                    context.Measurements.Attach(measurement ?? throw new InvalidOperationException());
+                    if (measurement.SimpleVerticalLine != null)
+                        context.SimpleLines.Remove(measurement.SimpleVerticalLine);
+                    if (measurement.SimpleHorizontalLine != null)
+                        context.SimpleLines.Remove(measurement.SimpleHorizontalLine);
                     if (contour != null)
                     {
                         context.SimpleLines.RemoveRange(contour.SimpleLines);
                         context.Contours.Remove(contour);
                     }
 
-                    context.Drops.Remove(dropPhoto.Drop);
-                    context.DropPhotos.Remove(dropPhoto);
+                    context.Drops.Remove(measurement.Drop);
+                    context.Measurements.Remove(measurement);
 
                     await context.SaveChangesAsync();
                 }
@@ -691,13 +691,13 @@ namespace DDrop.DAL
             }
         }
 
-        public async Task<byte[]> GetDropPhotoContent(Guid dropPhotoId, CancellationToken cancellationToken)
+        public async Task<byte[]> GetMeasurementContent(Guid measurementId, CancellationToken cancellationToken)
         {
             using (var context = new DDropContext())
             {
                 try
                 {
-                    var content = await context.DropPhotos.Where(x => x.DropPhotoId == dropPhotoId)
+                    var content = await context.Measurements.Where(x => x.MeasurementId == measurementId)
                         .Select(z => z.Content).FirstOrDefaultAsync().ConfigureAwait(true);
 
                     cancellationToken.ThrowIfCancellationRequested();
@@ -711,16 +711,16 @@ namespace DDrop.DAL
             }
         }
 
-        public async Task UpdatePhotosOrderInSeries(List<DbDropPhoto> newDbDropPhotos)
+        public async Task UpdatePhotosOrderInSeries(List<DbMeasurement> newDbMeasurements)
         {
             using (var context = new DDropContext())
             {
                 try
                 {
-                    foreach (var dropPhoto in newDbDropPhotos)
+                    foreach (var measurement in newDbMeasurements)
                     {
-                        context.DropPhotos.Attach(dropPhoto);
-                        context.Entry(dropPhoto).Property(x => x.PhotoOrderInSeries).IsModified = true;
+                        context.Measurements.Attach(measurement);
+                        context.Entry(measurement).Property(x => x.PhotoOrderInSeries).IsModified = true;
                     }
 
                     await context.SaveChangesAsync();

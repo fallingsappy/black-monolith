@@ -31,6 +31,8 @@ namespace DDrop.BE.Models
 
         private ReferencePhoto _referencePhotoForSeries;
 
+        private Substance _substance;
+
         private string _title;
 
         private bool _useCreationDateTime;
@@ -90,6 +92,16 @@ namespace DDrop.BE.Models
             {
                 _referencePhotoForSeries = value;
                 OnPropertyChanged(new PropertyChangedEventArgs("ReferencePhotoForSeries"));
+            }
+        }
+
+        public Substance SubstanceForSeries
+        {
+            get => _substance;
+            set
+            {
+                _substance = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("SubstanceForSeries"));
             }
         }
 
