@@ -1,6 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<parameters>
-  <parameter name="IIS Web Application Name" description="" value="WebStoreFallingsappy" tags="IisApp">
-    <parameterEntry kind="ProviderPath" scope="IisApp" match="^E:\\fallingsappy\\Data\\Programming\\CSharpASP\.NET_MVC_6\.Level_1\\Homework\\Homework8\\WebStore_Stable\\CoreWebApp_1\\obj\\Debug\\netcoreapp2\.2\\PubTmp\\Out\\$" />
-  </parameter>
-</parameters>

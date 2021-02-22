@@ -1,9 +1,0 @@
-E:\fallingsappy\Data\Programming\CSharpASP.NET_MVC_6.Level_1\Homework\Homework8\WebStore_Stable\WebStore.DomainNew\bin\Release\netstandard2.0\WebStore.DomainNew.deps.json
-E:\fallingsappy\Data\Programming\CSharpASP.NET_MVC_6.Level_1\Homework\Homework8\WebStore_Stable\WebStore.DomainNew\bin\Release\netstandard2.0\WebStore.DomainNew.dll
-E:\fallingsappy\Data\Programming\CSharpASP.NET_MVC_6.Level_1\Homework\Homework8\WebStore_Stable\WebStore.DomainNew\bin\Release\netstandard2.0\WebStore.DomainNew.pdb
-E:\fallingsappy\Data\Programming\CSharpASP.NET_MVC_6.Level_1\Homework\Homework8\WebStore_Stable\WebStore.DomainNew\obj\Release\netstandard2.0\WebStore.DomainNew.csprojAssemblyReference.cache
-E:\fallingsappy\Data\Programming\CSharpASP.NET_MVC_6.Level_1\Homework\Homework8\WebStore_Stable\WebStore.DomainNew\obj\Release\netstandard2.0\WebStore.DomainNew.csproj.CoreCompileInputs.cache
-E:\fallingsappy\Data\Programming\CSharpASP.NET_MVC_6.Level_1\Homework\Homework8\WebStore_Stable\WebStore.DomainNew\obj\Release\netstandard2.0\WebStore.DomainNew.AssemblyInfoInputs.cache
-E:\fallingsappy\Data\Programming\CSharpASP.NET_MVC_6.Level_1\Homework\Homework8\WebStore_Stable\WebStore.DomainNew\obj\Release\netstandard2.0\WebStore.DomainNew.AssemblyInfo.cs
-E:\fallingsappy\Data\Programming\CSharpASP.NET_MVC_6.Level_1\Homework\Homework8\WebStore_Stable\WebStore.DomainNew\obj\Release\netstandard2.0\WebStore.DomainNew.dll
-E:\fallingsappy\Data\Programming\CSharpASP.NET_MVC_6.Level_1\Homework\Homework8\WebStore_Stable\WebStore.DomainNew\obj\Release\netstandard2.0\WebStore.DomainNew.pdb
