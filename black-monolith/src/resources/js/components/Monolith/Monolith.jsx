@@ -111,7 +111,7 @@ function Monolith () {
 
             renderer.render( scene, camera );
 
-            cube.rotation.y += 0.01;
+            cube.rotation.y += 0.001;
 
             window.requestAnimFrame( render );
         }
