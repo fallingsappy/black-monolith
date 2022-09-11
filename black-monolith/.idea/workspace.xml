@@ -19,9 +19,30 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="129851dd-de3f-4265-a2ce-7239a49574ee" name="Default Changelist" comment="">
+    <list default="true" id="129851dd-de3f-4265-a2ce-7239a49574ee" name="Default Changelist" comment="Simple glow">
+      <change afterPath="$PROJECT_DIR$/src/resources/js/components/Modal/Modal.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/resources/js/components/Modal/Modal.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/resources/js/components/PlayButton/Pause.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/resources/js/components/PlayButton/Play.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/resources/js/components/PlayButton/Player.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/resources/js/components/PlayButton/Player.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/resources/js/components/Sound/SoundBar.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/resources/js/libs/threex.domevents.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/resources/js/views/Main/Main.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/resources/js/views/Main/Main.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Layout.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/Layout.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/resources/css/footer.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/css/footer.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/resources/js/components/Monolith/Monolith.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/js/components/Monolith/Monolith.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/resources/js/libs/threex.atmospherematerial.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/js/libs/threex.atmospherematerial.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/resources/js/libs/threex.dilategeometry.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/js/libs/threex.dilategeometry.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/resources/js/libs/threex.geometricglowmesh.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/js/libs/threex.geometricglowmesh.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/resources/music/geiger.wav" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,8 +52,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="CSS File" />
         <option value="JavaScript File" />
+        <option value="CSS File" />
       </list>
     </option>
   </component>
@@ -61,6 +82,7 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\fallingsappy\Data\Programming\black-monolith\black-monolith\src\resources\music" />
       <recent name="D:\fallingsappy\Data\Programming\portfolio\black-monolith\src" />
     </key>
   </component>
@@ -95,6 +117,14 @@
       <workItem from="1662914900649" duration="1023000" />
       <workItem from="1662915945923" duration="3092000" />
     </task>
+    <task id="LOCAL-00001" summary="Simple glow">
+      <created>1662920551042</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1662920551042</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -111,5 +141,9 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Simple glow" />
+    <option name="LAST_COMMIT_MESSAGE" value="Simple glow" />
   </component>
 </project>

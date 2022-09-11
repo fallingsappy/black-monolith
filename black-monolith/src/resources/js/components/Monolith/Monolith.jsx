@@ -1,28 +1,36 @@
-import React, { useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import * as THREE from "three";
+import THREEx from "../../libs/threex.domevents";
 
 import { toRadians } from "../../../Helpers/Geometry";
-import ambient from "../../../music/dark-ambient.mp3";
-import Sound from "react-sound";
-import geiger from "../../../music/geiger.wav";
 import "../../../css/firefly.sass";
-import {GeometricGlowMesh} from "../../libs/threex.geometricglowmesh";
+import { GeometricGlowMesh } from "../../libs/threex.geometricglowmesh";
+import Player from "../PlayButton/Player";
 
-var fireflies = [];
-var quantity = 50;
-renderFireFlies();
+const quantity = 50;
+const mainColor = "rgba(164,61,224,1)";
 
-function Monolith() {
+function Monolith(props) {
   const innerRef = useRef(null);
+
+  const renderFireFlies = useCallback(() => {
+    const fireflies = [];
+
+    for (let i = 1; i <= quantity; i++) {
+      fireflies.push(<div className="firefly" />);
+    }
+
+    return fireflies;
+  }, []);
 
   useEffect(() => {
     const scene = new THREE.Scene();
     {
       const near = 4;
       const far = 5;
-      const color = "rgba(164,61,224,1)";
+      const color = mainColor;
       scene.fog = new THREE.Fog(color, near, far);
-      scene.background = new THREE.Color("rgb(164,61,224)");
+      scene.background = new THREE.Color(mainColor);
     }
 
     const camera = new THREE.PerspectiveCamera(
@@ -43,38 +51,29 @@ function Monolith() {
 
     const geometry = new THREE.BoxGeometry(2, 4, 0.4);
 
-
-    var material	= new THREE.MeshBasicMaterial({
-      color	: new THREE.Color('gray')
-    })
-    var cube	= new THREE.Mesh( geometry, material );
-
-    var outlineMaterial2 = new THREE.MeshBasicMaterial( { color: 'hotpink', side: THREE.BackSide } );
-    var outlineMesh2 = new THREE.Mesh( geometry, outlineMaterial2 );
-    outlineMesh2.position.set(cube.position.x, cube.position.y, cube.position.z);
-    outlineMesh2.scale.multiplyScalar(1.05);
-    scene.add( outlineMesh2 );
+    const material = new THREE.MeshBasicMaterial({
+      color: new THREE.Color("black"),
+    });
+    const cube = new THREE.Mesh(geometry, material);
 
     scene.add(cube);
 
     // create a glowMesh
-    var glowMesh	= new GeometricGlowMesh(cube)
-    // cube.add(glowMesh.object3d)
+    const glowMesh = new GeometricGlowMesh(cube);
 
     //////////////////////////////////////////////////////////////////////////////////
     //		customize glow mesh if needed					//
     //////////////////////////////////////////////////////////////////////////////////
 
     // example of customization of the default glowMesh
-    var insideUniforms	= glowMesh.insideMesh.material.uniforms
-    insideUniforms.glowColor.value.set('hotpink')
-    var outsideUniforms	= glowMesh.outsideMesh.material.uniforms
-    outsideUniforms.glowColor.value.set('hotpink')
+    const insideUniforms = glowMesh.insideMesh.material.uniforms;
+    insideUniforms.glowColor.value.set("hotpink");
+    const outsideUniforms = glowMesh.outsideMesh.material.uniforms;
+    outsideUniforms.glowColor.value.set("hotpink");
 
-    var orbit = new THREE.Object3D();
+    const orbit = new THREE.Object3D();
     orbit.rotation.order = "YXZ"; //this is important to keep level, so Z should be the last axis to rotate in order...
     orbit.position.copy(cube.position);
-    orbit.position.copy(outlineMesh2.position);
     orbit.rotation.x = -10;
     scene.add(orbit);
 
@@ -82,6 +81,33 @@ function Monolith() {
     let previousMousePosition = {
       x: 0,
     };
+
+    const domEvents = new THREEx.DomEvents(camera, renderer.domElement);
+    // add an event listener for this callback
+    domEvents.addEventListener(
+        cube,
+        "click",
+        function (e) {
+          props.toggleModal(true);
+        },
+        false
+    );
+    domEvents.addEventListener(
+      cube,
+      "mouseover",
+      function (e) {
+        cube.add(glowMesh.object3d);
+      },
+      false
+    );
+    domEvents.addEventListener(
+      cube,
+      "mouseout",
+      function (e) {
+        cube.remove(glowMesh.object3d);
+      },
+      false
+    );
 
     renderer.domElement.addEventListener("mousedown", function (e) {
       isDragging = true;
@@ -109,11 +135,6 @@ function Monolith() {
         cube.quaternion.multiplyQuaternions(
           deltaRotationQuaternion,
           cube.quaternion
-        );
-
-        outlineMesh2.quaternion.multiplyQuaternions(
-            deltaRotationQuaternion,
-            outlineMesh2.quaternion
         );
       }
 
@@ -143,40 +164,22 @@ function Monolith() {
       renderer.render(scene, camera);
 
       cube.rotation.y += 0.001;
-      outlineMesh2.rotation.y += 0.001;
 
       window.requestAnimFrame(render);
     }
 
     orbit.add(camera);
+
     render();
   }, []);
 
   return (
     <>
-      <Sound
-        url={ambient}
-        playStatus={Sound.status.PLAYING}
-        autoLoad
-        loop
-        volume={10}
-      />
-      <Sound
-        url={geiger}
-        playStatus={Sound.status.PLAYING}
-        autoLoad
-        loop
-        volume={2}
-      />
+      <Player />
       <div ref={innerRef} />
-      {fireflies}
+      {renderFireFlies()}
     </>
   );
 }
 
-function renderFireFlies() {
-  for (var i = 1; i <= quantity; i++) {
-    fireflies.push(<div className="firefly" />);
-  }
-}
 export default Monolith;

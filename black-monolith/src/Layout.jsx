@@ -8,7 +8,7 @@ function Layout() {
   return (
     <>
       <Header />
-      <Monolith />
+
       <Footer />
     </>
   );
