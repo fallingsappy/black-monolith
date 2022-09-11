@@ -41,18 +41,25 @@ function Monolith() {
     const light = new THREE.AmbientLight(0x404040, 6); // soft white light
     scene.add(light);
 
-    var geometry	= new THREE.TorusKnotGeometry(1-0.25, 0.25, 32*3, 32);
+    const geometry = new THREE.BoxGeometry(2, 4, 0.4);
+
 
     var material	= new THREE.MeshBasicMaterial({
       color	: new THREE.Color('gray')
     })
     var cube	= new THREE.Mesh( geometry, material );
 
+    var outlineMaterial2 = new THREE.MeshBasicMaterial( { color: 'hotpink', side: THREE.BackSide } );
+    var outlineMesh2 = new THREE.Mesh( geometry, outlineMaterial2 );
+    outlineMesh2.position.set(cube.position.x, cube.position.y, cube.position.z);
+    outlineMesh2.scale.multiplyScalar(1.05);
+    scene.add( outlineMesh2 );
+
     scene.add(cube);
 
     // create a glowMesh
     var glowMesh	= new GeometricGlowMesh(cube)
-    cube.add(glowMesh.object3d)
+    // cube.add(glowMesh.object3d)
 
     //////////////////////////////////////////////////////////////////////////////////
     //		customize glow mesh if needed					//
@@ -67,6 +74,7 @@ function Monolith() {
     var orbit = new THREE.Object3D();
     orbit.rotation.order = "YXZ"; //this is important to keep level, so Z should be the last axis to rotate in order...
     orbit.position.copy(cube.position);
+    orbit.position.copy(outlineMesh2.position);
     orbit.rotation.x = -10;
     scene.add(orbit);
 
@@ -102,6 +110,11 @@ function Monolith() {
           deltaRotationQuaternion,
           cube.quaternion
         );
+
+        outlineMesh2.quaternion.multiplyQuaternions(
+            deltaRotationQuaternion,
+            outlineMesh2.quaternion
+        );
       }
 
       previousMousePosition = {
@@ -130,6 +143,7 @@ function Monolith() {
       renderer.render(scene, camera);
 
       cube.rotation.y += 0.001;
+      outlineMesh2.rotation.y += 0.001;
 
       window.requestAnimFrame(render);
     }
