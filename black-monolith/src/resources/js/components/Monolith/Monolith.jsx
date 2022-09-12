@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef } from "react";
 import * as THREE from "three";
 import THREEx from "../../libs/threex.domevents";
-
+import { throttle } from 'lodash-es';
 import { toRadians } from "../../../Helpers/Geometry";
 import "../../../css/firefly.sass";
 import { GeometricGlowMesh } from "../../libs/threex.geometricglowmesh";
@@ -67,9 +67,9 @@ function Monolith(props) {
 
     // example of customization of the default glowMesh
     const insideUniforms = glowMesh.insideMesh.material.uniforms;
-    insideUniforms.glowColor.value.set("hotpink");
+    insideUniforms.glowColor.value.set("lightgreen");
     const outsideUniforms = glowMesh.outsideMesh.material.uniforms;
-    outsideUniforms.glowColor.value.set("hotpink");
+    outsideUniforms.glowColor.value.set("lightgreen");
 
     const orbit = new THREE.Object3D();
     orbit.rotation.order = "YXZ"; //this is important to keep level, so Z should be the last axis to rotate in order...
@@ -107,6 +107,24 @@ function Monolith(props) {
         cube.remove(glowMesh.object3d);
       },
       false
+    );
+
+    const resizeUpdateInterval = 500;
+
+    window.addEventListener(
+        'resize',
+        throttle(
+            () => {
+              const width = window.innerWidth;
+              const height = window.innerHeight;
+              camera.aspect = width / height;
+              camera.updateProjectionMatrix();
+              renderer.setSize(width, height);
+              setCanvasDimensions(renderer.domElement, width, height);
+            },
+            resizeUpdateInterval,
+            { trailing: true }
+        )
     );
 
     renderer.domElement.addEventListener("mousedown", function (e) {
@@ -166,6 +184,22 @@ function Monolith(props) {
       cube.rotation.y += 0.001;
 
       window.requestAnimFrame(render);
+    }
+
+    function setCanvasDimensions(
+        canvas,
+        width,
+        height,
+        set2dTransform = false
+    ) {
+      const ratio = window.devicePixelRatio;
+      canvas.width = width * ratio;
+      canvas.height = height * ratio;
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      if (set2dTransform) {
+        canvas.getContext('2d').setTransform(ratio, 0, 0, ratio, 0, 0);
+      }
     }
 
     orbit.add(camera);

@@ -19,30 +19,28 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="129851dd-de3f-4265-a2ce-7239a49574ee" name="Default Changelist" comment="Simple glow">
-      <change afterPath="$PROJECT_DIR$/src/resources/js/components/Modal/Modal.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/resources/js/components/Modal/Modal.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/resources/js/components/PlayButton/Pause.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/resources/js/components/PlayButton/Play.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/resources/js/components/PlayButton/Player.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/resources/js/components/PlayButton/Player.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/resources/js/components/Sound/SoundBar.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/resources/js/libs/threex.domevents.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/resources/js/views/Main/Main.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/resources/js/views/Main/Main.jsx" afterDir="false" />
+    <list default="true" id="129851dd-de3f-4265-a2ce-7239a49574ee" name="Default Changelist" comment="Site fully re-done">
+      <change afterPath="$PROJECT_DIR$/public/favicon.ico" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/logo192.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/logo512.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/resources/js/views/Footer/Footer.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/resources/js/views/SocialMediaLinks/SocialMediaLinks.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/resources/js/views/SocialMediaLinks/SocialMediaLinks.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/public/manifest.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Footer.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/js/views/Footer/Footer.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Header.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/js/views/Header/Header.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Layout.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/Layout.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/resources/css/footer.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/css/footer.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/resources/css/footer.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/resources/css/header.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/js/views/Header/header.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/resources/js/components/Monolith/Monolith.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/js/components/Monolith/Monolith.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/resources/js/libs/threex.atmospherematerial.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/js/libs/threex.atmospherematerial.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/resources/js/libs/threex.dilategeometry.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/js/libs/threex.dilategeometry.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/resources/js/libs/threex.geometricglowmesh.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/js/libs/threex.geometricglowmesh.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/resources/music/geiger.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/resources/js/views/Main/Main.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/resources/js/views/Main/Main.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/js/views/Main/Main.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,12 +59,15 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="ProjectId" id="1f67r7Ve9dXPpxJfvE3q055jdT9" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -82,6 +83,8 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\fallingsappy\Data\Programming\black-monolith\black-monolith\src\resources\js\views\Header" />
+      <recent name="E:\fallingsappy\Data\Programming\black-monolith\black-monolith\src\resources\js\views\Footer" />
       <recent name="E:\fallingsappy\Data\Programming\black-monolith\black-monolith\src\resources\music" />
       <recent name="D:\fallingsappy\Data\Programming\portfolio\black-monolith\src" />
     </key>
@@ -124,7 +127,14 @@
       <option name="project" value="LOCAL" />
       <updated>1662920551042</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Site fully re-done">
+      <created>1662932568480</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1662932568480</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -143,7 +153,9 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="Simple glow" />
-    <option name="LAST_COMMIT_MESSAGE" value="Simple glow" />
+    <MESSAGE value="Site fully re-done" />
+    <option name="LAST_COMMIT_MESSAGE" value="Site fully re-done" />
   </component>
 </project>

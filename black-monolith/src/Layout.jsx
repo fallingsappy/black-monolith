@@ -1,6 +1,6 @@
 import React from "react";
-import Header from "./Header";
-import Footer from "./Footer";
+import Header from "./resources/js/views/Header/Header";
+import Footer from "./resources/js/views/Footer/Footer";
 
 import Monolith from "./resources/js/components/Monolith/Monolith";
 
