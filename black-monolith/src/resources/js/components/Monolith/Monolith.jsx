@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef } from "react";
 import * as THREE from "three";
 import THREEx from "../../libs/threex.domevents";
-import { throttle } from 'lodash-es';
+import { throttle } from "lodash-es";
 import { toRadians } from "../../../Helpers/Geometry";
 import "../../../css/firefly.sass";
 import { GeometricGlowMesh } from "../../libs/threex.geometricglowmesh";
@@ -28,8 +28,7 @@ function Monolith(props) {
     {
       const near = 4;
       const far = 5;
-      const color = mainColor;
-      scene.fog = new THREE.Fog(color, near, far);
+      scene.fog = new THREE.Fog(mainColor, near, far);
       scene.background = new THREE.Color(mainColor);
     }
 
@@ -84,18 +83,13 @@ function Monolith(props) {
 
     const domEvents = new THREEx.DomEvents(camera, renderer.domElement);
     // add an event listener for this callback
-    domEvents.addEventListener(
-        cube,
-        "click",
-        function (e) {
-          props.toggleModal(true);
-        },
-        false
-    );
+    domEvents.addEventListener(cube, "click", openModal, false);
+    domEvents.addEventListener(cube, "touchstart", openModal, false);
+
     domEvents.addEventListener(
       cube,
       "mouseover",
-      function (e) {
+      function () {
         cube.add(glowMesh.object3d);
       },
       false
@@ -103,7 +97,7 @@ function Monolith(props) {
     domEvents.addEventListener(
       cube,
       "mouseout",
-      function (e) {
+      function () {
         cube.remove(glowMesh.object3d);
       },
       false
@@ -112,25 +106,64 @@ function Monolith(props) {
     const resizeUpdateInterval = 500;
 
     window.addEventListener(
-        'resize',
-        throttle(
-            () => {
-              const width = window.innerWidth;
-              const height = window.innerHeight;
-              camera.aspect = width / height;
-              camera.updateProjectionMatrix();
-              renderer.setSize(width, height);
-              setCanvasDimensions(renderer.domElement, width, height);
-            },
-            resizeUpdateInterval,
-            { trailing: true }
-        )
+      "resize",
+      throttle(
+        () => {
+          const width = window.innerWidth;
+          const height = window.innerHeight;
+          camera.aspect = width / height;
+          camera.updateProjectionMatrix();
+          renderer.setSize(width, height);
+          setCanvasDimensions(renderer.domElement, width, height);
+        },
+        resizeUpdateInterval,
+        { trailing: true }
+      )
     );
 
-    renderer.domElement.addEventListener("mousedown", function (e) {
+    renderer.domElement.addEventListener("mousedown", function () {
       isDragging = true;
     });
-    renderer.domElement.addEventListener("mousemove", function (e) {
+    renderer.domElement.addEventListener("touchstart", function () {
+      isDragging = true;
+    });
+
+    renderer.domElement.addEventListener("mousemove", handleDrag);
+    renderer.domElement.addEventListener("pointermove", handleDrag);
+
+    div.addEventListener("mouseup", function () {
+      isDragging = false;
+    });
+    div.addEventListener("touchend", function () {
+      isDragging = false;
+    });
+
+    window.requestAnimFrame = (function () {
+      return (
+        window.requestAnimationFrame ||
+        window.webkitRequestAnimationFrame ||
+        window.mozRequestAnimationFrame ||
+        function (callback) {
+          window.setTimeout(callback, 1000 / 60);
+        }
+      );
+    })();
+
+    camera.position.z = 5;
+
+    function openModal() {
+      props.toggleModal(true);
+    }
+
+    function render() {
+      renderer.render(scene, camera);
+
+      cube.rotation.y += 0.001;
+
+      window.requestAnimFrame(render);
+    }
+
+    function handleDrag(e) {
       const deltaMove = {
         x: e.offsetX - previousMousePosition.x,
       };
@@ -159,38 +192,13 @@ function Monolith(props) {
       previousMousePosition = {
         x: e.offsetX,
       };
-    });
-
-    div.addEventListener("mouseup", function (e) {
-      isDragging = false;
-    });
-
-    window.requestAnimFrame = (function () {
-      return (
-        window.requestAnimationFrame ||
-        window.webkitRequestAnimationFrame ||
-        window.mozRequestAnimationFrame ||
-        function (callback) {
-          window.setTimeout(callback, 1000 / 60);
-        }
-      );
-    })();
-
-    camera.position.z = 5;
-
-    function render() {
-      renderer.render(scene, camera);
-
-      cube.rotation.y += 0.001;
-
-      window.requestAnimFrame(render);
     }
 
     function setCanvasDimensions(
-        canvas,
-        width,
-        height,
-        set2dTransform = false
+      canvas,
+      width,
+      height,
+      set2dTransform = false
     ) {
       const ratio = window.devicePixelRatio;
       canvas.width = width * ratio;
@@ -198,14 +206,14 @@ function Monolith(props) {
       canvas.style.width = `${width}px`;
       canvas.style.height = `${height}px`;
       if (set2dTransform) {
-        canvas.getContext('2d').setTransform(ratio, 0, 0, ratio, 0, 0);
+        canvas.getContext("2d").setTransform(ratio, 0, 0, ratio, 0, 0);
       }
     }
 
     orbit.add(camera);
 
     render();
-  }, []);
+  }, [props]);
 
   return (
     <>

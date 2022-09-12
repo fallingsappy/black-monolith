@@ -26,10 +26,8 @@ ul {
   margin-top: 0;
 }
 
-
-
 .scanlines {
-  pointer-events:none;
+  pointer-events: none;
   overflow: hidden;
   mix-blend-mode: difference;
 }
@@ -43,10 +41,10 @@ ul {
   left: 0;
 
   background: repeating-linear-gradient(
-          to bottom,
-          transparent 0%,
-          rgba(255, 255, 255, 0.05) .5%,
-          transparent 1%
+    to bottom,
+    transparent 0%,
+    rgba(255, 255, 255, 0.05) 0.5%,
+    transparent 1%
   );
 
   animation: fudge 7s ease-in-out alternate infinite;

@@ -1,105 +1,99 @@
 .wrapper {
-    position: relative;
-    left: 45%;
-    transform: translate(-50%, -50%);
+  position: relative;
+  left: 45%;
+  transform: translate(-50%, -50%);
 }
 
 ul {
-    list-style: none;
+  list-style: none;
 }
 
 ul li {
-    width: 50px;
-    height: 50px;
-    position: relative;
-    background: #e59500;
-    margin: 10px 0;
-    cursor: pointer;
-    border-radius: 3px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  width: 50px;
+  height: 50px;
+  position: relative;
+  background: #e59500;
+  margin: 10px 0;
+  cursor: pointer;
+  border-radius: 3px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
 ul li .fa {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 20px;
-    color: #fff;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 20px;
+  color: #fff;
 }
 
-ul li.instagram{
-    background: #bc2a8d;
+ul li.instagram {
+  background: #bc2a8d;
 }
 
-ul li.instagram div.slider{
-    background: #dd94c6;
+ul li.instagram div.slider {
+  background: #dd94c6;
 }
 
 ul li.telegram {
-    background: #0088CC;
+  background: #0088cc;
 }
 
-ul li.telegram div.slider{
-    background: #179CDE;
+ul li.telegram div.slider {
+  background: #179cde;
 }
 
 .slider {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 51px;
-    width: 0px;
-    height: 50px;
-    background: #eebb5c;
-    border-radius: 3px;
-    transition: all 0.5s 0.3s ease;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 51px;
+  width: 0px;
+  height: 50px;
+  background: #eebb5c;
+  border-radius: 3px;
+  transition: all 0.5s 0.3s ease;
 }
 
 .slider p {
-    font-family: arial;
-    text-transform: uppercase;
-    font-size: 14px;
-    font-weight: 900;
-    color: #fff;
-    text-align: center;
-    margin-top: 0.4rem;
+  font-family: arial;
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 900;
+  color: #fff;
+  text-align: center;
+  margin-top: 0.4rem;
 
-    opacity: 0;
-    transition: all 0.6s ease;
+  opacity: 0;
+  transition: all 0.6s ease;
 }
 
 ul li:hover .slider {
-    width: 715px;
-    transition: all 0.5s ease;
+  width: 715px;
+  transition: all 0.5s ease;
 }
 
 ul li:hover .slider p {
-    opacity: 1;
-    transition: all 0.5s 0.2s ease;
+  opacity: 1;
+  transition: all 0.5s 0.2s ease;
 }
-
-
-
-
-
-
 
 /* youtube link */
-.youtube{
-    position: fixed;
-    bottom: 10px;
-    right: 10px;
-    width: 160px;
-    text-align: center;
-    padding: 15px 10px;
-    background: #bb0000;
-    border-radius: 5px;
+.youtube {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  width: 160px;
+  text-align: center;
+  padding: 15px 10px;
+  background: #bb0000;
+  border-radius: 5px;
 }
 
-.youtube a{
-    text-decoration: none;
-    color: #fff;
-    text-transform: capitalize;
-    letter-spacing: 1px;
+.youtube a {
+  text-decoration: none;
+  color: #fff;
+  text-transform: capitalize;
+  letter-spacing: 1px;
 }

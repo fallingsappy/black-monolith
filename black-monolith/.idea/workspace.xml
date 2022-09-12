@@ -20,27 +20,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="129851dd-de3f-4265-a2ce-7239a49574ee" name="Default Changelist" comment="Site fully re-done">
-      <change afterPath="$PROJECT_DIR$/public/favicon.ico" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/logo192.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/logo512.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/resources/js/views/Footer/Footer.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/resources/js/views/SocialMediaLinks/SocialMediaLinks.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/resources/js/views/SocialMediaLinks/SocialMediaLinks.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/public/manifest.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Footer.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/js/views/Footer/Footer.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Header.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/js/views/Header/Header.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Layout.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/Layout.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/resources/css/footer.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/resources/css/header.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/js/views/Header/header.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/resources/js/components/Modal/Modal.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/js/components/Modal/Modal.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/resources/js/components/Modal/Modal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/js/components/Modal/Modal.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/resources/js/components/Monolith/Monolith.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/js/components/Monolith/Monolith.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/resources/js/views/Main/Main.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/resources/js/views/Footer/Footer.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/js/views/Footer/Footer.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/resources/js/views/Footer/Footer.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/js/views/Footer/Footer.scss" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/resources/js/views/Main/Main.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/js/views/Main/Main.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/resources/js/views/SocialMediaLinks/SocialMediaLinks.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/js/views/SocialMediaLinks/SocialMediaLinks.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/resources/js/views/SocialMediaLinks/SocialMediaLinks.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/js/views/SocialMediaLinks/SocialMediaLinks.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
