@@ -19,9 +19,11 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="129851dd-de3f-4265-a2ce-7239a49574ee" name="Default Changelist" comment="Most of warnings fixed">
+    <list default="true" id="129851dd-de3f-4265-a2ce-7239a49574ee" name="Default Changelist" comment="Close icon fix">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/resources/js/components/Modal/Modal.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/js/components/Modal/Modal.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/resources/js/libs/threex.domevents.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/js/libs/threex.domevents.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/resources/js/views/SocialMediaLinks/SocialMediaLinks.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/js/views/SocialMediaLinks/SocialMediaLinks.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/resources/js/views/SocialMediaLinks/SocialMediaLinks.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/js/views/SocialMediaLinks/SocialMediaLinks.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -129,7 +131,14 @@
       <option name="project" value="LOCAL" />
       <updated>1663096381658</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Close icon fix">
+      <created>1663097409224</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1663097409224</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -153,6 +162,7 @@
     <MESSAGE value="Site fully re-done" />
     <MESSAGE value="Text working properly for mobile version" />
     <MESSAGE value="Most of warnings fixed" />
-    <option name="LAST_COMMIT_MESSAGE" value="Most of warnings fixed" />
+    <MESSAGE value="Close icon fix" />
+    <option name="LAST_COMMIT_MESSAGE" value="Close icon fix" />
   </component>
 </project>

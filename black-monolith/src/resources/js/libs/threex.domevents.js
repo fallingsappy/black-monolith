@@ -160,7 +160,7 @@ THREEx.DomEvents.prototype._getRelativeMouseXY = function (domEvent) {
 
   //get the real position of an element relative to the page starting point (0, 0)
   //credits go to brainjam on answering http://stackoverflow.com/questions/5755312/getting-mouse-position-relative-to-content-area-of-an-element
-  const elPosition = {x: 0, y: 0};
+  const elPosition = { x: 0, y: 0 };
   let tmpElement = element;
   //store padding
   let style = getComputedStyle(tmpElement, null);

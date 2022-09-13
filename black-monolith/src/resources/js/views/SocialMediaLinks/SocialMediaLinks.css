@@ -1,46 +1,47 @@
 .wrapper {
-  position: relative;
-  left: 45%;
-  transform: translate(-50%, -50%);
+}
+
+.logo-container {
+  background: #eebb5c;
+  border-radius: 3px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
 }
 
 ul {
+  padding-left: 0;
   list-style: none;
 }
 
 ul li {
-  width: 50px;
   height: 50px;
   position: relative;
-  background: #e59500;
   margin: 10px 0;
   cursor: pointer;
-  border-radius: 3px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
 ul li .fa {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   font-size: 20px;
   color: #fff;
 }
 
-ul li.instagram {
+.instagram div.logo-container {
   background: #bc2a8d;
 }
 
-ul li.instagram div.slider {
+.instagram div.slider {
   background: #dd94c6;
 }
 
-ul li.telegram {
+.telegram div.logo-container {
   background: #0088cc;
 }
 
-ul li.telegram div.slider {
+.telegram div.slider {
   background: #179cde;
 }
 
@@ -54,7 +55,7 @@ ul li.telegram div.slider {
   height: 50px;
   background: #eebb5c;
   border-radius: 3px;
-  transition: all 0.5s 0.3s ease;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
 .slider p {
@@ -67,17 +68,14 @@ ul li.telegram div.slider {
   margin-top: 0.4rem;
 
   opacity: 0;
-  transition: all 0.6s ease;
 }
 
 ul li:hover .slider {
-  width: 715px;
-  transition: all 0.5s ease;
+  width: auto;
 }
 
 ul li:hover .slider p {
   opacity: 1;
-  transition: all 0.5s 0.2s ease;
 }
 
 /* youtube link */
