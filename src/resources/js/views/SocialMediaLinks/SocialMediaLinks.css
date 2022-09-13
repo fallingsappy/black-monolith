@@ -71,7 +71,7 @@ ul li .fa {
 }
 
 ul li:hover .slider {
-  width: auto;
+  width: 94%;
 }
 
 ul li:hover .slider p {

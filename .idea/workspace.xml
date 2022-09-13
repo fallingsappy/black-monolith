@@ -1,59 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5972e8ce-c440-4ec1-b7aa-19c29117826c" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="5972e8ce-c440-4ec1-b7aa-19c29117826c" name="Default Changelist" comment="Fix folders">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/black-monolith/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/black-monolith/.idea/black-monolith.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/black-monolith/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/black-monolith/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/black-monolith/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/black-monolith/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/black-monolith/.idea/watcherTasks.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/black-monolith/.idea/workspace.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/black-monolith/.prettierrc.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/black-monolith/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/black-monolith/package-lock.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/black-monolith/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/black-monolith/public/favicon.ico" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/black-monolith/public/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/black-monolith/public/logo192.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/black-monolith/public/logo512.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/black-monolith/public/manifest.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/black-monolith/public/robots.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/black-monolith/src/App.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/black-monolith/src/App.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/black-monolith/src/App.test.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/black-monolith/src/Layout.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/black-monolith/src/index.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/black-monolith/src/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/black-monolith/src/resources/css/firefly.sass" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/black-monolith/src/resources/helpers/Geometry.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/black-monolith/src/resources/hooks/useWindowSize.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/black-monolith/src/resources/js/components/Modal/Modal.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/black-monolith/src/resources/js/components/Modal/Modal.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/black-monolith/src/resources/js/components/Monolith/Monolith.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/black-monolith/src/resources/js/components/PlayButton/Pause.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/black-monolith/src/resources/js/components/PlayButton/Play.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/black-monolith/src/resources/js/components/PlayButton/Player.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/black-monolith/src/resources/js/components/PlayButton/Player.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/black-monolith/src/resources/js/components/Sound/SoundBar.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/black-monolith/src/resources/js/libs/threex.atmospherematerial.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/black-monolith/src/resources/js/libs/threex.dilategeometry.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/black-monolith/src/resources/js/libs/threex.domevents.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/black-monolith/src/resources/js/libs/threex.geometricglowmesh.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/black-monolith/src/resources/js/views/Footer/Footer.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/black-monolith/src/resources/js/views/Footer/Footer.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/black-monolith/src/resources/js/views/Header/Header.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/black-monolith/src/resources/js/views/Header/header.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/black-monolith/src/resources/js/views/Main/Main.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/black-monolith/src/resources/js/views/SocialMediaLinks/SocialMediaLinks.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/black-monolith/src/resources/js/views/SocialMediaLinks/SocialMediaLinks.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/black-monolith/src/resources/music/MK4.mp3" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/black-monolith/src/resources/music/dark-ambient.mp3" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/black-monolith/src/serviceWorker.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/black-monolith/src/setupTests.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/resources/js/views/SocialMediaLinks/SocialMediaLinks.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/js/views/SocialMediaLinks/SocialMediaLinks.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/resources/music/MK4.mp3" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/music/MK4.mp3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/resources/music/dark-ambient.mp3" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,14 +41,35 @@
       <updated>1662491938016</updated>
       <workItem from="1662491943940" duration="123000" />
       <workItem from="1663101482341" duration="20000" />
-      <workItem from="1663101532342" duration="336000" />
+      <workItem from="1663101532342" duration="1495000" />
     </task>
+    <task id="LOCAL-00001" summary="Fix folders">
+      <created>1663101915437</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1663101915437</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
     <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Fix folders" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix folders" />
   </component>
 </project>
