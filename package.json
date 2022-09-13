@@ -8,7 +8,7 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "lodash-es": "^4.17.21",
-    "node-sass": "^4.14.1",
+    "node-sass": "^7.0.0",
     "prettier": "^2.7.1",
     "react": "^16.13.1",
     "react-audio-player": "^0.17.0",
