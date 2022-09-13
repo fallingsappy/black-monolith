@@ -46,6 +46,7 @@ ul li.telegram div.slider {
 
 .slider {
   content: "";
+  max-width: inherit;
   position: absolute;
   top: 0;
   left: 51px;

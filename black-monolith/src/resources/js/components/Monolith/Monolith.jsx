@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef } from "react";
 import * as THREE from "three";
 import THREEx from "../../libs/threex.domevents";
 import { throttle } from "lodash-es";
-import { toRadians } from "../../../Helpers/Geometry";
+import { toRadians } from "../../../helpers/Geometry";
 import "../../../css/firefly.sass";
 import { GeometricGlowMesh } from "../../libs/threex.geometricglowmesh";
 import Player from "../PlayButton/Player";

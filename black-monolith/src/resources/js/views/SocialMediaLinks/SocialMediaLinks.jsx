@@ -1,12 +1,16 @@
 import React from "react";
 import "./SocialMediaLinks.css";
+import {useWindowSize} from "../../../hooks/useWindowSize";
 
 const SocialMediaLinks = () => {
+  const size = useWindowSize();
+
   return (
     <div className="wrapper">
       <ul>
         <li className="instagram">
           <i className="fa fa-instagram" aria-hidden="true"></i>
+
           <div className="slider">
             <p>
               Заходи в наш instagram и посмотри 👁️ как наши треки ⏭️ создаются
