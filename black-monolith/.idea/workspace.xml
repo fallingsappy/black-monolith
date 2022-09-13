@@ -19,15 +19,9 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="129851dd-de3f-4265-a2ce-7239a49574ee" name="Default Changelist" comment="Text working properly for mobile version">
+    <list default="true" id="129851dd-de3f-4265-a2ce-7239a49574ee" name="Default Changelist" comment="Most of warnings fixed">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/resources/hooks/useWindowSize.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/hooks/useWindowSize.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/resources/js/libs/threex.atmospherematerial.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/js/libs/threex.atmospherematerial.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/resources/js/libs/threex.domevents.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/js/libs/threex.domevents.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/resources/js/libs/threex.geometricglowmesh.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/js/libs/threex.geometricglowmesh.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/resources/js/views/Footer/Footer.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/js/views/Footer/Footer.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/resources/js/views/Footer/Footer.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/js/views/Footer/Footer.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/resources/js/views/SocialMediaLinks/SocialMediaLinks.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/js/views/SocialMediaLinks/SocialMediaLinks.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/resources/js/components/Modal/Modal.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/js/components/Modal/Modal.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -128,7 +122,14 @@
       <option name="project" value="LOCAL" />
       <updated>1663018865445</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Most of warnings fixed">
+      <created>1663096381658</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1663096381658</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -151,6 +152,7 @@
     <MESSAGE value="Simple glow" />
     <MESSAGE value="Site fully re-done" />
     <MESSAGE value="Text working properly for mobile version" />
-    <option name="LAST_COMMIT_MESSAGE" value="Text working properly for mobile version" />
+    <MESSAGE value="Most of warnings fixed" />
+    <option name="LAST_COMMIT_MESSAGE" value="Most of warnings fixed" />
   </component>
 </project>
