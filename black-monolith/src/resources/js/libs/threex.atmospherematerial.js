@@ -2,10 +2,10 @@ import * as THREE from "three";
 
 /**
  * from http://stemkoski.blogspot.fr/2013/07/shaders-in-threejs-glow-and-halo.html
- * @return {[type]} [description]
+ * @return {ShaderMaterial} [description]
  */
 export const createAtmosphereMaterial = function () {
-  var vertexShader = [
+  const vertexShader = [
     "varying vec3	vVertexWorldPosition;",
     "varying vec3	vVertexNormal;",
 
@@ -20,7 +20,7 @@ export const createAtmosphereMaterial = function () {
     "	gl_Position	= projectionMatrix * modelViewMatrix * vec4(position, 1.0);",
     "}",
   ].join("\n");
-  var fragmentShader = [
+  const fragmentShader = [
     "uniform vec3	glowColor;",
     "uniform float	coeficient;",
     "uniform float	power;",
@@ -41,7 +41,7 @@ export const createAtmosphereMaterial = function () {
 
   // create custom material from the shader code above
   //   that is within specially labeled script tags
-  var material = new THREE.ShaderMaterial({
+  return new THREE.ShaderMaterial({
     uniforms: {
       coeficient: {
         type: "f",
@@ -62,5 +62,4 @@ export const createAtmosphereMaterial = function () {
     transparent: true,
     depthWrite: false,
   });
-  return material;
 };

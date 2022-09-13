@@ -20,11 +20,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="129851dd-de3f-4265-a2ce-7239a49574ee" name="Default Changelist" comment="Text working properly for mobile version">
-      <change afterPath="$PROJECT_DIR$/src/resources/hooks/useWindowSize.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/resources/Helpers/Geometry.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/helpers/Geometry.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/resources/js/components/Monolith/Monolith.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/js/components/Monolith/Monolith.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/resources/js/views/SocialMediaLinks/SocialMediaLinks.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/js/views/SocialMediaLinks/SocialMediaLinks.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/resources/hooks/useWindowSize.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/hooks/useWindowSize.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/resources/js/libs/threex.atmospherematerial.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/js/libs/threex.atmospherematerial.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/resources/js/libs/threex.domevents.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/js/libs/threex.domevents.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/resources/js/libs/threex.geometricglowmesh.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/js/libs/threex.geometricglowmesh.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/resources/js/views/Footer/Footer.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/js/views/Footer/Footer.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/resources/js/views/Footer/Footer.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/js/views/Footer/Footer.scss" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/resources/js/views/SocialMediaLinks/SocialMediaLinks.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/js/views/SocialMediaLinks/SocialMediaLinks.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

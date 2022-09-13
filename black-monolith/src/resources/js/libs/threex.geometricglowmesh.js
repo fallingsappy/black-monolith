@@ -3,29 +3,29 @@ import { createAtmosphereMaterial } from "./threex.atmospherematerial";
 import { dilateGeometry } from "./threex.dilategeometry";
 
 export const GeometricGlowMesh = function (mesh, addInner = false) {
-  var object3d = new THREE.Object3D();
+  const object3d = new THREE.Object3D();
 
-  var geometry = mesh.geometry.clone();
-  dilateGeometry(geometry, 0.01);
-  var material = createAtmosphereMaterial();
-  material.uniforms.glowColor.value = new THREE.Color("cyan");
-  material.uniforms.coeficient.value = 1.1;
-  material.uniforms.power.value = 1.4;
-  var insideMesh = new THREE.Mesh(geometry, material);
+  const innerGeometry = mesh.geometry.clone();
+  dilateGeometry(innerGeometry, 0.01);
+  const innerMaterial = createAtmosphereMaterial();
+  innerMaterial.uniforms.glowColor.value = new THREE.Color("cyan");
+  innerMaterial.uniforms.coeficient.value = 1.1;
+  innerMaterial.uniforms.power.value = 1.4;
+  const insideMesh = new THREE.Mesh(innerGeometry, innerMaterial);
 
   if (addInner) {
     object3d.add(insideMesh);
   }
 
-  var geometry = mesh.geometry.clone();
+  const geometry = mesh.geometry.clone();
   dilateGeometry(geometry, 0.05);
-  var material = createAtmosphereMaterial();
+  const material = createAtmosphereMaterial();
   material.uniforms.glowColor.value = new THREE.Color("cyan");
   material.uniforms.coeficient.value = 0.1;
   material.uniforms.power.value = 1.2;
 
   material.side = THREE.BackSide;
-  var outsideMesh = new THREE.Mesh(geometry, material);
+  const outsideMesh = new THREE.Mesh(geometry, material);
   outsideMesh.scale.multiplyScalar(1.05);
 
   object3d.add(outsideMesh);

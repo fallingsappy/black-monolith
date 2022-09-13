@@ -1,6 +1,6 @@
 import React from "react";
 import "./SocialMediaLinks.css";
-import {useWindowSize} from "../../../hooks/useWindowSize";
+import { useWindowSize } from "../../../hooks/useWindowSize";
 
 const SocialMediaLinks = () => {
   const size = useWindowSize();
@@ -9,22 +9,54 @@ const SocialMediaLinks = () => {
     <div className="wrapper">
       <ul>
         <li className="instagram">
-          <i className="fa fa-instagram" aria-hidden="true"></i>
+          <i className="fa fa-instagram" aria-hidden="true" />
 
           <div className="slider">
             <p>
-              Заходи в наш instagram и посмотри 👁️ как наши треки ⏭️ создаются
-              👉 из первых 🌛 рук 🙌
+              Заходи в наш instagram и посмотри{" "}
+              <span role="img" aria-label="emoji">
+                👁️
+              </span>{" "}
+              как наши треки{" "}
+              <span role="img" aria-label="emoji">
+                ⏭
+              </span>
+              ️создаются
+              <span role="img" aria-label="emoji">
+                👉
+              </span>{" "}
+              из первых{" "}
+              <span role="img" aria-label="emoji">
+                🌛
+              </span>{" "}
+              рук{" "}
+              <span role="img" aria-label="emoji">
+                🙌
+              </span>
             </p>
           </div>
         </li>
 
         <li className="telegram">
-          <i className="fa fa-telegram" aria-hidden="true"></i>
+          <i className="fa fa-telegram" aria-hidden="true" />
           <div className="slider">
             <p>
-              Check ✅ our telegram for 🈺 the 🤣🤘 latest updates and nasty
-              sneak peaks
+              Check{" "}
+              <span role="img" aria-label="emoji">
+                ✅
+              </span>{" "}
+              our telegram for{" "}
+              <span role="img" aria-label="emoji">
+                🈺
+              </span>{" "}
+              the{" "}
+              <span role="img" aria-label="emoji">
+                🤣
+              </span>
+              <span role="img" aria-label="emoji">
+                🤘
+              </span>{" "}
+              latest updates and nasty sneak peaks
             </p>
           </div>
         </li>

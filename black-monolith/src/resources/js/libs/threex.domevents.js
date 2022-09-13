@@ -77,7 +77,7 @@ THREEx.DomEvents = function (camera, domElement) {
   this._selected = null;
   this._boundObjs = {};
   // Bind dom event for mouse and touch
-  var _this = this;
+  const _this = this;
 
   this._$onClick = function () {
     _this._onClick.apply(_this, arguments);
@@ -153,17 +153,17 @@ THREEx.DomEvents.eventNames = [
 ];
 
 THREEx.DomEvents.prototype._getRelativeMouseXY = function (domEvent) {
-  var element = domEvent.target || domEvent.srcElement;
+  let element = domEvent.target || domEvent.srcElement;
   if (element.nodeType === 3) {
     element = element.parentNode; // Safari fix -- see http://www.quirksmode.org/js/events_properties.html
   }
 
   //get the real position of an element relative to the page starting point (0, 0)
   //credits go to brainjam on answering http://stackoverflow.com/questions/5755312/getting-mouse-position-relative-to-content-area-of-an-element
-  var elPosition = { x: 0, y: 0 };
-  var tmpElement = element;
+  const elPosition = {x: 0, y: 0};
+  let tmpElement = element;
   //store padding
-  var style = getComputedStyle(tmpElement, null);
+  let style = getComputedStyle(tmpElement, null);
   elPosition.y += parseInt(style.getPropertyValue("padding-top"), 10);
   elPosition.x += parseInt(style.getPropertyValue("padding-left"), 10);
   //add positions
@@ -200,7 +200,7 @@ THREEx.DomEvents.prototype._objectCtxDeinit = function (object3d) {
   delete object3d._3xDomEvent;
 };
 THREEx.DomEvents.prototype._objectCtxIsInit = function (object3d) {
-  return object3d._3xDomEvent ? true : false;
+  return !!object3d._3xDomEvent;
 };
 THREEx.DomEvents.prototype._objectCtxGet = function (object3d) {
   return object3d._3xDomEvent;
@@ -260,20 +260,20 @@ THREEx.DomEvents.prototype.unbind = function (
 
   if (!this._objectCtxIsInit(object3d)) this._objectCtxInit(object3d);
 
-  var objectCtx = this._objectCtxGet(object3d);
+  const objectCtx = this._objectCtxGet(object3d);
   if (!objectCtx[eventName + "Handlers"])
     objectCtx[eventName + "Handlers"] = [];
 
-  var handlers = objectCtx[eventName + "Handlers"];
-  for (var i = 0; i < handlers.length; i++) {
-    var handler = handlers[i];
-    if (callback != handler.callback) continue;
-    if (useCapture != handler.useCapture) continue;
+  const handlers = objectCtx[eventName + "Handlers"];
+  for (let i = 0; i < handlers.length; i++) {
+    const handler = handlers[i];
+    if (callback !== handler.callback) continue;
+    if (useCapture !== handler.useCapture) continue;
     handlers.splice(i, 1);
     break;
   }
   // from this object from this._boundObjs
-  var index = this._boundObjs[eventName].indexOf(object3d);
+  const index = this._boundObjs[eventName].indexOf(object3d);
   console.assert(index !== -1);
   this._boundObjs[eventName].splice(index, 1);
 };
@@ -281,9 +281,9 @@ THREEx.DomEvents.prototype.removeEventListener =
   THREEx.DomEvents.prototype.unbind;
 
 THREEx.DomEvents.prototype._bound = function (eventName, object3d) {
-  var objectCtx = this._objectCtxGet(object3d);
+  const objectCtx = this._objectCtxGet(object3d);
   if (!objectCtx) return false;
-  return objectCtx[eventName + "Handlers"] ? true : false;
+  return !!objectCtx[eventName + "Handlers"];
 };
 
 /********************************************************************************/
@@ -300,18 +300,18 @@ THREEx.DomEvents.prototype._onMove = function (
 ) {
   //console.log('eventName', eventName, 'boundObjs', this._boundObjs[eventName])
   // get objects bound to this event
-  var boundObjs = this._boundObjs[eventName];
+  const boundObjs = this._boundObjs[eventName];
   if (boundObjs === undefined || boundObjs.length === 0) return;
   // compute the intersection
-  var vector = new THREE.Vector2();
+  const vector = new THREE.Vector2();
 
   // update the picking ray with the camera and mouse position
   vector.set(mouseX, mouseY);
   this._raycaster.setFromCamera(vector, this._camera);
 
-  var intersects = this._raycaster.intersectObjects(boundObjs);
+  const intersects = this._raycaster.intersectObjects(boundObjs);
 
-  var oldSelected = this._selected;
+  const oldSelected = this._selected;
 
   if (intersects.length > 0) {
     var notifyOver, notifyOut, notifyMove;
@@ -321,7 +321,7 @@ THREEx.DomEvents.prototype._onMove = function (
     // if newSelected bound mousemove, notify it
     notifyMove = this._bound("mousemove", newSelected);
 
-    if (oldSelected != newSelected) {
+    if (oldSelected !== newSelected) {
       // if newSelected bound mouseenter, notify it
       notifyOver = this._bound("mouseover", newSelected);
       // if there is a oldSelect and oldSelected bound mouseleave, notify it
@@ -355,24 +355,24 @@ THREEx.DomEvents.prototype._onEvent = function (
 ) {
   //console.log('eventName', eventName, 'boundObjs', this._boundObjs[eventName])
   // get objects bound to this event
-  var boundObjs = this._boundObjs[eventName];
+  const boundObjs = this._boundObjs[eventName];
   if (boundObjs === undefined || boundObjs.length === 0) return;
   // compute the intersection
-  var vector = new THREE.Vector2();
+  const vector = new THREE.Vector2();
 
   // update the picking ray with the camera and mouse position
   vector.set(mouseX, mouseY);
   this._raycaster.setFromCamera(vector, this._camera);
 
-  var intersects = this._raycaster.intersectObjects(boundObjs, true);
+  const intersects = this._raycaster.intersectObjects(boundObjs, true);
   // if there are no intersections, return now
   if (intersects.length === 0) return;
 
   // init some variables
-  var intersect = intersects[0];
-  var object3d = intersect.object;
-  var objectCtx = this._objectCtxGet(object3d);
-  var objectParent = object3d.parent;
+  const intersect = intersects[0];
+  const object3d = intersect.object;
+  let objectCtx = this._objectCtxGet(object3d);
+  let objectParent = object3d.parent;
 
   while (typeof objectCtx == "undefined" && objectParent) {
     objectCtx = this._objectCtxGet(objectParent);
@@ -390,7 +390,7 @@ THREEx.DomEvents.prototype._notify = function (
   origDomEvent,
   intersect
 ) {
-  var objectCtx = this._objectCtxGet(object3d);
+  const objectCtx = this._objectCtxGet(object3d);
   var handlers = objectCtx ? objectCtx[eventName + "Handlers"] : null;
 
   // parameter check
@@ -404,10 +404,10 @@ THREEx.DomEvents.prototype._notify = function (
   }
 
   // notify all handlers
-  var handlers = objectCtx[eventName + "Handlers"];
-  for (var i = 0; i < handlers.length; i++) {
-    var handler = handlers[i];
-    var toPropagate = true;
+  handlers = objectCtx[eventName + "Handlers"];
+  for (let i = 0; i < handlers.length; i++) {
+    let handler = handlers[i];
+    let toPropagate = true;
     handler.callback({
       type: eventName,
       target: object3d,
@@ -477,24 +477,24 @@ THREEx.DomEvents.prototype._onTouchEnd = function (event) {
 };
 
 THREEx.DomEvents.prototype._onTouchMove = function (domEvent) {
-  if (domEvent.touches.length != 1) return undefined;
+  if (domEvent.touches.length !== 1) return undefined;
 
   domEvent.preventDefault();
 
-  var mouseX = +(domEvent.touches[0].pageX / window.innerWidth) * 2 - 1;
-  var mouseY = -(domEvent.touches[0].pageY / window.innerHeight) * 2 + 1;
+  const mouseX = +(domEvent.touches[0].pageX / window.innerWidth) * 2 - 1;
+  const mouseY = -(domEvent.touches[0].pageY / window.innerHeight) * 2 + 1;
   this._onMove("mousemove", mouseX, mouseY, domEvent);
   this._onMove("mouseover", mouseX, mouseY, domEvent);
   this._onMove("mouseout", mouseX, mouseY, domEvent);
 };
 
 THREEx.DomEvents.prototype._onTouchEvent = function (eventName, domEvent) {
-  if (domEvent.touches.length != 1) return undefined;
+  if (domEvent.touches.length !== 1) return undefined;
 
   domEvent.preventDefault();
 
-  var mouseX = +(domEvent.touches[0].pageX / window.innerWidth) * 2 - 1;
-  var mouseY = -(domEvent.touches[0].pageY / window.innerHeight) * 2 + 1;
+  const mouseX = +(domEvent.touches[0].pageX / window.innerWidth) * 2 - 1;
+  const mouseY = -(domEvent.touches[0].pageY / window.innerHeight) * 2 + 1;
   this._onEvent(eventName, mouseX, mouseY, domEvent);
 };
 

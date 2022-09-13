@@ -7,7 +7,7 @@ body {
 .container {
   position: absolute;
   transform: translate(-50%, -50%);
-  top: 85%;
+  top: 89%;
   left: 50%;
 }
 
@@ -15,7 +15,6 @@ body {
   color: rgb(223, 191, 191);
   position: relative;
   font-size: 9vw;
-  // margin: 70px 200px;
   animation: glitch 5s 5s infinite;
 }
 
@@ -24,10 +23,11 @@ body {
   position: absolute;
   left: -2px;
   text-shadow: -5px 0 magenta;
-  background: rgba(164,61,224,1);
+  background: rgba(164, 61, 224, 1);
   overflow: hidden;
   top: 0;
-  animation: noise-1 3s linear infinite alternate-reverse, glitch 5s 5.05s infinite;
+  animation: noise-1 3s linear infinite alternate-reverse,
+    glitch 5s 5.05s infinite;
 }
 
 .glitch::after {
@@ -35,17 +35,17 @@ body {
   position: absolute;
   left: 2px;
   text-shadow: -5px 0 lightgreen;
-  background: rgba(164,61,224,1);
+  background: rgba(164, 61, 224, 1);
   overflow: hidden;
   top: 0;
   animation: noise-2 3s linear infinite alternate-reverse, glitch 5s 5s infinite;
 }
 
 @keyframes glitch {
-  1%{
+  1% {
     transform: rotateX(10deg) skewX(90deg);
   }
-  2%{
+  2% {
     transform: rotateX(0deg) skewX(0deg);
   }
 }
@@ -83,8 +83,8 @@ body {
 .subtitle {
   font-family: Arial, Helvetica, sans-serif;
   font-weight: 100;
-  font-size: .8vw;
-  color: rgba(165, 141, 141, .4);
+  font-size: 0.8vw;
+  color: rgba(165, 141, 141, 0.4);
   text-transform: uppercase;
   letter-spacing: 1em;
   text-align: center;
@@ -94,11 +94,10 @@ body {
 }
 
 @keyframes glitch-2 {
-  1%{
+  1% {
     transform: rotateX(10deg) skewX(70deg);
   }
-  2%{
+  2% {
     transform: rotateX(0deg) skewX(0deg);
   }
 }
-
