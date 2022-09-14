@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/black-monolith/precache-manifest.1cb6b019c9e1e740163f06e5e627acb7.js"
+  "/black-monolith/precache-manifest.842295cb4fbbb6100710da45595273b1.js"
 );
 
 self.addEventListener('message', (event) => {
