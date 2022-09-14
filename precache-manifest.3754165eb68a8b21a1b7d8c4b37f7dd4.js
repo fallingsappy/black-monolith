@@ -1,11 +1,11 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "49ab263cb85a47468eee1c250894ecc8",
+    "revision": "b7dae749c11af6e52573b513d010c4d3",
     "url": "/black-monolith/index.html"
   },
   {
-    "revision": "658e716d2e45426c24bf",
-    "url": "/black-monolith/static/css/main.0b9e3154.chunk.css"
+    "revision": "4b0307e210e4e070d2be",
+    "url": "/black-monolith/static/css/main.40adc0d9.chunk.css"
   },
   {
     "revision": "61da20049aa6204ba557",
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/black-monolith/static/js/2.f788e862.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "658e716d2e45426c24bf",
-    "url": "/black-monolith/static/js/main.5e4c6229.chunk.js"
+    "revision": "4b0307e210e4e070d2be",
+    "url": "/black-monolith/static/js/main.4ac73037.chunk.js"
   },
   {
     "revision": "1c0a89508649927a1c76",
