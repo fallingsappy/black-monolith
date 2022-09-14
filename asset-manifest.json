@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/black-monolith/static/css/main.055f2f2a.chunk.css",
+    "main.css": "/black-monolith/static/css/main.e12e8da6.chunk.css",
     "main.js": "/black-monolith/static/js/main.d1cf8c50.chunk.js",
     "main.js.map": "/black-monolith/static/js/main.d1cf8c50.chunk.js.map",
     "runtime-main.js": "/black-monolith/static/js/runtime-main.6f2aebc4.js",
@@ -8,16 +8,16 @@
     "static/js/2.f788e862.chunk.js": "/black-monolith/static/js/2.f788e862.chunk.js",
     "static/js/2.f788e862.chunk.js.map": "/black-monolith/static/js/2.f788e862.chunk.js.map",
     "index.html": "/black-monolith/index.html",
-    "precache-manifest.ac19ac4474cb489e0d56fc59244809d1.js": "/black-monolith/precache-manifest.ac19ac4474cb489e0d56fc59244809d1.js",
+    "precache-manifest.51ebc3b21cf7172d3eb6b3e46e43c70b.js": "/black-monolith/precache-manifest.51ebc3b21cf7172d3eb6b3e46e43c70b.js",
     "service-worker.js": "/black-monolith/service-worker.js",
-    "static/css/main.055f2f2a.chunk.css.map": "/black-monolith/static/css/main.055f2f2a.chunk.css.map",
+    "static/css/main.e12e8da6.chunk.css.map": "/black-monolith/static/css/main.e12e8da6.chunk.css.map",
     "static/js/2.f788e862.chunk.js.LICENSE.txt": "/black-monolith/static/js/2.f788e862.chunk.js.LICENSE.txt",
     "static/media/MK4.mp3": "/black-monolith/static/media/MK4.ceb20aa1.mp3"
   },
   "entrypoints": [
     "static/js/runtime-main.6f2aebc4.js",
     "static/js/2.f788e862.chunk.js",
-    "static/css/main.055f2f2a.chunk.css",
+    "static/css/main.e12e8da6.chunk.css",
     "static/js/main.d1cf8c50.chunk.js"
   ]
 }
