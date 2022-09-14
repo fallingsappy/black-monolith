@@ -2,9 +2,13 @@ import React from "react";
 import Monolith from "../../components/Monolith/Monolith";
 import Modal from "../../components/Modal/Modal";
 import SocialMediaLinks from "../SocialMediaLinks/SocialMediaLinks";
+import { useSearchParams } from "react-router-dom";
 
 const Main = () => {
-  const [modalShown, toggleModal] = React.useState(false);
+  const [ searchParams ] = useSearchParams()
+  const showLinks = searchParams.get('showLinks'); // "testCode"
+
+  const [modalShown, toggleModal] = React.useState(showLinks);
 
   return (
     <div className="body">

@@ -3,9 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="5972e8ce-c440-4ec1-b7aa-19c29117826c" name="Default Changelist" comment="Fix folders">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/resources/js/views/SocialMediaLinks/SocialMediaLinks.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/js/views/SocialMediaLinks/SocialMediaLinks.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/resources/music/MK4.mp3" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/music/MK4.mp3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/resources/music/dark-ambient.mp3" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,7 +24,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/.." />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
@@ -42,6 +39,7 @@
       <workItem from="1662491943940" duration="123000" />
       <workItem from="1663101482341" duration="20000" />
       <workItem from="1663101532342" duration="1495000" />
+      <workItem from="1663136192029" duration="348000" />
     </task>
     <task id="LOCAL-00001" summary="Fix folders">
       <created>1663101915437</created>
