@@ -11,7 +11,9 @@ const SocialMediaLinks = () => {
         <li>
           <div className="instagram">
             <div className="logo-container">
-              <i className="fa fa-instagram" aria-hidden="true" />
+              <a href="https://www.instagram.com/sno_som/" target="_blank">
+                <i className="fa fa-instagram" aria-hidden="true" />
+              </a>
             </div>
             {size.width > 1210 && (
               <div className="slider">
@@ -45,7 +47,9 @@ const SocialMediaLinks = () => {
         <li>
           <div className="telegram">
             <div className="logo-container">
-              <i className="fa fa-telegram" aria-hidden="true" />
+              <a href="https://t.me/sno_som" target="_blank">
+                <i className="fa fa-telegram" aria-hidden="true" />
+              </a>
             </div>
             {size.width > 1210 && (
               <div className="slider">
