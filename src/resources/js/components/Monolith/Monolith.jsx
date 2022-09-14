@@ -77,7 +77,7 @@ function Monolith(props) {
     scene.add(orbit);
 
     let isDragging = false;
-    let previousMousePosition = {
+    let previousPointerPosition = {
       x: 0,
     };
 
@@ -129,7 +129,7 @@ function Monolith(props) {
     });
 
     renderer.domElement.addEventListener("mousemove", handleDrag);
-    renderer.domElement.addEventListener("pointermove", handleDrag);
+    renderer.domElement.addEventListener("touchmove", handleTouchDrag);
 
     div.addEventListener("mouseup", function () {
       isDragging = false;
@@ -165,7 +165,7 @@ function Monolith(props) {
 
     function handleDrag(e) {
       const deltaMove = {
-        x: e.offsetX - previousMousePosition.x,
+        x: e.offsetX - previousPointerPosition.x,
       };
 
       if (isDragging) {
@@ -189,8 +189,39 @@ function Monolith(props) {
         );
       }
 
-      previousMousePosition = {
+      previousPointerPosition = {
         x: e.offsetX,
+      };
+    }
+
+    function handleTouchDrag(e) {
+      const deltaMove = {
+        x: e.touches[0].clientX - previousPointerPosition.x,
+      };
+
+      if (isDragging) {
+        let scale = -0.000001;
+        orbit.rotateY(e.touches[0].clientX * scale);
+        orbit.rotation.x = -10;
+        orbit.rotation.z = 0; //this is important to keep the camera level..
+
+        const deltaRotationQuaternion = new THREE.Quaternion().setFromEuler(
+            new THREE.Euler(
+                toRadians(deltaMove.y * 1),
+                toRadians(deltaMove.x),
+                0,
+                "XYZ"
+            )
+        );
+
+        cube.quaternion.multiplyQuaternions(
+            deltaRotationQuaternion,
+            cube.quaternion
+        );
+      }
+
+      previousPointerPosition = {
+        x: e.touches[0].clientX,
       };
     }
 
