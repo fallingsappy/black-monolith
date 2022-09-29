@@ -38,11 +38,27 @@ ul li .fa {
 }
 
 .telegram div.logo-container {
-  background: #0088cc;
+  background: #229ED9;
 }
 
 .telegram div.slider {
-  background: #179cde;
+  background: #90ceec;
+}
+
+.soundcloud div.logo-container {
+  background: #ff7700;
+}
+
+.soundcloud div.slider {
+  background: #ffc490;
+}
+
+.bandcamp div.logo-container {
+  background: #629aa9;
+}
+
+.bandcamp div.slider {
+  background: #91B8C2;
 }
 
 .slider {
@@ -51,7 +67,7 @@ ul li .fa {
   position: absolute;
   top: 0;
   left: 51px;
-  width: 0px;
+  width: 0;
   height: 50px;
   background: #eebb5c;
   border-radius: 3px;
@@ -59,7 +75,7 @@ ul li .fa {
 }
 
 .slider p {
-  font-family: arial;
+  font-family: arial, serif;
   text-transform: uppercase;
   font-size: 14px;
   font-weight: 900;

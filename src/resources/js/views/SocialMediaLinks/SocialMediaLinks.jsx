@@ -75,6 +75,40 @@ const SocialMediaLinks = () => {
             )}
           </div>
         </li>
+
+        <li>
+          <div className="soundcloud">
+            <div className="logo-container">
+              <a href="#" target="_blank">
+                <i className="fa fa-soundcloud" aria-hidden="true" />
+              </a>
+            </div>
+            {size.width > 1210 && (
+                <div className="slider">
+                  <p>
+                    Listen to us
+                  </p>
+                </div>
+            )}
+          </div>
+        </li>
+
+        <li>
+          <div className="bandcamp">
+            <div className="logo-container">
+              <a href="#" target="_blank">
+                <i className="fa fa-bandcamp" aria-hidden="true" />
+              </a>
+            </div>
+            {size.width > 1210 && (
+                <div className="slider">
+                  <p>
+                    Listen to us
+                  </p>
+                </div>
+            )}
+          </div>
+        </li>
       </ul>
     </div>
   );

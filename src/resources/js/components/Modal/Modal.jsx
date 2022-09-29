@@ -2,7 +2,7 @@ import React from "react";
 import "./Modal.css";
 
 function Modal({ children, shown, close }) {
-  return shown ? (
+  return shown && (
     <div
       className="modal-backdrop"
       onClick={() => {
@@ -25,7 +25,7 @@ function Modal({ children, shown, close }) {
         {children}
       </div>
     </div>
-  ) : null;
+  );
 }
 
 export default Modal;
