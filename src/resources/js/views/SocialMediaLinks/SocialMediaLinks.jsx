@@ -86,7 +86,7 @@ const SocialMediaLinks = () => {
             {size.width > 1210 && (
                 <div className="slider">
                   <p>
-                    Listen to us
+                    Coming soon!
                   </p>
                 </div>
             )}
@@ -103,7 +103,7 @@ const SocialMediaLinks = () => {
             {size.width > 1210 && (
                 <div className="slider">
                   <p>
-                    Listen to us
+                   Coming soon!
                   </p>
                 </div>
             )}
