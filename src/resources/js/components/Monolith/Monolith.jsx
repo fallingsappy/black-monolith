@@ -17,7 +17,7 @@ function Monolith(props) {
     const fireflies = [];
 
     for (let i = 1; i <= quantity; i++) {
-      fireflies.push(<div className="firefly" />);
+      fireflies.push(<div key={i} className="firefly" />);
     }
 
     return fireflies;
@@ -61,7 +61,7 @@ function Monolith(props) {
     const glowMesh = new GeometricGlowMesh(cube);
 
     //////////////////////////////////////////////////////////////////////////////////
-    //		customize glow mesh if needed					//
+    //                        customize glow mesh if needed                         //
     //////////////////////////////////////////////////////////////////////////////////
 
     // example of customization of the default glowMesh
