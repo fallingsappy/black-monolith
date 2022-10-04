@@ -1,10 +1,6 @@
-.App {
-  /*overflow: hidden;*/
-}
-
 .body {
   height: 100vh;
-  position: sticky; overflow: hidden;
+  overflow: hidden;
 }
 
 .App-header {
@@ -29,7 +25,7 @@ ul {
 .scanlines {
   pointer-events: none;
   overflow: hidden;
-  /*mix-blend-mode: difference;*/
+  mix-blend-mode: difference;
 }
 
 .scanlines::before {
