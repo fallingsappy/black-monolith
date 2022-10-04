@@ -24,6 +24,8 @@ function Monolith(props) {
   }, []);
 
   useEffect(() => {
+    if (innerRef.current.children.length > 0) return;
+
     const scene = new THREE.Scene();
     {
       const near = 4;
