@@ -37,7 +37,8 @@
 
 @media (max-width: 480px) {
     .about-us {
-        top: 12%;
-        right: 40%;
+        top: 6%;
+        right: -4%;
+        rotate: 90deg
     }
 }
