@@ -101,3 +101,9 @@ body {
     transform: rotateX(0deg) skewX(0deg);
   }
 }
+
+@media (max-width: 480px) {
+  .container {
+    top: 80%;
+  }
+}
