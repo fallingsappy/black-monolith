@@ -114,6 +114,7 @@ function Monolith(props) {
           camera.aspect = width / height;
           camera.updateProjectionMatrix();
           renderer.setSize(width, height);
+          setCanvasDimensions(renderer.domElement, width, height);
         },
         resizeUpdateInterval,
         { trailing: true }
@@ -205,23 +206,39 @@ function Monolith(props) {
         orbit.rotation.z = 0; //this is important to keep the camera level..
 
         const deltaRotationQuaternion = new THREE.Quaternion().setFromEuler(
-            new THREE.Euler(
-                toRadians(deltaMove.y * 1),
-                toRadians(deltaMove.x),
-                0,
-                "XYZ"
-            )
+          new THREE.Euler(
+            toRadians(deltaMove.y * 1),
+            toRadians(deltaMove.x),
+            0,
+            "XYZ"
+          )
         );
 
         cube.quaternion.multiplyQuaternions(
-            deltaRotationQuaternion,
-            cube.quaternion
+          deltaRotationQuaternion,
+          cube.quaternion
         );
       }
 
       previousPointerPosition = {
         x: e.touches[0].clientX,
       };
+    }
+
+    function setCanvasDimensions(
+      canvas,
+      width,
+      height,
+      set2dTransform = false
+    ) {
+      const ratio = window.devicePixelRatio;
+      // canvas.width = width * ratio;
+      // canvas.height = height * ratio;
+      // canvas.style.width = `${width}px`;
+      // canvas.style.height = `${height}px`;
+      if (set2dTransform) {
+        canvas.getContext("2d").setTransform(ratio, 0, 0, ratio, 0, 0);
+      }
     }
 
     orbit.add(camera);
