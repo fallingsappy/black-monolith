@@ -100,49 +100,51 @@ const SocialMediaLinks = () => {
       </li>
 
       <li>
-        <a
-          href="https://snosom.bandcamp.com/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <div className="bandcamp">
-            <div className="logo-container">
-              <i className="fa fa-bandcamp" aria-hidden="true" />
-            </div>
-            {size.width > 1210 && (
-              <div className="slider">
-                <p>
-                  Liza is a mega writing{" "}
-                  <span role="img" aria-label="emoji">
-                    ✍
-                  </span>
-                  ️ machine,{" "}
-                  <span role="img" aria-label="emoji">
-                    🤖
-                  </span>{" "}
-                  so check{" "}
-                  <span role="img" aria-label="emoji">
-                    ✔
-                  </span>
-                  ️ our{" "}
-                  <span role="img" aria-label="emoji">
-                    😌
-                  </span>
-                  <span role="img" aria-label="emoji">
-                    💰
-                  </span>
-                  <span role="img" aria-label="emoji">
-                    🔥
-                  </span>{" "}
-                  lyrics{" "}
-                  <span role="img" aria-label="emoji">
-                    🎵
-                  </span>
-                </p>
-              </div>
-            )}
+        {/*<a*/}
+        {/*  */}
+        {/*  href="https://snosom.bandcamp.com/"*/}
+        {/*  target="_blank"*/}
+        {/*  rel="noopener noreferrer"*/}
+        {/*>*/}
+        <div style={{ opacity: "0.4" }} className="bandcamp">
+          <div className="logo-container">
+            <i className="fa fa-bandcamp" aria-hidden="true" />
           </div>
-        </a>
+          {size.width > 1210 && (
+            <div className="slider">
+              <p>Coming soon!</p>
+              {/*<p>*/}
+              {/*  Liza is a mega writing{" "}*/}
+              {/*  <span role="img" aria-label="emoji">*/}
+              {/*    ✍*/}
+              {/*  </span>*/}
+              {/*  ️ machine,{" "}*/}
+              {/*  <span role="img" aria-label="emoji">*/}
+              {/*    🤖*/}
+              {/*  </span>{" "}*/}
+              {/*  so check{" "}*/}
+              {/*  <span role="img" aria-label="emoji">*/}
+              {/*    ✔*/}
+              {/*  </span>*/}
+              {/*  ️ our{" "}*/}
+              {/*  <span role="img" aria-label="emoji">*/}
+              {/*    😌*/}
+              {/*  </span>*/}
+              {/*  <span role="img" aria-label="emoji">*/}
+              {/*    💰*/}
+              {/*  </span>*/}
+              {/*  <span role="img" aria-label="emoji">*/}
+              {/*    🔥*/}
+              {/*  </span>{" "}*/}
+              {/*  lyrics{" "}*/}
+              {/*  <span role="img" aria-label="emoji">*/}
+              {/*    🎵*/}
+              {/*  </span>*/}
+              {/*</p>*/}
+            </div>
+          )}
+        </div>
+        {/*</a>*/}
       </li>
 
       <li>
@@ -212,57 +214,60 @@ const SocialMediaLinks = () => {
       </li>
 
       <li>
-        <a
-          rel="noopener noreferrer"
-          href="https://www.youtube.com/channel/UCG1qeXJZhB96GisK_tF2jUA"
-          target="_blank"
-        >
-          <div className="youtube">
-            <div className="logo-container">
-              <i className="fa fa-youtube" aria-hidden="true" />
-            </div>
-            {size.width > 1210 && (
-              <div className="slider">
-                <p>
-                  The place{" "}
-                  <span role="img" aria-label="emoji">
-                    🏆
-                  </span>
-                  <span role="img" aria-label="emoji">
-                    🏆
-                  </span>
-                  <span role="img" aria-label="emoji">
-                    🏆
-                  </span>{" "}
-                  where{" "}
-                  <span role="img" aria-label="emoji">
-                    🌎
-                  </span>
-                  <span role="img" aria-label="emoji">
-                    🤷
-                  </span>{" "}
-                  we{" "}
-                  <span role="img" aria-label="emoji">
-                    😉
-                  </span>{" "}
-                  try{" "}
-                  <span role="img" aria-label="emoji">
-                    ✏
-                  </span>
-                  ️ to avoid{" "}
-                  <span role="img" aria-label="emoji">
-                    👋
-                  </span>{" "}
-                  copyright{" "}
-                  <span role="img" aria-label="emoji">
-                    ©
-                  </span>{" "}
-                  issues
-                </p>
-              </div>
-            )}
+        {/*<a*/}
+        {/*  */}
+        {/*  rel="noopener noreferrer"*/}
+        {/*  // href="https://www.youtube.com/channel/UCG1qeXJZhB96GisK_tF2jUA"*/}
+        {/*  href="/"*/}
+        {/*  target="_blank"*/}
+        {/*>*/}
+        <div style={{ opacity: "0.4" }} className="youtube">
+          <div className="logo-container">
+            <i className="fa fa-youtube" aria-hidden="true" />
           </div>
-        </a>
+          {size.width > 1210 && (
+            <div className="slider">
+              <p>Coming soon!</p>
+              {/*<p>*/}
+              {/*  The place{" "}*/}
+              {/*  <span role="img" aria-label="emoji">*/}
+              {/*    🏆*/}
+              {/*  </span>*/}
+              {/*  <span role="img" aria-label="emoji">*/}
+              {/*    🏆*/}
+              {/*  </span>*/}
+              {/*  <span role="img" aria-label="emoji">*/}
+              {/*    🏆*/}
+              {/*  </span>{" "}*/}
+              {/*  where{" "}*/}
+              {/*  <span role="img" aria-label="emoji">*/}
+              {/*    🌎*/}
+              {/*  </span>*/}
+              {/*  <span role="img" aria-label="emoji">*/}
+              {/*    🤷*/}
+              {/*  </span>{" "}*/}
+              {/*  we{" "}*/}
+              {/*  <span role="img" aria-label="emoji">*/}
+              {/*    😉*/}
+              {/*  </span>{" "}*/}
+              {/*  try{" "}*/}
+              {/*  <span role="img" aria-label="emoji">*/}
+              {/*    ✏*/}
+              {/*  </span>*/}
+              {/*  ️ to avoid{" "}*/}
+              {/*  <span role="img" aria-label="emoji">*/}
+              {/*    👋*/}
+              {/*  </span>{" "}*/}
+              {/*  copyright{" "}*/}
+              {/*  <span role="img" aria-label="emoji">*/}
+              {/*    ©*/}
+              {/*  </span>{" "}*/}
+              {/*  issues*/}
+              {/*</p>*/}
+            </div>
+          )}
+        </div>
+        {/*</a>*/}
       </li>
 
       {/*<li>*/}
